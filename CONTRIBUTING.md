@@ -8,7 +8,6 @@ Before contributing, make sure you have the following installed:
 
 - Node.js (version 14 or higher)
 - pnpm or npm
-- [pre-commit](https://pre-commit.com/#install)
 - Git
 
 ## Steps to Contribute
@@ -28,13 +27,7 @@ Before contributing, make sure you have the following installed:
 
    Follow the instructions in the [README](README.md) to install dependencies and start the development server.
 
-4. **Install pre-commit hooks**
-
-   ```bash
-   pre-commit install
-   ```
-
-5. **Create a branch for your changes**
+4. **Create a branch for your changes**
 
    ```bash
    git checkout -b feat/your-feature-name
@@ -42,19 +35,19 @@ Before contributing, make sure you have the following installed:
    git checkout -b fix/your-bug-fix
    ```
 
-6. **Make your changes**
+5. **Make your changes**
    - Write clear, readable code
    - Follow the existing code style
    - Add tests for new functionality
    - Update documentation if needed
 
-7. **Run the pre-commit hooks**
+6. **Run the pre-commit hooks**
 
    ```bash
    pre-commit run --all-files
    ```
 
-8. **Commit your changes**
+7. **Commit your changes**
 
    Write clear and meaningful commit messages:
 
@@ -63,19 +56,19 @@ Before contributing, make sure you have the following installed:
    git commit -m "fix: resolve authentication timeout issue"
    ```
 
-9. **Push your branch**
+8. **Push your branch**
 
    ```bash
    git push origin feat/your-feature-name
    ```
 
-10. **Create a Pull Request**
-    - Open a Pull Request against `main`
-    - **Create the PR as a Draft** until all checks pass
-    - Fill out the PR template completely
-    - Mark as "Ready for review" only when everything is complete
+9. **Create a Pull Request**
+   - Open a Pull Request against `main`
+   - **Create the PR as a Draft** until all checks pass
+   - Fill out the PR template completely
+   - Mark as "Ready for review" only when everything is complete
 
-11. **Wait for review**
+10. **Wait for review**
 
     A maintainer will review your PR. Please be patient and address any feedback provided.
 
