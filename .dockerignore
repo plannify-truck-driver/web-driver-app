@@ -1,0 +1,7 @@
+.husky
+node_modules
+dist
+build
+.env
+README.md
+.DS_Store
