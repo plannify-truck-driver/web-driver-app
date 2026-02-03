@@ -1,8 +1,9 @@
-import { createRootRouteWithContext } from "@tanstack/react-router"
+import { createRootRouteWithContext, useLocation } from "@tanstack/react-router"
 import type { AuthState } from "@/app/providers/AuthProvider"
 import { Loader2 } from "lucide-react"
 import { useEffect, useRef } from "react"
 import AppLayout from "@/layouts/AppLayout"
+import AuthenticationLayout from "@/layouts/AuthenticationLayout"
 
 interface AppContext {
   auth: AuthState
@@ -11,6 +12,7 @@ interface AppContext {
 function RootComponent() {
   const { auth } = Route.useRouteContext()
   const hasTriedSignin = useRef(false)
+  const location = useLocation()
 
   // All hooks must be called before any conditional returns
   useEffect(() => {
@@ -42,7 +44,11 @@ function RootComponent() {
     )
   }
 
-  return <AppLayout />
+  if (location.pathname.startsWith("/authentication")) {
+    return <AuthenticationLayout />
+  } else {
+    return <AppLayout />
+  }
 }
 
 export const Route = createRootRouteWithContext<AppContext>()({

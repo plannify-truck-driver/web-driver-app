@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css}\"",
+    "add-component": "tsx ./.npm-scripts/AddComponent.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",

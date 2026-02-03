@@ -58,3 +58,11 @@ pnpm run format
 ```
 
 This command will format all TypeScript, JavaScript, JSON, and CSS files in the `src/` directory according to the rules defined in `.prettierrc`.
+
+## Adding new shadcn components
+
+Use the following command to add components in order to import it with the right file naming convention:
+
+```bash
+pnpm add-component <component-name>
+```

@@ -1,7 +1,21 @@
 {
   "authentication": {
     "login": {
-      "page-title": "Login Page"
+      "page-title": "Login",
+      "description": "Connect to your account to continue"
     }
+  },
+  "languages": {
+    "title": "Languages",
+    "input-placeholder": "Select a language",
+    "en": "English",
+    "fr": "French"
+  },
+  "themes": {
+    "title": "Themes",
+    "input-placeholder": "Select a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   }
 }

@@ -6,8 +6,8 @@ import { ThemeProvider } from "./app/providers/ThemeProvider"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { createRouter, RouterProvider } from "@tanstack/react-router"
 import { routeTree } from "@/routeTree.gen"
-import { Toaster } from "./shared/components/ui/sonner"
 import type { AuthState } from "./app/providers/AuthProvider"
+import { Toaster } from "./shared/components/ui/sonner"
 
 const queryClient = new QueryClient({
   defaultOptions: {
