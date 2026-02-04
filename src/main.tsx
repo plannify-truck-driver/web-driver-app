@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { createRouter, RouterProvider } from "@tanstack/react-router"
 import { routeTree } from "@/routeTree.gen"
 import type { AuthState } from "./app/providers/AuthProvider"
-import { Toaster } from "./shared/components/ui/Sonner"
+import { Toaster } from "@/shared/components/ui/Sonner"
 
 const queryClient = new QueryClient({
   defaultOptions: {
