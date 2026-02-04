@@ -56,10 +56,10 @@ export function RegistrationForm({ errorMessage, form, loading, onSubmit }: Regi
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex w-full flex-col items-center justify-between gap-4"
     >
-      <FieldGroup className="w-full min-w-[40rem]">
-        <div className="grid w-full grid-cols-2 gap-3">
+      <FieldGroup className="w-full sm:min-w-[40rem]">
+        <div className="flex w-full flex-col gap-3 sm:grid sm:grid-cols-2">
           <div className="flex flex-col gap-3">
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Controller
                 name="firstname"
                 control={form.control}
@@ -120,7 +120,7 @@ export function RegistrationForm({ errorMessage, form, loading, onSubmit }: Regi
                     disabled={loading}
                   >
                     <SelectTrigger
-                      className="bg-background w-full max-w-48"
+                      className="bg-background w-full sm:max-w-48"
                       aria-invalid={fieldState.invalid}
                     >
                       <SelectValue placeholder={t("forms.registration.gender-placeholder")} />
@@ -169,7 +169,7 @@ export function RegistrationForm({ errorMessage, form, loading, onSubmit }: Regi
               )}
             />
           </div>
-          <div className="flex flex-col gap-3 border-l pl-3">
+          <div className="flex flex-col gap-3 sm:border-l sm:pl-3">
             <div className="gap flex flex-col items-start">
               <div className="flex w-full flex-col gap-3">
                 <Controller
@@ -233,7 +233,7 @@ export function RegistrationForm({ errorMessage, form, loading, onSubmit }: Regi
         type="submit"
         form="form-registration"
         isLoading={loading}
-        className="max-w-[20rem] min-w-[10rem]"
+        className="w-full min-w-[10rem] sm:max-w-[20rem]"
       >
         {t("forms.registration.submit-button")}
       </Button>
