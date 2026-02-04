@@ -32,6 +32,13 @@ RUN pnpm install --frozen-lockfile
 # Stage 2: Build stage
 FROM base AS builder
 
+ARG VITE_ENV=development
+ARG VITE_API_URL=http://localhost:3000
+
+# Convert ARG to ENV so they're available during build
+ENV VITE_ENV=$VITE_ENV
+ENV VITE_API_URL=$VITE_API_URL
+
 # Copy node_modules from deps stage
 COPY --from=deps --chown=reactuser:nodejs /app/node_modules ./node_modules
 

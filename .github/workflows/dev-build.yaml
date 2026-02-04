@@ -43,6 +43,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         env:
+          VITE_ENV: "development"
           VITE_API_URL: "https://api-dev.plannify.be/driver/v1"
         with:
           context: .
