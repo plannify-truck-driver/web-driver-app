@@ -16,7 +16,9 @@
         "to-label": "Until:",
         "to-date": "{{date}} at {{time}}",
         "to-undefined": "Undefined",
-        "contact-support": "If you have any questions, please contact our support:"
+        "contact-support": "If you have any questions, please contact our support:",
+        "email-subject": "Account suspended: Request for additional information",
+        "email-body": "Hello,\n\nI would like to request additional information regarding the suspension of my account.\n\nThank you in advance for your assistance."
       }
     }
   },

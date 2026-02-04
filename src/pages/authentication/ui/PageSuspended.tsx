@@ -49,7 +49,15 @@ export default function PageSuspended({ state }: PageSuspendedProps) {
       <div className="w-full">
         <p>
           {t("pages.authentication.suspended.contact-support")}{" "}
-          <a href="mailto:contact@plannify.be" className="text-primary underline">
+          <a
+            href={
+              "mailto:contact@plannify.be?subject=" +
+              encodeURIComponent(t("pages.authentication.suspended.email-subject")) +
+              "&body=" +
+              encodeURIComponent(t("pages.authentication.suspended.email-body"))
+            }
+            className="text-primary underline"
+          >
             contact@plannify.be
           </a>
         </p>

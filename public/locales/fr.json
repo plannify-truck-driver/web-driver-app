@@ -16,7 +16,9 @@
         "to-label": "Jusqu'au :",
         "to-date": "{{date}} à {{time}}",
         "to-undefined": "Non défini",
-        "contact-support": "Si vous avez des questions, veuillez contacter notre support:"
+        "contact-support": "Si vous avez des questions, veuillez contacter notre support:",
+        "email-subject": "Compte suspendu: Demande d'informations complémentaires",
+        "email-body": "Bonjour,\n\nJe souhaiterais obtenir des informations complémentaires concernant la suspension de mon compte.\n\nMerci d'avance pour votre aide."
       }
     }
   },
