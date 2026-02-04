@@ -21,7 +21,7 @@ export default function AuthenticationLayout() {
       <svg width="100%" height="100%" className="absolute top-0 left-0 z-0">
         <defs>
           <pattern id="smallSquares" width="20" height="20" patternUnits="userSpaceOnUse">
-            <rect x="5" y="5" width="2" height="2" fill="white" fill-opacity="0.5"></rect>
+            <rect x="5" y="5" width="2" height="2" fill="white" fillOpacity="0.5"></rect>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#smallSquares)"></rect>
@@ -73,12 +73,9 @@ export default function AuthenticationLayout() {
           </SelectContent>
         </Select>
       </div>
-      <div className="sm:bg-background/20 z-1 h-full w-full sm:h-auto sm:w-[480px] sm:max-w-[480px] sm:rounded-[25px] sm:border-[1.5px] sm:border-dashed sm:border-white/20 sm:p-[18.5px] sm:shadow-xl">
-        <div className="bg-background flex h-full w-full flex-col justify-center p-8 sm:h-auto sm:rounded-[20px] sm:shadow-md">
+      <div className="sm:bg-background/20 z-10 h-full sm:h-auto sm:max-w-[1200px] sm:min-w-[400px] sm:rounded-[25px] sm:border-[1.5px] sm:border-dashed sm:border-white/20 sm:p-[18.5px] sm:shadow-xl">
+        <div className="bg-background flex h-full w-full flex-col justify-center gap-6 p-8 sm:h-auto sm:rounded-[20px] sm:shadow-md">
           <img src="/logo-small.png" alt="Logo" className="mx-auto h-12 w-auto" />
-          <div className="flex justify-center">
-            <p className="text-subtle text-sm">{t("authentication.login.description")}</p>
-          </div>
           <Outlet />
         </div>
       </div>

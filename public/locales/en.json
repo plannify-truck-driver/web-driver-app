@@ -1,8 +1,21 @@
 {
-  "authentication": {
+  "pages": {
+    "authentication": {
+      "login": {
+        "page-title": "Login",
+        "description": "Connect to your account to continue",
+        "no-account-text": "Don't have an account?",
+        "no-account-link": "Sign up"
+      }
+    }
+  },
+  "forms": {
     "login": {
-      "page-title": "Login",
-      "description": "Connect to your account to continue"
+      "email-label": "Email address",
+      "email-placeholder": "firstname.lastname@mail.com",
+      "password-label": "Password",
+      "password-placeholder": "********",
+      "submit-button": "Log in"
     }
   },
   "languages": {
@@ -17,5 +30,14 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System"
+  },
+  "validation": {
+    "email": {
+      "required": "Email address is required.",
+      "invalid": "Email address is not valid."
+    },
+    "password": {
+      "required": "Password is required."
+    }
   }
 }

@@ -1,8 +1,21 @@
 {
-  "authentication": {
+  "pages": {
+    "authentication": {
+      "login": {
+        "page-title": "Connexion",
+        "description": "Connectez-vous à votre compte pour continuer",
+        "no-account-text": "Vous n'avez pas de compte ?",
+        "no-account-link": "Inscrivez-vous"
+      }
+    }
+  },
+  "forms": {
     "login": {
-      "page-title": "Connexion",
-      "description": "Connectez-vous à votre compte pour continuer"
+      "email-label": "Adresse e-mail",
+      "email-placeholder": "prenom.nom@mail.fr",
+      "password-label": "Mot de passe",
+      "password-placeholder": "********",
+      "submit-button": "Se connecter"
     }
   },
   "languages": {
@@ -17,5 +30,14 @@
     "light": "Clair",
     "dark": "Sombre",
     "system": "Système"
+  },
+  "validation": {
+    "email": {
+      "required": "L'adresse e-mail est obligatoire.",
+      "invalid": "L'adresse e-mail n'est pas valide."
+    },
+    "password": {
+      "required": "Le mot de passe est obligatoire."
+    }
   }
 }
