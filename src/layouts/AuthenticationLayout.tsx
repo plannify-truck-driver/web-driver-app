@@ -27,7 +27,10 @@ export default function AuthenticationLayout() {
         <rect width="100%" height="100%" fill="url(#smallSquares)"></rect>
       </svg>
       <div className="absolute top-2 right-2 z-20 flex flex-row gap-2">
-        <Select defaultValue={i18n.language} onValueChange={(lng) => i18n.changeLanguage(lng)}>
+        <Select
+          defaultValue={i18n.language.split("-")[0].toLowerCase()}
+          onValueChange={(lng) => i18n.changeLanguage(lng)}
+        >
           <SelectTrigger className="bg-background w-full max-w-48">
             <Earth className="mr-2 inline h-4 w-4" />
             <SelectValue placeholder={t("languages.input-placeholder")} />
@@ -36,11 +39,13 @@ export default function AuthenticationLayout() {
             <SelectGroup>
               <SelectLabel>{t("languages.title")}</SelectLabel>
               {Array.isArray(i18n.options.supportedLngs)
-                ? i18n.options.supportedLngs.map((lng) => (
-                    <SelectItem key={lng} value={lng}>
-                      {t(`languages.${lng}`)}
-                    </SelectItem>
-                  ))
+                ? i18n.options.supportedLngs
+                    .filter((lng) => import.meta.env.VITE_ENV == "development" || lng !== "cimode")
+                    .map((lng) => (
+                      <SelectItem key={lng} value={lng}>
+                        {t(`languages.${lng}`)}
+                      </SelectItem>
+                    ))
                 : null}
             </SelectGroup>
           </SelectContent>
