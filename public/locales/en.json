@@ -7,6 +7,12 @@
         "no-account-text": "Don't have an account?",
         "no-account-link": "Sign up"
       },
+      "registration": {
+        "page-title": "Registration",
+        "description": "Create an account to get started",
+        "has-account": "Already have an account?",
+        "has-account-link": "Log in"
+      },
       "suspended": {
         "page-title": "Account suspended",
         "description": "Your account has been suspended",
@@ -33,6 +39,28 @@
         "invalid-credentials": "The email address or password is incorrect."
       }
     },
+    "registration": {
+      "firstname-label": "First name",
+      "lastname-label": "Last name",
+      "gender-label": "Gender",
+      "gender-placeholder": "Select a gender",
+      "genders": {
+        "M": "Male",
+        "F": "Female",
+        "O": "None"
+      },
+      "email-label": "Email address",
+      "password-label": "Password",
+      "confirm-password-label": "Confirm password",
+      "generate-strong-password-button": "Generate strong password",
+      "password-copied-to-clipboard": "The password has been copied to the clipboard.",
+      "submit-button": "Sign up",
+      "errors": {
+        "cannot-copy-password-to-clipboard": "Cannot copy the password to the clipboard.",
+        "cannot-generate-password-while-loading": "Cannot generate a password while the account is being created.",
+        "driver-already-exists": "An account already exists with this email address."
+      }
+    },
     "errors": {
       "unexpected-error": "An unexpected error occurred. Please try again later."
     }
@@ -51,12 +79,37 @@
     "system": "System"
   },
   "validation": {
+    "firstname": {
+      "required": "First name is required.",
+      "max-length": "First name cannot exceed 255 characters."
+    },
+    "lastname": {
+      "required": "Last name is required.",
+      "max-length": "Last name cannot exceed 255 characters."
+    },
+    "gender": {
+      "required": "Gender is required."
+    },
     "email": {
       "required": "Email address is required.",
-      "invalid": "Email address is not valid."
+      "invalid": "Email address is not valid.",
+      "max-length": "Email address cannot exceed 255 characters."
     },
     "password": {
-      "required": "Password is required."
+      "required": "Password is required.",
+      "enter-password": "Please enter a password.",
+      "min-length": "Password must be at least 12 characters long.",
+      "max-length": "Password cannot exceed 50 characters.",
+      "min-lowercase": "Password must contain at least one lowercase letter.",
+      "min-uppercase": "Password must contain at least one uppercase letter.",
+      "min-numbers": "Password must contain at least one number.",
+      "min-symbols": "Password must contain at least one symbol.",
+      "strong-password": "Strong password.",
+      "not-strong-enough": "Password is not strong enough."
+    },
+    "confirm-password": {
+      "required": "Password confirmation is required.",
+      "match": "Passwords do not match."
     }
   }
 }

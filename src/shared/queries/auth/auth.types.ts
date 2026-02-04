@@ -17,3 +17,19 @@ export interface SuspendedContent {
   start_at: string
   end_at: string | null
 }
+
+export interface RegistrationRequest {
+  firstname: string
+  lastname: string
+  gender: "M" | "F" | null
+  email: string
+  password: string
+  language: "en" | "fr"
+}
+
+export interface RegistrationResponse {
+  success: {
+    access_token: string
+  }
+  error: ErrorResponse
+}
