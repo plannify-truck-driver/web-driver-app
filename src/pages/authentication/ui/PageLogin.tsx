@@ -7,12 +7,13 @@ import { useTranslation } from "react-i18next"
 import type z from "zod"
 
 interface PageLoginProps {
+  errorMessage: string | null
   form: UseFormReturn<z.infer<typeof loginFormSchema>>
   loading: boolean
   onSubmit: (values: z.infer<typeof loginFormSchema>) => void
 }
 
-export default function PageLogin({ form, loading, onSubmit }: PageLoginProps) {
+export default function PageLogin({ errorMessage, form, loading, onSubmit }: PageLoginProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -22,7 +23,7 @@ export default function PageLogin({ form, loading, onSubmit }: PageLoginProps) {
         {t("pages.authentication.login.description")}
       </p>
       <div className="flex w-full flex-col gap-4">
-        <LoginForm loading={loading} onSubmit={onSubmit} form={form} />
+        <LoginForm errorMessage={errorMessage} loading={loading} onSubmit={onSubmit} form={form} />
         <hr className="border-border/50 w-full border-t" />
         <div className="flex flex-row items-center gap-2 text-sm">
           <p>{t("pages.authentication.login.no-account-text")}</p>

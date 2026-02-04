@@ -6,6 +6,17 @@
         "description": "Connectez-vous à votre compte pour continuer",
         "no-account-text": "Vous n'avez pas de compte ?",
         "no-account-link": "Inscrivez-vous"
+      },
+      "suspended": {
+        "page-title": "Compte suspendu",
+        "description": "Votre compte a été suspendu",
+        "message-label": "Raison de la suspension :",
+        "from-label": "À partir du :",
+        "from-date": "{{date}} à {{time}}",
+        "to-label": "Jusqu'au :",
+        "to-date": "{{date}} à {{time}}",
+        "to-undefined": "Non défini",
+        "contact-support": "Si vous avez des questions, veuillez contacter notre support:"
       }
     }
   },
@@ -15,7 +26,13 @@
       "email-placeholder": "prenom.nom@mail.fr",
       "password-label": "Mot de passe",
       "password-placeholder": "********",
-      "submit-button": "Se connecter"
+      "submit-button": "Se connecter",
+      "errors": {
+        "invalid-credentials": "L'adresse e-mail ou le mot de passe est incorrect."
+      }
+    },
+    "errors": {
+      "unexpected-error": "Une erreur inattendue est survenue. Veuillez réessayer plus tard."
     }
   },
   "languages": {

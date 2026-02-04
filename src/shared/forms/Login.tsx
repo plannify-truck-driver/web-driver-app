@@ -7,12 +7,13 @@ import { Button } from "../components/ui/Button"
 import { useTranslation } from "react-i18next"
 
 interface LoginFormProps {
+  errorMessage: string | null
   form: UseFormReturn<z.infer<typeof loginFormSchema>>
   loading: boolean
   onSubmit: (values: z.infer<typeof loginFormSchema>) => void
 }
 
-export function LoginForm({ form, loading, onSubmit }: LoginFormProps) {
+export function LoginForm({ errorMessage, form, loading, onSubmit }: LoginFormProps) {
   const { t } = useTranslation()
 
   return (
@@ -65,6 +66,7 @@ export function LoginForm({ form, loading, onSubmit }: LoginFormProps) {
           )}
         />
       </FieldGroup>
+      {errorMessage && <p className="my-2 text-sm text-red-600">{errorMessage}</p>}
       <Button type="submit" form="form-login" isLoading={loading}>
         {t("forms.login.submit-button")}
       </Button>

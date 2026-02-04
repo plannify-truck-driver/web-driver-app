@@ -6,6 +6,17 @@
         "description": "Connect to your account to continue",
         "no-account-text": "Don't have an account?",
         "no-account-link": "Sign up"
+      },
+      "suspended": {
+        "page-title": "Account suspended",
+        "description": "Your account has been suspended",
+        "message-label": "Reason for suspension:",
+        "from-label": "From:",
+        "from-date": "{{date}} at {{time}}",
+        "to-label": "Until:",
+        "to-date": "{{date}} at {{time}}",
+        "to-undefined": "Undefined",
+        "contact-support": "If you have any questions, please contact our support:"
       }
     }
   },
@@ -15,7 +26,13 @@
       "email-placeholder": "firstname.lastname@mail.com",
       "password-label": "Password",
       "password-placeholder": "********",
-      "submit-button": "Log in"
+      "submit-button": "Log in",
+      "errors": {
+        "invalid-credentials": "The email address or password is incorrect."
+      }
+    },
+    "errors": {
+      "unexpected-error": "An unexpected error occurred. Please try again later."
     }
   },
   "languages": {

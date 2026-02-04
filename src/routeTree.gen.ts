@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from "./routes/__root"
 import { Route as IndexRouteImport } from "./routes/index"
+import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentication/suspended"
 import { Route as AuthenticationRegistrationRouteImport } from "./routes/authentication/registration"
 import { Route as AuthenticationLoginRouteImport } from "./routes/authentication/login"
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticationSuspendedRoute = AuthenticationSuspendedRouteImport.update({
+  id: "/authentication/suspended",
+  path: "/authentication/suspended",
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticationRegistrationRoute =
@@ -34,34 +40,47 @@ export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
+  "/authentication/suspended": typeof AuthenticationSuspendedRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
+  "/authentication/suspended": typeof AuthenticationSuspendedRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
+  "/authentication/suspended": typeof AuthenticationSuspendedRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/" | "/authentication/login" | "/authentication/registration"
+  fullPaths:
+    | "/"
+    | "/authentication/login"
+    | "/authentication/registration"
+    | "/authentication/suspended"
   fileRoutesByTo: FileRoutesByTo
-  to: "/" | "/authentication/login" | "/authentication/registration"
+  to:
+    | "/"
+    | "/authentication/login"
+    | "/authentication/registration"
+    | "/authentication/suspended"
   id:
     | "__root__"
     | "/"
     | "/authentication/login"
     | "/authentication/registration"
+    | "/authentication/suspended"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticationLoginRoute: typeof AuthenticationLoginRoute
   AuthenticationRegistrationRoute: typeof AuthenticationRegistrationRoute
+  AuthenticationSuspendedRoute: typeof AuthenticationSuspendedRoute
 }
 
 declare module "@tanstack/react-router" {
@@ -71,6 +90,13 @@ declare module "@tanstack/react-router" {
       path: "/"
       fullPath: "/"
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/authentication/suspended": {
+      id: "/authentication/suspended"
+      path: "/authentication/suspended"
+      fullPath: "/authentication/suspended"
+      preLoaderRoute: typeof AuthenticationSuspendedRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/authentication/registration": {
@@ -94,6 +120,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticationLoginRoute: AuthenticationLoginRoute,
   AuthenticationRegistrationRoute: AuthenticationRegistrationRoute,
+  AuthenticationSuspendedRoute: AuthenticationSuspendedRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
