@@ -26,7 +26,7 @@ export default function AuthenticationLayout() {
         </defs>
         <rect width="100%" height="100%" fill="url(#smallSquares)"></rect>
       </svg>
-      <div className="absolute top-2 right-2 z-10 flex flex-row gap-2">
+      <div className="absolute top-2 right-2 z-20 flex flex-row gap-2">
         <Select defaultValue={i18n.language} onValueChange={(lng) => i18n.changeLanguage(lng)}>
           <SelectTrigger className="bg-background w-full max-w-48">
             <Earth className="mr-2 inline h-4 w-4" />
@@ -73,7 +73,7 @@ export default function AuthenticationLayout() {
           </SelectContent>
         </Select>
       </div>
-      <div className="sm:bg-background/20 z-10 h-full sm:h-auto sm:max-w-[1200px] sm:min-w-[400px] sm:rounded-[25px] sm:border-[1.5px] sm:border-dashed sm:border-white/20 sm:p-[18.5px] sm:shadow-xl">
+      <div className="sm:bg-background/20 z-10 h-full w-full sm:h-auto sm:w-auto sm:max-w-[800px] sm:min-w-[480px] sm:rounded-[25px] sm:border-[1.5px] sm:border-dashed sm:border-white/20 sm:p-[18.5px] sm:shadow-xl">
         <div className="bg-background flex h-full w-full flex-col justify-center gap-6 p-8 sm:h-auto sm:rounded-[20px] sm:shadow-md">
           <img src="/logo-small.png" alt="Logo" className="mx-auto h-12 w-auto" />
           <Outlet />
