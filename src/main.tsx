@@ -6,8 +6,8 @@ import { ThemeProvider } from "./app/providers/ThemeProvider"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { createRouter, RouterProvider } from "@tanstack/react-router"
 import { routeTree } from "@/routeTree.gen"
-import type { AuthState } from "./app/providers/AuthProvider"
 import { Toaster } from "./shared/components/ui/Sonner"
+import { AuthProvider } from "./app/providers/AuthProvider"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,29 +34,18 @@ declare module "@tanstack/react-router" {
   }
 }
 
-const auth: AuthState = {
-  isAuthenticated: true,
-  isLoading: false,
-  driver: null,
-  accessToken: null,
-  login: () => {},
-  logout: () => {},
-  signinSilent: async () => {
-    return null
-  },
-  error: null,
-}
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} context={{ auth }} />
-        <Toaster
-          theme="system"
-          position={window.innerWidth < 768 ? "top-center" : "bottom-right"}
-          closeButton={true}
-        />
+        <AuthProvider>
+          <RouterProvider router={router} />
+          <Toaster
+            theme="system"
+            position={window.innerWidth < 768 ? "top-center" : "bottom-right"}
+            closeButton={true}
+          />
+        </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>
   </StrictMode>

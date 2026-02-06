@@ -9,9 +9,13 @@ import { isPasswordStrong } from "@/shared/functions/isPasswordStrong"
 import { useRegistrationMutation } from "@/shared/queries/auth/auth.queries"
 import { useEffect, useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
+import { useAuth } from "@/app/providers/AuthProvider"
+import { useNavigate } from "@tanstack/react-router"
 
 export default function PageRegistrationFeature() {
   const { t, i18n } = useTranslation()
+  const { accessToken, login } = useAuth()
+  const navigate = useNavigate()
 
   const { mutateAsync, data, error, isPending } = useRegistrationMutation()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -60,8 +64,9 @@ export default function PageRegistrationFeature() {
   }
 
   useEffect(() => {
-    if (data) {
-      console.log("Registration successful:", data)
+    if (data && !accessToken) {
+      login(data.access_token)
+      navigate({ to: "/dashboard", replace: true })
     } else if (error) {
       handleErrorResponse(error).then((apiError) => {
         if (apiError) {
@@ -80,7 +85,7 @@ export default function PageRegistrationFeature() {
         console.error("Registration error:", error)
       })
     }
-  }, [data, error, t, form])
+  }, [data, error, t, form, accessToken, login, navigate])
 
   return (
     <PageRegistration

@@ -25,6 +25,24 @@
         "contact-support": "If you have any questions, please contact our support:",
         "email-subject": "Account suspended: Request for additional information",
         "email-body": "Hello,\n\nI would like to request additional information regarding the suspension of my account.\n\nThank you in advance for your assistance."
+      },
+      "verify-account": {
+        "page-title": "Account verification",
+        "description": "{{driverFirstName}}, an email has been sent to you. You will find a button/link to verify your account.",
+        "mail-spam-warning": "The email may arrive in your spam folder.",
+        "contact-support-button": "Contact support",
+        "email-subject": "Account verification issue",
+        "email-body": "Hello,\n\nI'm having trouble verifying my account. Could you help me resolve this issue?\n\nThank you in advance for your assistance.",
+        "logout-button": "Log out"
+      },
+      "token-verify-account": {
+        "page-title": "Account verification",
+        "description": "Verify your account",
+        "success-message": "Your account has been successfully verified! You can now access your space.",
+        "access-account-button": "Access my account",
+        "already-verified": "Your account has already been verified. You can log in.",
+        "invalid-verification-key": "Invalid or expired verification key. Please try again or contact support if the problem persists.",
+        "invalid-url-parameters": "The verification link is invalid. Please check that you have used the correct link or contact support for assistance."
       }
     }
   },

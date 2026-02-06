@@ -10,15 +10,29 @@
 
 import { Route as rootRouteImport } from "./routes/__root"
 import { Route as IndexRouteImport } from "./routes/index"
+import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index"
+import { Route as AuthenticationVerifyAccountRouteImport } from "./routes/authentication/verify-account"
 import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentication/suspended"
 import { Route as AuthenticationRegistrationRouteImport } from "./routes/authentication/registration"
 import { Route as AuthenticationLoginRouteImport } from "./routes/authentication/login"
+import { Route as AuthenticationTokenVerifyAccountRouteImport } from "./routes/authentication/token/verify-account"
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: "/dashboard/",
+  path: "/dashboard/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticationVerifyAccountRoute =
+  AuthenticationVerifyAccountRouteImport.update({
+    id: "/authentication/verify-account",
+    path: "/authentication/verify-account",
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticationSuspendedRoute = AuthenticationSuspendedRouteImport.update({
   id: "/authentication/suspended",
   path: "/authentication/suspended",
@@ -35,18 +49,30 @@ const AuthenticationLoginRoute = AuthenticationLoginRouteImport.update({
   path: "/authentication/login",
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticationTokenVerifyAccountRoute =
+  AuthenticationTokenVerifyAccountRouteImport.update({
+    id: "/authentication/token/verify-account",
+    path: "/authentication/token/verify-account",
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
+  "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/dashboard/": typeof DashboardIndexRoute
+  "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
+  "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/dashboard": typeof DashboardIndexRoute
+  "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -54,6 +80,9 @@ export interface FileRoutesById {
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
+  "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/dashboard/": typeof DashboardIndexRoute
+  "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -62,18 +91,27 @@ export interface FileRouteTypes {
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/suspended"
+    | "/authentication/verify-account"
+    | "/dashboard/"
+    | "/authentication/token/verify-account"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/suspended"
+    | "/authentication/verify-account"
+    | "/dashboard"
+    | "/authentication/token/verify-account"
   id:
     | "__root__"
     | "/"
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/suspended"
+    | "/authentication/verify-account"
+    | "/dashboard/"
+    | "/authentication/token/verify-account"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -81,6 +119,9 @@ export interface RootRouteChildren {
   AuthenticationLoginRoute: typeof AuthenticationLoginRoute
   AuthenticationRegistrationRoute: typeof AuthenticationRegistrationRoute
   AuthenticationSuspendedRoute: typeof AuthenticationSuspendedRoute
+  AuthenticationVerifyAccountRoute: typeof AuthenticationVerifyAccountRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  AuthenticationTokenVerifyAccountRoute: typeof AuthenticationTokenVerifyAccountRoute
 }
 
 declare module "@tanstack/react-router" {
@@ -90,6 +131,20 @@ declare module "@tanstack/react-router" {
       path: "/"
       fullPath: "/"
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/dashboard/": {
+      id: "/dashboard/"
+      path: "/dashboard"
+      fullPath: "/dashboard/"
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/authentication/verify-account": {
+      id: "/authentication/verify-account"
+      path: "/authentication/verify-account"
+      fullPath: "/authentication/verify-account"
+      preLoaderRoute: typeof AuthenticationVerifyAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/authentication/suspended": {
@@ -113,6 +168,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticationLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/authentication/token/verify-account": {
+      id: "/authentication/token/verify-account"
+      path: "/authentication/token/verify-account"
+      fullPath: "/authentication/token/verify-account"
+      preLoaderRoute: typeof AuthenticationTokenVerifyAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -121,6 +183,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticationLoginRoute: AuthenticationLoginRoute,
   AuthenticationRegistrationRoute: AuthenticationRegistrationRoute,
   AuthenticationSuspendedRoute: AuthenticationSuspendedRoute,
+  AuthenticationVerifyAccountRoute: AuthenticationVerifyAccountRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  AuthenticationTokenVerifyAccountRoute: AuthenticationTokenVerifyAccountRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

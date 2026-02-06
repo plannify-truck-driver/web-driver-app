@@ -1,15 +1,10 @@
-import type { ErrorResponse } from "../common/common.types"
-
 export interface LoginRequest {
   email: string
   password: string
 }
 
 export interface LoginResponse {
-  success: {
-    access_token: string
-  }
-  error: ErrorResponse
+  access_token: string
 }
 
 export interface SuspendedContent {
@@ -28,8 +23,14 @@ export interface RegistrationRequest {
 }
 
 export interface RegistrationResponse {
-  success: {
-    access_token: string
-  }
-  error: ErrorResponse
+  access_token: string
+}
+
+export interface VerifyAccountRequest {
+  driver_id: string
+  token: string
+}
+
+export interface VerifyAccountResponse {
+  access_token: string
 }

@@ -9,9 +9,11 @@ import { useLoginMutation } from "@/shared/queries/auth/auth.queries"
 import { useEffect, useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useNavigate } from "@tanstack/react-router"
+import { useAuth } from "@/app/providers/AuthProvider"
 
 export default function PageLoginFeature() {
   const { t } = useTranslation()
+  const { accessToken, login } = useAuth()
   const navigate = useNavigate()
 
   const { mutateAsync, data, error, isPending } = useLoginMutation()
@@ -33,8 +35,9 @@ export default function PageLoginFeature() {
   }
 
   useEffect(() => {
-    if (data) {
-      console.log("Login successful:", data)
+    if (data && !accessToken) {
+      login(data.access_token)
+      navigate({ to: "/dashboard", replace: true })
     } else if (error) {
       handleErrorResponse(error).then((apiError) => {
         if (apiError) {
@@ -53,7 +56,7 @@ export default function PageLoginFeature() {
         console.error("Login error:", error)
       })
     }
-  }, [data, error, navigate, t])
+  }, [data, error, navigate, t, login, accessToken])
 
   return (
     <PageLogin errorMessage={errorMessage} form={form} loading={isPending} onSubmit={onSubmit} />

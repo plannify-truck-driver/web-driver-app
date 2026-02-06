@@ -1,47 +1,40 @@
-import { createRootRouteWithContext, useLocation } from "@tanstack/react-router"
-import type { AuthState } from "@/app/providers/AuthProvider"
-import { Loader2 } from "lucide-react"
-import { useEffect, useRef } from "react"
+import { createRootRouteWithContext, useLocation, useNavigate } from "@tanstack/react-router"
+import { useEffect } from "react"
 import AppLayout from "@/layouts/AppLayout"
 import AuthenticationLayout from "@/layouts/AuthenticationLayout"
+import { useAuth, type AuthProviderState } from "@/app/providers/AuthProvider"
 
 interface AppContext {
-  auth: AuthState
+  auth: AuthProviderState
 }
 
 function RootComponent() {
-  const { auth } = Route.useRouteContext()
-  const hasTriedSignin = useRef(false)
+  const { accessToken, driver } = useAuth()
   const location = useLocation()
-
-  // All hooks must be called before any conditional returns
-  useEffect(() => {
-    if (auth.isAuthenticated) {
-      hasTriedSignin.current = false
-    }
-  }, [auth.isAuthenticated])
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (!auth.isAuthenticated && !auth.isLoading && !hasTriedSignin.current) {
-      hasTriedSignin.current = true
-      auth.login()
+    if (!location.pathname.startsWith("/authentication") && (!accessToken || !driver)) {
+      navigate({ to: "/authentication/login" })
+      return
     }
-  }, [auth])
 
-  if (auth.isLoading) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center">
-        <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
-      </div>
-    )
-  }
+    if (
+      driver &&
+      !driver.verified &&
+      !location.pathname.startsWith("/authentication/verify-account")
+    ) {
+      navigate({ to: "/authentication/verify-account" })
+    }
+  }, [accessToken, driver, location.pathname, navigate])
 
-  if (!auth.isAuthenticated) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center">
-        <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
-      </div>
-    )
+  if (!location.pathname.startsWith("/authentication")) {
+    if (!accessToken || !driver) {
+      return null
+    }
+    if (!driver.verified) {
+      return null
+    }
   }
 
   if (location.pathname.startsWith("/authentication")) {

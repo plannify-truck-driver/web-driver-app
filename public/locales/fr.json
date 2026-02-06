@@ -25,6 +25,24 @@
         "contact-support": "Si vous avez des questions, veuillez contacter notre support:",
         "email-subject": "Compte suspendu: Demande d'informations complémentaires",
         "email-body": "Bonjour,\n\nJe souhaiterais obtenir des informations complémentaires concernant la suspension de mon compte.\n\nMerci d'avance pour votre aide."
+      },
+      "verify-account": {
+        "page-title": "Vérification du compte",
+        "description": "{{driverFirstName}}, un mail vous a été envoyé. Vous y trouverez un bouton/lien pour faire vérifier votre compte.",
+        "mail-spam-warning": "Il se peut que le mail arrive dans vos courriers indésirables (spam).",
+        "contact-support-button": "Contacter le support",
+        "email-subject": "Problème de vérification de compte",
+        "email-body": "Bonjour,\n\nJe rencontre un problème pour vérifier mon compte. Pourriez-vous m'aider à résoudre ce problème ?\n\nMerci d'avance pour votre aide.",
+        "logout-button": "Se déconnecter"
+      },
+      "token-verify-account": {
+        "page-title": "Vérification du compte",
+        "description": "Vérification de votre compte",
+        "success-message": "Votre compte a été vérifié avec succès ! Vous pouvez désormais accéder à votre espace.",
+        "access-account-button": "Accéder à mon compte",
+        "already-verified": "Votre compte a déjà été vérifié. Vous pouvez vous connecter.",
+        "invalid-verification-key": "Clé de vérification invalide ou expirée. Veuillez réessayer ou contacter le support si le problème persiste.",
+        "invalid-url-parameters": "Le lien de vérification est invalide. Veuillez vérifier que vous avez utilisé le bon lien ou contactez le support pour obtenir de l'aide."
       }
     }
   },
