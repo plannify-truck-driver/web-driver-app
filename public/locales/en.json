@@ -46,6 +46,32 @@
       }
     }
   },
+  "navigation": {
+    "dashboard": {
+      "title": "Dashboard",
+      "start-workday": "Start a workday",
+      "end-workday": "End a workday",
+      "configure-rest-periods": "Configure rest periods"
+    },
+    "workdays": {
+      "title": "Workdays",
+      "view-workdays-current-month": "View current month workdays",
+      "view-workdays-previous-month": "View previous month workdays",
+      "view-workdays-custom": "Search workdays",
+      "add-workday": "Add a workday",
+      "view-garbage-workdays": "View deleted workdays"
+    },
+    "documents": {
+      "title": "Documents",
+      "view-documents-year": "View documents from {{year}}"
+    },
+    "account": {
+      "title": "Account",
+      "view-my-informations": "View my informations",
+      "view-my-mails": "View sent mails",
+      "update-notification-preferences": "Update notification preferences"
+    }
+  },
   "forms": {
     "login": {
       "email-label": "Email address",
@@ -96,6 +122,8 @@
     "dark": "Dark",
     "system": "System"
   },
+  "settings": "Settings",
+  "logout": "Log out",
   "validation": {
     "firstname": {
       "required": "First name is required.",

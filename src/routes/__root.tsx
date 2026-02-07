@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import AppLayout from "@/layouts/AppLayout"
 import AuthenticationLayout from "@/layouts/AuthenticationLayout"
 import { useAuth, type AuthProviderState } from "@/app/providers/AuthProvider"
+import { SidebarProvider } from "@/shared/components/ui/Sidebar"
 
 interface AppContext {
   auth: AuthProviderState
@@ -40,7 +41,11 @@ function RootComponent() {
   if (location.pathname.startsWith("/authentication")) {
     return <AuthenticationLayout />
   } else {
-    return <AppLayout />
+    return (
+      <SidebarProvider>
+        <AppLayout />
+      </SidebarProvider>
+    )
   }
 }
 
