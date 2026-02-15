@@ -5,6 +5,10 @@ on:
     branches:
       - develop
 
+permissions:
+  contents: write
+  packages: write
+
 env:
   REGISTRY: ghcr.io
 
