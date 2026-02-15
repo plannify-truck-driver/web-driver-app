@@ -406,7 +406,7 @@ export default function AppLayout() {
         </div>
       </div>
       {/* For mobile screens */}
-      <div className="flex h-screen w-screen flex-col justify-between sm:hidden">
+      <div className="flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
         <div className="h-full px-2">
           <Outlet />
         </div>
