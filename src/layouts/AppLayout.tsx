@@ -38,6 +38,7 @@ import { Link, Outlet, useNavigate } from "@tanstack/react-router"
 import {
   CalendarSearch,
   Check,
+  ChevronDown,
   ChevronRight,
   // ChevronDown,
   ChevronsDownUp,
@@ -74,6 +75,7 @@ export default function AppLayout() {
   const navigate = useNavigate()
 
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false)
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState<{ [key: string]: boolean }>({})
 
   if (!driver) return null
 
@@ -155,8 +157,6 @@ export default function AppLayout() {
     },
   ]
 
-  // const now: Date = new Date()
-
   return (
     <>
       {/* For desktop screens */}
@@ -204,9 +204,18 @@ export default function AppLayout() {
                               </Link>
                             </SidebarMenuButton>
                             {item.subItems.length > 0 && (
-                              <CollapsibleTrigger asChild className="w-auto">
+                              <CollapsibleTrigger
+                                asChild
+                                className="w-auto"
+                                onClick={() =>
+                                  setIsSubMenuOpen((prev) => ({
+                                    ...prev,
+                                    [item.title]: !prev[item.title],
+                                  }))
+                                }
+                              >
                                 <SidebarMenuButton size="sm">
-                                  <ChevronRight />
+                                  {isSubMenuOpen[item.title] ? <ChevronDown /> : <ChevronRight />}
                                 </SidebarMenuButton>
                               </CollapsibleTrigger>
                             )}
