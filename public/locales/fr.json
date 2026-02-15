@@ -63,7 +63,9 @@
     },
     "documents": {
       "title": "Documents",
-      "view-documents-year": "Voir les documents de l'année {{year}}"
+      "view-documents-year": "Voir les documents de l'année",
+      "view-documents-previous-year": "Voir les documents de l'année précédente",
+      "view-documents-custom": "Rechercher des documents"
     },
     "account": {
       "title": "Compte",

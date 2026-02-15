@@ -29,13 +29,17 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   useSidebar,
 } from "@/shared/components/ui/Sidebar"
 import { Link, Outlet, useNavigate } from "@tanstack/react-router"
 import {
   CalendarSearch,
   Check,
-  ChevronDown,
+  ChevronRight,
+  // ChevronDown,
   ChevronsDownUp,
   ChevronsUpDown,
   Earth,
@@ -52,6 +56,14 @@ import {
 } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
+
+interface NavbarNavigationItem {
+  title: string
+  icon: React.ReactNode
+  link: string
+  subItems: { title: string; action: string | (() => void) }[]
+}
 
 export default function AppLayout() {
   const { driver, logout } = useAuth()
@@ -65,7 +77,85 @@ export default function AppLayout() {
 
   if (!driver) return null
 
-  const now: Date = new Date()
+  const navigationItems: NavbarNavigationItem[] = [
+    {
+      title: "navigation.dashboard.title",
+      icon: <Truck size={20} />,
+      link: "/dashboard",
+      subItems: [
+        {
+          title: "navigation.dashboard.start-workday",
+          action: () => toast.info("Fonctionnalité à venir"),
+        },
+        {
+          title: "navigation.dashboard.end-workday",
+          action: () => toast.info("Fonctionnalité à venir"),
+        },
+        {
+          title: "navigation.dashboard.configure-rest-periods",
+          action: "/dashboard/configure-rest-periods",
+        },
+      ],
+    },
+    {
+      title: "navigation.workdays.title",
+      icon: <CalendarSearch size={20} />,
+      link: "/workdays",
+      subItems: [
+        {
+          title: "navigation.workdays.view-workdays-current-month",
+          action: "/workdays/current-month",
+        },
+        {
+          title: "navigation.workdays.view-workdays-previous-month",
+          action: "/workdays/previous-month",
+        },
+        { title: "navigation.workdays.view-workdays-custom", action: "/workdays/custom" },
+        { title: "navigation.workdays.add-workday", action: "/workdays/add" },
+        { title: "navigation.workdays.view-garbage-workdays", action: "/workdays/garbage" },
+      ],
+    },
+    {
+      title: "navigation.documents.title",
+      icon: <FileText size={20} />,
+      link: "/documents",
+      subItems: [
+        {
+          title: "navigation.documents.view-documents-year",
+          action: "/documents/current-year",
+        },
+        {
+          title: "navigation.documents.view-documents-previous-year",
+          action: "/documents/previous-year",
+        },
+        {
+          title: "navigation.documents.view-documents-custom",
+          action: "/documents/custom",
+        },
+      ],
+    },
+    {
+      title: "navigation.account.title",
+      icon: <User size={20} />,
+      link: "/account",
+      subItems: [
+        {
+          title: "navigation.account.view-my-informations",
+          action: "/account/informations",
+        },
+        {
+          title: "navigation.account.view-my-mails",
+          action: "/account/mails",
+        },
+        {
+          title: "navigation.account.update-notification-preferences",
+          action: "/account/notification-preferences",
+        },
+      ],
+    },
+  ]
+
+  // const now: Date = new Date()
 
   return (
     <>
@@ -86,193 +176,75 @@ export default function AppLayout() {
             </SidebarMenu>
           </SidebarHeader>
           <SidebarContent>
-            <Collapsible defaultOpen className="group/collapsible">
-              <SidebarGroup>
-                <div className="flex w-full flex-row items-center justify-between">
-                  <Button variant="ghost" asChild>
-                    <Link to="/dashboard">
-                      <Truck /> {t("navigation.dashboard.title")}
-                    </Link>
-                  </Button>
-                  <SidebarGroupLabel asChild>
-                    <CollapsibleTrigger>
-                      <ChevronDown className="ml-auto cursor-pointer transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </CollapsibleTrigger>
-                  </SidebarGroupLabel>
-                </div>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
+            <SidebarGroup>
+              <SidebarGroupLabel>Conducteur</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu className={open ? "pl-2" : ""}>
+                  {navigationItems.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      {!open ? (
                         <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.dashboard.start-workday")}</span>
+                          <Link
+                            to={item.link}
+                            className="flex cursor-pointer flex-row items-center gap-2"
+                          >
+                            {item.icon}
                           </Link>
                         </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.dashboard.end-workday")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.dashboard.configure-rest-periods")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-            <Collapsible className="group/collapsible">
-              <SidebarGroup>
-                <div className="flex w-full flex-row items-center justify-between">
-                  <Button variant="ghost" asChild>
-                    <Link to="/dashboard">
-                      <CalendarSearch /> {t("navigation.workdays.title")}
-                    </Link>
-                  </Button>
-                  <SidebarGroupLabel asChild>
-                    <CollapsibleTrigger>
-                      <ChevronDown className="ml-auto cursor-pointer transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </CollapsibleTrigger>
-                  </SidebarGroupLabel>
-                </div>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.view-workdays-current-month")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.view-workdays-previous-month")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.view-workdays-custom")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.add-workday")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.view-garbage-workdays")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-            <Collapsible className="group/collapsible">
-              <SidebarGroup>
-                <div className="flex w-full flex-row items-center justify-between">
-                  <Button variant="ghost" asChild>
-                    <Link to="/dashboard">
-                      <FileText /> {t("navigation.documents.title")}
-                    </Link>
-                  </Button>
-                  <SidebarGroupLabel asChild>
-                    <CollapsibleTrigger>
-                      <ChevronDown className="ml-auto cursor-pointer transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </CollapsibleTrigger>
-                  </SidebarGroupLabel>
-                </div>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>
-                              {t("navigation.documents.view-documents-year", {
-                                year: now.getFullYear(),
-                              })}
-                            </span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>
-                              {t("navigation.documents.view-documents-year", {
-                                year: now.getFullYear() - 1,
-                              })}
-                            </span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-            <Collapsible className="group/collapsible">
-              <SidebarGroup>
-                <div className="flex w-full flex-row items-center justify-between">
-                  <Button variant="ghost" asChild>
-                    <Link to="/dashboard">
-                      <User /> {t("navigation.account.title")}
-                    </Link>
-                  </Button>
-                  <SidebarGroupLabel asChild>
-                    <CollapsibleTrigger>
-                      <ChevronDown className="ml-auto cursor-pointer transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </CollapsibleTrigger>
-                  </SidebarGroupLabel>
-                </div>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.account.view-my-informations")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.account.view-my-mails")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.account.update-notification-preferences")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
+                      ) : (
+                        <Collapsible className="group/collapsible">
+                          <div className="flex flex-row items-center justify-between">
+                            <SidebarMenuButton asChild>
+                              <Link
+                                to={item.link}
+                                className="flex cursor-pointer flex-row items-center gap-2"
+                              >
+                                {item.icon}
+                                <span>{t(item.title)}</span>
+                              </Link>
+                            </SidebarMenuButton>
+                            {item.subItems.length > 0 && (
+                              <CollapsibleTrigger asChild className="w-auto">
+                                <SidebarMenuButton size="sm">
+                                  <ChevronRight />
+                                </SidebarMenuButton>
+                              </CollapsibleTrigger>
+                            )}
+                          </div>
+                          {item.subItems.length > 0 && (
+                            <CollapsibleContent>
+                              <SidebarMenuSub>
+                                {item.subItems.map((subItem) => (
+                                  <SidebarMenuSubItem key={subItem.title}>
+                                    <SidebarMenuSubButton asChild>
+                                      {typeof subItem.action === "function" ? (
+                                        <button
+                                          onClick={() => (subItem.action as () => void)()}
+                                          className="flex w-full cursor-pointer flex-row items-center gap-2"
+                                        >
+                                          <span>{t(subItem.title)}</span>
+                                        </button>
+                                      ) : (
+                                        <Link
+                                          to={subItem.action}
+                                          className="flex w-full cursor-pointer flex-row items-center gap-2"
+                                        >
+                                          <span>{t(subItem.title)}</span>
+                                        </Link>
+                                      )}
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                ))}
+                              </SidebarMenuSub>
+                            </CollapsibleContent>
+                          )}
+                        </Collapsible>
+                      )}
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
           </SidebarContent>
           <SidebarFooter>
             <SidebarMenu>
@@ -283,10 +255,10 @@ export default function AppLayout() {
                       size="lg"
                       className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground flex flex-row items-center gap-2"
                     >
-                      <p className="bg-primary/10 text-primary flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-sm font-medium">
+                      <span className="bg-primary/10 text-primary flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-sm font-medium">
                         {(driver.first_name.at(0) ?? "").toUpperCase() +
                           (driver.last_name.at(0) ?? "").toUpperCase()}
-                      </p>
+                      </span>
                       <div className="w-ull flex h-full flex-col justify-between">
                         <p className="line-clamp-1 w-full p-0 leading-none">{driver.first_name}</p>
                         <p className="line-clamp-1 w-full p-0 leading-none">
