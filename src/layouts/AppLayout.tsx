@@ -523,7 +523,7 @@ export default function AppLayout() {
                   key={index}
                   to={typeof subSection.action === "string" ? subSection.action : "#"}
                   className={
-                    "text-responsive-lg" +
+                    "text-responsive-xl" +
                     (location.pathname === subSection.action ? " underline" : "")
                   }
                 >
@@ -554,7 +554,9 @@ export default function AppLayout() {
               }
             >
               {<item.icon strokeWidth={1.5} size={26} />}
-              <p className="p-0 leading-none">{t(item.navigationTitle.mobile)}</p>
+              <p className="text-responsive-md p-0 leading-none">
+                {t(item.navigationTitle.mobile)}
+              </p>
             </Link>
           ))}
         </div>
