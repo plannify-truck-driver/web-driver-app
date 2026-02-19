@@ -48,25 +48,52 @@
   },
   "navigation": {
     "dashboard": {
-      "title": "Accueil",
+      "title": "Gestion des horaires",
+      "navigation-title": {
+        "mobile": "Accueil",
+        "desktop": "Accueil"
+      },
       "start-workday": "Commencer une journée",
       "end-workday": "Terminer une journée",
       "configure-rest-periods": "Configurer les périodes de repos"
     },
     "workdays": {
-      "title": "Journées",
-      "view-workdays-current-month": "Voir les journées du mois",
-      "view-workdays-previous-month": "Voir les journées du mois précédant",
-      "view-workdays-custom": "Rechercher des journées",
+      "title": "Gestion des journées",
+      "navigation-title": {
+        "mobile": "Journées",
+        "desktop": "Journées"
+      },
+      "view-workdays-current-month": {
+        "mobile": "Ce mois",
+        "desktop": "Ce mois"
+      },
+      "view-workdays-previous-month": {
+        "mobile": "{{previousMonth}}",
+        "desktop": "{{previousMonth}} {{yearFromPreviousMonth}}"
+      },
+      "view-workdays-custom": {
+        "mobile": "Recherche avancée",
+        "desktop": "Rechercher des journées"
+      },
       "add-workday": "Ajouter une journée",
-      "view-garbage-workdays": "Voir les journées supprimées"
+      "view-garbage-workdays": "Journées supprimées"
     },
     "documents": {
       "title": "Documents",
-      "view-documents-year": "Voir les documents de l'année {{year}}"
+      "navigation-title": {
+        "mobile": "Documents",
+        "desktop": "Documents"
+      },
+      "view-documents-year": "{{currentYear}}",
+      "view-documents-previous-year": "{{previousYear}}",
+      "view-documents-custom": "Rechercher des documents"
     },
     "account": {
-      "title": "Compte",
+      "title": "Mon compte",
+      "navigation-title": {
+        "mobile": "Compte",
+        "desktop": "Compte"
+      },
       "view-my-informations": "Voir mes informations",
       "view-my-mails": "Voir les mails envoyés",
       "update-notification-preferences": "Modifier mes préférences de notification"

@@ -6,15 +6,16 @@ import { useForm } from "react-hook-form"
 import type z from "zod"
 import { loginFormSchema } from "@/shared/zod/login"
 import { useLoginMutation } from "@/shared/queries/auth/auth.queries"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useNavigate } from "@tanstack/react-router"
 import { useAuth } from "@/app/providers/AuthProvider"
 
 export default function PageLoginFeature() {
   const { t } = useTranslation()
-  const { accessToken, login } = useAuth()
+  const { accessToken, login, refreshToken } = useAuth()
   const navigate = useNavigate()
+  const hasAttemptedRefresh = useRef(false)
 
   const { mutateAsync, data, error, isPending } = useLoginMutation()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -57,6 +58,17 @@ export default function PageLoginFeature() {
       })
     }
   }, [data, error, navigate, t, login, accessToken])
+
+  useEffect(() => {
+    if (!accessToken && !hasAttemptedRefresh.current) {
+      hasAttemptedRefresh.current = true
+      refreshToken().then((response) => {
+        if (response) {
+          navigate({ to: "/dashboard", replace: true })
+        }
+      })
+    }
+  }, [accessToken, refreshToken, navigate])
 
   return (
     <PageLogin errorMessage={errorMessage} form={form} loading={isPending} onSubmit={onSubmit} />

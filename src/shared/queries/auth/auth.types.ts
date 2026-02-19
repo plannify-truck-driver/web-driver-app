@@ -34,3 +34,7 @@ export interface VerifyAccountRequest {
 export interface VerifyAccountResponse {
   access_token: string
 }
+
+export interface RefreshTokenResponse {
+  access_token: string
+}

@@ -1,5 +1,6 @@
 import { useAuth } from "@/app/providers/AuthProvider"
 import { useTheme } from "@/app/providers/ThemeProvider"
+import { Loader } from "@/shared/components/Loader"
 import { Button } from "@/shared/components/ui/Button"
 import {
   Collapsible,
@@ -29,13 +30,18 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   useSidebar,
 } from "@/shared/components/ui/Sidebar"
-import { Link, Outlet, useNavigate } from "@tanstack/react-router"
+import { Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router"
 import {
   CalendarSearch,
   Check,
   ChevronDown,
+  ChevronRight,
+  // ChevronDown,
   ChevronsDownUp,
   ChevronsUpDown,
   Earth,
@@ -49,23 +55,199 @@ import {
   Sun,
   Truck,
   User,
+  type LucideIcon,
 } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
+
+interface NavbarNavigationItem {
+  title: string
+  navigationTitle: {
+    mobile: string
+    desktop: string
+  }
+  icon: LucideIcon
+  link: string
+  subItems: {
+    title: {
+      mobile: string | null
+      desktop: string
+    }
+    action: string | (() => void)
+  }[]
+}
 
 export default function AppLayout() {
-  const { driver, logout } = useAuth()
+  const { driver, logout, isDeletingRefreshToken } = useAuth()
   const { theme, setTheme } = useTheme()
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
 
+  const navigationItems: NavbarNavigationItem[] = [
+    {
+      title: "navigation.dashboard.title",
+      navigationTitle: {
+        mobile: "navigation.dashboard.navigation-title.mobile",
+        desktop: "navigation.dashboard.navigation-title.desktop",
+      },
+      icon: Truck,
+      link: "/dashboard",
+      subItems: [
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.dashboard.start-workday",
+          },
+          action: () => toast.info("Fonctionnalité à venir"),
+        },
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.dashboard.end-workday",
+          },
+          action: () => toast.info("Fonctionnalité à venir"),
+        },
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.dashboard.configure-rest-periods",
+          },
+          action: "/dashboard/configure-rest-periods",
+        },
+      ],
+    },
+    {
+      title: "navigation.workdays.title",
+      navigationTitle: {
+        mobile: "navigation.workdays.navigation-title.mobile",
+        desktop: "navigation.workdays.navigation-title.desktop",
+      },
+      icon: CalendarSearch,
+      link: "/workdays",
+      subItems: [
+        {
+          title: {
+            mobile: "navigation.workdays.view-workdays-current-month.mobile",
+            desktop: "navigation.workdays.view-workdays-current-month.desktop",
+          },
+          action: "/workdays",
+        },
+        {
+          title: {
+            mobile: "navigation.workdays.view-workdays-previous-month.mobile",
+            desktop: "navigation.workdays.view-workdays-previous-month.desktop",
+          },
+          action: "/workdays/previous-month",
+        },
+        {
+          title: {
+            mobile: "navigation.workdays.view-workdays-custom.mobile",
+            desktop: "navigation.workdays.view-workdays-custom.desktop",
+          },
+          action: "/workdays/custom",
+        },
+        {
+          title: { mobile: null, desktop: "navigation.workdays.add-workday" },
+          action: () => toast.info("Fonctionnalité à venir"),
+        },
+        {
+          title: { mobile: null, desktop: "navigation.workdays.view-garbage-workdays" },
+          action: "/workdays/garbage",
+        },
+      ],
+    },
+    {
+      title: "navigation.documents.title",
+      navigationTitle: {
+        mobile: "navigation.documents.navigation-title.mobile",
+        desktop: "navigation.documents.navigation-title.desktop",
+      },
+      icon: FileText,
+      link: "/documents",
+      subItems: [
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.documents.view-documents-year",
+          },
+          action: "/documents/current-year",
+        },
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.documents.view-documents-previous-year",
+          },
+          action: "/documents/previous-year",
+        },
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.documents.view-documents-custom",
+          },
+          action: "/documents/custom",
+        },
+      ],
+    },
+    {
+      title: "navigation.account.title",
+      navigationTitle: {
+        mobile: "navigation.account.navigation-title.mobile",
+        desktop: "navigation.account.navigation-title.desktop",
+      },
+      icon: User,
+      link: "/account",
+      subItems: [
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.account.view-my-informations",
+          },
+          action: "/account/informations",
+        },
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.account.view-my-mails",
+          },
+          action: "/account/mails",
+        },
+        {
+          title: {
+            mobile: null,
+            desktop: "navigation.account.update-notification-preferences",
+          },
+          action: "/account/notification-preferences",
+        },
+      ],
+    },
+  ]
+
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false)
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState<{ [key: string]: boolean }>({})
+
+  const currentSection =
+    navigationItems.find((item) => location.pathname.startsWith(item.link))?.title ?? ""
+  const currentSubSections = navigationItems
+    .find((item) => location.pathname.startsWith(item.link))
+    ?.subItems.filter((subItem) => typeof subItem.action === "string" && subItem.title.mobile)
 
   if (!driver) return null
 
-  const now: Date = new Date()
+  function toUpperCaseFirstLetter(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  }
+
+  const previousMonthDate = new Date()
+  previousMonthDate.setMonth(previousMonthDate.getMonth() - 1)
+  const previousMonth = previousMonthDate.toLocaleString(i18n.language, { month: "long" })
+  const yearFromPreviousMonth = previousMonthDate.getFullYear()
+
+  const currentYear = new Date().getFullYear()
+  const previousYear = currentYear - 1
 
   return (
     <>
@@ -86,193 +268,111 @@ export default function AppLayout() {
             </SidebarMenu>
           </SidebarHeader>
           <SidebarContent>
-            <Collapsible defaultOpen className="group/collapsible">
-              <SidebarGroup>
-                <div className="flex w-full flex-row items-center justify-between">
-                  <Button variant="ghost" asChild>
-                    <Link to="/dashboard">
-                      <Truck /> {t("navigation.dashboard.title")}
-                    </Link>
-                  </Button>
-                  <SidebarGroupLabel asChild>
-                    <CollapsibleTrigger>
-                      <ChevronDown className="ml-auto cursor-pointer transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </CollapsibleTrigger>
-                  </SidebarGroupLabel>
-                </div>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
+            <SidebarGroup>
+              <SidebarGroupLabel>Conducteur</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu className={open ? "pl-2" : ""}>
+                  {navigationItems.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      {!open ? (
                         <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.dashboard.start-workday")}</span>
+                          <Link
+                            to={item.link}
+                            className="flex cursor-pointer flex-row items-center gap-2"
+                          >
+                            {<item.icon size={20} />}
                           </Link>
                         </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.dashboard.end-workday")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.dashboard.configure-rest-periods")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-            <Collapsible className="group/collapsible">
-              <SidebarGroup>
-                <div className="flex w-full flex-row items-center justify-between">
-                  <Button variant="ghost" asChild>
-                    <Link to="/dashboard">
-                      <CalendarSearch /> {t("navigation.workdays.title")}
-                    </Link>
-                  </Button>
-                  <SidebarGroupLabel asChild>
-                    <CollapsibleTrigger>
-                      <ChevronDown className="ml-auto cursor-pointer transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </CollapsibleTrigger>
-                  </SidebarGroupLabel>
-                </div>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.view-workdays-current-month")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.view-workdays-previous-month")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.view-workdays-custom")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.add-workday")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.workdays.view-garbage-workdays")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-            <Collapsible className="group/collapsible">
-              <SidebarGroup>
-                <div className="flex w-full flex-row items-center justify-between">
-                  <Button variant="ghost" asChild>
-                    <Link to="/dashboard">
-                      <FileText /> {t("navigation.documents.title")}
-                    </Link>
-                  </Button>
-                  <SidebarGroupLabel asChild>
-                    <CollapsibleTrigger>
-                      <ChevronDown className="ml-auto cursor-pointer transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </CollapsibleTrigger>
-                  </SidebarGroupLabel>
-                </div>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>
-                              {t("navigation.documents.view-documents-year", {
-                                year: now.getFullYear(),
-                              })}
-                            </span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>
-                              {t("navigation.documents.view-documents-year", {
-                                year: now.getFullYear() - 1,
-                              })}
-                            </span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-            <Collapsible className="group/collapsible">
-              <SidebarGroup>
-                <div className="flex w-full flex-row items-center justify-between">
-                  <Button variant="ghost" asChild>
-                    <Link to="/dashboard">
-                      <User /> {t("navigation.account.title")}
-                    </Link>
-                  </Button>
-                  <SidebarGroupLabel asChild>
-                    <CollapsibleTrigger>
-                      <ChevronDown className="ml-auto cursor-pointer transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </CollapsibleTrigger>
-                  </SidebarGroupLabel>
-                </div>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.account.view-my-informations")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.account.view-my-mails")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <Link to="/dashboard">
-                            <span>{t("navigation.account.update-notification-preferences")}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
+                      ) : (
+                        <Collapsible className="group/collapsible">
+                          <div className="flex flex-row items-center justify-between">
+                            <SidebarMenuButton asChild>
+                              <Link
+                                to={item.link}
+                                className="flex cursor-pointer flex-row items-center gap-2"
+                              >
+                                {<item.icon size={20} />}
+                                <span>
+                                  {toUpperCaseFirstLetter(
+                                    t(item.navigationTitle.desktop, {
+                                      currentYear,
+                                      previousYear,
+                                      previousMonth,
+                                      yearFromPreviousMonth,
+                                    })
+                                  )}
+                                </span>
+                              </Link>
+                            </SidebarMenuButton>
+                            {item.subItems.length > 0 && (
+                              <CollapsibleTrigger
+                                asChild
+                                className="w-auto"
+                                onClick={() =>
+                                  setIsSubMenuOpen((prev) => ({
+                                    ...prev,
+                                    [item.title]: !prev[item.title],
+                                  }))
+                                }
+                              >
+                                <SidebarMenuButton size="sm">
+                                  {isSubMenuOpen[item.title] ? <ChevronDown /> : <ChevronRight />}
+                                </SidebarMenuButton>
+                              </CollapsibleTrigger>
+                            )}
+                          </div>
+                          {item.subItems.length > 0 && (
+                            <CollapsibleContent>
+                              <SidebarMenuSub>
+                                {item.subItems.map((subItem) => (
+                                  <SidebarMenuSubItem key={subItem.title.desktop}>
+                                    <SidebarMenuSubButton asChild>
+                                      {typeof subItem.action === "function" ? (
+                                        <button
+                                          onClick={() => (subItem.action as () => void)()}
+                                          className="flex w-full cursor-pointer flex-row items-center gap-2"
+                                        >
+                                          <span>
+                                            {toUpperCaseFirstLetter(
+                                              t(subItem.title.desktop, {
+                                                currentYear,
+                                                previousYear,
+                                                previousMonth,
+                                                yearFromPreviousMonth,
+                                              })
+                                            )}
+                                          </span>
+                                        </button>
+                                      ) : (
+                                        <Link
+                                          to={subItem.action}
+                                          className="flex w-full cursor-pointer flex-row items-center gap-2"
+                                        >
+                                          <span>
+                                            {toUpperCaseFirstLetter(
+                                              t(subItem.title.desktop, {
+                                                currentYear,
+                                                previousYear,
+                                                previousMonth,
+                                                yearFromPreviousMonth,
+                                              })
+                                            )}
+                                          </span>
+                                        </Link>
+                                      )}
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                ))}
+                              </SidebarMenuSub>
+                            </CollapsibleContent>
+                          )}
+                        </Collapsible>
+                      )}
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
           </SidebarContent>
           <SidebarFooter>
             <SidebarMenu>
@@ -283,10 +383,10 @@ export default function AppLayout() {
                       size="lg"
                       className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground flex flex-row items-center gap-2"
                     >
-                      <p className="bg-primary/10 text-primary flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-sm font-medium">
+                      <span className="bg-primary/10 text-primary flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-sm font-medium">
                         {(driver.first_name.at(0) ?? "").toUpperCase() +
                           (driver.last_name.at(0) ?? "").toUpperCase()}
-                      </p>
+                      </span>
                       <div className="w-ull flex h-full flex-col justify-between">
                         <p className="line-clamp-1 w-full p-0 leading-none">{driver.first_name}</p>
                         <p className="line-clamp-1 w-full p-0 leading-none">
@@ -379,13 +479,20 @@ export default function AppLayout() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={() => {
+                        if (isDeletingRefreshToken) return
+
                         logout()
                         navigate({ to: "/authentication/login" })
                       }}
-                      className="text-responsive-base!"
+                      className={
+                        isDeletingRefreshToken
+                          ? "text-responsive-base! cursor-not-allowed opacity-50"
+                          : "text-responsive-base!"
+                      }
                     >
                       <LogOut className="size-4" />
                       {t("logout")}
+                      {isDeletingRefreshToken && <Loader size={4} />}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -406,35 +513,50 @@ export default function AppLayout() {
         </div>
       </div>
       {/* For mobile screens */}
-      <div className="flex h-screen w-screen flex-col justify-between sm:hidden">
+      <div className="flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
+        <div className="bg-primary-background flex w-full flex-col items-center gap-1 py-3">
+          <h1 className="text-responsive-xl font-semibold">{t(currentSection)}</h1>
+          {currentSubSections && (
+            <div className="flex w-full flex-row items-center justify-between gap-2 overflow-auto px-4">
+              {currentSubSections.map((subSection, index) => (
+                <Link
+                  key={index}
+                  to={typeof subSection.action === "string" ? subSection.action : "#"}
+                  className={
+                    "text-responsive-lg" +
+                    (location.pathname === subSection.action ? " underline" : "")
+                  }
+                >
+                  {toUpperCaseFirstLetter(
+                    t(subSection.title.mobile!, {
+                      currentYear,
+                      previousYear,
+                      previousMonth,
+                      yearFromPreviousMonth,
+                    })
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
         <div className="h-full px-2">
           <Outlet />
         </div>
         <div className="border-muted flex flex-row justify-between gap-2 border-t px-3 py-2">
-          <Link to="/dashboard">
-            <div className="flex flex-col items-center">
-              <Truck strokeWidth={1.5} size={26} />
-              <p className="p-0 leading-none">{t("navigation.dashboard.title")}</p>
-            </div>
-          </Link>
-          <Link to="/">
-            <div className="flex flex-col items-center">
-              <CalendarSearch strokeWidth={1.5} size={26} />
-              <p className="p-0 leading-none">{t("navigation.workdays.title")}</p>
-            </div>
-          </Link>
-          <Link to="/">
-            <div className="flex flex-col items-center">
-              <FileText strokeWidth={1.5} size={26} />
-              <p className="p-0 leading-none">{t("navigation.documents.title")}</p>
-            </div>
-          </Link>
-          <Link to="/">
-            <div className="flex flex-col items-center">
-              <User strokeWidth={1.5} size={26} />
-              <p className="p-0 leading-none">{t("navigation.account.title")}</p>
-            </div>
-          </Link>
+          {navigationItems.map((item) => (
+            <Link
+              key={item.title}
+              to={item.link}
+              className={
+                "flex flex-col items-center" +
+                (location.pathname === item.link ? " " : " text-muted-foreground")
+              }
+            >
+              {<item.icon strokeWidth={1.5} size={26} />}
+              <p className="p-0 leading-none">{t(item.navigationTitle.mobile)}</p>
+            </Link>
+          ))}
         </div>
       </div>
     </>
