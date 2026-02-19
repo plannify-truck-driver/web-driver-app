@@ -64,8 +64,8 @@
         "desktop": "Journées"
       },
       "view-workdays-current-month": {
-        "mobile": "{{currentMonth}}",
-        "desktop": "{{currentMonth}} {{currentYear}}"
+        "mobile": "Ce mois",
+        "desktop": "Ce mois"
       },
       "view-workdays-previous-month": {
         "mobile": "{{previousMonth}}",

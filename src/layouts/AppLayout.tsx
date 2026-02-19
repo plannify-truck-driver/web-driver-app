@@ -241,7 +241,6 @@ export default function AppLayout() {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
 
-  const currentMonth = new Date().toLocaleString(i18n.language, { month: "long" })
   const previousMonthDate = new Date()
   previousMonthDate.setMonth(previousMonthDate.getMonth() - 1)
   const previousMonth = previousMonthDate.toLocaleString(i18n.language, { month: "long" })
@@ -296,7 +295,6 @@ export default function AppLayout() {
                                 <span>
                                   {toUpperCaseFirstLetter(
                                     t(item.navigationTitle.desktop, {
-                                      currentMonth,
                                       currentYear,
                                       previousYear,
                                       previousMonth,
@@ -337,7 +335,6 @@ export default function AppLayout() {
                                           <span>
                                             {toUpperCaseFirstLetter(
                                               t(subItem.title.desktop, {
-                                                currentMonth,
                                                 currentYear,
                                                 previousYear,
                                                 previousMonth,
@@ -354,7 +351,6 @@ export default function AppLayout() {
                                           <span>
                                             {toUpperCaseFirstLetter(
                                               t(subItem.title.desktop, {
-                                                currentMonth,
                                                 currentYear,
                                                 previousYear,
                                                 previousMonth,
@@ -519,7 +515,7 @@ export default function AppLayout() {
       {/* For mobile screens */}
       <div className="flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
         <div className="bg-primary-background flex w-full flex-col items-center gap-1 py-3">
-          <h1 className="text-responsive-xl">{t(currentSection)}</h1>
+          <h1 className="text-responsive-xl font-semibold">{t(currentSection)}</h1>
           {currentSubSections && (
             <div className="flex w-full flex-row items-center justify-between gap-2 overflow-auto px-4">
               {currentSubSections.map((subSection, index) => (
@@ -527,13 +523,12 @@ export default function AppLayout() {
                   key={index}
                   to={typeof subSection.action === "string" ? subSection.action : "#"}
                   className={
-                    "text-responsive-md" +
+                    "text-responsive-lg" +
                     (location.pathname === subSection.action ? " underline" : "")
                   }
                 >
                   {toUpperCaseFirstLetter(
                     t(subSection.title.mobile!, {
-                      currentMonth,
                       currentYear,
                       previousYear,
                       previousMonth,
