@@ -1,5 +1,5 @@
 import type { Driver, JwtDriverPayload } from "@/shared/models/driver"
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useDeleteRefreshTokenMutation, useRefreshToken } from "@/shared/queries/auth/auth.queries"
 import { useQueryClient } from "@tanstack/react-query"
