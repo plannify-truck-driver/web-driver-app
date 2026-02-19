@@ -55,6 +55,7 @@ import {
   Sun,
   Truck,
   User,
+  type LucideIcon,
 } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -62,9 +63,19 @@ import { toast } from "sonner"
 
 interface NavbarNavigationItem {
   title: string
-  icon: React.ReactNode
+  navigationTitle: {
+    mobile: string
+    desktop: string
+  }
+  icon: LucideIcon
   link: string
-  subItems: { title: string; action: string | (() => void) }[]
+  subItems: {
+    title: {
+      mobile: string | null
+      desktop: string
+    }
+    action: string | (() => void)
+  }[]
 }
 
 export default function AppLayout() {
@@ -80,83 +91,157 @@ export default function AppLayout() {
 
   if (!driver) return null
 
+  function toUpperCaseFirstLetter(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  }
+
   const navigationItems: NavbarNavigationItem[] = [
     {
       title: "navigation.dashboard.title",
-      icon: <Truck size={20} />,
+      navigationTitle: {
+        mobile: "navigation.dashboard.navigation-title.mobile",
+        desktop: "navigation.dashboard.navigation-title.desktop",
+      },
+      icon: Truck,
       link: "/dashboard",
       subItems: [
         {
-          title: "navigation.dashboard.start-workday",
+          title: {
+            mobile: null,
+            desktop: "navigation.dashboard.start-workday",
+          },
           action: () => toast.info("Fonctionnalité à venir"),
         },
         {
-          title: "navigation.dashboard.end-workday",
+          title: {
+            mobile: null,
+            desktop: "navigation.dashboard.end-workday",
+          },
           action: () => toast.info("Fonctionnalité à venir"),
         },
         {
-          title: "navigation.dashboard.configure-rest-periods",
+          title: {
+            mobile: null,
+            desktop: "navigation.dashboard.configure-rest-periods",
+          },
           action: "/dashboard/configure-rest-periods",
         },
       ],
     },
     {
       title: "navigation.workdays.title",
-      icon: <CalendarSearch size={20} />,
+      navigationTitle: {
+        mobile: "navigation.workdays.navigation-title.mobile",
+        desktop: "navigation.workdays.navigation-title.desktop",
+      },
+      icon: CalendarSearch,
       link: "/workdays",
       subItems: [
         {
-          title: "navigation.workdays.view-workdays-current-month",
-          action: "/workdays/current-month",
+          title: {
+            mobile: "navigation.workdays.view-workdays-current-month.mobile",
+            desktop: "navigation.workdays.view-workdays-current-month.desktop",
+          },
+          action: "/workdays",
         },
         {
-          title: "navigation.workdays.view-workdays-previous-month",
+          title: {
+            mobile: "navigation.workdays.view-workdays-previous-month.mobile",
+            desktop: "navigation.workdays.view-workdays-previous-month.desktop",
+          },
           action: "/workdays/previous-month",
         },
-        { title: "navigation.workdays.view-workdays-custom", action: "/workdays/custom" },
-        { title: "navigation.workdays.add-workday", action: "/workdays/add" },
-        { title: "navigation.workdays.view-garbage-workdays", action: "/workdays/garbage" },
+        {
+          title: {
+            mobile: "navigation.workdays.view-workdays-custom.mobile",
+            desktop: "navigation.workdays.view-workdays-custom.desktop",
+          },
+          action: "/workdays/custom",
+        },
+        {
+          title: { mobile: null, desktop: "navigation.workdays.add-workday" },
+          action: () => toast.info("Fonctionnalité à venir"),
+        },
+        {
+          title: { mobile: null, desktop: "navigation.workdays.view-garbage-workdays" },
+          action: "/workdays/garbage",
+        },
       ],
     },
     {
       title: "navigation.documents.title",
-      icon: <FileText size={20} />,
+      navigationTitle: {
+        mobile: "navigation.documents.navigation-title.mobile",
+        desktop: "navigation.documents.navigation-title.desktop",
+      },
+      icon: FileText,
       link: "/documents",
       subItems: [
         {
-          title: "navigation.documents.view-documents-year",
+          title: {
+            mobile: null,
+            desktop: "navigation.documents.view-documents-year",
+          },
           action: "/documents/current-year",
         },
         {
-          title: "navigation.documents.view-documents-previous-year",
+          title: {
+            mobile: null,
+            desktop: "navigation.documents.view-documents-previous-year",
+          },
           action: "/documents/previous-year",
         },
         {
-          title: "navigation.documents.view-documents-custom",
+          title: {
+            mobile: null,
+            desktop: "navigation.documents.view-documents-custom",
+          },
           action: "/documents/custom",
         },
       ],
     },
     {
       title: "navigation.account.title",
-      icon: <User size={20} />,
+      navigationTitle: {
+        mobile: "navigation.account.navigation-title.mobile",
+        desktop: "navigation.account.navigation-title.desktop",
+      },
+      icon: User,
       link: "/account",
       subItems: [
         {
-          title: "navigation.account.view-my-informations",
+          title: {
+            mobile: null,
+            desktop: "navigation.account.view-my-informations",
+          },
           action: "/account/informations",
         },
         {
-          title: "navigation.account.view-my-mails",
+          title: {
+            mobile: null,
+            desktop: "navigation.account.view-my-mails",
+          },
           action: "/account/mails",
         },
         {
-          title: "navigation.account.update-notification-preferences",
+          title: {
+            mobile: null,
+            desktop: "navigation.account.update-notification-preferences",
+          },
           action: "/account/notification-preferences",
         },
       ],
     },
   ]
+
+  const currentMonth = new Date().toLocaleString(i18n.language, { month: "long" })
+  const previousMonthDate = new Date()
+  previousMonthDate.setMonth(previousMonthDate.getMonth() - 1)
+  const previousMonth = previousMonthDate.toLocaleString(i18n.language, { month: "long" })
+  const yearFromPreviousMonth = previousMonthDate.getFullYear()
+
+  const currentYear = new Date().getFullYear()
+  const previousYear = currentYear - 1
 
   return (
     <>
@@ -189,7 +274,7 @@ export default function AppLayout() {
                             to={item.link}
                             className="flex cursor-pointer flex-row items-center gap-2"
                           >
-                            {item.icon}
+                            {<item.icon size={20} />}
                           </Link>
                         </SidebarMenuButton>
                       ) : (
@@ -200,8 +285,18 @@ export default function AppLayout() {
                                 to={item.link}
                                 className="flex cursor-pointer flex-row items-center gap-2"
                               >
-                                {item.icon}
-                                <span>{t(item.title)}</span>
+                                {<item.icon size={20} />}
+                                <span>
+                                  {toUpperCaseFirstLetter(
+                                    t(item.navigationTitle.desktop, {
+                                      currentMonth,
+                                      currentYear,
+                                      previousYear,
+                                      previousMonth,
+                                      yearFromPreviousMonth,
+                                    })
+                                  )}
+                                </span>
                               </Link>
                             </SidebarMenuButton>
                             {item.subItems.length > 0 && (
@@ -225,21 +320,41 @@ export default function AppLayout() {
                             <CollapsibleContent>
                               <SidebarMenuSub>
                                 {item.subItems.map((subItem) => (
-                                  <SidebarMenuSubItem key={subItem.title}>
+                                  <SidebarMenuSubItem key={subItem.title.desktop}>
                                     <SidebarMenuSubButton asChild>
                                       {typeof subItem.action === "function" ? (
                                         <button
                                           onClick={() => (subItem.action as () => void)()}
                                           className="flex w-full cursor-pointer flex-row items-center gap-2"
                                         >
-                                          <span>{t(subItem.title)}</span>
+                                          <span>
+                                            {toUpperCaseFirstLetter(
+                                              t(subItem.title.desktop, {
+                                                currentMonth,
+                                                currentYear,
+                                                previousYear,
+                                                previousMonth,
+                                                yearFromPreviousMonth,
+                                              })
+                                            )}
+                                          </span>
                                         </button>
                                       ) : (
                                         <Link
                                           to={subItem.action}
                                           className="flex w-full cursor-pointer flex-row items-center gap-2"
                                         >
-                                          <span>{t(subItem.title)}</span>
+                                          <span>
+                                            {toUpperCaseFirstLetter(
+                                              t(subItem.title.desktop, {
+                                                currentMonth,
+                                                currentYear,
+                                                previousYear,
+                                                previousMonth,
+                                                yearFromPreviousMonth,
+                                              })
+                                            )}
+                                          </span>
                                         </Link>
                                       )}
                                     </SidebarMenuSubButton>
@@ -396,34 +511,19 @@ export default function AppLayout() {
       </div>
       {/* For mobile screens */}
       <div className="flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
+        <div>
+          <h1></h1>
+        </div>
         <div className="h-full px-2">
           <Outlet />
         </div>
         <div className="border-muted flex flex-row justify-between gap-2 border-t px-3 py-2">
-          <Link to="/dashboard">
-            <div className="flex flex-col items-center">
-              <Truck strokeWidth={1.5} size={26} />
-              <p className="p-0 leading-none">{t("navigation.dashboard.title")}</p>
-            </div>
-          </Link>
-          <Link to="/">
-            <div className="flex flex-col items-center">
-              <CalendarSearch strokeWidth={1.5} size={26} />
-              <p className="p-0 leading-none">{t("navigation.workdays.title")}</p>
-            </div>
-          </Link>
-          <Link to="/">
-            <div className="flex flex-col items-center">
-              <FileText strokeWidth={1.5} size={26} />
-              <p className="p-0 leading-none">{t("navigation.documents.title")}</p>
-            </div>
-          </Link>
-          <Link to="/">
-            <div className="flex flex-col items-center">
-              <User strokeWidth={1.5} size={26} />
-              <p className="p-0 leading-none">{t("navigation.account.title")}</p>
-            </div>
-          </Link>
+          {navigationItems.map((item) => (
+            <Link key={item.title} to={item.link} className="flex flex-col items-center">
+              {<item.icon strokeWidth={1.5} size={26} />}
+              <p className="p-0 leading-none">{t(item.navigationTitle.mobile)}</p>
+            </Link>
+          ))}
         </div>
       </div>
     </>

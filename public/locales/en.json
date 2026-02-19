@@ -48,27 +48,52 @@
   },
   "navigation": {
     "dashboard": {
-      "title": "Dashboard",
+      "title": "Schedule management",
+      "navigation-title": {
+        "mobile": "Home",
+        "desktop": "Dashboard"
+      },
       "start-workday": "Start a workday",
       "end-workday": "End a workday",
       "configure-rest-periods": "Configure rest periods"
     },
     "workdays": {
       "title": "Workdays",
-      "view-workdays-current-month": "View current month workdays",
-      "view-workdays-previous-month": "View previous month workdays",
-      "view-workdays-custom": "Search workdays",
+      "navigation-title": {
+        "mobile": "Workdays",
+        "desktop": "Workdays"
+      },
+      "view-workdays-current-month": {
+        "mobile": "{{currentMonth}}",
+        "desktop": "{{currentMonth}} {{currentYear}}"
+      },
+      "view-workdays-previous-month": {
+        "mobile": "{{previousMonth}}",
+        "desktop": "{{previousMonth}} {{yearFromPreviousMonth}}"
+      },
+      "view-workdays-custom": {
+        "mobile": "Advanced search",
+        "desktop": "Search workdays"
+      },
       "add-workday": "Add a workday",
-      "view-garbage-workdays": "View deleted workdays"
+      "view-garbage-workdays": "Deleted workdays"
     },
     "documents": {
       "title": "Documents",
-      "view-documents-year": "View documents of the year",
-      "view-documents-previous-year": "View documents of the previous year",
+      "navigation-title": {
+        "mobile": "Documents",
+        "desktop": "Documents"
+      },
+      "view-documents-year": "{{currentYear}}",
+      "view-documents-previous-year": "{{previousYear}}",
       "view-documents-custom": "Search documents"
     },
     "account": {
-      "title": "Account",
+      "title": "My account",
+      "navigation-title": {
+        "mobile": "Account",
+        "desktop": "Account"
+      },
       "view-my-informations": "View my informations",
       "view-my-mails": "View sent mails",
       "update-notification-preferences": "Update notification preferences"
