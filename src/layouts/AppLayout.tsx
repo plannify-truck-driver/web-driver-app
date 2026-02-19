@@ -35,7 +35,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/shared/components/ui/Sidebar"
-import { Link, Outlet, useNavigate } from "@tanstack/react-router"
+import { Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router"
 import {
   CalendarSearch,
   Check,
@@ -83,17 +83,6 @@ export default function AppLayout() {
   const { theme, setTheme } = useTheme()
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
-
-  const navigate = useNavigate()
-
-  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false)
-  const [isSubMenuOpen, setIsSubMenuOpen] = useState<{ [key: string]: boolean }>({})
-
-  if (!driver) return null
-
-  function toUpperCaseFirstLetter(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1)
-  }
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -233,6 +222,24 @@ export default function AppLayout() {
       ],
     },
   ]
+
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false)
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState<{ [key: string]: boolean }>({})
+
+  const currentSection =
+    navigationItems.find((item) => location.pathname.startsWith(item.link))?.title ?? ""
+  const currentSubSections = navigationItems
+    .find((item) => location.pathname.startsWith(item.link))
+    ?.subItems.filter((subItem) => typeof subItem.action === "string" && subItem.title.mobile)
+
+  if (!driver) return null
+
+  function toUpperCaseFirstLetter(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  }
 
   const currentMonth = new Date().toLocaleString(i18n.language, { month: "long" })
   const previousMonthDate = new Date()
@@ -511,15 +518,46 @@ export default function AppLayout() {
       </div>
       {/* For mobile screens */}
       <div className="flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
-        <div>
-          <h1></h1>
+        <div className="bg-primary-background flex w-full flex-col items-center gap-1 py-3">
+          <h1 className="text-responsive-xl">{t(currentSection)}</h1>
+          {currentSubSections && (
+            <div className="flex w-full flex-row items-center justify-between gap-2 overflow-auto px-4">
+              {currentSubSections.map((subSection, index) => (
+                <Link
+                  key={index}
+                  to={typeof subSection.action === "string" ? subSection.action : "#"}
+                  className={
+                    "text-responsive-md" +
+                    (location.pathname === subSection.action ? " underline" : "")
+                  }
+                >
+                  {toUpperCaseFirstLetter(
+                    t(subSection.title.mobile!, {
+                      currentMonth,
+                      currentYear,
+                      previousYear,
+                      previousMonth,
+                      yearFromPreviousMonth,
+                    })
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
         <div className="h-full px-2">
           <Outlet />
         </div>
         <div className="border-muted flex flex-row justify-between gap-2 border-t px-3 py-2">
           {navigationItems.map((item) => (
-            <Link key={item.title} to={item.link} className="flex flex-col items-center">
+            <Link
+              key={item.title}
+              to={item.link}
+              className={
+                "flex flex-col items-center" +
+                (location.pathname === item.link ? " " : " text-muted-foreground")
+              }
+            >
               {<item.icon strokeWidth={1.5} size={26} />}
               <p className="p-0 leading-none">{t(item.navigationTitle.mobile)}</p>
             </Link>
