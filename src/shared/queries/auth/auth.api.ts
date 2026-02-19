@@ -24,3 +24,6 @@ export const verifyAccount = (body: VerifyAccountRequest): Promise<VerifyAccount
 export const refreshToken = (): Promise<RefreshTokenResponse> => {
   return api.get("authentication/refresh").json()
 }
+export const deleteRefreshToken = (): Promise<void> => {
+  return api.delete("authentication/refresh").json()
+}

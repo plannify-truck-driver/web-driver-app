@@ -1,5 +1,6 @@
 import { useAuth } from "@/app/providers/AuthProvider"
 import { useTheme } from "@/app/providers/ThemeProvider"
+import { Loader } from "@/shared/components/Loader"
 import { Button } from "@/shared/components/ui/Button"
 import {
   Collapsible,
@@ -67,7 +68,7 @@ interface NavbarNavigationItem {
 }
 
 export default function AppLayout() {
-  const { driver, logout } = useAuth()
+  const { driver, logout, isDeletingRefreshToken } = useAuth()
   const { theme, setTheme } = useTheme()
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
@@ -360,13 +361,20 @@ export default function AppLayout() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={() => {
+                        if (isDeletingRefreshToken) return
+
                         logout()
                         navigate({ to: "/authentication/login" })
                       }}
-                      className="text-responsive-base!"
+                      className={
+                        isDeletingRefreshToken
+                          ? "text-responsive-base! cursor-not-allowed opacity-50"
+                          : "text-responsive-base!"
+                      }
                     >
                       <LogOut className="size-4" />
                       {t("logout")}
+                      {isDeletingRefreshToken && <Loader size={4} />}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

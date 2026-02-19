@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { login, refreshToken, registration, verifyAccount } from "./auth.api"
+import { deleteRefreshToken, login, refreshToken, registration, verifyAccount } from "./auth.api"
 
 export const authKeys = {
   all: [] as const,
@@ -26,4 +26,9 @@ export const useRefreshToken = () =>
     queryKey: authKeys.refreshToken(),
     queryFn: refreshToken,
     enabled: false,
+  })
+
+export const useDeleteRefreshTokenMutation = () =>
+  useMutation({
+    mutationFn: deleteRefreshToken,
   })
