@@ -2,6 +2,7 @@ import { api } from "@/shared/lib/api"
 import type {
   LoginRequest,
   LoginResponse,
+  RefreshTokenResponse,
   RegistrationRequest,
   RegistrationResponse,
   VerifyAccountRequest,
@@ -18,4 +19,8 @@ export const registration = (body: RegistrationRequest): Promise<RegistrationRes
 
 export const verifyAccount = (body: VerifyAccountRequest): Promise<VerifyAccountResponse> => {
   return api.post("authentication/token/verify-account", { json: body }).json()
+}
+
+export const refreshToken = (): Promise<RefreshTokenResponse> => {
+  return api.get("authentication/refresh").json()
 }

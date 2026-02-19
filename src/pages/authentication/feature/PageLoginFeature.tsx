@@ -13,7 +13,7 @@ import { useAuth } from "@/app/providers/AuthProvider"
 
 export default function PageLoginFeature() {
   const { t } = useTranslation()
-  const { accessToken, login } = useAuth()
+  const { accessToken, login, refreshToken } = useAuth()
   const navigate = useNavigate()
 
   const { mutateAsync, data, error, isPending } = useLoginMutation()
@@ -57,6 +57,14 @@ export default function PageLoginFeature() {
       })
     }
   }, [data, error, navigate, t, login, accessToken])
+
+  useEffect(() => {
+    refreshToken().then((response) => {
+      if (response) {
+        navigate({ to: "/dashboard", replace: true })
+      }
+    })
+  }, [refreshToken, navigate])
 
   return (
     <PageLogin errorMessage={errorMessage} form={form} loading={isPending} onSubmit={onSubmit} />
