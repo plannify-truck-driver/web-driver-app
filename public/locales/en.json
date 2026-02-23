@@ -52,7 +52,8 @@
       "end-workday": "End my workday",
       "no-workday-today": "No ongoing workday",
       "workday-started-at": "Your workday started at {{startTime}}",
-      "workday-ended": "Your workday has ended at {{endTime}}"
+      "workday-ended": "Your workday has ended at {{endTime}}",
+      "summary": "Summary"
     }
   },
   "components": {

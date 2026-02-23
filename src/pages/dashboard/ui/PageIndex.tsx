@@ -116,9 +116,18 @@ export default function PageDashboardIndex({
           <ArrowRight size={20} />
         </button>
       )}
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
-        <StatWorkedDays workedDays={workdays.length} isLoading={isLoading} />
-        <StatTotalWorkedHours totalString={totalWorkingTime} month={today} isLoading={isLoading} />
+      <div className="flex w-full flex-col gap-3">
+        <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">
+          {t("pages.dashboard.summary")}
+        </p>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
+          <StatWorkedDays workedDays={workdays.length} isLoading={isLoading} />
+          <StatTotalWorkedHours
+            totalString={totalWorkingTime}
+            month={today}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
     </div>
   )
