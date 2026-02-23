@@ -44,6 +44,24 @@
         "invalid-verification-key": "Invalid or expired verification key. Please try again or contact support if the problem persists.",
         "invalid-url-parameters": "The verification link is invalid. Please check that you have used the correct link or contact support for assistance."
       }
+    },
+    "dashboard": {
+      "page-title": "Dashboard",
+      "week-period": "Week from {{from}} to {{to}}",
+      "start-workday": "Start my workday",
+      "end-workday": "End my workday",
+      "no-workday-today": "No ongoing workday",
+      "workday-started-at": "Your workday started at {{startTime}}",
+      "workday-ended": "Your workday has ended at {{endTime}}"
+    }
+  },
+  "components": {
+    "stat-workday": {
+      "worked-days": "Worked days",
+      "this-week": "This week"
+    },
+    "stat-total-worked-hour": {
+      "this-month": "month driving"
     }
   },
   "navigation": {

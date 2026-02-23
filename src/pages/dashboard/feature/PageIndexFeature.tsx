@@ -1,8 +1,12 @@
-import { useGetWorkdaysByPeriod } from "@/shared/queries/workday/workday.queries"
+import {
+  useGetWorkdayByDate,
+  useGetWorkdaysByPeriod,
+} from "@/shared/queries/workday/workday.queries"
 import PageDashboardIndex from "../ui/PageIndex"
 import { useMemo, useState } from "react"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
+import { useTranslation } from "react-i18next"
 
 export interface PeriodOfTime {
   from: Date
@@ -10,7 +14,9 @@ export interface PeriodOfTime {
 }
 
 export default function PageDashboardIndexFeature() {
-  useDocumentTitle("Accueil")
+  const { t } = useTranslation()
+
+  useDocumentTitle(t("navigation.dashboard.navigation-title.desktop"))
 
   const today: Date = new Date()
   const monday: Date = new Date()
@@ -23,11 +29,18 @@ export default function PageDashboardIndexFeature() {
     to: sunday,
   })
 
-  const { data, isLoading, error } = useGetWorkdaysByPeriod({
+  const {
+    data: periodWorkdays,
+    isLoading: isPeriodWorkdaysLoading,
+    error,
+  } = useGetWorkdaysByPeriod({
     from: period.from.toISOString().split("T")[0],
     to: period.to.toISOString().split("T")[0],
     page: 1,
     limit: 100,
+  })
+  const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
+    date: today.toISOString().split("T")[0],
   })
 
   const onPreviousPeriod = () => {
@@ -47,8 +60,8 @@ export default function PageDashboardIndexFeature() {
   }
 
   const totalWorkingTime: string = useMemo(() => {
-    if (data && data.data) {
-      const seconds = data.data.reduce(
+    if (periodWorkdays && periodWorkdays.data) {
+      const seconds = periodWorkdays.data.reduce(
         (acc, workday) =>
           acc + getWorkingTime(workday.start_time, workday.end_time, workday.rest_time),
         0
@@ -59,14 +72,15 @@ export default function PageDashboardIndexFeature() {
       return `${hours}h${minutes > 0 ? ` ${minutes}min` : ""}`
     }
     return "0h"
-  }, [data])
+  }, [periodWorkdays])
 
   return (
     <PageDashboardIndex
-      workdays={data?.data ?? []}
+      workdays={periodWorkdays?.data ?? []}
       today={today}
+      todayWorkday={todayWorkday ?? null}
       period={period}
-      isLoading={isLoading}
+      isLoading={isPeriodWorkdaysLoading || isTodayWorkdayLoading}
       error={error}
       totalWorkingTime={totalWorkingTime}
       onNextPeriod={onNextPeriod}

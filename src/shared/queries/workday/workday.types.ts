@@ -12,3 +12,7 @@ export interface GetWorkdaysByPeriodResponse {
   page: number
   total: number
 }
+
+export interface GetWorkdayByDateRequest {
+  date: string
+}

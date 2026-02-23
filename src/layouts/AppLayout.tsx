@@ -25,7 +25,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -229,11 +228,11 @@ export default function AppLayout() {
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false)
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<{ [key: string]: boolean }>({})
 
-  const currentSection =
-    navigationItems.find((item) => location.pathname.startsWith(item.link))?.title ?? ""
-  const currentSubSections = navigationItems
-    .find((item) => location.pathname.startsWith(item.link))
-    ?.subItems.filter((subItem) => typeof subItem.action === "string" && subItem.title.mobile)
+  // const currentSection =
+  //   navigationItems.find((item) => location.pathname.startsWith(item.link))?.title ?? ""
+  // const currentSubSections = navigationItems
+  //   .find((item) => location.pathname.startsWith(item.link))
+  //   ?.subItems.filter((subItem) => typeof subItem.action === "string" && subItem.title.mobile)
 
   if (!driver) return null
 
@@ -267,9 +266,8 @@ export default function AppLayout() {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarHeader>
-          <SidebarContent>
+          <SidebarContent className="mt-4">
             <SidebarGroup>
-              <SidebarGroupLabel>Conducteur</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu className={open ? "pl-2" : ""}>
                   {navigationItems.map((item) => (
@@ -507,16 +505,14 @@ export default function AppLayout() {
               {open ? <PanelLeftClose /> : <PanelLeftOpen />}
             </Button>
           </div>
-          <div className="px-4">
+          <div className="px-10">
             <Outlet />
           </div>
         </div>
       </div>
       {/* For mobile screens */}
       <div className="bg-background flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
-        <div className="flex w-full flex-col items-center gap-1 py-3">
-          <h1 className="text-responsive-xl font-semibold">{t(currentSection)}</h1>
-          {currentSubSections && (
+        {/* {currentSubSections && (
             <div className="flex w-full flex-row items-center justify-between gap-2 overflow-auto px-4">
               {currentSubSections.map((subSection, index) => (
                 <Link
@@ -538,12 +534,11 @@ export default function AppLayout() {
                 </Link>
               ))}
             </div>
-          )}
-        </div>
-        <div className="h-full px-2">
+          )} */}
+        <div className="h-full px-2 pt-2">
           <Outlet />
         </div>
-        <div className="border-muted flex flex-row justify-between gap-2 border-t px-3 py-2">
+        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 py-2">
           {navigationItems.map((item) => (
             <Link
               key={item.title}

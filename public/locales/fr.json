@@ -44,6 +44,24 @@
         "invalid-verification-key": "Clé de vérification invalide ou expirée. Veuillez réessayer ou contacter le support si le problème persiste.",
         "invalid-url-parameters": "Le lien de vérification est invalide. Veuillez vérifier que vous avez utilisé le bon lien ou contactez le support pour obtenir de l'aide."
       }
+    },
+    "dashboard": {
+      "page-title": "Tableau de bord",
+      "week-period": "Semaine du {{from}} au {{to}}",
+      "start-workday": "Commencer ma journée",
+      "end-workday": "Terminer ma journée",
+      "no-workday-today": "Aucune journée en cours",
+      "workday-started-at": "Votre journée a commencé à {{startTime}}",
+      "workday-ended": "Votre journée de travail s'est terminée à {{endTime}}"
+    }
+  },
+  "components": {
+    "stat-workday": {
+      "worked-days": "Jours travaillés",
+      "this-week": "Cette semaine"
+    },
+    "stat-total-worked-hour": {
+      "this-month": "conduite mois"
     }
   },
   "navigation": {

@@ -8,13 +8,27 @@ export interface PeriodSelectorProps {
 
 export function PeriodSelector({ label, onPrevious, onNext }: PeriodSelectorProps) {
   return (
-    <div className="flex items-center justify-between gap-4">
-      <div onClick={onPrevious} className="border-border cursor-pointer rounded-md border p-2">
-        <ChevronLeft size={20} className="text-muted-foreground" />
+    <div className="w-full sm:w-auto">
+      <div className="hidden items-center justify-between gap-4 sm:flex">
+        <div onClick={onPrevious} className="border-border cursor-pointer rounded-md border p-2">
+          <ChevronLeft size={20} className="text-muted-foreground" />
+        </div>
+        <p>{label}</p>
+        <div onClick={onNext} className="border-border cursor-pointer rounded-md border p-2">
+          <ChevronRight size={20} className="text-muted-foreground" />
+        </div>
       </div>
-      <p>{label}</p>
-      <div onClick={onNext} className="border-border cursor-pointer rounded-md border p-2">
-        <ChevronRight size={20} className="text-muted-foreground" />
+      <div className="border-border bg-sidebar flex w-full items-center justify-between rounded-lg border sm:hidden">
+        <div
+          onClick={onPrevious}
+          className="flex h-16 w-20 cursor-pointer items-center justify-center"
+        >
+          <ChevronLeft size={20} className="text-muted-foreground" />
+        </div>
+        <p className="font-semibold">{label}</p>
+        <div onClick={onNext} className="flex h-16 w-20 cursor-pointer items-center justify-center">
+          <ChevronRight size={20} className="text-muted-foreground" />
+        </div>
       </div>
     </div>
   )
