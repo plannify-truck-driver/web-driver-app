@@ -501,7 +501,7 @@ export default function AppLayout() {
           </SidebarFooter>
         </Sidebar>
 
-        <div className="hidden w-full flex-col gap-2 sm:flex">
+        <div className="bg-background hidden w-full flex-col gap-2 sm:flex">
           <div className="border-muted flex w-full flex-row border-b px-2">
             <Button variant="ghost" size="icon" onClick={toggleSidebar} className="size-7">
               {open ? <PanelLeftClose /> : <PanelLeftOpen />}
@@ -513,8 +513,8 @@ export default function AppLayout() {
         </div>
       </div>
       {/* For mobile screens */}
-      <div className="flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
-        <div className="bg-primary-background flex w-full flex-col items-center gap-1 py-3">
+      <div className="bg-background flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
+        <div className="flex w-full flex-col items-center gap-1 py-3">
           <h1 className="text-responsive-xl font-semibold">{t(currentSection)}</h1>
           {currentSubSections && (
             <div className="flex w-full flex-row items-center justify-between gap-2 overflow-auto px-4">
