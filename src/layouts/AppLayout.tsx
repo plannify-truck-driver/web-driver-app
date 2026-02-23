@@ -507,7 +507,7 @@ export default function AppLayout() {
               {open ? <PanelLeftClose /> : <PanelLeftOpen />}
             </Button>
           </div>
-          <div className="pl-2">
+          <div className="px-4">
             <Outlet />
           </div>
         </div>

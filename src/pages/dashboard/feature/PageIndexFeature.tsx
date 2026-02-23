@@ -1,17 +1,76 @@
 import { useGetWorkdaysByPeriod } from "@/shared/queries/workday/workday.queries"
 import PageDashboardIndex from "../ui/PageIndex"
+import { useMemo, useState } from "react"
+import { useDocumentTitle } from "@/hooks/use-document-title"
+import { getWorkingTime } from "@/shared/functions/getWorkingTime"
+
+export interface PeriodOfTime {
+  from: Date
+  to: Date
+}
 
 export default function PageDashboardIndexFeature() {
-  const tody: Date = new Date()
-  const monday: Date = new Date(tody.setDate(tody.getDate() - tody.getDay() + 1))
-  const sunday: Date = new Date(tody.setDate(tody.getDate() - tody.getDay() + 7))
+  useDocumentTitle("Accueil")
+
+  const today: Date = new Date()
+  const monday: Date = new Date()
+  monday.setDate(today.getDate() - today.getDay() + 1)
+  const sunday: Date = new Date(monday)
+  sunday.setDate(monday.getDate() + 6)
+
+  const [period, setPeriod] = useState<PeriodOfTime>({
+    from: monday,
+    to: sunday,
+  })
 
   const { data, isLoading, error } = useGetWorkdaysByPeriod({
-    from: monday.toISOString().split("T")[0],
-    to: sunday.toISOString().split("T")[0],
+    from: period.from.toISOString().split("T")[0],
+    to: period.to.toISOString().split("T")[0],
     page: 1,
     limit: 100,
   })
 
-  return <PageDashboardIndex workdays={data?.data ?? []} isLoading={isLoading} error={error} />
+  const onPreviousPeriod = () => {
+    const newFrom = new Date(period.from)
+    newFrom.setDate(newFrom.getDate() - 7)
+    const newTo = new Date(period.to)
+    newTo.setDate(newTo.getDate() - 7)
+    setPeriod({ from: newFrom, to: newTo })
+  }
+
+  const onNextPeriod = () => {
+    const newFrom = new Date(period.from)
+    newFrom.setDate(newFrom.getDate() + 7)
+    const newTo = new Date(period.to)
+    newTo.setDate(newTo.getDate() + 7)
+    setPeriod({ from: newFrom, to: newTo })
+  }
+
+  const totalWorkingTime: string = useMemo(() => {
+    if (data && data.data) {
+      const seconds = data.data.reduce(
+        (acc, workday) =>
+          acc + getWorkingTime(workday.start_time, workday.end_time, workday.rest_time),
+        0
+      )
+
+      const hours = Math.floor(seconds / 3600)
+      const minutes = Math.floor((seconds % 3600) / 60)
+      return `${hours}h${minutes > 0 ? ` ${minutes}min` : ""}`
+    }
+    return "0h"
+  }, [data])
+
+  return (
+    <PageDashboardIndex
+      workdays={data?.data ?? []}
+      today={today}
+      period={period}
+      isLoading={isLoading}
+      error={error}
+      totalWorkingTime={totalWorkingTime}
+      onNextPeriod={onNextPeriod}
+      onPreviousPeriod={onPreviousPeriod}
+    />
+  )
 }
