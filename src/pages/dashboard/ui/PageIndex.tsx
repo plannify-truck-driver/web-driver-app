@@ -1,5 +1,4 @@
 import type { Workday } from "@/shared/models/workday"
-import { ArrowRight, Play } from "lucide-react"
 import { toast } from "sonner"
 import type { PeriodOfTime } from "../feature/PageIndexFeature"
 import { PeriodSelector } from "@/shared/components/PeriodSelector"
@@ -7,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import { StatWorkedDays } from "@/shared/components/statistics/StatWorkedDays"
 import { StatTotalWorkedHours } from "@/shared/components/statistics/StatTotalWorkedHour"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
+import { ActionButton } from "@/shared/components/ActionButton"
 
 interface PageDashboardIndexProps {
   workdays: Workday[]
@@ -76,33 +76,21 @@ export default function PageDashboardIndex({
             <p> {t("pages.dashboard.workday-ended", { endTime: todayWorkday.end_time })}</p>
           </div>
         ) : (
-          <button
-            className="bg-primary hover:bg-primary/90 flex w-full cursor-pointer flex-row items-center justify-between rounded-lg px-5 py-4 text-sm font-semibold text-white"
-            onClick={() => toast.info("end workday button pressed")}
-          >
-            <div className="flex flex-row gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                <Play size={20} />
-              </div>
+          <ActionButton
+            label={
               <div className="flex flex-col items-start justify-between">
                 <span>{t("pages.dashboard.end-workday")}</span>
                 <span className="font-light text-white/60">
                   {t("pages.dashboard.workday-started-at", { startTime: todayWorkday.start_time })}
                 </span>
               </div>
-            </div>
-            <ArrowRight size={20} />
-          </button>
+            }
+            onClick={() => toast.info("end workday button pressed")}
+          />
         )
       ) : (
-        <button
-          className="bg-primary hover:bg-primary/90 flex w-full cursor-pointer flex-row items-center justify-between rounded-lg px-5 py-4 text-sm font-semibold text-white"
-          onClick={() => toast.info("start workday button pressed")}
-        >
-          <div className="flex flex-row gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10">
-              <Play size={20} />
-            </div>
+        <ActionButton
+          label={
             <div className="flex flex-col items-start justify-between">
               <span>{t("pages.dashboard.start-workday")}</span>
               <span className="hidden font-light text-white/60 sm:block">
@@ -117,9 +105,9 @@ export default function PageDashboardIndex({
                 {t("pages.dashboard.no-workday-today")}
               </span>
             </div>
-          </div>
-          <ArrowRight size={20} />
-        </button>
+          }
+          onClick={() => toast.info("start workday button pressed")}
+        />
       )}
       <div className="flex w-full flex-col gap-3">
         <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">
