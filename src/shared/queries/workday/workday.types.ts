@@ -24,3 +24,13 @@ export interface CreateWorkdayRequest {
   rest_time: string
   overnight_rest: boolean
 }
+
+export type UpdateWorkdayRequest = CreateWorkdayRequest
+
+export interface DeleteWorkdayRequest {
+  date: string
+}
+
+export interface RestoreWorkdayRequest {
+  date: string
+}

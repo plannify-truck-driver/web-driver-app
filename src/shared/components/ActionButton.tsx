@@ -1,20 +1,23 @@
 import { ArrowRight, Play } from "lucide-react"
 import type { ReactNode } from "react"
 import { Loader } from "./Loader"
+import { cn } from "@/lib/utils"
 
 export interface ActionButtonProps {
   label: ReactNode
+  className?: string
   isLoading: boolean
   onClick: () => void
 }
 
-export function ActionButton({ label, isLoading, onClick }: ActionButtonProps) {
+export function ActionButton({ label, className, isLoading, onClick }: ActionButtonProps) {
   return (
     <button
-      className={
-        "bg-primary flex w-full flex-row items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-white sm:px-5 sm:py-4" +
-        (isLoading ? " cursor-not-allowed opacity-50" : " hover:bg-primary/90 cursor-pointer")
-      }
+      className={cn(
+        "bg-primary flex w-full flex-row items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-white sm:px-5 sm:py-4",
+        isLoading ? "cursor-not-allowed opacity-50" : "hover:bg-primary/90 cursor-pointer",
+        className
+      )}
       onClick={onClick}
       disabled={isLoading}
     >

@@ -7,6 +7,7 @@ import { StatWorkedDays } from "@/shared/components/statistics/StatWorkedDays"
 import { StatTotalWorkedHours } from "@/shared/components/statistics/StatTotalWorkedHour"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
 import { ActionButton } from "@/shared/components/ActionButton"
+import { UndoButton } from "@/shared/components/UndoButton"
 
 interface PageDashboardIndexProps {
   workdays: Workday[]
@@ -16,11 +17,13 @@ interface PageDashboardIndexProps {
   isPeriodWorkdaysLoading: boolean
   isTodayWorkdayLoading: boolean
   isCreatingWorkday: boolean
+  isDeletingWorkday: boolean
   error: Error | null
   totalWorkingTime: string
   onPreviousPeriod: () => void
   onNextPeriod: () => void
   onStartWorkday: () => void
+  onDeleteWorkday: () => void
 }
 
 export default function PageDashboardIndex({
@@ -31,11 +34,13 @@ export default function PageDashboardIndex({
   isPeriodWorkdaysLoading,
   isTodayWorkdayLoading,
   isCreatingWorkday,
+  isDeletingWorkday,
   error,
   totalWorkingTime,
   onPreviousPeriod,
   onNextPeriod,
   onStartWorkday,
+  onDeleteWorkday,
 }: PageDashboardIndexProps) {
   const { t, i18n } = useTranslation()
 
@@ -80,18 +85,33 @@ export default function PageDashboardIndex({
             <p> {t("pages.dashboard.workday-ended", { endTime: todayWorkday.end_time })}</p>
           </div>
         ) : (
-          <ActionButton
-            label={
-              <div className="flex flex-col items-start justify-between">
-                <span>{t("pages.dashboard.end-workday")}</span>
-                <span className="font-light text-white/60">
-                  {t("pages.dashboard.workday-started-at", { startTime: todayWorkday.start_time })}
-                </span>
-              </div>
-            }
-            isLoading={false}
-            onClick={() => toast.info("end workday button pressed")}
-          />
+          <div className="sm:grid sm:grid-cols-6 sm:gap-2">
+            <ActionButton
+              className="animate-squish-back col-span-5"
+              label={
+                <div className="flex flex-col items-start justify-between">
+                  <span>{t("pages.dashboard.end-workday")}</span>
+                  <span className="font-light text-white/60">
+                    {t("pages.dashboard.workday-started-at", {
+                      startTime: todayWorkday.start_time,
+                    })}
+                  </span>
+                </div>
+              }
+              isLoading={false}
+              onClick={() => toast.info("end workday button pressed")}
+            />
+            <UndoButton
+              className="col-span-1 hidden sm:flex"
+              label={
+                <div className="flex flex-col items-start justify-between">
+                  <span>{t("pages.dashboard.delete-workday")}</span>
+                </div>
+              }
+              isLoading={isDeletingWorkday}
+              onClick={onDeleteWorkday}
+            />
+          </div>
         )
       ) : (
         <ActionButton

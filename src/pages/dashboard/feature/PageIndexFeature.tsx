@@ -1,16 +1,20 @@
 import {
   useCreateWorkday,
+  useDeleteWorkday,
   useGetWorkdayByDate,
   useGetWorkdaysByPeriod,
+  useRestoreWorkday,
+  useUpdateWorkday,
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
 import PageDashboardIndex from "../ui/PageIndex"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
+import { handleErrorResponse } from "@/shared/lib/error-response"
 
 export interface PeriodOfTime {
   from: Date
@@ -47,12 +51,72 @@ export default function PageDashboardIndexFeature() {
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
     date: today.toISOString().split("T")[0],
   })
-  const {
-    mutateAsync: createWorkdayAsync,
-    data: createdWorkday,
-    error: createWorkdayError,
-    isPending: isCreatingWorkday,
-  } = useCreateWorkday()
+  const { mutateAsync: createWorkdayAsync, isPending: isCreatingWorkday } = useCreateWorkday({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: workdaysKeys.all,
+        exact: false,
+        refetchType: "all",
+      })
+    },
+    onError: (error: Error) => {
+      handleErrorResponse(error).then((apiError) => {
+        if (apiError?.error_code === "WORKDAY_ALREADY_EXISTS") {
+          restoreWorkdayAsync({
+            date: today.toISOString().split("T")[0],
+          })
+        } else {
+          toast.error(t("pages.dashboard.workday-creation-error"))
+        }
+      })
+    },
+  })
+  const { mutateAsync: updateWorkdayAsync, isPending: isUpdatingWorkday } = useUpdateWorkday({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: workdaysKeys.all,
+        exact: false,
+        refetchType: "all",
+      })
+    },
+    onError: (error: Error) => {
+      toast.error(t("pages.dashboard.workday-update-error"))
+      console.error("Failed to update workday:", error)
+    },
+  })
+  const { mutateAsync: deleteWorkdayAsync, isPending: isDeletingWorkday } = useDeleteWorkday({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: workdaysKeys.all,
+        exact: false,
+        refetchType: "all",
+      })
+    },
+    onError: (error: Error) => {
+      toast.error(t("pages.dashboard.workday-deletion-error"))
+      console.error("Failed to delete workday:", error)
+    },
+  })
+  const { mutateAsync: restoreWorkdayAsync, isPending: isRestoringWorkday } = useRestoreWorkday({
+    onSuccess: () => {
+      console.warn("Workday already exists for today, restoring it from garbage...")
+      const now = new Date()
+      updateWorkdayAsync({
+        date: today.toISOString().split("T")[0],
+        start_time: `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
+          .getSeconds()
+          .toString()
+          .padStart(2, "0")}`,
+        end_time: null,
+        rest_time: "00:00:00",
+        overnight_rest: false,
+      })
+    },
+    onError: (error: Error) => {
+      console.error("Failed to restore workday:", error)
+      toast.error(t("pages.dashboard.workday-restoration-error"))
+    },
+  })
 
   const onPreviousPeriod = () => {
     const newFrom = new Date(period.from)
@@ -91,25 +155,24 @@ export default function PageDashboardIndexFeature() {
   }, [periodWorkdays, t])
 
   const onStartWorkday = () => {
+    const now = new Date()
     createWorkdayAsync({
       date: today.toISOString().split("T")[0],
-      start_time: new Date().toISOString().split("T")[1].split(".")[0],
+      start_time: `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
+        .getSeconds()
+        .toString()
+        .padStart(2, "0")}`,
       end_time: null,
       rest_time: "00:00:00",
       overnight_rest: false,
     })
   }
 
-  useEffect(() => {
-    if (createdWorkday) {
-      queryClient.invalidateQueries({
-        queryKey: workdaysKeys.all,
-      })
-    }
-    if (createWorkdayError) {
-      toast.error(t("pages.dashboard.workday-creation-error"))
-    }
-  }, [createdWorkday, createWorkdayError, queryClient, t])
+  const onDeleteWorkday = () => {
+    deleteWorkdayAsync({
+      date: today.toISOString().split("T")[0],
+    })
+  }
 
   return (
     <PageDashboardIndex
@@ -119,12 +182,14 @@ export default function PageDashboardIndexFeature() {
       period={period}
       isPeriodWorkdaysLoading={isPeriodWorkdaysLoading}
       isTodayWorkdayLoading={isTodayWorkdayLoading}
-      isCreatingWorkday={isCreatingWorkday}
+      isCreatingWorkday={isCreatingWorkday || isUpdatingWorkday || isRestoringWorkday}
+      isDeletingWorkday={isDeletingWorkday}
       error={error}
       totalWorkingTime={totalWorkingTime}
       onNextPeriod={onNextPeriod}
       onPreviousPeriod={onPreviousPeriod}
       onStartWorkday={onStartWorkday}
+      onDeleteWorkday={onDeleteWorkday}
     />
   )
 }

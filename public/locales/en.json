@@ -49,6 +49,7 @@
       "page-title": "Dashboard",
       "week-period": "Week from {{from}} to {{to}}",
       "start-workday": "Start my workday",
+      "delete-workday": "Delete",
       "end-workday": "End my workday",
       "no-workday-today": "No ongoing workday",
       "workday-started-at": "Your workday started at {{startTime}}",
@@ -56,7 +57,10 @@
       "summary": "Summary",
       "time-format": "{{hours}}h {{minutes}}m",
       "time-format-short": "{{hours}}h",
-      "workday-creation-error": "An error occurred while creating your workday. Please try again later."
+      "workday-creation-error": "An error occurred while creating your workday. Please try again later.",
+      "workday-update-error": "An error occurred while updating your workday. Please try again later.",
+      "workday-deletion-error": "An error occurred while deleting your workday. Please try again later.",
+      "workday-restoration-error": "An error occurred while restoring your workday. Please try again later."
     }
   },
   "components": {

@@ -49,6 +49,7 @@
       "page-title": "Tableau de bord",
       "week-period": "Semaine du {{from}} au {{to}}",
       "start-workday": "Commencer ma journée",
+      "delete-workday": "Supprimer",
       "end-workday": "Terminer ma journée",
       "no-workday-today": "Aucune journée en cours",
       "workday-started-at": "Votre journée a commencé à {{startTime}}",
@@ -56,7 +57,10 @@
       "summary": "Résumé",
       "time-format": "{{hours}}h {{minutes}}m",
       "time-format-short": "{{hours}}h",
-      "workday-creation-error": "Une erreur est survenue lors de la création de votre journée de travail. Veuillez réessayer ultérieurement."
+      "workday-creation-error": "Une erreur est survenue lors de la création de votre journée de travail. Veuillez réessayer ultérieurement.",
+      "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
+      "workday-deletion-error": "Une erreur est survenue lors de la suppression de votre journée de travail. Veuillez réessayer ultérieurement.",
+      "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement."
     }
   },
   "components": {

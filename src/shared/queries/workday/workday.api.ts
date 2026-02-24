@@ -1,9 +1,12 @@
 import { api } from "@/shared/lib/api"
 import type {
   CreateWorkdayRequest,
+  DeleteWorkdayRequest,
   GetWorkdayByDateRequest,
   GetWorkdaysByPeriodRequest,
   GetWorkdaysByPeriodResponse,
+  RestoreWorkdayRequest,
+  UpdateWorkdayRequest,
 } from "./workday.types"
 import type { Workday } from "@/shared/models/workday"
 
@@ -23,4 +26,16 @@ export const getWorkdayByDate = (body: GetWorkdayByDateRequest): Promise<Workday
 
 export const createWorkday = (body: CreateWorkdayRequest): Promise<Workday> => {
   return api.post("workdays", { json: body }).json()
+}
+
+export const updateWorkday = (body: UpdateWorkdayRequest): Promise<Workday> => {
+  return api.put(`workdays`, { json: body }).json()
+}
+
+export const deleteWorkday = (body: DeleteWorkdayRequest): Promise<void> => {
+  return api.delete(`workdays/${body.date}`).json()
+}
+
+export const restoreWorkday = (body: RestoreWorkdayRequest): Promise<void> => {
+  return api.delete(`workdays/garbage/${body.date}`).json()
 }
