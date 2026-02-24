@@ -53,7 +53,9 @@
       "no-workday-today": "Aucune journée en cours",
       "workday-started-at": "Votre journée a commencé à {{startTime}}",
       "workday-ended": "Votre journée de travail s'est terminée à {{endTime}}",
-      "summary": "Résumé"
+      "summary": "Résumé",
+      "time-format": "{{hours}}h {{minutes}}m",
+      "time-format-short": "{{hours}}h"
     }
   },
   "components": {

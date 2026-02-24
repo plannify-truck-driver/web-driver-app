@@ -69,10 +69,15 @@ export default function PageDashboardIndexFeature() {
 
       const hours = Math.floor(seconds / 3600)
       const minutes = Math.floor((seconds % 3600) / 60)
-      return `${hours}h${minutes > 0 ? ` ${minutes}min` : ""}`
+
+      if (minutes > 0) {
+        return t("pages.dashboard.time-format", { hours, minutes })
+      } else {
+        return t("pages.dashboard.time-format-short", { hours })
+      }
     }
     return "0h"
-  }, [periodWorkdays])
+  }, [periodWorkdays, t])
 
   return (
     <PageDashboardIndex
