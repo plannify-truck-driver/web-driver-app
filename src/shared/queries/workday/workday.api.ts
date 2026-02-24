@@ -1,5 +1,6 @@
 import { api } from "@/shared/lib/api"
 import type {
+  CreateWorkdayRequest,
   GetWorkdayByDateRequest,
   GetWorkdaysByPeriodRequest,
   GetWorkdaysByPeriodResponse,
@@ -18,4 +19,8 @@ export const getWorkdaysByPeriod = (
 
 export const getWorkdayByDate = (body: GetWorkdayByDateRequest): Promise<Workday | null> => {
   return api.get(`workdays/${body.date}`).json()
+}
+
+export const createWorkday = (body: CreateWorkdayRequest): Promise<Workday> => {
+  return api.post("workdays", { json: body }).json()
 }

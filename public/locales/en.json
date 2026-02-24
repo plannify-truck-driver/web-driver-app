@@ -55,7 +55,8 @@
       "workday-ended": "Your workday has ended at {{endTime}}",
       "summary": "Summary",
       "time-format": "{{hours}}h {{minutes}}m",
-      "time-format-short": "{{hours}}h"
+      "time-format-short": "{{hours}}h",
+      "workday-creation-error": "An error occurred while creating your workday. Please try again later."
     }
   },
   "components": {

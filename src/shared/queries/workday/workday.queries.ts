@@ -1,6 +1,10 @@
-import { useQuery } from "@tanstack/react-query"
-import { getWorkdayByDate, getWorkdaysByPeriod } from "./workday.api"
-import type { GetWorkdayByDateRequest, GetWorkdaysByPeriodRequest } from "./workday.types"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { createWorkday, getWorkdayByDate, getWorkdaysByPeriod } from "./workday.api"
+import type {
+  CreateWorkdayRequest,
+  GetWorkdayByDateRequest,
+  GetWorkdaysByPeriodRequest,
+} from "./workday.types"
 
 export const workdaysKeys = {
   all: ["workdays"] as const,
@@ -24,4 +28,9 @@ export const useGetWorkdayByDate = (request: GetWorkdayByDateRequest) =>
   useQuery({
     queryKey: workdaysKeys.getWorkdayByDate(request),
     queryFn: () => getWorkdayByDate(request),
+  })
+
+export const useCreateWorkday = () =>
+  useMutation({
+    mutationFn: (body: CreateWorkdayRequest) => createWorkday(body),
   })

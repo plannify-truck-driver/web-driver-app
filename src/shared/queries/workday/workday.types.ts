@@ -16,3 +16,11 @@ export interface GetWorkdaysByPeriodResponse {
 export interface GetWorkdayByDateRequest {
   date: string
 }
+
+export interface CreateWorkdayRequest {
+  date: string
+  start_time: string
+  end_time: string | null
+  rest_time: string
+  overnight_rest: boolean
+}

@@ -15,10 +15,12 @@ interface PageDashboardIndexProps {
   period: PeriodOfTime
   isPeriodWorkdaysLoading: boolean
   isTodayWorkdayLoading: boolean
+  isCreatingWorkday: boolean
   error: Error | null
   totalWorkingTime: string
   onPreviousPeriod: () => void
   onNextPeriod: () => void
+  onStartWorkday: () => void
 }
 
 export default function PageDashboardIndex({
@@ -28,10 +30,12 @@ export default function PageDashboardIndex({
   period,
   isPeriodWorkdaysLoading,
   isTodayWorkdayLoading,
+  isCreatingWorkday,
   error,
   totalWorkingTime,
   onPreviousPeriod,
   onNextPeriod,
+  onStartWorkday,
 }: PageDashboardIndexProps) {
   const { t, i18n } = useTranslation()
 
@@ -85,6 +89,7 @@ export default function PageDashboardIndex({
                 </span>
               </div>
             }
+            isLoading={false}
             onClick={() => toast.info("end workday button pressed")}
           />
         )
@@ -106,7 +111,8 @@ export default function PageDashboardIndex({
               </span>
             </div>
           }
-          onClick={() => toast.info("start workday button pressed")}
+          isLoading={isCreatingWorkday}
+          onClick={onStartWorkday}
         />
       )}
       <div className="flex w-full flex-col gap-3">
