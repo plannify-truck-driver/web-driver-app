@@ -79,6 +79,9 @@
       "rest-period": "Coupure",
       "work-period": "Travail"
     },
+    "workday-table": {
+      "week-summary": "Résumé de la semaine"
+    },
     "workday-table-row-3": {
       "start": "Début",
       "end": "Fin",

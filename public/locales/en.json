@@ -79,6 +79,9 @@
       "rest-period": "Rest period",
       "work-period": "Work period"
     },
+    "workday-table": {
+      "week-summary": "Week summary"
+    },
     "workday-table-row-3": {
       "start": "Start",
       "end": "End",

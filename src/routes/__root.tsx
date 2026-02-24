@@ -4,6 +4,7 @@ import AppLayout from "@/layouts/AppLayout"
 import AuthenticationLayout from "@/layouts/AuthenticationLayout"
 import { useAuth, type AuthProviderState } from "@/app/providers/AuthProvider"
 import { SidebarProvider } from "@/shared/components/ui/Sidebar"
+import { DriverPreferencesProvider } from "@/app/providers/DriverPreferencesProvider"
 
 interface AppContext {
   auth: AuthProviderState
@@ -42,9 +43,11 @@ function RootComponent() {
     return <AuthenticationLayout />
   } else {
     return (
-      <SidebarProvider>
-        <AppLayout />
-      </SidebarProvider>
+      <DriverPreferencesProvider>
+        <SidebarProvider>
+          <AppLayout />
+        </SidebarProvider>
+      </DriverPreferencesProvider>
     )
   }
 }
