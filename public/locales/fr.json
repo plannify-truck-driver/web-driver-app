@@ -78,6 +78,12 @@
       "end": "Fin",
       "rest-period": "Coupure",
       "work-period": "Travail"
+    },
+    "workday-table-row-3": {
+      "start": "Début",
+      "end": "Fin",
+      "rest-period": "Coupure",
+      "night-period": "Nuit"
     }
   },
   "navigation": {

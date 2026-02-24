@@ -78,6 +78,12 @@
       "end": "End",
       "rest-period": "Rest period",
       "work-period": "Work period"
+    },
+    "workday-table-row-3": {
+      "start": "Start",
+      "end": "End",
+      "rest-period": "Rest period",
+      "night-period": "Night"
     }
   },
   "navigation": {

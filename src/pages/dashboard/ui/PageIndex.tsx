@@ -8,6 +8,7 @@ import { Skeleton } from "@/shared/components/ui/Skeleton"
 import { ActionButton } from "@/shared/components/ActionButton"
 import { UndoButton } from "@/shared/components/UndoButton"
 import { WorkdayRecap } from "@/shared/components/WorkdayRecap"
+import { WorkdayTable } from "@/shared/components/WorkdayTable"
 
 interface PageDashboardIndexProps {
   workdays: Workday[]
@@ -148,6 +149,17 @@ export default function PageDashboardIndex({
           />
         </div>
       </div>
+      <WorkdayTable
+        workdays={[
+          {
+            date: "2026-02-24",
+            start_time: "08:00:00",
+            end_time: "17:00:00",
+            rest_time: "01:00:00",
+            overnight_rest: false,
+          },
+        ]}
+      />
     </div>
   )
 }
