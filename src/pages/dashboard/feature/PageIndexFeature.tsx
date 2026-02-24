@@ -80,7 +80,8 @@ export default function PageDashboardIndexFeature() {
       today={today}
       todayWorkday={todayWorkday ?? null}
       period={period}
-      isLoading={isPeriodWorkdaysLoading || isTodayWorkdayLoading}
+      isPeriodWorkdaysLoading={isPeriodWorkdaysLoading}
+      isTodayWorkdayLoading={isTodayWorkdayLoading}
       error={error}
       totalWorkingTime={totalWorkingTime}
       onNextPeriod={onNextPeriod}

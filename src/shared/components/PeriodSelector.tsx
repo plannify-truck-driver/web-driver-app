@@ -11,24 +11,27 @@ export function PeriodSelector({ label, onPrevious, onNext }: PeriodSelectorProp
     <div className="w-full sm:w-auto">
       <div className="hidden items-center justify-between gap-4 sm:flex">
         <div onClick={onPrevious} className="border-border cursor-pointer rounded-md border p-2">
-          <ChevronLeft size={20} className="text-muted-foreground" />
+          <ChevronLeft size={12} className="text-muted-foreground" />
         </div>
-        <p>{label}</p>
+        <p className="text-sm">{label}</p>
         <div onClick={onNext} className="border-border cursor-pointer rounded-md border p-2">
-          <ChevronRight size={20} className="text-muted-foreground" />
+          <ChevronRight size={12} className="text-muted-foreground" />
         </div>
       </div>
       <div className="border-border bg-sidebar flex w-full items-center justify-between rounded-lg border sm:hidden">
-        <div
+        <button
           onClick={onPrevious}
-          className="flex h-16 w-20 cursor-pointer items-center justify-center"
+          className="flex h-12 w-16 cursor-pointer items-center justify-center"
         >
-          <ChevronLeft size={20} className="text-muted-foreground" />
-        </div>
-        <p className="font-semibold">{label}</p>
-        <div onClick={onNext} className="flex h-16 w-20 cursor-pointer items-center justify-center">
-          <ChevronRight size={20} className="text-muted-foreground" />
-        </div>
+          <ChevronLeft size={14} className="text-muted-foreground" />
+        </button>
+        <p className="text-sm font-semibold">{label}</p>
+        <button
+          onClick={onNext}
+          className="flex h-12 w-16 cursor-pointer items-center justify-center"
+        >
+          <ChevronRight size={14} className="text-muted-foreground" />
+        </button>
       </div>
     </div>
   )

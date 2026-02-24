@@ -13,7 +13,8 @@ interface PageDashboardIndexProps {
   today: Date
   todayWorkday: Workday | null
   period: PeriodOfTime
-  isLoading: boolean
+  isPeriodWorkdaysLoading: boolean
+  isTodayWorkdayLoading: boolean
   error: Error | null
   totalWorkingTime: string
   onPreviousPeriod: () => void
@@ -25,7 +26,8 @@ export default function PageDashboardIndex({
   today,
   todayWorkday,
   period,
-  isLoading,
+  isPeriodWorkdaysLoading,
+  isTodayWorkdayLoading,
   error,
   totalWorkingTime,
   onPreviousPeriod,
@@ -66,7 +68,7 @@ export default function PageDashboardIndex({
           onNext={onNextPeriod}
         />
       </div>
-      {isLoading ? (
+      {isTodayWorkdayLoading ? (
         <Skeleton className="h-18 w-full" />
       ) : todayWorkday ? (
         todayWorkday.end_time ? (
@@ -103,13 +105,16 @@ export default function PageDashboardIndex({
             </div>
             <div className="flex flex-col items-start justify-between">
               <span>{t("pages.dashboard.start-workday")}</span>
-              <span className="font-light text-white/60">
+              <span className="hidden font-light text-white/60 sm:block">
                 {t("pages.dashboard.no-workday-today")} -{" "}
                 {today.toLocaleDateString(i18n.language, {
                   weekday: "long",
                   day: "numeric",
                   month: "long",
                 })}
+              </span>
+              <span className="block font-light text-white/60 sm:hidden">
+                {t("pages.dashboard.no-workday-today")}
               </span>
             </div>
           </div>
@@ -121,11 +126,11 @@ export default function PageDashboardIndex({
           {t("pages.dashboard.summary")}
         </p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
-          <StatWorkedDays workedDays={workdays.length} isLoading={isLoading} />
+          <StatWorkedDays workedDays={workdays.length} isLoading={isPeriodWorkdaysLoading} />
           <StatTotalWorkedHours
             totalString={totalWorkingTime}
             month={today}
-            isLoading={isLoading}
+            isLoading={isPeriodWorkdaysLoading}
           />
         </div>
       </div>

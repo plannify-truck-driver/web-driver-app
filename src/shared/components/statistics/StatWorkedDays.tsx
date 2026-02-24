@@ -10,7 +10,7 @@ export function StatWorkedDays({ workedDays, isLoading }: StatWorkedDaysProps) {
   const { t } = useTranslation()
 
   return (
-    <div className="border-border bg-sidebar flex flex-col items-start justify-start gap-1 rounded-lg border p-5 sm:gap-2">
+    <div className="border-border bg-sidebar flex flex-col items-start justify-start gap-1 rounded-lg border p-3 sm:gap-2 sm:p-5">
       <p className="text-muted-foreground font-mono text-sm uppercase">
         {t("components.stat-workday.worked-days")}
       </p>
