@@ -10,13 +10,13 @@ export function PeriodSelector({ label, onPrevious, onNext }: PeriodSelectorProp
   return (
     <div className="w-full sm:w-auto">
       <div className="hidden items-center justify-between gap-4 sm:flex">
-        <div onClick={onPrevious} className="border-border cursor-pointer rounded-md border p-2">
+        <button onClick={onPrevious} className="border-border cursor-pointer rounded-md border p-2">
           <ChevronLeft size={12} className="text-muted-foreground" />
-        </div>
+        </button>
         <p className="text-sm">{label}</p>
-        <div onClick={onNext} className="border-border cursor-pointer rounded-md border p-2">
+        <button onClick={onNext} className="border-border cursor-pointer rounded-md border p-2">
           <ChevronRight size={12} className="text-muted-foreground" />
-        </div>
+        </button>
       </div>
       <div className="border-border bg-sidebar flex w-full items-center justify-between rounded-lg border sm:hidden">
         <button
