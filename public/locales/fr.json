@@ -60,7 +60,8 @@
       "workday-creation-error": "Une erreur est survenue lors de la création de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-deletion-error": "Une erreur est survenue lors de la suppression de votre journée de travail. Veuillez réessayer ultérieurement.",
-      "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement."
+      "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement.",
+      "workday-not-found-error": "Aucune journée de travail n'a été trouvée pour aujourd'hui."
     }
   },
   "components": {
@@ -70,6 +71,13 @@
     },
     "stat-total-worked-hour": {
       "this-month": "conduite mois"
+    },
+    "workday-recap": {
+      "end-workday": "Journée terminée",
+      "start": "Début",
+      "end": "Fin",
+      "rest-period": "Coupure",
+      "work-period": "Travail"
     }
   },
   "navigation": {

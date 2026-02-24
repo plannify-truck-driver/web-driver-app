@@ -60,7 +60,8 @@
       "workday-creation-error": "An error occurred while creating your workday. Please try again later.",
       "workday-update-error": "An error occurred while updating your workday. Please try again later.",
       "workday-deletion-error": "An error occurred while deleting your workday. Please try again later.",
-      "workday-restoration-error": "An error occurred while restoring your workday. Please try again later."
+      "workday-restoration-error": "An error occurred while restoring your workday. Please try again later.",
+      "workday-not-found-error": "No workday found for today."
     }
   },
   "components": {
@@ -70,6 +71,13 @@
     },
     "stat-total-worked-hour": {
       "this-month": "month driving"
+    },
+    "workday-recap": {
+      "end-workday": "Workday ended",
+      "start": "Start",
+      "end": "End",
+      "rest-period": "Rest period",
+      "work-period": "Work period"
     }
   },
   "navigation": {

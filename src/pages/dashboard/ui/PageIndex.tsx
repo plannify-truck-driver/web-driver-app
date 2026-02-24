@@ -1,5 +1,4 @@
 import type { Workday } from "@/shared/models/workday"
-import { toast } from "sonner"
 import type { PeriodOfTime } from "../feature/PageIndexFeature"
 import { PeriodSelector } from "@/shared/components/PeriodSelector"
 import { useTranslation } from "react-i18next"
@@ -8,6 +7,7 @@ import { StatTotalWorkedHours } from "@/shared/components/statistics/StatTotalWo
 import { Skeleton } from "@/shared/components/ui/Skeleton"
 import { ActionButton } from "@/shared/components/ActionButton"
 import { UndoButton } from "@/shared/components/UndoButton"
+import { WorkdayRecap } from "@/shared/components/WorkdayRecap"
 
 interface PageDashboardIndexProps {
   workdays: Workday[]
@@ -23,6 +23,7 @@ interface PageDashboardIndexProps {
   onPreviousPeriod: () => void
   onNextPeriod: () => void
   onStartWorkday: () => void
+  onEndWorkday: () => void
   onDeleteWorkday: () => void
 }
 
@@ -40,6 +41,7 @@ export default function PageDashboardIndex({
   onPreviousPeriod,
   onNextPeriod,
   onStartWorkday,
+  onEndWorkday,
   onDeleteWorkday,
 }: PageDashboardIndexProps) {
   const { t, i18n } = useTranslation()
@@ -81,13 +83,11 @@ export default function PageDashboardIndex({
         <Skeleton className="h-18 w-full" />
       ) : todayWorkday ? (
         todayWorkday.end_time ? (
-          <div>
-            <p> {t("pages.dashboard.workday-ended", { endTime: todayWorkday.end_time })}</p>
-          </div>
+          <WorkdayRecap workday={todayWorkday} />
         ) : (
           <div className="sm:grid sm:grid-cols-6 sm:gap-2">
             <ActionButton
-              className="animate-squish-back col-span-5"
+              className="sm:animate-squish-back col-span-5"
               label={
                 <div className="flex flex-col items-start justify-between">
                   <span>{t("pages.dashboard.end-workday")}</span>
@@ -99,7 +99,7 @@ export default function PageDashboardIndex({
                 </div>
               }
               isLoading={false}
-              onClick={() => toast.info("end workday button pressed")}
+              onClick={onEndWorkday}
             />
             <UndoButton
               className="col-span-1 hidden sm:flex"

@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { handleErrorResponse } from "@/shared/lib/error-response"
+import { displayDuration } from "@/shared/functions/displayDuration"
 
 export interface PeriodOfTime {
   from: Date
@@ -142,14 +143,10 @@ export default function PageDashboardIndexFeature() {
         0
       )
 
-      const hours = Math.floor(seconds / 3600)
-      const minutes = Math.floor((seconds % 3600) / 60)
-
-      if (minutes > 0) {
-        return t("pages.dashboard.time-format", { hours, minutes })
-      } else {
-        return t("pages.dashboard.time-format-short", { hours })
-      }
+      return displayDuration(
+        `${Math.floor(seconds / 3600)}:${Math.floor((seconds % 3600) / 60)}`,
+        t
+      )
     }
     return "0h"
   }, [periodWorkdays, t])
@@ -165,6 +162,24 @@ export default function PageDashboardIndexFeature() {
       end_time: null,
       rest_time: "00:00:00",
       overnight_rest: false,
+    })
+  }
+
+  const onEndWorkday = () => {
+    if (!todayWorkday) {
+      toast.error(t("pages.dashboard.workday-not-found-error"))
+    }
+
+    const now = new Date()
+    updateWorkdayAsync({
+      date: todayWorkday!.date,
+      start_time: todayWorkday!.start_time,
+      end_time: `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
+        .getSeconds()
+        .toString()
+        .padStart(2, "0")}`,
+      rest_time: todayWorkday!.rest_time,
+      overnight_rest: todayWorkday!.overnight_rest,
     })
   }
 
@@ -189,6 +204,7 @@ export default function PageDashboardIndexFeature() {
       onNextPeriod={onNextPeriod}
       onPreviousPeriod={onPreviousPeriod}
       onStartWorkday={onStartWorkday}
+      onEndWorkday={onEndWorkday}
       onDeleteWorkday={onDeleteWorkday}
     />
   )
