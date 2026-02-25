@@ -28,7 +28,7 @@ export function WorkdayTable({ workdays, period }: WorkdayTableProps) {
   return (
     <div className="flex flex-col gap-3">
       <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">
-        {t("components.workday-table.week-summary")}
+        {t("components.workday-table.detail-summary")}
       </p>
       <div className="block sm:hidden">
         {Array.from(

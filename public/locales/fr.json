@@ -80,7 +80,7 @@
       "work-period": "Travail"
     },
     "workday-table": {
-      "week-summary": "Résumé de la semaine"
+      "detail-summary": "Détail de la semaine"
     },
     "workday-table-row-3": {
       "start": "Début",
