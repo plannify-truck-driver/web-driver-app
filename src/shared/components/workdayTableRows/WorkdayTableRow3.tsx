@@ -108,11 +108,19 @@ export function WorkdayTableRow3({
         </div>
         <div className="flex flex-col items-start gap-1 text-xs">
           <p className="text-muted-foreground">{t("components.workday-table-row-3.end")}</p>
-          <p className="text-sm">{displayTime(workday.end_time)}</p>
+          {workday.end_time ? (
+            <p className="text-sm">{displayTime(workday.end_time)}</p>
+          ) : (
+            <Minus size={16} className="text-muted-foreground/80" />
+          )}
         </div>
         <div className="flex flex-col items-start gap-1 text-xs">
           <p className="text-muted-foreground">{t("components.workday-table-row-3.rest-period")}</p>
-          <p className="text-sm">{displayDuration(workday.rest_time, t)}</p>
+          {workday.end_time ? (
+            <p className="text-sm">{displayDuration(workday.rest_time, t)}</p>
+          ) : (
+            <Minus size={16} className="text-muted-foreground/80" />
+          )}
         </div>
         <div className="flex flex-col items-start gap-1 text-xs">
           <p className="text-muted-foreground">

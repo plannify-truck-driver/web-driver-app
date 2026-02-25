@@ -105,14 +105,28 @@ export function WorkdayTableRow2({
           <p>Début</p>
           <p>{displayTime(workday.start_time)}</p>
         </div>
-        <div className="bg-primary/10 text-primary flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">
-          <p>Fin</p>
-          <p>{displayTime(workday.end_time)}</p>
-        </div>
-        <div className="bg-success/10 text-success flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">
-          <p>Coupure</p>
-          <p>{displayDuration(workday.rest_time, t)}</p>
-        </div>
+        {workday.end_time ? (
+          <div className="bg-primary/10 text-primary flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">
+            <p>Fin</p>
+            <p>{displayTime(workday.end_time)}</p>
+          </div>
+        ) : (
+          <div className="bg-muted-foreground/10 text-muted-foreground/80 flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">
+            <p>Fin</p>
+            <Minus size={16} />
+          </div>
+        )}
+        {workday.end_time ? (
+          <div className="bg-success/10 text-success flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">
+            <p>Coupure</p>
+            <p>{displayDuration(workday.rest_time, t)}</p>
+          </div>
+        ) : (
+          <div className="bg-muted-foreground/10 text-muted-foreground/80 flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">
+            <p>Coupure</p>
+            <Minus size={16} />
+          </div>
+        )}
       </div>
     </button>
   )
