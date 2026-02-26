@@ -6,9 +6,10 @@ import { StatWorkedDays } from "@/shared/components/statistics/StatWorkedDays"
 import { StatTotalWorkedHours } from "@/shared/components/statistics/StatTotalWorkedHour"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
 import { ActionButton } from "@/shared/components/ActionButton"
-import { UndoButton } from "@/shared/components/UndoButton"
 import { WorkdayRecap } from "@/shared/components/WorkdayRecap"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
+import { Button } from "@/shared/components/ui/Button"
+import { X } from "lucide-react"
 
 interface PageDashboardIndexProps {
   workdays: Workday[]
@@ -84,11 +85,22 @@ export default function PageDashboardIndex({
         <Skeleton className="h-18 w-full" />
       ) : todayWorkday ? (
         todayWorkday.end_time ? (
-          <WorkdayRecap workday={todayWorkday} />
+          <div className="flex-colitems-end flex gap-2 sm:gap-0">
+            <WorkdayRecap workday={todayWorkday} />
+            <div className="flex flex-row items-center gap-1">
+              <X className="text-muted-foreground/80" size={14} />
+              <Button
+                variant="link"
+                className="text-muted-foreground p-0 text-xs"
+                onClick={onDeleteWorkday}
+              >
+                {t("pages.dashboard.delete-workday")}
+              </Button>
+            </div>
+          </div>
         ) : (
-          <div className="sm:grid sm:grid-cols-6 sm:gap-2">
+          <div className="flex flex-col items-end gap-2 sm:gap-0">
             <ActionButton
-              className="sm:animate-squish-back col-span-5"
               label={
                 <div className="flex flex-col items-start justify-between">
                   <span>{t("pages.dashboard.end-workday")}</span>
@@ -102,16 +114,17 @@ export default function PageDashboardIndex({
               isLoading={false}
               onClick={onEndWorkday}
             />
-            <UndoButton
-              className="col-span-1 hidden sm:flex"
-              label={
-                <div className="flex flex-col items-start justify-between">
-                  <span>{t("pages.dashboard.delete-workday")}</span>
-                </div>
-              }
-              isLoading={isDeletingWorkday}
-              onClick={onDeleteWorkday}
-            />
+            <div className="flex flex-row items-center gap-1">
+              <X className="text-muted-foreground/80" size={14} />
+              <Button
+                variant="link"
+                className="text-muted-foreground p-0 text-xs"
+                disabled={isDeletingWorkday}
+                onClick={onDeleteWorkday}
+              >
+                {t("pages.dashboard.cancel-workday")}
+              </Button>
+            </div>
           </div>
         )
       ) : (
