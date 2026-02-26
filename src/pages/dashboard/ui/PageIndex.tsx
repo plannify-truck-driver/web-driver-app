@@ -10,13 +10,16 @@ import { WorkdayRecap } from "@/shared/components/WorkdayRecap"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
 import { Button } from "@/shared/components/ui/Button"
 import { X } from "lucide-react"
+import { StatOvernightRest } from "@/shared/components/statistics/StatOvernightRest"
 
 interface PageDashboardIndexProps {
   workdays: Workday[]
+  monthWorkdays: Workday[]
   today: Date
   todayWorkday: Workday | null
   period: PeriodOfTime
   isPeriodWorkdaysLoading: boolean
+  isMonthWorkdaysLoading: boolean
   isTodayWorkdayLoading: boolean
   isCreatingWorkday: boolean
   isUpdatingWorkday: boolean
@@ -32,10 +35,12 @@ interface PageDashboardIndexProps {
 
 export default function PageDashboardIndex({
   workdays,
+  monthWorkdays,
   today,
   todayWorkday,
   period,
   isPeriodWorkdaysLoading,
+  isMonthWorkdaysLoading,
   isTodayWorkdayLoading,
   isCreatingWorkday,
   isUpdatingWorkday,
@@ -160,7 +165,12 @@ export default function PageDashboardIndex({
           <StatTotalWorkedHours
             totalString={totalWorkingTime}
             month={today}
-            isLoading={isPeriodWorkdaysLoading}
+            isLoading={isMonthWorkdaysLoading}
+          />
+          <StatOvernightRest
+            workdays={monthWorkdays}
+            isLoading={isMonthWorkdaysLoading}
+            className="hidden sm:flex"
           />
         </div>
       </div>

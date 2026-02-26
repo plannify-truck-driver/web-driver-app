@@ -17,6 +17,11 @@ export interface GetWorkdayByDateRequest {
   date: string
 }
 
+export interface GetWorkdayByMonthRequest {
+  month: string
+  year: string
+}
+
 export interface CreateWorkdayRequest {
   date: string
   start_time: string

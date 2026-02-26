@@ -2,6 +2,7 @@ import {
   useCreateWorkday,
   useDeleteWorkday,
   useGetWorkdayByDate,
+  useGetWorkdaysByMonth,
   useGetWorkdaysByPeriod,
   useRestoreWorkday,
   useUpdateWorkday,
@@ -48,6 +49,10 @@ export default function PageDashboardIndexFeature() {
     to: period.to.toISOString().split("T")[0],
     page: 1,
     limit: 100,
+  })
+  const { data: monthWorkdays, isLoading: isMonthWorkdaysLoading } = useGetWorkdaysByMonth({
+    month: (today.getMonth() + 1).toString().padStart(2, "0"),
+    year: today.getFullYear().toString(),
   })
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
     date: today.toISOString().split("T")[0],
@@ -136,8 +141,8 @@ export default function PageDashboardIndexFeature() {
   }
 
   const totalWorkingTime: string = useMemo(() => {
-    if (periodWorkdays && periodWorkdays.data) {
-      const seconds = periodWorkdays.data.reduce(
+    if (monthWorkdays) {
+      const seconds = monthWorkdays.reduce(
         (acc, workday) =>
           acc + getWorkingTime(workday.start_time, workday.end_time, workday.rest_time),
         0
@@ -149,7 +154,7 @@ export default function PageDashboardIndexFeature() {
       )
     }
     return "0h"
-  }, [periodWorkdays, t])
+  }, [monthWorkdays, t])
 
   const onStartWorkday = () => {
     const now = new Date()
@@ -192,10 +197,12 @@ export default function PageDashboardIndexFeature() {
   return (
     <PageDashboardIndex
       workdays={periodWorkdays?.data ?? []}
+      monthWorkdays={monthWorkdays ?? []}
       today={today}
       todayWorkday={todayWorkday ?? null}
       period={period}
       isPeriodWorkdaysLoading={isPeriodWorkdaysLoading}
+      isMonthWorkdaysLoading={isMonthWorkdaysLoading}
       isTodayWorkdayLoading={isTodayWorkdayLoading}
       isCreatingWorkday={isCreatingWorkday || isUpdatingWorkday || isRestoringWorkday}
       isUpdatingWorkday={isUpdatingWorkday}

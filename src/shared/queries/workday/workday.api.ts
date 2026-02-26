@@ -3,6 +3,7 @@ import type {
   CreateWorkdayRequest,
   DeleteWorkdayRequest,
   GetWorkdayByDateRequest,
+  GetWorkdayByMonthRequest,
   GetWorkdaysByPeriodRequest,
   GetWorkdaysByPeriodResponse,
   RestoreWorkdayRequest,
@@ -15,6 +16,14 @@ export const getWorkdaysByPeriod = (
 ): Promise<GetWorkdaysByPeriodResponse> => {
   return api
     .get("workdays", {
+      searchParams: { ...body },
+    })
+    .json()
+}
+
+export const getWorkdaysByMonth = (body: GetWorkdayByMonthRequest): Promise<Workday[]> => {
+  return api
+    .get("workdays/month", {
       searchParams: { ...body },
     })
     .json()

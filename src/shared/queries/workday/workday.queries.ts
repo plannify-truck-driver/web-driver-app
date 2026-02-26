@@ -3,6 +3,7 @@ import {
   createWorkday,
   deleteWorkday,
   getWorkdayByDate,
+  getWorkdaysByMonth,
   getWorkdaysByPeriod,
   restoreWorkday,
   updateWorkday,
@@ -11,6 +12,7 @@ import type {
   CreateWorkdayRequest,
   DeleteWorkdayRequest,
   GetWorkdayByDateRequest,
+  GetWorkdayByMonthRequest,
   GetWorkdaysByPeriodRequest,
   RestoreWorkdayRequest,
   UpdateWorkdayRequest,
@@ -24,6 +26,8 @@ export const workdaysKeys = {
       ...workdaysKeys.all,
       `workdays-${request.from}-${request.to}-${request.page}-${request.limit}`,
     ] as const,
+  getWorkdaysByMonth: (request: GetWorkdayByMonthRequest) =>
+    [...workdaysKeys.all, `workdays-month-${request.month}-${request.year}`] as const,
   getWorkdayByDate: (request: GetWorkdayByDateRequest) =>
     [...workdaysKeys.all, `workday-${request.date}`] as const,
 }
@@ -33,6 +37,12 @@ export const useGetWorkdaysByPeriod = (request: GetWorkdaysByPeriodRequest) =>
     queryKey: workdaysKeys.getWorkdaysByPeriod(request),
     queryFn: () => getWorkdaysByPeriod(request),
     enabled: true,
+  })
+
+export const useGetWorkdaysByMonth = (request: GetWorkdayByMonthRequest) =>
+  useQuery({
+    queryKey: workdaysKeys.getWorkdaysByMonth(request),
+    queryFn: () => getWorkdaysByMonth(request),
   })
 
 export const useGetWorkdayByDate = (request: GetWorkdayByDateRequest) =>

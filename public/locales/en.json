@@ -73,6 +73,10 @@
     "stat-total-worked-hour": {
       "this-month": "month driving"
     },
+    "stat-overnight-rest": {
+      "overnight-rest": "Overnight rest",
+      "overnight-rest-description": "nights with complete rest"
+    },
     "workday-recap": {
       "end-workday": "Workday ended",
       "start": "Start",
