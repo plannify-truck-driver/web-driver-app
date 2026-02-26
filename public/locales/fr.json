@@ -87,6 +87,13 @@
       "end": "Fin",
       "rest-period": "Coupure",
       "night-period": "Nuit"
+    },
+    "workday-table-desktop": {
+      "date": "Date",
+      "start-time": "Début",
+      "end-time": "Fin",
+      "rest-time": "Repos",
+      "overnight-rest": "Nuit"
     }
   },
   "navigation": {

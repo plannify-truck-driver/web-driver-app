@@ -5,6 +5,7 @@ import { WorkdayTableRow2 } from "./workdayTableRows/WorkdayTableRow2"
 import { WorkdayTableRow3 } from "./workdayTableRows/WorkdayTableRow3"
 import type { PeriodOfTime } from "@/pages/dashboard/feature/PageIndexFeature"
 import { useTranslation } from "react-i18next"
+import { WorkdayTableDesktop } from "./workdayTableRows/WorkdayTableDesktop"
 
 export interface WorkdayTableProps {
   workdays: Workday[]
@@ -27,7 +28,7 @@ export function WorkdayTable({ workdays, period }: WorkdayTableProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">
+      <p className="text-muted-foreground font-mono text-sm uppercase">
         {t("components.workday-table.detail-summary")}
       </p>
       <div className="block sm:hidden">
@@ -65,6 +66,7 @@ export function WorkdayTable({ workdays, period }: WorkdayTableProps) {
           }
         )}
       </div>
+      <WorkdayTableDesktop workdays={workdays} />
     </div>
   )
 }
