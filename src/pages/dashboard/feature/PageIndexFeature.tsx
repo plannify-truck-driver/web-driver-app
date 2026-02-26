@@ -198,6 +198,7 @@ export default function PageDashboardIndexFeature() {
       isPeriodWorkdaysLoading={isPeriodWorkdaysLoading}
       isTodayWorkdayLoading={isTodayWorkdayLoading}
       isCreatingWorkday={isCreatingWorkday || isUpdatingWorkday || isRestoringWorkday}
+      isUpdatingWorkday={isUpdatingWorkday}
       isDeletingWorkday={isDeletingWorkday}
       error={error}
       totalWorkingTime={totalWorkingTime}

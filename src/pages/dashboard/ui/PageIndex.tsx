@@ -19,6 +19,7 @@ interface PageDashboardIndexProps {
   isPeriodWorkdaysLoading: boolean
   isTodayWorkdayLoading: boolean
   isCreatingWorkday: boolean
+  isUpdatingWorkday: boolean
   isDeletingWorkday: boolean
   error: Error | null
   totalWorkingTime: string
@@ -37,6 +38,7 @@ export default function PageDashboardIndex({
   isPeriodWorkdaysLoading,
   isTodayWorkdayLoading,
   isCreatingWorkday,
+  isUpdatingWorkday,
   isDeletingWorkday,
   error,
   totalWorkingTime,
@@ -85,7 +87,7 @@ export default function PageDashboardIndex({
         <Skeleton className="h-18 w-full" />
       ) : todayWorkday ? (
         todayWorkday.end_time ? (
-          <div className="flex-colitems-end flex gap-2 sm:gap-0">
+          <div className="flex flex-col items-end gap-2 sm:gap-0">
             <WorkdayRecap workday={todayWorkday} />
             <div className="flex flex-row items-center gap-1">
               <X className="text-muted-foreground/80" size={14} />
@@ -111,7 +113,7 @@ export default function PageDashboardIndex({
                   </span>
                 </div>
               }
-              isLoading={false}
+              isLoading={isUpdatingWorkday}
               onClick={onEndWorkday}
             />
             <div className="flex flex-row items-center gap-1">
