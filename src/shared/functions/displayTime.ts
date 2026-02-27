@@ -1,6 +1,6 @@
-export const displayTime = (time?: string | null): string => {
+export const displayTime = (time?: string | null, onlyHourMinute?: boolean): string => {
   if (!time) return "00:00"
 
   const [hours, minutes] = time.split(":")
-  return `${hours}:${minutes}`
+  return onlyHourMinute ? `${hours}:${minutes}` : `${time}`
 }
