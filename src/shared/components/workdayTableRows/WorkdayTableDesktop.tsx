@@ -80,9 +80,9 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
   return (
     <div className="bg-sidebar hidden overflow-hidden rounded-md border sm:block">
       <Table>
-        <TableHeader className="bg-table-header">
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="bg-table-header hover:bg-table-header">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
@@ -97,7 +97,11 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+            <TableRow
+              key={row.id}
+              data-state={row.getIsSelected() && "selected"}
+              className="cursor-pointer"
+            >
               {row.getVisibleCells().map((cell) => {
                 return (
                   <TableCell key={cell.id}>
