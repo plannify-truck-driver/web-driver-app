@@ -14,7 +14,6 @@ import { StatOvernightRest } from "@/shared/components/statistics/StatOvernightR
 
 interface PageDashboardIndexProps {
   workdays: Workday[]
-  monthWorkdays: Workday[]
   today: Date
   todayWorkday: Workday | null
   period: PeriodOfTime
@@ -35,7 +34,6 @@ interface PageDashboardIndexProps {
 
 export default function PageDashboardIndex({
   workdays,
-  monthWorkdays,
   today,
   todayWorkday,
   period,
@@ -168,8 +166,8 @@ export default function PageDashboardIndex({
             isLoading={isMonthWorkdaysLoading}
           />
           <StatOvernightRest
-            workdays={monthWorkdays}
-            isLoading={isMonthWorkdaysLoading}
+            workdays={workdays}
+            isLoading={isPeriodWorkdaysLoading}
             className="hidden sm:flex"
           />
         </div>

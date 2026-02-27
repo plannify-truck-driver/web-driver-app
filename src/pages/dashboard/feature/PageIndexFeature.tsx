@@ -197,7 +197,6 @@ export default function PageDashboardIndexFeature() {
   return (
     <PageDashboardIndex
       workdays={periodWorkdays?.data ?? []}
-      monthWorkdays={monthWorkdays ?? []}
       today={today}
       todayWorkday={todayWorkday ?? null}
       period={period}
