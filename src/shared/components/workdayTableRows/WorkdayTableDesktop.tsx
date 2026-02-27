@@ -118,6 +118,13 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
           ))}
         </TableHeader>
         <TableBody>
+          {workdays.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={table.getVisibleLeafColumns().length} className="text-center">
+                {t("components.workday-table-desktop.no-workdays")}
+              </TableCell>
+            </TableRow>
+          )}
           {table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}

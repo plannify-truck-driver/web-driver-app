@@ -100,7 +100,8 @@
       "rest-time": "Repos",
       "overnight-rest": "Nuit",
       "time-worked": "Temps travaillé",
-      "rest-error": "Erreur de coupure"
+      "rest-error": "Erreur de coupure",
+      "no-workdays": "Aucune donnée"
     }
   },
   "navigation": {

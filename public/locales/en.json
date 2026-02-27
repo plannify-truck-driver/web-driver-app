@@ -100,7 +100,8 @@
       "rest-time": "Rest",
       "overnight-rest": "Night",
       "time-worked": "Time worked",
-      "rest-error": "Rest error"
+      "rest-error": "Rest error",
+      "no-workdays": "No data"
     }
   },
   "navigation": {
