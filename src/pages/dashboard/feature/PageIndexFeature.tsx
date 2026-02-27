@@ -51,8 +51,8 @@ export default function PageDashboardIndexFeature() {
     limit: 100,
   })
   const { data: monthWorkdays, isLoading: isMonthWorkdaysLoading } = useGetWorkdaysByMonth({
-    month: (today.getMonth() + 1).toString().padStart(2, "0"),
-    year: today.getFullYear().toString(),
+    month: (period.from.getMonth() + 1).toString().padStart(2, "0"),
+    year: period.from.getFullYear().toString(),
   })
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
     date: today.toISOString().split("T")[0],
@@ -197,7 +197,6 @@ export default function PageDashboardIndexFeature() {
   return (
     <PageDashboardIndex
       workdays={periodWorkdays?.data ?? []}
-      today={today}
       todayWorkday={todayWorkday ?? null}
       period={period}
       isPeriodWorkdaysLoading={isPeriodWorkdaysLoading}
