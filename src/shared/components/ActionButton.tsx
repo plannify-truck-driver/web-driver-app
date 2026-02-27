@@ -1,16 +1,21 @@
-import { ArrowRight, Play } from "lucide-react"
-import type { ReactNode } from "react"
+import { ArrowRight, Clock2, Play } from "lucide-react"
 import { Loader } from "./Loader"
 import { cn } from "@/lib/utils"
+import { useTranslation } from "react-i18next"
+import type { Workday } from "../models/workday"
 
 export interface ActionButtonProps {
-  label: ReactNode
+  todayWorkday?: Workday
   className?: string
   isLoading: boolean
   onClick: () => void
 }
 
-export function ActionButton({ label, className, isLoading, onClick }: ActionButtonProps) {
+export function ActionButton({ todayWorkday, className, isLoading, onClick }: ActionButtonProps) {
+  const { t, i18n } = useTranslation()
+
+  const today = new Date()
+
   return (
     <button
       className={cn(
@@ -23,9 +28,35 @@ export function ActionButton({ label, className, isLoading, onClick }: ActionBut
     >
       <div className="flex flex-row gap-4">
         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10">
-          <Play size={20} />
+          {!todayWorkday ? <Play size={20} /> : <Clock2 size={20} />}
         </div>
-        {label}
+        <div className="flex flex-col items-start justify-between">
+          {!todayWorkday ? (
+            <>
+              <span>{t("pages.dashboard.start-workday")}</span>
+              <span className="hidden font-light text-white/60 sm:block">
+                {t("pages.dashboard.no-workday-today")} -{" "}
+                {today.toLocaleDateString(i18n.language, {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                })}
+              </span>
+              <span className="block font-light text-white/60 sm:hidden">
+                {t("pages.dashboard.no-workday-today")}
+              </span>
+            </>
+          ) : (
+            <>
+              <span>{t("pages.dashboard.end-workday")}</span>
+              <span className="font-light text-white/60">
+                {t("pages.dashboard.workday-started-at", {
+                  startTime: todayWorkday.start_time,
+                })}
+              </span>
+            </>
+          )}
+        </div>
       </div>
       {isLoading ? <Loader size={6} /> : <ArrowRight size={20} />}
     </button>

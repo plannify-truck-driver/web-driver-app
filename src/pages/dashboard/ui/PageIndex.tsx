@@ -106,16 +106,7 @@ export default function PageDashboardIndex({
         ) : (
           <div className="flex flex-col items-end gap-2 sm:gap-0">
             <ActionButton
-              label={
-                <div className="flex flex-col items-start justify-between">
-                  <span>{t("pages.dashboard.end-workday")}</span>
-                  <span className="font-light text-white/60">
-                    {t("pages.dashboard.workday-started-at", {
-                      startTime: todayWorkday.start_time,
-                    })}
-                  </span>
-                </div>
-              }
+              todayWorkday={todayWorkday}
               isLoading={isUpdatingWorkday}
               onClick={onEndWorkday}
             />
@@ -133,26 +124,7 @@ export default function PageDashboardIndex({
           </div>
         )
       ) : (
-        <ActionButton
-          label={
-            <div className="flex flex-col items-start justify-between">
-              <span>{t("pages.dashboard.start-workday")}</span>
-              <span className="hidden font-light text-white/60 sm:block">
-                {t("pages.dashboard.no-workday-today")} -{" "}
-                {today.toLocaleDateString(i18n.language, {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                })}
-              </span>
-              <span className="block font-light text-white/60 sm:hidden">
-                {t("pages.dashboard.no-workday-today")}
-              </span>
-            </div>
-          }
-          isLoading={isCreatingWorkday}
-          onClick={onStartWorkday}
-        />
+        <ActionButton isLoading={isCreatingWorkday} onClick={onStartWorkday} />
       )}
       <div className="flex w-full flex-col gap-3">
         <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">
