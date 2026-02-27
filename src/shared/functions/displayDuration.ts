@@ -10,7 +10,7 @@ export const displayDuration = (time: string | null, t: TFunction): string => {
   if (minutesNum > 0) {
     return t("pages.dashboard.time-format", {
       hours: Math.round(hoursNum),
-      minutes: Math.round(minutesNum),
+      minutes: String(Math.round(minutesNum)).padStart(2, "0"),
     })
   }
 
