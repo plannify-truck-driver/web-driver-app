@@ -5,6 +5,7 @@ import { Moon, Minus } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/Table"
 import { displayDuration } from "@/shared/functions/displayDuration"
 import { displayTime } from "@/shared/functions/displayTime"
+import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 
 export interface WorkdayTableDesktopProps {
   workdays: Workday[]
@@ -66,6 +67,27 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
           <Moon className="text-success" size={18} />
         ) : (
           <Minus className="text-muted-foreground/80" size={16} />
+        )
+      },
+    },
+    {
+      accessorKey: "time_worked",
+      header: t("components.workday-table-desktop.time-worked"),
+      cell: ({ row }) => {
+        const startTime = row.getValue("start_time") as string | undefined
+        const endTime = row.getValue("end_time") as string | undefined
+        const restTime = row.getValue("rest_time") as string | undefined
+
+        if (!startTime || !endTime || !restTime)
+          return <Minus className="text-muted-foreground/80" size={16} />
+
+        const seconds = getWorkingTime(startTime, endTime, restTime)
+
+        if (seconds < 0) return t("components.workday-table-desktop.rest-error")
+
+        return displayDuration(
+          `${Math.floor(seconds / 3600)}:${Math.floor((seconds % 3600) / 60)}`,
+          t
         )
       },
     },

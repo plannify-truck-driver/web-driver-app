@@ -98,7 +98,9 @@
       "start-time": "Début",
       "end-time": "Fin",
       "rest-time": "Repos",
-      "overnight-rest": "Nuit"
+      "overnight-rest": "Nuit",
+      "time-worked": "Temps travaillé",
+      "rest-error": "Erreur de coupure"
     }
   },
   "navigation": {
