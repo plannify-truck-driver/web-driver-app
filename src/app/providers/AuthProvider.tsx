@@ -1,5 +1,5 @@
 import type { Driver, JwtDriverPayload } from "@/shared/models/driver"
-import { createContext, useContext, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useDeleteRefreshTokenMutation, useRefreshToken } from "@/shared/queries/auth/auth.queries"
 import { useQueryClient } from "@tanstack/react-query"
@@ -32,11 +32,11 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [driver, setDriver] = useState<Driver | null>(null)
 
-  function login(token: string) {
+  const login = useCallback((token: string) => {
     setAccessToken(token)
     const decoded: JwtDriverPayload = jwtDecode(token)
     setDriver(decoded.driver)
-  }
+  }, [])
 
   function logout() {
     mutateAsync().then(() => {
@@ -46,7 +46,7 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
     })
   }
 
-  async function refreshToken() {
+  const refreshToken = useCallback(async () => {
     return refetch().then((res) => {
       if (res.data) {
         login(res.data.access_token)
@@ -54,7 +54,17 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
       }
       return false
     })
-  }
+  }, [refetch, login])
+
+  useEffect(() => {
+    if (!accessToken) return
+    const decoded: JwtDriverPayload = jwtDecode(accessToken)
+    const delay = decoded.exp * 1000 - Date.now() - 60_000
+
+    if (delay <= 0) return
+    const timerId = setTimeout(() => refreshToken(), delay)
+    return () => clearTimeout(timerId)
+  }, [accessToken, refreshToken])
 
   const value: AuthProviderState = {
     driver,
