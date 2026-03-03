@@ -8,13 +8,14 @@ import { loginFormSchema } from "@/shared/zod/login"
 import { useLoginMutation } from "@/shared/queries/auth/auth.queries"
 import { useEffect, useRef, useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
-import { useNavigate } from "@tanstack/react-router"
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import { useAuth } from "@/app/providers/AuthProvider"
 
 export default function PageLoginFeature() {
   const { t } = useTranslation()
   const { accessToken, login, refreshToken } = useAuth()
   const navigate = useNavigate()
+  const { redirect } = useSearch({ from: "/authentication/login" })
   const hasAttemptedRefresh = useRef(false)
 
   const { mutateAsync, data, error, isPending } = useLoginMutation()
@@ -38,7 +39,7 @@ export default function PageLoginFeature() {
   useEffect(() => {
     if (data && !accessToken) {
       login(data.access_token)
-      navigate({ to: "/dashboard", replace: true })
+      navigate({ to: redirect || "/dashboard", replace: true })
     } else if (error) {
       handleErrorResponse(error).then((apiError) => {
         if (apiError) {
@@ -64,7 +65,7 @@ export default function PageLoginFeature() {
       hasAttemptedRefresh.current = true
       refreshToken().then((response) => {
         if (response) {
-          navigate({ to: "/dashboard", replace: true })
+          navigate({ to: redirect || "/dashboard", replace: true })
         }
       })
     }

@@ -63,12 +63,19 @@
       "workday-deletion-error": "An error occurred while deleting your workday. Please try again later.",
       "workday-restoration-error": "An error occurred while restoring your workday. Please try again later.",
       "workday-not-found-error": "No workday found for today."
+    },
+    "workdays": {
+      "page-title": "Workdays",
+      "current-month": "Current month",
+      "previous-month": "Previous month",
+      "other-month": "Other month"
     }
   },
   "components": {
     "stat-workday": {
       "worked-days": "Worked days",
-      "this-week": "This week"
+      "this-week": "This week",
+      "this-month": "This month"
     },
     "stat-total-worked-hour": {
       "this-month": "month driving"
@@ -85,7 +92,8 @@
       "work-period": "Work period"
     },
     "workday-table": {
-      "detail-summary": "Week detail"
+      "detail-summary": "Week detail",
+      "no-workdays": "No workdays"
     },
     "workday-table-row-3": {
       "start": "Start",
@@ -101,7 +109,7 @@
       "overnight-rest": "Night",
       "time-worked": "Time worked",
       "rest-error": "Rest error",
-      "no-workdays": "No data"
+      "no-workdays": "No workdays"
     }
   },
   "navigation": {

@@ -129,7 +129,12 @@ export default function PageDashboardIndex({
           {t("pages.dashboard.summary")}
         </p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
-          <StatWorkedDays workedDays={workdays.length} isLoading={isPeriodWorkdaysLoading} />
+          <StatWorkedDays
+            statType="week"
+            workedDays={workdays.length}
+            maxWorkedDays={7}
+            isLoading={isPeriodWorkdaysLoading}
+          />
           <StatTotalWorkedHours
             totalString={totalWorkingTime}
             month={period.from}

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from "./routes/__root"
 import { Route as IndexRouteImport } from "./routes/index"
+import { Route as WorkdaysIndexRouteImport } from "./routes/workdays/index"
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index"
 import { Route as AuthenticationVerifyAccountRouteImport } from "./routes/authentication/verify-account"
 import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentication/suspended"
@@ -20,6 +21,11 @@ import { Route as AuthenticationTokenVerifyAccountRouteImport } from "./routes/a
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkdaysIndexRoute = WorkdaysIndexRouteImport.update({
+  id: "/workdays/",
+  path: "/workdays/",
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/dashboard/": typeof DashboardIndexRoute
+  "/workdays/": typeof WorkdaysIndexRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
 }
 export interface FileRoutesByTo {
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/dashboard": typeof DashboardIndexRoute
+  "/workdays": typeof WorkdaysIndexRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
 }
 export interface FileRoutesById {
@@ -82,6 +90,7 @@ export interface FileRoutesById {
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/dashboard/": typeof DashboardIndexRoute
+  "/workdays/": typeof WorkdaysIndexRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
 }
 export interface FileRouteTypes {
@@ -93,6 +102,7 @@ export interface FileRouteTypes {
     | "/authentication/suspended"
     | "/authentication/verify-account"
     | "/dashboard/"
+    | "/workdays/"
     | "/authentication/token/verify-account"
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -102,6 +112,7 @@ export interface FileRouteTypes {
     | "/authentication/suspended"
     | "/authentication/verify-account"
     | "/dashboard"
+    | "/workdays"
     | "/authentication/token/verify-account"
   id:
     | "__root__"
@@ -111,6 +122,7 @@ export interface FileRouteTypes {
     | "/authentication/suspended"
     | "/authentication/verify-account"
     | "/dashboard/"
+    | "/workdays/"
     | "/authentication/token/verify-account"
   fileRoutesById: FileRoutesById
 }
@@ -121,6 +133,7 @@ export interface RootRouteChildren {
   AuthenticationSuspendedRoute: typeof AuthenticationSuspendedRoute
   AuthenticationVerifyAccountRoute: typeof AuthenticationVerifyAccountRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  WorkdaysIndexRoute: typeof WorkdaysIndexRoute
   AuthenticationTokenVerifyAccountRoute: typeof AuthenticationTokenVerifyAccountRoute
 }
 
@@ -131,6 +144,13 @@ declare module "@tanstack/react-router" {
       path: "/"
       fullPath: "/"
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/workdays/": {
+      id: "/workdays/"
+      path: "/workdays"
+      fullPath: "/workdays/"
+      preLoaderRoute: typeof WorkdaysIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/dashboard/": {
@@ -185,6 +205,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticationSuspendedRoute: AuthenticationSuspendedRoute,
   AuthenticationVerifyAccountRoute: AuthenticationVerifyAccountRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  WorkdaysIndexRoute: WorkdaysIndexRoute,
   AuthenticationTokenVerifyAccountRoute: AuthenticationTokenVerifyAccountRoute,
 }
 export const routeTree = rootRouteImport

@@ -9,7 +9,7 @@ import { WorkdayTableDesktop } from "./workdayTableRows/WorkdayTableDesktop"
 
 export interface WorkdayTableProps {
   workdays: Workday[]
-  period: PeriodOfTime
+  period?: PeriodOfTime
 }
 
 export function WorkdayTable({ workdays, period }: WorkdayTableProps) {
@@ -32,38 +32,54 @@ export function WorkdayTable({ workdays, period }: WorkdayTableProps) {
         {t("components.workday-table.detail-summary")}
       </p>
       <div className="block sm:hidden">
-        {Array.from(
-          {
-            length:
-              Math.ceil((period.to.getTime() - period.from.getTime()) / (1000 * 60 * 60 * 24)) + 1,
-          },
-          (_, idx) => {
-            const i = new Date(period.from.getTime() + idx * 24 * 60 * 60 * 1000)
-            const workday = workdays.find(
-              (wd) => new Date(wd.date).toDateString() === i.toDateString()
-            )
+        {period != undefined ? (
+          Array.from(
+            {
+              length:
+                Math.ceil((period.to.getTime() - period.from.getTime()) / (1000 * 60 * 60 * 24)) +
+                1,
+            },
+            (_, idx) => {
+              const i = new Date(period.from.getTime() + idx * 24 * 60 * 60 * 1000)
+              const workday = workdays.find(
+                (wd) => new Date(wd.date).toDateString() === i.toDateString()
+              )
 
-            if ([0, 6].includes(i.getDay()) && !workday) {
-              return null
+              if ([0, 6].includes(i.getDay()) && !workday) {
+                return null
+              }
+
+              return (
+                <WorkdayTableRowComponent
+                  key={i.toDateString()}
+                  date={i}
+                  workday={workday}
+                  isFirst={i.getDate() === period.from.getDate()}
+                  isLast={
+                    workdaysDays.includes(0)
+                      ? i.getDay() === 0
+                      : workdaysDays.includes(6)
+                        ? i.getDay() === 6
+                        : i.getDay() === 5
+                  }
+                  onClick={() => {}}
+                />
+              )
             }
-
-            return (
-              <WorkdayTableRowComponent
-                key={i.toDateString()}
-                date={i}
-                workday={workday}
-                isFirst={i.getDate() === period.from.getDate()}
-                isLast={
-                  workdaysDays.includes(0)
-                    ? i.getDay() === 0
-                    : workdaysDays.includes(6)
-                      ? i.getDay() === 6
-                      : i.getDay() === 5
-                }
-                onClick={() => {}}
-              />
-            )
-          }
+          )
+        ) : workdays.length > 0 ? (
+          workdays.map((workday, idx) => (
+            <WorkdayTableRowComponent
+              key={workday.date}
+              date={new Date(workday.date)}
+              workday={workday}
+              isFirst={idx === 0}
+              isLast={idx === workdays.length - 1}
+              onClick={() => {}}
+            />
+          ))
+        ) : (
+          <p className="text-center">{t("components.workday-table.no-workdays")}</p>
         )}
       </div>
       <WorkdayTableDesktop workdays={workdays} />

@@ -63,12 +63,19 @@
       "workday-deletion-error": "Une erreur est survenue lors de la suppression de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-not-found-error": "Aucune journée de travail n'a été trouvée pour aujourd'hui."
+    },
+    "workdays": {
+      "page-title": "Journées",
+      "current-month": "Mois courrant",
+      "previous-month": "Mois précédent",
+      "other-month": "Autre mois"
     }
   },
   "components": {
     "stat-workday": {
       "worked-days": "Jours travaillés",
-      "this-week": "Cette semaine"
+      "this-week": "Cette semaine",
+      "this-month": "Ce mois"
     },
     "stat-total-worked-hour": {
       "this-month": "conduite mois"
@@ -85,7 +92,8 @@
       "work-period": "Travail"
     },
     "workday-table": {
-      "detail-summary": "Détail de la semaine"
+      "detail-summary": "Détail de la semaine",
+      "no-workdays": "Aucune journée de travail"
     },
     "workday-table-row-3": {
       "start": "Début",
@@ -101,7 +109,7 @@
       "overnight-rest": "Nuit",
       "time-worked": "Temps travaillé",
       "rest-error": "Erreur de coupure",
-      "no-workdays": "Aucune donnée"
+      "no-workdays": "Aucune journée de travail"
     }
   },
   "navigation": {
