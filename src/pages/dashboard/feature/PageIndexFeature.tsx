@@ -31,7 +31,8 @@ export default function PageDashboardIndexFeature() {
 
   const today: Date = useMemo(() => new Date(), [])
   const monday: Date = new Date()
-  monday.setDate(today.getDate() - today.getDay() + 1)
+  // For sunday, today.getDay() returns 0
+  monday.setDate(today.getDay() === 0 ? today.getDate() - 6 : today.getDate() - today.getDay() + 1)
   const sunday: Date = new Date(monday)
   sunday.setDate(monday.getDate() + 6)
 
