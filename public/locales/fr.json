@@ -69,6 +69,10 @@
       "current-month": "Mois courrant",
       "previous-month": "Mois précédent",
       "other-month": "Autre mois"
+    },
+    "documents": {
+      "page-title": "Documents",
+      "page-description": "Relevés de vos heures mensuelles"
     }
   },
   "components": {
@@ -110,6 +114,15 @@
       "time-worked": "Temps travaillé",
       "rest-error": "Erreur de coupure",
       "no-workdays": "Aucune journée de travail"
+    },
+    "workday-document-group": {
+      "number-of-documents_one": "{{count}} document",
+      "number-of-documents_other": "{{count}} documents",
+      "no-documents": "Aucun document disponible"
+    },
+    "workday-document-item": {
+      "description": "Relevé d'heures",
+      "generated": "Définitif"
     }
   },
   "navigation": {

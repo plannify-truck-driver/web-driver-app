@@ -5,3 +5,9 @@ export interface Workday {
   rest_time: string
   overnight_rest: boolean
 }
+
+export interface WorkdayDocument {
+  month: number
+  year: number
+  generated_at: string | null
+}

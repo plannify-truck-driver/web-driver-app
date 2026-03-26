@@ -69,6 +69,10 @@
       "current-month": "Current month",
       "previous-month": "Previous month",
       "other-month": "Other month"
+    },
+    "documents": {
+      "page-title": "Documents",
+      "page-description": "Statements of your monthly hours"
     }
   },
   "components": {
@@ -110,6 +114,15 @@
       "time-worked": "Time worked",
       "rest-error": "Rest error",
       "no-workdays": "No workdays"
+    },
+    "workday-document-group": {
+      "number-of-documents_one": "{{count}} document",
+      "number-of-documents_other": "{{count}} documents",
+      "no-documents": "No documents available"
+    },
+    "workday-document-item": {
+      "description": "Hours statement",
+      "generated": "Generated"
     }
   },
   "navigation": {
