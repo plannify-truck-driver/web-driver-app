@@ -1,5 +1,8 @@
 FROM node:25.6-alpine AS base
 
+# Patch CVE-2026-22184 (zlib HIGH)
+RUN apk upgrade --no-cache zlib
+
 # Create a non-root user for security
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S reactuser -u 1001
@@ -37,6 +40,11 @@ USER reactuser
 RUN pnpm run build
 
 FROM nginxinc/nginx-unprivileged:1.29.5-alpine AS production
+
+# Patch CVE-2026-22184 (zlib HIGH)
+USER root
+RUN apk upgrade --no-cache zlib
+USER nginx
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
