@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 import type { WorkdayDocument } from "../models/workday"
-import { Download, FileText, Loader2, Lock } from "lucide-react"
+import { Eye, FileText, Loader2, Lock } from "lucide-react"
 import { upperCaseFirstLetter } from "../functions/upperCaseFirstLetter"
 import { Skeleton } from "./ui/Skeleton"
 
@@ -55,11 +55,7 @@ export function WorkdayDocumentItem({
               onClick={() => onGenerateDocument(workdayDocument.month, workdayDocument.year)}
               disabled={isGenerating}
             >
-              {isGenerating ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : (
-                <Download size={16} />
-              )}
+              {isGenerating ? <Loader2 size={16} className="animate-spin" /> : <Eye size={16} />}
             </button>
           </div>
         </>
