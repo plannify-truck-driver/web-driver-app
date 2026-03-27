@@ -31,7 +31,7 @@ export function WorkdayDocumentGroup({
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-1">
       <div className="flex flex-row justify-between gap-2">
         <div className="flex flex-row items-center gap-2">
           <p>{year}</p>
