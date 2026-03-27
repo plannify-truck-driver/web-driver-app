@@ -16,3 +16,8 @@ export interface GenerateWorkdayDocumentRequest {
   month: number
   year: number
 }
+
+export interface GenerateWorkdayDocumentResponse {
+  blob: Blob
+  filename: string
+}

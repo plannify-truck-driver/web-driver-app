@@ -1,5 +1,5 @@
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query"
-import type { GetWorkdayDocumentsByYearsRequest } from "./document.types"
+import type { GenerateWorkdayDocumentResponse, GetWorkdayDocumentsByYearsRequest } from "./document.types"
 import {
   generateWorkdayDocument,
   getWorkdayDocuments,
@@ -27,7 +27,7 @@ export const useGetWorkdayDocumentsByYears = (request: GetWorkdayDocumentsByYear
   })
 
 export const useGenerateWorkdayDocument = (options?: {
-  onSuccess?: (data: Blob) => void
+  onSuccess?: (data: GenerateWorkdayDocumentResponse) => void
   onError?: (error: Error) => void
 }) =>
   useMutation({

@@ -121,6 +121,12 @@
       "number-of-documents_other": "{{count}} documents",
       "no-documents": "No documents available"
     },
+    "pdf-preview": {
+      "title": "Document preview",
+      "close": "Close",
+      "download": "Download",
+      "error": "Unable to display the document."
+    },
     "workday-document-item": {
       "description": "Hours statement",
       "generated": "Generated"

@@ -121,6 +121,12 @@
       "number-of-documents_other": "{{count}} documents",
       "no-documents": "Aucun document disponible"
     },
+    "pdf-preview": {
+      "title": "Prévisualisation du document",
+      "close": "Fermer",
+      "download": "Télécharger",
+      "error": "Impossible d'afficher le document."
+    },
     "workday-document-item": {
       "description": "Relevé d'heures",
       "generated": "Définitif"

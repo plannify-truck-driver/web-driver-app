@@ -9,6 +9,7 @@ import {
 import { useMemo, useState } from "react"
 import type { WorkdayDocument } from "@/shared/models/workday"
 import { toast } from "sonner"
+import { PdfPreviewSheet } from "@/shared/components/PdfPreviewSheet"
 
 export default function PageDocumentsFeature() {
   const { t } = useTranslation()
@@ -16,11 +17,18 @@ export default function PageDocumentsFeature() {
 
   useDocumentTitle(t("pages.documents.page-title"))
 
+  const [previewBlob, setPreviewBlob] = useState<Blob | null>(null)
+  const [previewFilename, setPreviewFilename] = useState("document.pdf")
+
   const { data: yearsDocument } = useGetWorkdayDocuments()
-  const { mutate: generateWorkdayDocument, isPending: isGenerating, variables: generatingDocument } = useGenerateWorkdayDocument({
-    onSuccess: (document: Blob) => {
-      const url = URL.createObjectURL(document)
-      window.open(url, "_blank")
+  const {
+    mutate: generateWorkdayDocument,
+    isPending: isGenerating,
+    variables: generatingDocument,
+  } = useGenerateWorkdayDocument({
+    onSuccess: ({ blob, filename }) => {
+      setPreviewFilename(filename)
+      setPreviewBlob(blob)
     },
     onError: (error: Error) => {
       toast.error(t("pages.documents.generation-error"))
@@ -56,11 +64,19 @@ export default function PageDocumentsFeature() {
   }
 
   return (
-    <PageDocuments
-      workdayDocuments={workdayDocuments}
-      fetchDocumentsByYear={fetchDocumentsByYear}
-      onGenerateDocument={generateDocument}
-      generatingDocument={isGenerating ? generatingDocument : undefined}
-    />
+    <>
+      <PageDocuments
+        workdayDocuments={workdayDocuments}
+        fetchDocumentsByYear={fetchDocumentsByYear}
+        onGenerateDocument={generateDocument}
+        generatingDocument={isGenerating ? generatingDocument : undefined}
+      />
+      <PdfPreviewSheet
+        blob={previewBlob}
+        filename={previewFilename}
+        open={previewBlob !== null}
+        onClose={() => setPreviewBlob(null)}
+      />
+    </>
   )
 }
