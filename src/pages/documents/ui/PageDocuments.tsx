@@ -6,12 +6,14 @@ interface PageDocumentsProps {
   workdayDocuments?: Record<number, WorkdayDocument[] | undefined>
   fetchDocumentsByYear: (year: number) => void
   onGenerateDocument: (month: number, year: number) => void
+  generatingDocument: { month: number; year: number } | undefined
 }
 
 export default function PageDocuments({
   workdayDocuments = {},
   fetchDocumentsByYear,
   onGenerateDocument,
+  generatingDocument,
 }: PageDocumentsProps) {
   const { t } = useTranslation()
   const currentYear = new Date().getFullYear()
@@ -29,6 +31,7 @@ export default function PageDocuments({
           workdayDocuments={currentYearDocuments}
           fetchDocumentsByYear={fetchDocumentsByYear}
           onGenerateDocument={onGenerateDocument}
+          generatingDocument={generatingDocument}
         />
         {Object.entries(workdayDocuments)
           .filter(([year]) => year !== String(currentYear))
@@ -39,6 +42,7 @@ export default function PageDocuments({
               workdayDocuments={documents}
               fetchDocumentsByYear={fetchDocumentsByYear}
               onGenerateDocument={onGenerateDocument}
+              generatingDocument={generatingDocument}
             />
           ))}
       </div>

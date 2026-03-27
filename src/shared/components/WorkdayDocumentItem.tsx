@@ -1,17 +1,19 @@
 import { useTranslation } from "react-i18next"
 import type { WorkdayDocument } from "../models/workday"
-import { Download, FileText, Lock } from "lucide-react"
+import { Download, FileText, Loader2, Lock } from "lucide-react"
 import { upperCaseFirstLetter } from "../functions/upperCaseFirstLetter"
 import { Skeleton } from "./ui/Skeleton"
 
 export interface WorkdayDocumentItemProps {
   workdayDocument?: WorkdayDocument
   onGenerateDocument: (month: number, year: number) => void
+  isGenerating?: boolean
 }
 
 export function WorkdayDocumentItem({
   workdayDocument,
   onGenerateDocument,
+  isGenerating = false,
 }: WorkdayDocumentItemProps) {
   const { t, i18n } = useTranslation()
 
@@ -49,10 +51,15 @@ export function WorkdayDocumentItem({
           </div>
           <div>
             <button
-              className="bg-primary cursor-pointer rounded-md px-3 py-2 text-white"
+              className="bg-primary cursor-pointer rounded-md px-3 py-2 text-white disabled:opacity-70"
               onClick={() => onGenerateDocument(workdayDocument.month, workdayDocument.year)}
+              disabled={isGenerating}
             >
-              <Download size={16} />
+              {isGenerating ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                <Download size={16} />
+              )}
             </button>
           </div>
         </>

@@ -17,7 +17,7 @@ export default function PageDocumentsFeature() {
   useDocumentTitle(t("pages.documents.page-title"))
 
   const { data: yearsDocument } = useGetWorkdayDocuments()
-  const { mutate: generateWorkdayDocument } = useGenerateWorkdayDocument({
+  const { mutate: generateWorkdayDocument, isPending: isGenerating, variables: generatingDocument } = useGenerateWorkdayDocument({
     onSuccess: (document: Blob) => {
       const url = URL.createObjectURL(document)
       window.open(url, "_blank")
@@ -60,6 +60,7 @@ export default function PageDocumentsFeature() {
       workdayDocuments={workdayDocuments}
       fetchDocumentsByYear={fetchDocumentsByYear}
       onGenerateDocument={generateDocument}
+      generatingDocument={isGenerating ? generatingDocument : undefined}
     />
   )
 }

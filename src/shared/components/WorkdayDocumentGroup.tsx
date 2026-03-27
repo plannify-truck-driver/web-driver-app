@@ -10,6 +10,7 @@ export interface WorkdayDocumentGroupProps {
   workdayDocuments: WorkdayDocument[] | undefined
   fetchDocumentsByYear: (year: number) => void
   onGenerateDocument: (month: number, year: number) => void
+  generatingDocument: { month: number; year: number } | undefined
 }
 
 export function WorkdayDocumentGroup({
@@ -17,6 +18,7 @@ export function WorkdayDocumentGroup({
   workdayDocuments,
   fetchDocumentsByYear,
   onGenerateDocument,
+  generatingDocument,
 }: WorkdayDocumentGroupProps) {
   const { t } = useTranslation()
   const today = new Date()
@@ -64,6 +66,10 @@ export function WorkdayDocumentGroup({
                   key={workdayDocument.month}
                   workdayDocument={workdayDocument}
                   onGenerateDocument={onGenerateDocument}
+                  isGenerating={
+                    generatingDocument?.month === workdayDocument.month &&
+                    generatingDocument?.year === workdayDocument.year
+                  }
                 />
               ))}
             </div>
