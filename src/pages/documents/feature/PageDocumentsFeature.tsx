@@ -17,7 +17,6 @@ export default function PageDocumentsFeature() {
   useDocumentTitle(t("pages.documents.page-title"))
 
   const { data: yearsDocument } = useGetWorkdayDocuments()
-  const documents = useGetWorkdayDocumentsByYears({ years: yearsDocument ?? [] })
   const { mutate: generateWorkdayDocument } = useGenerateWorkdayDocument({
     onSuccess: (document: Blob) => {
       const url = URL.createObjectURL(document)
@@ -30,8 +29,9 @@ export default function PageDocumentsFeature() {
   })
 
   const [fetchedYears, setFetchedYears] = useState<number[]>([currentYear])
+  const documents = useGetWorkdayDocumentsByYears({ years: fetchedYears })
 
-  const workdayDocuments = useMemo<Partial<Record<number, WorkdayDocument[] | undefined>>>(() => {
+  const workdayDocuments = useMemo<Record<number, WorkdayDocument[] | undefined>>(() => {
     if (!yearsDocument) return {}
 
     const map: Record<number, WorkdayDocument[] | undefined> = Object.fromEntries(
