@@ -1,5 +1,6 @@
 import { api } from "@/shared/lib/api"
 import type {
+  GenerateWorkdayDocumentRequest,
   GetWorkdayDocumentsByYearRequest,
   GetWorkdayDocumentsByYearResponse,
 } from "./document.types"
@@ -14,6 +15,6 @@ export const getWorkdayDocumentsByYear = (
   return api.get(`workdays/documents/${body.year}`).json()
 }
 
-export const generateWorkdayDocument = (month: number, year: number): Promise<void> => {
-  return api.get(`workdays/documents/${year}/${month}`).json()
+export const generateWorkdayDocument = (params: GenerateWorkdayDocumentRequest): Promise<Blob> => {
+  return api.get(`workdays/documents/${params.year}/${params.month}`).blob()
 }

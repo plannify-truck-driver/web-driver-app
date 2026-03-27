@@ -72,7 +72,8 @@
     },
     "documents": {
       "page-title": "Documents",
-      "page-description": "Relevés de vos heures mensuelles"
+      "page-description": "Relevés de vos heures mensuelles",
+      "generation-error": "Votre document ne peut pas être récupérer pour le moment. Veuillez réessayer plus tard."
     }
   },
   "components": {

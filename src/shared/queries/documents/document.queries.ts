@@ -1,11 +1,15 @@
-import { useQuery } from "@tanstack/react-query"
-import type { GetWorkdayDocumentsByYearRequest } from "./document.types"
-import { getWorkdayDocuments, getWorkdayDocumentsByYear } from "./document.api"
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query"
+import type { GetWorkdayDocumentsByYearsRequest } from "./document.types"
+import {
+  generateWorkdayDocument,
+  getWorkdayDocuments,
+  getWorkdayDocumentsByYear,
+} from "./document.api"
 
 export const workdayDocumentsKeys = {
   all: ["workday-documents"] as const,
-  getWorkdayDocumentsByYear: (request: GetWorkdayDocumentsByYearRequest) =>
-    [...workdayDocumentsKeys.all, `workday-documents-year-${request.year}`] as const,
+  getWorkdayDocumentsByYear: (year: number) =>
+    [...workdayDocumentsKeys.all, `workday-documents-year-${year}`] as const,
 }
 
 export const useGetWorkdayDocuments = () =>
@@ -14,14 +18,21 @@ export const useGetWorkdayDocuments = () =>
     queryFn: () => getWorkdayDocuments(),
   })
 
-export const useGetWorkdayDocumentsByYear = (request: GetWorkdayDocumentsByYearRequest) =>
-  useQuery({
-    queryKey: workdayDocumentsKeys.getWorkdayDocumentsByYear(request),
-    queryFn: () => getWorkdayDocumentsByYear(request),
+export const useGetWorkdayDocumentsByYears = (request: GetWorkdayDocumentsByYearsRequest) =>
+  useQueries({
+    queries: request.years.map((year) => ({
+      queryKey: workdayDocumentsKeys.getWorkdayDocumentsByYear(year),
+      queryFn: () => getWorkdayDocumentsByYear({ year }),
+    })),
   })
 
-export const useGenerateWorkdayDocument = (month: number, year: number) =>
-  useQuery({
-    queryKey: [...workdayDocumentsKeys.all, `generate-workday-document-${year}-${month}`] as const,
-    queryFn: () => getWorkdayDocumentsByYear({ year }),
+export const useGenerateWorkdayDocument = (options?: {
+  onSuccess?: (data: Blob) => void
+  onError?: (error: Error) => void
+}) =>
+  useMutation({
+    mutationFn: ({ month, year }: { month: number; year: number }) =>
+      generateWorkdayDocument({ month, year }),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
   })

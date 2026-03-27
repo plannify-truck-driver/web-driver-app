@@ -6,6 +6,10 @@ export interface GetWorkdayDocumentsByYearRequest {
   year: number
 }
 
+export interface GetWorkdayDocumentsByYearsRequest {
+  years: number[]
+}
+
 export type GetWorkdayDocumentsByYearResponse = WorkdayDocument[]
 
 export interface GenerateWorkdayDocumentRequest {

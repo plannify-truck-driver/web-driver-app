@@ -72,7 +72,8 @@
     },
     "documents": {
       "page-title": "Documents",
-      "page-description": "Statements of your monthly hours"
+      "page-description": "Statements of your monthly hours",
+      "generation-error": "Your document cannot be retrieved at the moment. Please try again later."
     }
   },
   "components": {
