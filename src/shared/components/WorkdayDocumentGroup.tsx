@@ -30,6 +30,8 @@ export function WorkdayDocumentGroup({
     setIsOpen((prev) => !prev)
   }
 
+  console.log("WorkdayDocumentGroup render", { year, workdayDocuments, isOpen })
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-row justify-between gap-2">
@@ -39,7 +41,7 @@ export function WorkdayDocumentGroup({
             {isOpen ? <ChevronDown /> : <ChevronRight />}
           </Button>
         </div>
-        {workdayDocuments && (
+        {workdayDocuments !== undefined && (
           <div>
             <p className="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs">
               {t("components.workday-document-group.number-of-documents", {

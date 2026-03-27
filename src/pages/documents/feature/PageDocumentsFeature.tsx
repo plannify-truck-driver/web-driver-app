@@ -1,7 +1,10 @@
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useTranslation } from "react-i18next"
 import PageDocuments from "../ui/PageDocuments"
-import { useGetWorkdayDocuments, workdayDocumentsKeys } from "@/shared/queries/documents/document.queries"
+import {
+  useGetWorkdayDocuments,
+  workdayDocumentsKeys,
+} from "@/shared/queries/documents/document.queries"
 import { getWorkdayDocumentsByYear } from "@/shared/queries/documents/document.api"
 import { useMemo, useState } from "react"
 import { useQueries } from "@tanstack/react-query"
@@ -25,9 +28,10 @@ export default function PageDocumentsFeature() {
   })
 
   const workdayDocuments = useMemo<Partial<Record<number, WorkdayDocument[] | undefined>>>(() => {
-    const years = yearsDocument ?? []
-    const map: Partial<Record<number, WorkdayDocument[] | undefined>> = Object.fromEntries(
-      [...new Set([...years, currentYear])].map((year) => [year, undefined])
+    if (!yearsDocument) return {}
+
+    const map: Record<number, WorkdayDocument[] | undefined> = Object.fromEntries(
+      [...new Set([...yearsDocument, currentYear])].map((year) => [year, undefined])
     )
     fetchedYears.forEach((year, index) => {
       const data = yearQueries[index]?.data
@@ -35,6 +39,9 @@ export default function PageDocumentsFeature() {
         map[year] = data
       }
     })
+
+    console.log("workdayDocuments map", map)
+
     return map
   }, [yearsDocument, yearQueries, fetchedYears, currentYear])
 

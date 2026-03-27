@@ -3,7 +3,7 @@ import type { WorkdayDocument } from "@/shared/models/workday"
 import { useTranslation } from "react-i18next"
 
 interface PageDocumentsProps {
-  workdayDocuments?: Partial<Record<number, WorkdayDocument[] | undefined>>
+  workdayDocuments?: Record<number, WorkdayDocument[] | undefined>
   fetchDocumentsByYear: (year: number) => void
   onGenerateDocument: (month: number, year: number) => void
 }
@@ -32,9 +32,9 @@ export default function PageDocuments({
         />
         {Object.entries(workdayDocuments)
           .filter(([year]) => year !== String(currentYear))
-          .map(([year, documents = []]) => (
+          .map(([year, documents]) => (
             <WorkdayDocumentGroup
-              key={`${year}-documents-${documents.length}`}
+              key={year}
               year={parseInt(year)}
               workdayDocuments={documents}
               fetchDocumentsByYear={fetchDocumentsByYear}
