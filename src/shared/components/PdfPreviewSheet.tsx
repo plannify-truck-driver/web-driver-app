@@ -17,7 +17,7 @@ interface PdfPreviewSheetProps {
 export function PdfPreviewSheet({ blob, filename, open, onClose }: PdfPreviewSheetProps) {
   const { t } = useTranslation()
   const [numPages, setNumPages] = useState<number>(0)
-  const [containerWidth, setContainerWidth] = useState<number>(0)
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
 
   const fileUrl = useMemo(() => {
@@ -33,21 +33,24 @@ export function PdfPreviewSheet({ blob, filename, open, onClose }: PdfPreviewShe
     }
   }, [fileUrl])
 
-  const updateWidth = useCallback(() => {
+  const updateSize = useCallback(() => {
     if (containerRef.current) {
-      setContainerWidth(containerRef.current.clientWidth)
+      setContainerSize({
+        width: containerRef.current.clientWidth,
+        height: containerRef.current.clientHeight,
+      })
     }
   }, [])
 
   useEffect(() => {
     if (!open) return
-    const observer = new ResizeObserver(updateWidth)
+    const observer = new ResizeObserver(updateSize)
     if (containerRef.current) {
       observer.observe(containerRef.current)
-      updateWidth()
+      updateSize()
     }
     return () => observer.disconnect()
-  }, [open, updateWidth])
+  }, [open, updateSize])
 
   useEffect(() => {
     if (open) {
@@ -85,7 +88,7 @@ export function PdfPreviewSheet({ blob, filename, open, onClose }: PdfPreviewShe
         </div>
       </div>
 
-      <div ref={containerRef} className="flex-1 overflow-y-auto px-4 pb-4">
+      <div ref={containerRef} className="flex-1 overflow-y-auto">
         <Document
           file={fileUrl}
           onLoadSuccess={({ numPages }) => setNumPages(numPages)}
@@ -98,13 +101,14 @@ export function PdfPreviewSheet({ blob, filename, open, onClose }: PdfPreviewShe
           error={
             <p className="text-center text-sm text-white/60">{t("components.pdf-preview.error")}</p>
           }
-          className="flex flex-col items-center gap-3"
+          className="flex flex-col items-center"
         >
           {Array.from({ length: numPages }, (_, i) => (
             <Page
               key={i + 1}
               pageNumber={i + 1}
-              width={containerWidth || undefined}
+              height={containerSize.width >= 768 ? containerSize.height || undefined : undefined}
+              width={containerSize.width < 768 ? containerSize.width || undefined : undefined}
               className="shadow-lg"
             />
           ))}
