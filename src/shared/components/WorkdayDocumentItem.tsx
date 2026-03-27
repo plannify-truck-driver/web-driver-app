@@ -22,7 +22,7 @@ export function WorkdayDocumentItem({
 
   return (
     <div className="bg-sidebar border-border flex flex-row items-center justify-between gap-3 rounded-lg border px-4 py-3">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-[#EF4444]/10">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#EF4444]/10">
         <FileText className="text-[#EF4444]" />
       </div>
       {workdayDocument === undefined ? (
@@ -32,9 +32,9 @@ export function WorkdayDocumentItem({
         </div>
       ) : (
         <>
-          <div className="w-full">
-            <p>{documentLabel}</p>
-            <div className="text-muted-foreground flex flex-row items-center gap-2 text-sm">
+          <div className="flex w-full flex-col gap-1">
+            <p className="text-sm">{documentLabel}</p>
+            <div className="text-muted-foreground flex flex-row items-center gap-2 text-xs">
               <p className="leading-none">{t("components.workday-document-item.description")}</p>
               {workdayDocument.generated_at && (
                 <>
