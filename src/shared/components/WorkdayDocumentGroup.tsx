@@ -30,8 +30,6 @@ export function WorkdayDocumentGroup({
     setIsOpen((prev) => !prev)
   }
 
-  console.log("WorkdayDocumentGroup render", { year, workdayDocuments, isOpen })
-
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-row justify-between gap-2">

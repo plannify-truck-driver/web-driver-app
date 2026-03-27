@@ -40,8 +40,6 @@ export default function PageDocumentsFeature() {
       }
     })
 
-    console.log("workdayDocuments map", map)
-
     return map
   }, [yearsDocument, yearQueries, fetchedYears, currentYear])
 
