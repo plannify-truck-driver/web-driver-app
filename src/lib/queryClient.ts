@@ -1,6 +1,5 @@
-import { handleErrorResponse } from "@/shared/lib/error-response"
-import { useRefreshToken } from "@/shared/queries/auth/auth.queries"
-import { QueryClient } from "@tanstack/react-query"
+import { authKeys, useRefreshToken } from "@/shared/queries/auth/auth.queries"
+import { QueryClient, type Query } from "@tanstack/react-query"
 import { useEffect } from "react"
 
 export const queryClient = new QueryClient({
@@ -24,7 +23,8 @@ export const setRefreshTokenHandler = (refreshFn: () => Promise<unknown>) => {
   })
 
   // Global error handler
-  queryClient.getQueryCache().config.onError = async (error: unknown) => {
+  queryClient.getQueryCache().config.onError = async (error: Error, query: Query<unknown, unknown, unknown, readonly unknown[]>) => {
+    if (query.queryKey.join(".") === authKeys.refreshToken().join(".")) return
     await handleUnauthorized(error, refreshFn)
   }
 
@@ -34,16 +34,11 @@ export const setRefreshTokenHandler = (refreshFn: () => Promise<unknown>) => {
 }
 
 const handleUnauthorized = async (error: unknown, refreshFn: () => Promise<unknown>) => {
-  handleErrorResponse(error).then(async (apiError) => {
-    if (apiError) {
-      switch (apiError.error_code) {
-        case "UNAUTHORIZED":
-          await refreshFn()
-          break
-      }
-      return
-    }
-  })
+  if (!(error && typeof error === "object" && "response" in error)) return
+  const body = await (error as { response: Response }).response.clone().json()
+  if (body?.error_code === "UNAUTHORIZED") {
+    await refreshFn()
+  }
 }
 
 export const QueryClientConfigurator = ({ children }: { children: React.ReactNode }) => {
