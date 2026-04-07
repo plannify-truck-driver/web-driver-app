@@ -62,7 +62,7 @@ export default function PageWorkdays({
           <StatOvernightRest workdays={workdays} isLoading={isLoading} className="hidden sm:flex" />
         </div>
       </div>
-      <WorkdayTable workdays={workdays} />
+      <WorkdayTable workdays={workdays} periodType="month" />
     </div>
   )
 }

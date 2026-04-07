@@ -97,7 +97,8 @@
       "work-period": "Work period"
     },
     "workday-table": {
-      "detail-summary": "Week detail",
+      "detail-week-summary": "Week detail",
+      "detail-month-summary": "Month detail",
       "no-workdays": "No workdays"
     },
     "workday-table-row-3": {

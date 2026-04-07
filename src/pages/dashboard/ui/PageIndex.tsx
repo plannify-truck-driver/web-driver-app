@@ -147,7 +147,7 @@ export default function PageDashboardIndex({
           />
         </div>
       </div>
-      <WorkdayTable workdays={workdays} period={period} />
+      <WorkdayTable workdays={workdays} periodType="week" period={period} />
     </div>
   )
 }

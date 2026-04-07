@@ -9,10 +9,11 @@ import { WorkdayTableDesktop } from "./workdayTableRows/WorkdayTableDesktop"
 
 export interface WorkdayTableProps {
   workdays: Workday[]
+  periodType: "week" | "month"
   period?: PeriodOfTime
 }
 
-export function WorkdayTable({ workdays, period }: WorkdayTableProps) {
+export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps) {
   const { t } = useTranslation()
   const { preferences } = useDriverPreferences()
 
@@ -29,7 +30,7 @@ export function WorkdayTable({ workdays, period }: WorkdayTableProps) {
   return (
     <div className="flex flex-col gap-3">
       <p className="text-muted-foreground font-mono text-sm uppercase">
-        {t("components.workday-table.detail-summary")}
+        {t(`components.workday-table.detail-${periodType}-summary`)}
       </p>
       <div className="block sm:hidden">
         {period != undefined ? (
