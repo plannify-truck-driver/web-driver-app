@@ -68,7 +68,12 @@
       "page-title": "Workdays",
       "current-month": "Current month",
       "previous-month": "Previous month",
-      "other-month": "Other month"
+      "other-month": "Other month",
+      "buttons": {
+        "add-workday": "Add a workday",
+        "use-excel-file": "Use an Excel file",
+        "use-csv-file": "Use a CSV file"
+      }
     },
     "documents": {
       "page-title": "Documents",

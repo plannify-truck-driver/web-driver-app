@@ -68,7 +68,12 @@
       "page-title": "Journées",
       "current-month": "Mois courrant",
       "previous-month": "Mois précédent",
-      "other-month": "Autre mois"
+      "other-month": "Autre mois",
+      "buttons": {
+        "add-workday": "Ajouter une journée",
+        "use-excel-file": "Utiliser un fichier Excel",
+        "use-csv-file": "Utiliser un fichier CSV"
+      }
     },
     "documents": {
       "page-title": "Documents",
