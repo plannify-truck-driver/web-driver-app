@@ -44,9 +44,9 @@ export default function PageWorkdays({
     <div className="flex flex-col gap-5 sm:gap-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
         <h1 className="text-2xl font-semibold">{t("pages.workdays.page-title")}</h1>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col-reverse items-end gap-4 sm:flex-row sm:items-center">
           <ButtonGroup>
-            <Button variant="default" size="sm" onClick={() => window.print()}>
+            <Button variant="default" onClick={() => window.print()}>
               {t("pages.workdays.buttons.add-workday")}
             </Button>
             <DropdownMenu>
