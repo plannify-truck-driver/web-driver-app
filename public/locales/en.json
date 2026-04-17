@@ -82,6 +82,10 @@
     }
   },
   "components": {
+    "add-dorkday-dialog": {
+      "title": "Add a workday",
+      "description": "Fill in the information below to add a workday."
+    },
     "stat-workday": {
       "worked-days": "Worked days",
       "this-week": "This week",

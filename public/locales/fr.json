@@ -82,6 +82,10 @@
     }
   },
   "components": {
+    "add-dorkday-dialog": {
+      "title": "Ajouter une journée",
+      "description": "Remplissez les informations ci-dessous pour ajouter une journée de travail."
+    },
     "stat-workday": {
       "worked-days": "Jours travaillés",
       "this-week": "Cette semaine",

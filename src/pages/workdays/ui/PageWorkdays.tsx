@@ -1,3 +1,4 @@
+import { AddWorkdayDialog } from "@/shared/components/AddWorkdayDialog"
 import { PeriodSelector } from "@/shared/components/PeriodSelector"
 import { StatOvernightRest } from "@/shared/components/statistics/StatOvernightRest"
 import { StatTotalWorkedHours } from "@/shared/components/statistics/StatTotalWorkedHour"
@@ -14,29 +15,38 @@ import {
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
 import { upperCaseFirstLetter } from "@/shared/functions/upperCaseFirstLetter"
 import type { Workday } from "@/shared/models/workday"
+import type { addWorkdayFormSchema } from "@/shared/zod/add-workday"
 import { ChevronDownIcon, FileChartColumnIncreasingIcon, FileCodeIcon } from "lucide-react"
+import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import type z from "zod"
 
 interface PageWorkdaysProps {
   workdays: Workday[]
   isLoading: boolean
+  isAddWorkdayOpen: boolean
   selectedMonth: Date
   selectedMonthSubTitle: string
   maxWorkedDays: number
   totalWorkingTime: string
+  addWorkdayForm: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
   onPreviousMonth: () => void
   onNextMonth: () => void
+  setIsAddWorkdayOpen: (open: boolean) => void
 }
 
 export default function PageWorkdays({
   workdays,
   isLoading,
+  isAddWorkdayOpen,
   selectedMonth,
   selectedMonthSubTitle,
   maxWorkedDays,
   totalWorkingTime,
+  addWorkdayForm,
   onPreviousMonth,
   onNextMonth,
+  setIsAddWorkdayOpen,
 }: PageWorkdaysProps) {
   const { t, i18n } = useTranslation()
 
@@ -46,7 +56,7 @@ export default function PageWorkdays({
         <h1 className="text-2xl font-semibold">{t("pages.workdays.page-title")}</h1>
         <div className="flex flex-col-reverse items-end gap-4 sm:flex-row sm:items-center">
           <ButtonGroup>
-            <Button variant="default" onClick={() => window.print()}>
+            <Button variant="default" onClick={() => setIsAddWorkdayOpen(true)}>
               {t("pages.workdays.buttons.add-workday")}
             </Button>
             <DropdownMenu>
@@ -99,6 +109,12 @@ export default function PageWorkdays({
         </div>
       </div>
       <WorkdayTable workdays={workdays} periodType="month" />
+      <AddWorkdayDialog
+        isOpen={isAddWorkdayOpen}
+        setIsOpen={setIsAddWorkdayOpen}
+        form={addWorkdayForm}
+        isLoading={isLoading}
+      />
     </div>
   )
 }

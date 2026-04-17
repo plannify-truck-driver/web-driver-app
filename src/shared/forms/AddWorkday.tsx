@@ -1,0 +1,163 @@
+import { useState } from "react"
+import { Controller, type UseFormReturn } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import type z from "zod"
+import type { addWorkdayFormSchema } from "../zod/add-workday"
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "../components/ui/Field"
+import { Input } from "../components/ui/Input"
+import { Button } from "../components/ui/Button"
+import { Switch } from "../components/ui/Switch"
+import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/Popover"
+import { Calendar } from "../components/ui/Calendar"
+import { CalendarIcon } from "lucide-react"
+import { fr, enUS } from "react-day-picker/locale"
+
+interface AddWorkdayFormProps {
+  form: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
+  loading: boolean
+  errorMessage: string | null
+  onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
+}
+
+export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWorkdayFormProps) {
+  const [dateOpen, setDateOpen] = useState(false)
+  const [hasEndTime, setHasEndTime] = useState(false)
+  const { i18n } = useTranslation()
+  const calendarLocale = i18n.language.startsWith("fr") ? fr : enUS
+
+  return (
+    <form id="form-add-workday" onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup className="flex flex-col gap-8">
+        <div className="flex flex-row items-center gap-2">
+          <Controller
+            name="date"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="form-date">Date</FieldLabel>
+                <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      id="form-date"
+                      disabled={loading}
+                      className="justify-start font-normal"
+                    >
+                      <CalendarIcon className="mr-2 size-4" />
+                      {field.value ? field.value.toLocaleDateString() : "Sélectionner une date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      defaultMonth={field.value}
+                      captionLayout="dropdown"
+                      weekStartsOn={1}
+                      locale={calendarLocale}
+                      onSelect={(date) => {
+                        field.onChange(date)
+                        setDateOpen(false)
+                      }}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </Field>
+            )}
+          />
+          <Controller
+            name="startTime"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="form-start-time">Début</FieldLabel>
+                <Input
+                  {...field}
+                  id="form-start-time"
+                  type="time"
+                  disabled={loading}
+                  aria-invalid={fieldState.invalid}
+                />
+              </Field>
+            )}
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <Field orientation="horizontal" data-invalid={false} className="flex flex-row gap-2">
+            <input
+              id="form-has-end-time"
+              type="checkbox"
+              disabled={loading}
+              checked={hasEndTime}
+              onChange={(e) => {
+                setHasEndTime(e.target.checked)
+                if (!e.target.checked) {
+                  form.setValue("endTime", undefined)
+                  form.setValue("restTime", undefined)
+                }
+              }}
+            />
+            <div>
+              <FieldLabel htmlFor="form-has-end-time">Saisir une heure de fin</FieldLabel>
+              <FieldDescription>Cette journée possède une heure de fin connue.</FieldDescription>
+            </div>
+          </Field>
+          {hasEndTime && (
+            <div className="ml-6 flex flex-col gap-4">
+              <Controller
+                name="endTime"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="form-end-time">Fin</FieldLabel>
+                    <Input
+                      {...field}
+                      value={field.value ?? ""}
+                      id="form-end-time"
+                      type="time"
+                      disabled={loading}
+                      aria-invalid={fieldState.invalid}
+                    />
+                  </Field>
+                )}
+              />
+              <Controller
+                name="restTime"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="form-rest-time">Coupure</FieldLabel>
+                    <Input
+                      {...field}
+                      value={field.value ?? ""}
+                      id="form-rest-time"
+                      type="time"
+                      disabled={loading}
+                      aria-invalid={fieldState.invalid}
+                    />
+                  </Field>
+                )}
+              />
+            </div>
+          )}
+        </div>
+        <Controller
+          name="overnight"
+          control={form.control}
+          render={({ field }) => (
+            <Field orientation="horizontal" data-invalid={false}>
+              <FieldLabel htmlFor="form-overnight">Repos nocturne</FieldLabel>
+              <Switch
+                id="form-overnight"
+                disabled={loading}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            </Field>
+          )}
+        />
+      </FieldGroup>
+      {errorMessage && <p className="my-2 text-sm text-red-600">{errorMessage}</p>}
+    </form>
+  )
+}

@@ -5,6 +5,10 @@ import { useMemo, useState } from "react"
 import { useGetWorkdaysByMonth } from "@/shared/queries/workday/workday.queries"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 import { displayDuration } from "@/shared/functions/displayDuration"
+import { useForm } from "react-hook-form"
+import z from "zod"
+import { addWorkdayFormSchema } from "@/shared/zod/add-workday"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export default function PageWorkdaysFeature() {
   const { t } = useTranslation()
@@ -12,10 +16,22 @@ export default function PageWorkdaysFeature() {
   useDocumentTitle(t("pages.workdays.page-title"))
 
   const [selectedMonth, setSelectedMonth] = useState(new Date())
+  const [isAddWorkdayOpen, setIsAddWorkdayOpen] = useState<boolean>(false)
 
   const { data: monthWorkdays, isLoading: isMonthWorkdaysLoading } = useGetWorkdaysByMonth({
     month: (selectedMonth.getMonth() + 1).toString().padStart(2, "0"),
     year: selectedMonth.getFullYear().toString(),
+  })
+
+  const addWorkdayForm = useForm<z.infer<typeof addWorkdayFormSchema>>({
+    resolver: zodResolver(addWorkdayFormSchema),
+    defaultValues: {
+      date: new Date(),
+      startTime: "",
+      endTime: "",
+      restTime: "",
+      overnight: false,
+    },
   })
 
   const selectedMonthSubTitle = useMemo(() => {
@@ -71,12 +87,15 @@ export default function PageWorkdaysFeature() {
     <PageWorkdays
       workdays={monthWorkdays || []}
       isLoading={isMonthWorkdaysLoading}
+      isAddWorkdayOpen={isAddWorkdayOpen}
       selectedMonth={selectedMonth}
       selectedMonthSubTitle={selectedMonthSubTitle}
       maxWorkedDays={maxWorkedDays}
       totalWorkingTime={totalWorkingTime}
+      addWorkdayForm={addWorkdayForm}
       onPreviousMonth={selectPreviousMonth}
       onNextMonth={selectNextMonth}
+      setIsAddWorkdayOpen={setIsAddWorkdayOpen}
     />
   )
 }
