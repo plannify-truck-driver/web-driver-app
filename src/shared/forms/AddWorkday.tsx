@@ -47,12 +47,16 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
                       const day = new Date(selectedWeek.from)
                       day.setDate(selectedWeek.from.getDate() + i)
                       return (
-                        <div
+                        <button
                           key={i}
                           className={cn(
                             "border-border flex h-14 w-12 shrink-0 cursor-pointer flex-col items-center justify-center rounded-md border",
                             day.getTime() === dateValue.getTime() ? "text-secondary bg-primary" : ""
                           )}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            field.onChange(day)
+                          }}
                         >
                           <span
                             className={cn(
@@ -65,7 +69,7 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
                             {day.toLocaleDateString(i18n.language, { weekday: "short" })}
                           </span>
                           <p className="font-bold">{day.getDate()}</p>
-                        </div>
+                        </button>
                       )
                     })}
                   </div>
