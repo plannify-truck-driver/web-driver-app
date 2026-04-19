@@ -86,6 +86,11 @@
       "title": "Ajouter une journée",
       "description": "Remplissez les informations ci-dessous pour ajouter une journée de travail."
     },
+    "add-workday-button": {
+      "add-first-workday": "Ajouter la première journée",
+      "add-another-workday": "Ajouter une journée",
+      "manual-add-workday": "Saisie manuelle - rattrapez un oubli"
+    },
     "stat-workday": {
       "worked-days": "Jours travaillés",
       "this-week": "Cette semaine",

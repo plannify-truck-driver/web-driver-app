@@ -86,6 +86,11 @@
       "title": "Add a workday",
       "description": "Fill in the information below to add a workday."
     },
+    "add-workday-button": {
+      "add-first-workday": "Add a first workday",
+      "add-another-workday": "Add another workday",
+      "manual-add-workday": "Manual entry - catch up on a missed day"
+    },
     "stat-workday": {
       "worked-days": "Worked days",
       "this-week": "This week",

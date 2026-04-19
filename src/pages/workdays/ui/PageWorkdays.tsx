@@ -1,3 +1,4 @@
+import { AddWorkdayButton } from "@/shared/components/AddWorkdayButton"
 import { AddWorkdayDialog } from "@/shared/components/AddWorkdayDialog"
 import { PeriodSelector } from "@/shared/components/PeriodSelector"
 import { StatOvernightRest } from "@/shared/components/statistics/StatOvernightRest"
@@ -55,7 +56,7 @@ export default function PageWorkdays({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
         <h1 className="text-2xl font-semibold">{t("pages.workdays.page-title")}</h1>
         <div className="flex flex-col-reverse items-end gap-4 sm:flex-row sm:items-center">
-          <ButtonGroup>
+          <ButtonGroup className="hidden sm:flex">
             <Button variant="default" onClick={() => setIsAddWorkdayOpen(true)}>
               {t("pages.workdays.buttons.add-workday")}
             </Button>
@@ -109,6 +110,11 @@ export default function PageWorkdays({
         </div>
       </div>
       <WorkdayTable workdays={workdays} periodType="month" />
+      <AddWorkdayButton
+        isFirstWorkday={workdays.length === 0}
+        onClick={() => setIsAddWorkdayOpen(true)}
+        className="block sm:hidden"
+      />
       <AddWorkdayDialog
         isOpen={isAddWorkdayOpen}
         setIsOpen={setIsAddWorkdayOpen}
