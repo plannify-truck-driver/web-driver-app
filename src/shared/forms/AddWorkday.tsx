@@ -1,16 +1,17 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Controller, type UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import type z from "zod"
 import type { addWorkdayFormSchema } from "../zod/add-workday"
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "../components/ui/Field"
 import { Input } from "../components/ui/Input"
-import { Button } from "../components/ui/Button"
 import { Switch } from "../components/ui/Switch"
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/Popover"
 import { Calendar } from "../components/ui/Calendar"
 import { CalendarIcon } from "lucide-react"
 import { fr, enUS } from "react-day-picker/locale"
+import { getWeek } from "../functions/getWeek"
+import { cn } from "@/lib/utils"
 
 interface AddWorkdayFormProps {
   form: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
@@ -25,43 +26,69 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
   const { i18n } = useTranslation()
   const calendarLocale = i18n.language.startsWith("fr") ? fr : enUS
 
+  const dateValue = form.watch("date")
+  const selectedWeek = useMemo(() => {
+    return getWeek(dateValue || new Date())
+  }, [dateValue])
+
   return (
     <form id="form-add-workday" onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup className="flex flex-col gap-8">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <Controller
             name="date"
             control={form.control}
             render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
+              <Field data-invalid={fieldState.invalid} className="w-full">
                 <FieldLabel htmlFor="form-date">Date</FieldLabel>
-                <Popover open={dateOpen} onOpenChange={setDateOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      id="form-date"
-                      disabled={loading}
-                      className="justify-start font-normal"
-                    >
-                      <CalendarIcon className="mr-2 size-4" />
-                      {field.value ? field.value.toLocaleDateString() : "Sélectionner une date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      defaultMonth={field.value}
-                      captionLayout="dropdown"
-                      weekStartsOn={1}
-                      locale={calendarLocale}
-                      onSelect={(date) => {
-                        field.onChange(date)
-                        setDateOpen(false)
-                      }}
-                    />
-                  </PopoverContent>
-                </Popover>
+                <div className="flex flex-row items-center gap-2">
+                  <div className="flex w-full flex-row gap-2 overflow-x-auto">
+                    {Array.from({ length: 7 }, (_, i) => {
+                      const day = new Date(selectedWeek.from)
+                      day.setDate(selectedWeek.from.getDate() + i)
+                      return (
+                        <div
+                          key={i}
+                          className={cn(
+                            "border-border flex h-14 w-12 shrink-0 cursor-pointer flex-col items-center justify-center rounded-md border",
+                            day.getTime() === dateValue.getTime() ? "text-secondary bg-primary" : ""
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              "text-xs font-light",
+                              day.getTime() === dateValue.getTime()
+                                ? "text-secondary"
+                                : "text-muted-foreground"
+                            )}
+                          >
+                            {day.toLocaleDateString(i18n.language, { weekday: "short" })}
+                          </span>
+                          <p className="font-bold">{day.getDate()}</p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                    <PopoverTrigger className="flex h-14 w-12 shrink-0 cursor-pointer items-center justify-center rounded-md border">
+                      <CalendarIcon size={16} />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        defaultMonth={field.value}
+                        captionLayout="dropdown"
+                        weekStartsOn={1}
+                        locale={calendarLocale}
+                        onSelect={(date) => {
+                          field.onChange(date)
+                          setDateOpen(false)
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
               </Field>
             )}
           />

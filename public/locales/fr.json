@@ -83,7 +83,7 @@
   },
   "components": {
     "add-dorkday-dialog": {
-      "title": "Ajouter une journée",
+      "title": "Nouvelle journée",
       "description": "Remplissez les informations ci-dessous pour ajouter une journée de travail."
     },
     "add-workday-button": {

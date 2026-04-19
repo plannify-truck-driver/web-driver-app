@@ -1,19 +1,12 @@
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/Dialog"
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "./ui/Drawer"
-import { Button } from "./ui/Button"
+import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from "./ui/Drawer"
 import { useTranslation } from "react-i18next"
 import { AddWorkdayForm } from "../forms/AddWorkday"
 import type { UseFormReturn } from "react-hook-form"
 import type z from "zod"
 import type { addWorkdayFormSchema } from "../zod/add-workday"
+import { XIcon } from "lucide-react"
 
 export interface AddWorkdayDialog {
   isOpen: boolean
@@ -50,17 +43,19 @@ export function AddWorkdayDialog({ isOpen, form, isLoading, setIsOpen }: AddWork
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerContent>
-        <DrawerHeader className="text-left">
+        <DrawerHeader className="flex flex-row items-center justify-between">
           <DrawerTitle>{t("components.add-dorkday-dialog.title")}</DrawerTitle>
-          {/* <DrawerDescription>{t("components.add-dorkday-dialog.description")}</DrawerDescription> */}
+          <div className="bg-muted flex h-8 w-8 cursor-pointer items-center justify-center rounded-md">
+            <XIcon size={16} />
+          </div>
         </DrawerHeader>
         <div className="px-4">
           <AddWorkdayForm form={form} loading={isLoading} errorMessage={null} onSubmit={() => {}} />
         </div>
         <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
+          {/* <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
-          </DrawerClose>
+          </DrawerClose> */}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

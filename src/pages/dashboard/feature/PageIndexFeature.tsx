@@ -17,6 +17,7 @@ import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { displayDuration } from "@/shared/functions/displayDuration"
+import { getWeek } from "@/shared/functions/getWeek"
 
 export interface PeriodOfTime {
   from: Date
@@ -30,16 +31,8 @@ export default function PageDashboardIndexFeature() {
   useDocumentTitle(t("navigation.dashboard.navigation-title.desktop"))
 
   const today: Date = useMemo(() => new Date(), [])
-  const monday: Date = new Date()
-  // For sunday, today.getDay() returns 0
-  monday.setDate(today.getDay() === 0 ? today.getDate() - 6 : today.getDate() - today.getDay() + 1)
-  const sunday: Date = new Date(monday)
-  sunday.setDate(monday.getDate() + 6)
 
-  const [period, setPeriod] = useState<PeriodOfTime>({
-    from: monday,
-    to: sunday,
-  })
+  const [period, setPeriod] = useState<PeriodOfTime>(getWeek(today))
 
   const {
     data: periodWorkdays,

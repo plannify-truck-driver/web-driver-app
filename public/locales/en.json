@@ -83,7 +83,7 @@
   },
   "components": {
     "add-dorkday-dialog": {
-      "title": "Add a workday",
+      "title": "New workday",
       "description": "Fill in the information below to add a workday."
     },
     "add-workday-button": {
