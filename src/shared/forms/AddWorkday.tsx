@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { Controller, type UseFormReturn } from "react-hook-form"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import type z from "zod"
 import type { addWorkdayFormSchema } from "../zod/add-workday"
 import { Field, FieldGroup, FieldLabel } from "../components/ui/Field"
@@ -16,7 +16,6 @@ import { Button } from "../components/ui/Button"
 import type { RestPeriod } from "../models/rest-period"
 import { displayDuration } from "../functions/displayDuration"
 import { Skeleton } from "../components/ui/Skeleton"
-
 export interface AddWorkdayFormLoadings {
   isSubmitting: boolean
   isGetRestPeriodsLoading: boolean
@@ -43,9 +42,15 @@ export function AddWorkdayForm({
   const calendarLocale = i18n.language.startsWith("fr") ? fr : enUS
 
   const dateValue = form.watch("date")
+  const startTimeValue = form.watch("startTime")
+  const endTimeValue = form.watch("endTime")
+
   const selectedWeek = useMemo(() => {
     return getWeek(dateValue || new Date())
   }, [dateValue])
+  const isRestPeriodsAvailable = useMemo(() => {
+    return startTimeValue.trim() !== "" && endTimeValue?.trim() !== ""
+  }, [startTimeValue, endTimeValue])
 
   return (
     <form
@@ -60,7 +65,7 @@ export function AddWorkdayForm({
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid} className="w-full">
               <FieldLabel htmlFor="form-date" className="text-muted-foreground text-sm font-light">
-                Date
+                {t("forms.add-workday.date-label")}
               </FieldLabel>
               <div className="flex flex-row items-center gap-2">
                 <div className="flex w-full flex-row gap-2 overflow-x-auto">
@@ -128,7 +133,7 @@ export function AddWorkdayForm({
                   className="text-muted-foreground flex items-center gap-1 text-sm font-light"
                 >
                   <LogIn size={14} />
-                  Début
+                  {t("forms.add-workday.start-time-label")}
                 </FieldLabel>
                 <TimeInput
                   id="form-start-time"
@@ -150,8 +155,10 @@ export function AddWorkdayForm({
                   className="text-muted-foreground flex items-center gap-1 text-sm font-light"
                 >
                   <LogOut size={14} />
-                  Fin
-                  <span className="text-muted-foreground/60 text-xs">· facultatif</span>
+                  {t("forms.add-workday.end-time-label")}
+                  <span className="text-muted-foreground/60 text-xs">
+                    · {t("forms.add-workday.optional")}
+                  </span>
                 </FieldLabel>
                 <TimeInput
                   id="form-end-time"
@@ -164,57 +171,71 @@ export function AddWorkdayForm({
             )}
           />
         </div>
-        <Controller
-          name="restTime"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel
-                htmlFor="form-rest-time"
-                className="text-muted-foreground flex items-center gap-1 text-sm font-light"
-              >
-                <Timer size={14} />
-                Pause
-              </FieldLabel>
-              <div className="flex flex-row flex-wrap items-center gap-2">
-                {loadings.isGetRestPeriodsLoading ? (
-                  Array.from({ length: 3 }).map((_, i) => (
-                    <Skeleton key={i} className="h-8 w-16 rounded-md" />
-                  ))
-                ) : restPeriods.length > 0 ? (
-                  restPeriods.map((period) => (
-                    <Button
-                      key={period.rest}
-                      variant={field.value === period.rest ? "default" : "outline"}
-                      size="sm"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        field.onChange(period.rest)
-                      }}
-                      disabled={loadings.isGetRestPeriodsLoading}
-                    >
-                      {displayDuration(period.rest, t)}
-                    </Button>
-                  ))
-                ) : (
-                  <TimeInput
-                    id="form-end-time"
-                    value={field.value ?? ""}
-                    onChange={field.onChange}
-                    disabled={loadings.isSubmitting}
-                    aria-invalid={fieldState.invalid}
-                  />
-                )}
-              </div>
-            </Field>
+        <div className="flex flex-col gap-2">
+          <Controller
+            name="restTime"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel
+                  htmlFor="form-rest-time"
+                  className="text-muted-foreground flex items-center gap-1 text-sm font-light"
+                >
+                  <Timer size={14} />
+                  {t("forms.add-workday.rest-time-label")}
+                </FieldLabel>
+                <div className="flex flex-row flex-wrap items-center gap-2">
+                  {loadings.isGetRestPeriodsLoading ? (
+                    Array.from({ length: 3 }).map((_, i) => (
+                      <Skeleton key={i} className="h-8 w-16 rounded-md" />
+                    ))
+                  ) : restPeriods.length > 0 ? (
+                    restPeriods.map((period) => (
+                      <Button
+                        key={period.rest}
+                        variant={field.value === period.rest ? "default" : "outline"}
+                        size="sm"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          field.onChange(period.rest)
+                        }}
+                        disabled={loadings.isGetRestPeriodsLoading || !isRestPeriodsAvailable}
+                      >
+                        {displayDuration(period.rest, t)}
+                      </Button>
+                    ))
+                  ) : (
+                    <TimeInput
+                      id="form-end-time"
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                      disabled={loadings.isSubmitting || !isRestPeriodsAvailable}
+                      aria-invalid={fieldState.invalid}
+                    />
+                  )}
+                </div>
+              </Field>
+            )}
+          />
+          {!loadings.isGetRestPeriodsLoading && restPeriods.length > 0 && (
+            <p className="text-muted-foreground text-sm">
+              <Trans
+                i18nKey="forms.add-workday.rest-description"
+                components={{
+                  accountSettingsLink: <span className="text-primary underline" />,
+                }}
+              />
+            </p>
           )}
-        />
+        </div>
         <Controller
           name="overnight"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field orientation="horizontal" data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-overnight">Repos nocturne</FieldLabel>
+              <FieldLabel htmlFor="form-overnight">
+                {t("forms.add-workday.overnight-rest-label")}
+              </FieldLabel>
               <Switch
                 id="form-overnight"
                 disabled={loadings.isSubmitting}
@@ -228,7 +249,7 @@ export function AddWorkdayForm({
       {errorMessage && <p className="my-2 text-sm text-red-600">{errorMessage}</p>}
       <Button type="submit" disabled={loadings.isSubmitting} className="w-full py-5">
         <CheckIcon />
-        {loadings.isSubmitting ? "Enregistrement..." : "Enregistrer la journée"}
+        {t("forms.add-workday.submit-button")}
       </Button>
     </form>
   )

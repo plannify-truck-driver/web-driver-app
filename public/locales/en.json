@@ -234,6 +234,16 @@
         "driver-already-exists": "An account already exists with this email address."
       }
     },
+    "add-workday": {
+      "date-label": "Date",
+      "start-time-label": "Start",
+      "end-time-label": "End",
+      "rest-time-label": "Rest",
+      "rest-description": "Rest periods are defined in <accountSettingsLink>Account > Rest Periods</accountSettingsLink>",
+      "overnight-rest-label": "Overnight rest",
+      "optional": "Optional",
+      "submit-button": "Save workday"
+    },
     "errors": {
       "unexpected-error": "An unexpected error occurred. Please try again later."
     }

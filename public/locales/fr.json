@@ -234,6 +234,16 @@
         "driver-already-exists": "Un compte existe déjà avec cette adresse e-mail."
       }
     },
+    "add-workday": {
+      "date-label": "Date",
+      "start-time-label": "Début",
+      "end-time-label": "Fin",
+      "rest-time-label": "Pause",
+      "rest-description": "Les pauses sont définies dans <accountSettingsLink>Compte > Pauses</accountSettingsLink>",
+      "overnight-rest-label": "Repos nocturne",
+      "optional": "Facultatif",
+      "submit-button": "Enregistrer la journée"
+    },
     "errors": {
       "unexpected-error": "Une erreur inattendue est survenue. Veuillez réessayer plus tard."
     }

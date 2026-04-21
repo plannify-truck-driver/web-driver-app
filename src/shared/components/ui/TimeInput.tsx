@@ -35,13 +35,15 @@ function TimeInput({
       onClick={handleClick}
       className={cn(
         "border-input dark:bg-input/30 relative flex w-full cursor-pointer items-center justify-between rounded-md border bg-transparent px-3 shadow-xs transition-[color,box-shadow]",
-        "has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-ring/50 px-4 py-3 has-[input:focus-visible]:ring-[3px]",
+        "has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-ring/50 px-3 py-2 has-[input:focus-visible]:ring-[3px] sm:px-3 sm:py-2",
         ariaInvalid && "ring-destructive/20 dark:ring-destructive/40 border-destructive",
         disabled && "pointer-events-none cursor-not-allowed opacity-50",
         className
       )}
     >
-      <span className={cn("text-lg", !value && "text-muted-foreground")}>{value || "--:--"}</span>
+      <span className={cn("text-lg sm:text-base", !value && "text-muted-foreground")}>
+        {value || "--:--"}
+      </span>
       <ClockIcon className="text-muted-foreground size-4 shrink-0" />
       <input
         ref={inputRef}

@@ -1,11 +1,11 @@
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import PageWorkdays from "../ui/PageWorkdays"
 import { useTranslation } from "react-i18next"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useGetWorkdaysByMonth } from "@/shared/queries/workday/workday.queries"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 import { displayDuration } from "@/shared/functions/displayDuration"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import z from "zod"
 import { addWorkdayFormSchema } from "@/shared/zod/add-workday"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -40,6 +40,19 @@ export default function PageWorkdaysFeature() {
       overnight: false,
     },
   })
+
+  useEffect(() => {
+    if (!isAddWorkdayOpen) {
+      addWorkdayForm.reset()
+    }
+  }, [isAddWorkdayOpen, addWorkdayForm])
+
+  const endTime = useWatch({ control: addWorkdayForm.control, name: "endTime" })
+  useEffect(() => {
+    if (endTime?.trim() === "") {
+      addWorkdayForm.setValue("restTime", "")
+    }
+  }, [endTime, addWorkdayForm])
 
   const selectedMonthSubTitle = useMemo(() => {
     const now = new Date()
