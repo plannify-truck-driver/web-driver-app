@@ -13,24 +13,33 @@ import { fr, enUS } from "react-day-picker/locale"
 import { getWeek } from "../functions/getWeek"
 import { cn } from "@/lib/utils"
 import { Button } from "../components/ui/Button"
+import type { RestPeriod } from "../models/rest-period"
+import { displayDuration } from "../functions/displayDuration"
+import { Skeleton } from "../components/ui/Skeleton"
+
+export interface AddWorkdayFormLoadings {
+  isSubmitting: boolean
+  isGetRestPeriodsLoading: boolean
+}
 
 interface AddWorkdayFormProps {
   form: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
-  loading: boolean
+  restPeriods: RestPeriod[]
+  loadings: AddWorkdayFormLoadings
   errorMessage: string | null
   onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
 }
 
-function formatRestTime(time: string): string {
-  const [h, m] = time.split(":").map(Number)
-  if (h === 0) return `${m}min`
-  if (m === 0) return `${h}h`
-  return `${h}h${m}`
-}
+export function AddWorkdayForm({
+  form,
+  restPeriods,
+  loadings,
+  errorMessage,
+  onSubmit,
+}: AddWorkdayFormProps) {
+  const { t, i18n } = useTranslation()
 
-export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWorkdayFormProps) {
   const [dateOpen, setDateOpen] = useState(false)
-  const { i18n } = useTranslation()
   const calendarLocale = i18n.language.startsWith("fr") ? fr : enUS
 
   const dateValue = form.watch("date")
@@ -125,7 +134,7 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
                   id="form-start-time"
                   value={field.value}
                   onChange={field.onChange}
-                  disabled={loading}
+                  disabled={loadings.isSubmitting}
                   aria-invalid={fieldState.invalid}
                 />
               </Field>
@@ -148,7 +157,7 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
                   id="form-end-time"
                   value={field.value ?? ""}
                   onChange={field.onChange}
-                  disabled={loading}
+                  disabled={loadings.isSubmitting}
                   aria-invalid={fieldState.invalid}
                 />
               </Field>
@@ -158,8 +167,8 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
         <Controller
           name="restTime"
           control={form.control}
-          render={({ field }) => (
-            <Field data-invalid={false}>
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
               <FieldLabel
                 htmlFor="form-rest-time"
                 className="text-muted-foreground flex items-center gap-1 text-sm font-light"
@@ -168,27 +177,34 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
                 Pause
               </FieldLabel>
               <div className="flex flex-row flex-wrap items-center gap-2">
-                {[
-                  "00:00",
-                  "00:15",
-                  "00:30",
-                  "00:45",
-                  "01:00",
-                  "01:15",
-                  "01:30",
-                  "01:45",
-                  "02:00",
-                ].map((time) => (
-                  <Button
-                    key={time}
-                    variant={field.value === time ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => field.onChange(time)}
-                    disabled={loading}
-                  >
-                    {formatRestTime(time)}
-                  </Button>
-                ))}
+                {loadings.isGetRestPeriodsLoading ? (
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <Skeleton key={i} className="h-8 w-16 rounded-md" />
+                  ))
+                ) : restPeriods.length > 0 ? (
+                  restPeriods.map((period) => (
+                    <Button
+                      key={period.rest}
+                      variant={field.value === period.rest ? "default" : "outline"}
+                      size="sm"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        field.onChange(period.rest)
+                      }}
+                      disabled={loadings.isGetRestPeriodsLoading}
+                    >
+                      {displayDuration(period.rest, t)}
+                    </Button>
+                  ))
+                ) : (
+                  <TimeInput
+                    id="form-end-time"
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    disabled={loadings.isSubmitting}
+                    aria-invalid={fieldState.invalid}
+                  />
+                )}
               </div>
             </Field>
           )}
@@ -196,12 +212,12 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
         <Controller
           name="overnight"
           control={form.control}
-          render={({ field }) => (
-            <Field orientation="horizontal" data-invalid={false}>
+          render={({ field, fieldState }) => (
+            <Field orientation="horizontal" data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="form-overnight">Repos nocturne</FieldLabel>
               <Switch
                 id="form-overnight"
-                disabled={loading}
+                disabled={loadings.isSubmitting}
                 checked={field.value}
                 onCheckedChange={field.onChange}
               />
@@ -210,9 +226,9 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
         />
       </FieldGroup>
       {errorMessage && <p className="my-2 text-sm text-red-600">{errorMessage}</p>}
-      <Button type="submit" disabled={loading} className="w-full py-5">
+      <Button type="submit" disabled={loadings.isSubmitting} className="w-full py-5">
         <CheckIcon />
-        {loading ? "Enregistrement..." : "Enregistrer la journée"}
+        {loadings.isSubmitting ? "Enregistrement..." : "Enregistrer la journée"}
       </Button>
     </form>
   )

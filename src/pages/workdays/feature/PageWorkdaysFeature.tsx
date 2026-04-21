@@ -9,6 +9,12 @@ import { useForm } from "react-hook-form"
 import z from "zod"
 import { addWorkdayFormSchema } from "@/shared/zod/add-workday"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useGetRestPeriods } from "@/shared/queries/rest-period/rest-period.queries"
+
+export interface PageWorkdaysFeatureLoadings {
+  isGetMonthWorkdaysLoading: boolean
+  isGetRestPeriodsLoading: boolean
+}
 
 export default function PageWorkdaysFeature() {
   const { t } = useTranslation()
@@ -22,6 +28,7 @@ export default function PageWorkdaysFeature() {
     month: (selectedMonth.getMonth() + 1).toString().padStart(2, "0"),
     year: selectedMonth.getFullYear().toString(),
   })
+  const { data: restPeriods, isLoading: isRestPeriodsLoading } = useGetRestPeriods()
 
   const addWorkdayForm = useForm<z.infer<typeof addWorkdayFormSchema>>({
     resolver: zodResolver(addWorkdayFormSchema),
@@ -86,7 +93,11 @@ export default function PageWorkdaysFeature() {
   return (
     <PageWorkdays
       workdays={monthWorkdays || []}
-      isLoading={isMonthWorkdaysLoading}
+      restPeriods={restPeriods || []}
+      loadings={{
+        isGetMonthWorkdaysLoading: isMonthWorkdaysLoading,
+        isGetRestPeriodsLoading: isRestPeriodsLoading,
+      }}
       isAddWorkdayOpen={isAddWorkdayOpen}
       selectedMonth={selectedMonth}
       selectedMonthSubTitle={selectedMonthSubTitle}

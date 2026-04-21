@@ -15,22 +15,25 @@ import {
 } from "@/shared/components/ui/DropdownMenu"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
 import { upperCaseFirstLetter } from "@/shared/functions/upperCaseFirstLetter"
+import type { RestPeriod } from "@/shared/models/rest-period"
 import type { Workday } from "@/shared/models/workday"
 import type { addWorkdayFormSchema } from "@/shared/zod/add-workday"
 import { ChevronDownIcon, FileChartColumnIncreasingIcon, FileCodeIcon } from "lucide-react"
 import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import type z from "zod"
+import type { PageWorkdaysFeatureLoadings } from "../feature/PageWorkdaysFeature"
 
 interface PageWorkdaysProps {
   workdays: Workday[]
-  isLoading: boolean
+  restPeriods: RestPeriod[]
   isAddWorkdayOpen: boolean
   selectedMonth: Date
   selectedMonthSubTitle: string
   maxWorkedDays: number
   totalWorkingTime: string
   addWorkdayForm: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
+  loadings: PageWorkdaysFeatureLoadings
   onPreviousMonth: () => void
   onNextMonth: () => void
   setIsAddWorkdayOpen: (open: boolean) => void
@@ -38,13 +41,14 @@ interface PageWorkdaysProps {
 
 export default function PageWorkdays({
   workdays,
-  isLoading,
+  restPeriods,
   isAddWorkdayOpen,
   selectedMonth,
   selectedMonthSubTitle,
   maxWorkedDays,
   totalWorkingTime,
   addWorkdayForm,
+  loadings,
   onPreviousMonth,
   onNextMonth,
   setIsAddWorkdayOpen,
@@ -99,14 +103,18 @@ export default function PageWorkdays({
             statType="month"
             workedDays={workdays.length}
             maxWorkedDays={maxWorkedDays}
-            isLoading={isLoading}
+            isLoading={loadings.isGetMonthWorkdaysLoading}
           />
           <StatTotalWorkedHours
             totalString={totalWorkingTime}
             month={selectedMonth}
-            isLoading={isLoading}
+            isLoading={loadings.isGetMonthWorkdaysLoading}
           />
-          <StatOvernightRest workdays={workdays} isLoading={isLoading} className="hidden sm:flex" />
+          <StatOvernightRest
+            workdays={workdays}
+            isLoading={loadings.isGetMonthWorkdaysLoading}
+            className="hidden sm:flex"
+          />
         </div>
       </div>
       <WorkdayTable workdays={workdays} periodType="month" />
@@ -119,7 +127,11 @@ export default function PageWorkdays({
         isOpen={isAddWorkdayOpen}
         setIsOpen={setIsAddWorkdayOpen}
         form={addWorkdayForm}
-        isLoading={isLoading}
+        restPeriods={restPeriods}
+        loadings={{
+          isSubmitting: false,
+          isGetRestPeriodsLoading: loadings.isGetRestPeriodsLoading,
+        }}
       />
     </div>
   )

@@ -2,20 +2,28 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/Dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "./ui/Drawer"
 import { useTranslation } from "react-i18next"
-import { AddWorkdayForm } from "../forms/AddWorkday"
+import { AddWorkdayForm, type AddWorkdayFormLoadings } from "../forms/AddWorkday"
 import type { UseFormReturn } from "react-hook-form"
 import type z from "zod"
 import type { addWorkdayFormSchema } from "../zod/add-workday"
 import { XIcon } from "lucide-react"
+import type { RestPeriod } from "../models/rest-period"
 
 export interface AddWorkdayDialog {
   isOpen: boolean
   form: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
-  isLoading: boolean
+  restPeriods: RestPeriod[]
+  loadings: AddWorkdayFormLoadings
   setIsOpen: (state: boolean) => void
 }
 
-export function AddWorkdayDialog({ isOpen, form, isLoading, setIsOpen }: AddWorkdayDialog) {
+export function AddWorkdayDialog({
+  isOpen,
+  form,
+  restPeriods,
+  loadings,
+  setIsOpen,
+}: AddWorkdayDialog) {
   const { t } = useTranslation()
 
   const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -30,7 +38,8 @@ export function AddWorkdayDialog({ isOpen, form, isLoading, setIsOpen }: AddWork
           </DialogHeader>
           <AddWorkdayForm
             form={form}
-            loading={isLoading}
+            restPeriods={restPeriods}
+            loadings={loadings}
             errorMessage={null}
             onSubmit={() => {
               // TODO
@@ -53,7 +62,13 @@ export function AddWorkdayDialog({ isOpen, form, isLoading, setIsOpen }: AddWork
           </button>
         </DrawerHeader>
         <div className="px-4">
-          <AddWorkdayForm form={form} loading={isLoading} errorMessage={null} onSubmit={() => {}} />
+          <AddWorkdayForm
+            form={form}
+            restPeriods={restPeriods}
+            loadings={loadings}
+            errorMessage={null}
+            onSubmit={() => {}}
+          />
         </div>
       </DrawerContent>
     </Drawer>
