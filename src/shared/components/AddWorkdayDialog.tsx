@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/Dialog"
-import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from "./ui/Drawer"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "./ui/Drawer"
 import { useTranslation } from "react-i18next"
 import { AddWorkdayForm } from "../forms/AddWorkday"
 import type { UseFormReturn } from "react-hook-form"
@@ -55,11 +55,6 @@ export function AddWorkdayDialog({ isOpen, form, isLoading, setIsOpen }: AddWork
         <div className="px-4">
           <AddWorkdayForm form={form} loading={isLoading} errorMessage={null} onSubmit={() => {}} />
         </div>
-        <DrawerFooter className="pt-2">
-          {/* <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose> */}
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
