@@ -74,6 +74,13 @@
         "add-workday": "Add a workday",
         "use-excel-file": "Use an Excel file",
         "use-csv-file": "Use a CSV file"
+      },
+      "success": {
+        "workday-created": "Your workday has been created successfully!",
+        "workday-updated": "Your workday has been updated successfully!"
+      },
+      "errors": {
+        "workday-update-error": "An error occurred while updating your workday. Please try again later."
       }
     },
     "documents": {
@@ -242,7 +249,12 @@
       "rest-description": "Rest periods are defined in <accountSettingsLink>Account > Rest Periods</accountSettingsLink>",
       "overnight-rest-label": "Overnight rest",
       "optional": "Optional",
-      "submit-button": "Save workday"
+      "submit-button": "Save workday",
+      "errors": {
+        "workday-already-exists": "A workday already exists for this date. Do you want to replace it?"
+      },
+      "no": "No",
+      "yes": "Yes"
     },
     "errors": {
       "unexpected-error": "An unexpected error occurred. Please try again later."

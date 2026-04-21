@@ -33,11 +33,14 @@ interface PageWorkdaysProps {
   maxWorkedDays: number
   totalWorkingTime: string
   addWorkdayForm: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
+  addWorkdayFormErrorCode: string | null
   loadings: PageWorkdaysFeatureLoadings
   onPreviousMonth: () => void
   onNextMonth: () => void
   setIsAddWorkdayOpen: (open: boolean) => void
   onSubmitAddWorkdayForm: (values: z.infer<typeof addWorkdayFormSchema>) => void
+  onReplaceExistingWorkday: () => void
+  undoAddWorkdayFormErrorCode: () => void
 }
 
 export default function PageWorkdays({
@@ -49,11 +52,14 @@ export default function PageWorkdays({
   maxWorkedDays,
   totalWorkingTime,
   addWorkdayForm,
+  addWorkdayFormErrorCode,
   loadings,
   onPreviousMonth,
   onNextMonth,
   setIsAddWorkdayOpen,
   onSubmitAddWorkdayForm,
+  onReplaceExistingWorkday,
+  undoAddWorkdayFormErrorCode,
 }: PageWorkdaysProps) {
   const { t, i18n } = useTranslation()
 
@@ -132,9 +138,13 @@ export default function PageWorkdays({
         restPeriods={restPeriods}
         loadings={{
           isSubmitting: loadings.isCreatingWorkday,
+          isUpdatingWorkday: loadings.isUpdatingWorkday,
           isGetRestPeriodsLoading: loadings.isGetRestPeriodsLoading,
         }}
         onSubmit={onSubmitAddWorkdayForm}
+        errorCode={addWorkdayFormErrorCode}
+        onReplaceExistingWorkday={onReplaceExistingWorkday}
+        undoErrorCode={undoAddWorkdayFormErrorCode}
       />
     </div>
   )

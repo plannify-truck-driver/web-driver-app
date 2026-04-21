@@ -14,8 +14,11 @@ export interface AddWorkdayDialog {
   form: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
   restPeriods: RestPeriod[]
   loadings: AddWorkdayFormLoadings
+  errorCode: string | null
   setIsOpen: (state: boolean) => void
   onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
+  onReplaceExistingWorkday: () => void
+  undoErrorCode: () => void
 }
 
 export function AddWorkdayDialog({
@@ -23,8 +26,11 @@ export function AddWorkdayDialog({
   form,
   restPeriods,
   loadings,
+  errorCode,
   setIsOpen,
   onSubmit,
+  onReplaceExistingWorkday,
+  undoErrorCode,
 }: AddWorkdayDialog) {
   const { t } = useTranslation()
 
@@ -42,8 +48,10 @@ export function AddWorkdayDialog({
             form={form}
             restPeriods={restPeriods}
             loadings={loadings}
-            errorMessage={null}
+            errorCode={errorCode}
             onSubmit={onSubmit}
+            onReplaceExistingWorkday={onReplaceExistingWorkday}
+            undoErrorCode={undoErrorCode}
           />
         </DialogContent>
       </Dialog>
@@ -61,13 +69,15 @@ export function AddWorkdayDialog({
             <XIcon size={16} />
           </button>
         </DrawerHeader>
-        <div className="px-4">
+        <div className="px-4 pb-4">
           <AddWorkdayForm
             form={form}
             restPeriods={restPeriods}
             loadings={loadings}
-            errorMessage={null}
+            errorCode={errorCode}
             onSubmit={onSubmit}
+            onReplaceExistingWorkday={onReplaceExistingWorkday}
+            undoErrorCode={undoErrorCode}
           />
         </div>
       </DrawerContent>

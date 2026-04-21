@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react"
 import {
   useCreateWorkday,
   useGetWorkdaysByMonth,
+  useUpdateWorkday,
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
@@ -17,10 +18,12 @@ import { useGetRestPeriods } from "@/shared/queries/rest-period/rest-period.quer
 import { queryClient } from "@/lib/queryClient"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { toast } from "sonner"
+import { workdayDocumentsKeys } from "@/shared/queries/documents/document.queries"
 
 export interface PageWorkdaysFeatureLoadings {
   isGetMonthWorkdaysLoading: boolean
   isCreatingWorkday: boolean
+  isUpdatingWorkday: boolean
   isGetRestPeriodsLoading: boolean
 }
 
@@ -29,8 +32,9 @@ export default function PageWorkdaysFeature() {
 
   useDocumentTitle(t("pages.workdays.page-title"))
 
-  const [selectedMonth, setSelectedMonth] = useState(new Date())
+  const [selectedMonth, setSelectedMonth] = useState<Date>(new Date())
   const [isAddWorkdayOpen, setIsAddWorkdayOpen] = useState<boolean>(false)
+  const [addWorkdayFormErrorCode, setAddWorkdayFormErrorCode] = useState<string | null>(null)
 
   const { data: monthWorkdays, isLoading: isMonthWorkdaysLoading } = useGetWorkdaysByMonth({
     month: (selectedMonth.getMonth() + 1).toString().padStart(2, "0"),
@@ -43,12 +47,33 @@ export default function PageWorkdaysFeature() {
         exact: false,
         refetchType: "all",
       })
-      setIsAddWorkdayOpen(false)
+      queryClient.invalidateQueries({
+        queryKey: workdayDocumentsKeys.all,
+        exact: false,
+        refetchType: "all",
+      })
+      closeAddWorkdayDialog()
+      toast.success(t("pages.workdays.success.workday-created"))
     },
     onError: (error: Error) => {
       handleErrorResponse(error).then((apiError) => {
-        toast.error("An error occurred while creating the workday : " + apiError?.error_code)
+        setAddWorkdayFormErrorCode(apiError?.error_code ?? null)
       })
+    },
+  })
+  const { mutateAsync: updateWorkdayAsync, isPending: isUpdatingWorkday } = useUpdateWorkday({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: workdaysKeys.all,
+        exact: false,
+        refetchType: "all",
+      })
+      closeAddWorkdayDialog()
+      toast.success(t("pages.workdays.success.workday-updated"))
+    },
+    onError: (error: Error) => {
+      toast.error(t("pages.workdays.errors.workday-update-error"))
+      console.error("Failed to update workday:", error)
     },
   })
   const { data: restPeriods, isLoading: isRestPeriodsLoading } = useGetRestPeriods()
@@ -64,8 +89,13 @@ export default function PageWorkdaysFeature() {
     },
   })
 
+  function closeAddWorkdayDialog() {
+    setIsAddWorkdayOpen(false)
+    addWorkdayForm.reset()
+    setAddWorkdayFormErrorCode(null)
+  }
+
   function onSubmitAddWorkdayForm(data: z.infer<typeof addWorkdayFormSchema>) {
-    // setErrorMessage(null)
     createWorkdayAsync({
       date: data.date.toISOString().split("T")[0],
       start_time: data.startTime,
@@ -80,6 +110,17 @@ export default function PageWorkdaysFeature() {
       addWorkdayForm.reset()
     }
   }, [isAddWorkdayOpen, addWorkdayForm])
+
+  function onReplaceExistingWorkday() {
+    const values = addWorkdayForm.getValues()
+    updateWorkdayAsync({
+      date: values.date.toISOString().split("T")[0],
+      start_time: values.startTime,
+      end_time: (values.endTime?.trim() ?? "").length > 0 ? values.endTime!.trim() : null,
+      rest_time: (values.restTime?.trim() ?? "").length > 0 ? values.restTime!.trim() : "00:00:00",
+      overnight_rest: values.overnight,
+    })
+  }
 
   const endTime = useWatch({ control: addWorkdayForm.control, name: "endTime" })
   useEffect(() => {
@@ -144,6 +185,7 @@ export default function PageWorkdaysFeature() {
       loadings={{
         isGetMonthWorkdaysLoading: isMonthWorkdaysLoading,
         isCreatingWorkday: isCreatingWorkday,
+        isUpdatingWorkday: isUpdatingWorkday,
         isGetRestPeriodsLoading: isRestPeriodsLoading,
       }}
       isAddWorkdayOpen={isAddWorkdayOpen}
@@ -156,6 +198,9 @@ export default function PageWorkdaysFeature() {
       onNextMonth={selectNextMonth}
       setIsAddWorkdayOpen={setIsAddWorkdayOpen}
       onSubmitAddWorkdayForm={onSubmitAddWorkdayForm}
+      addWorkdayFormErrorCode={addWorkdayFormErrorCode}
+      onReplaceExistingWorkday={onReplaceExistingWorkday}
+      undoAddWorkdayFormErrorCode={() => setAddWorkdayFormErrorCode(null)}
     />
   )
 }

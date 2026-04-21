@@ -19,6 +19,7 @@ import { getBestRestPeriod } from "../functions/getBestRestPeriod"
 import { Skeleton } from "../components/ui/Skeleton"
 export interface AddWorkdayFormLoadings {
   isSubmitting: boolean
+  isUpdatingWorkday: boolean
   isGetRestPeriodsLoading: boolean
 }
 
@@ -26,16 +27,20 @@ interface AddWorkdayFormProps {
   form: UseFormReturn<z.infer<typeof addWorkdayFormSchema>>
   restPeriods: RestPeriod[]
   loadings: AddWorkdayFormLoadings
-  errorMessage: string | null
+  errorCode: string | null
   onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
+  onReplaceExistingWorkday: () => void
+  undoErrorCode: () => void
 }
 
 export function AddWorkdayForm({
   form,
   restPeriods,
   loadings,
-  errorMessage,
+  errorCode,
   onSubmit,
+  onReplaceExistingWorkday,
+  undoErrorCode,
 }: AddWorkdayFormProps) {
   const { t, i18n } = useTranslation()
 
@@ -94,9 +99,14 @@ export function AddWorkdayForm({
                       <button
                         key={i}
                         className={cn(
-                          "border-border flex h-14 w-12 shrink-0 cursor-pointer flex-col items-center justify-center rounded-md border",
+                          "border-border flex h-14 w-12 shrink-0 cursor-pointer flex-col items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50",
                           day.getTime() === dateValue.getTime() ? "text-secondary bg-primary" : ""
                         )}
+                        disabled={
+                          loadings.isSubmitting ||
+                          loadings.isUpdatingWorkday ||
+                          errorCode === "WORKDAY_ALREADY_EXISTS"
+                        }
                         onClick={(e) => {
                           e.preventDefault()
                           field.onChange(day)
@@ -118,7 +128,14 @@ export function AddWorkdayForm({
                   })}
                 </div>
                 <Popover open={dateOpen} onOpenChange={setDateOpen}>
-                  <PopoverTrigger className="flex h-14 w-12 shrink-0 cursor-pointer items-center justify-center rounded-md border">
+                  <PopoverTrigger
+                    className="flex h-14 w-12 shrink-0 cursor-pointer items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled={
+                      loadings.isSubmitting ||
+                      loadings.isUpdatingWorkday ||
+                      errorCode === "WORKDAY_ALREADY_EXISTS"
+                    }
+                  >
                     <CalendarIcon size={16} />
                   </PopoverTrigger>
                   <PopoverContent className="w-auto overflow-hidden p-0" align="start">
@@ -140,152 +157,173 @@ export function AddWorkdayForm({
             </Field>
           )}
         />
-        <div className="grid grid-cols-2 gap-4">
-          <Controller
-            name="startTime"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="form-start-time"
-                  className="text-muted-foreground flex items-center gap-1 text-sm font-light"
-                >
-                  <LogIn size={14} />
-                  {t("forms.add-workday.start-time-label")}
-                </FieldLabel>
-                <TimeInput
-                  id="form-start-time"
-                  value={field.value}
-                  onChange={field.onChange}
-                  disabled={loadings.isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                />
-              </Field>
-            )}
-          />
-          <Controller
-            name="endTime"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="form-end-time"
-                  className="text-muted-foreground flex items-center gap-1 text-sm font-light"
-                >
-                  <LogOut size={14} />
-                  {t("forms.add-workday.end-time-label")}
-                  <span className="text-muted-foreground/60 text-xs">
-                    · {t("forms.add-workday.optional")}
-                  </span>
-                </FieldLabel>
-                <TimeInput
-                  id="form-end-time"
-                  value={field.value ?? ""}
-                  onChange={field.onChange}
-                  disabled={loadings.isSubmitting}
-                  aria-invalid={fieldState.invalid}
-                />
-              </Field>
-            )}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Controller
-            name="restTime"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="form-rest-time"
-                  className="text-muted-foreground flex items-center gap-1 text-sm font-light"
-                >
-                  <Timer size={14} />
-                  {t("forms.add-workday.rest-time-label")}
-                </FieldLabel>
-                <div className="flex flex-row flex-wrap items-center gap-2">
-                  {loadings.isGetRestPeriodsLoading ? (
-                    Array.from({ length: 3 }).map((_, i) => (
-                      <Skeleton key={i} className="h-8 w-16 rounded-md" />
-                    ))
-                  ) : restPeriods.length > 0 ? (
-                    restPeriods.map((period) => {
-                      const isSelected = field.value === period.rest
-                      const isBest = bestRestTime === period.rest
-                      return (
-                        <button
-                          key={period.rest}
-                          onClick={(e) => {
-                            e.preventDefault()
-                            userOverrideRef.current = true
-                            field.onChange(period.rest)
-                          }}
-                          className={cn(
-                            "border-border relative cursor-pointer rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50",
-                            isSelected && "border-primary bg-primary/10 text-primary"
-                          )}
-                          disabled={loadings.isGetRestPeriodsLoading || !isRestPeriodsAvailable}
-                        >
-                          {isBest && (
-                            <span className="bg-primary absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full">
-                              <StarIcon size={8} fill="currentColor" className="text-white" />
-                            </span>
-                          )}
-                          {displayDuration(period.rest, t)}
-                        </button>
-                      )
-                    })
-                  ) : (
+        {errorCode === "WORKDAY_ALREADY_EXISTS" ? (
+          <p className="text-center">{t("forms.add-workday.errors.workday-already-exists")}</p>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 gap-4">
+              <Controller
+                name="startTime"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      htmlFor="form-start-time"
+                      className="text-muted-foreground flex items-center gap-1 text-sm font-light"
+                    >
+                      <LogIn size={14} />
+                      {t("forms.add-workday.start-time-label")}
+                    </FieldLabel>
+                    <TimeInput
+                      id="form-start-time"
+                      value={field.value}
+                      onChange={field.onChange}
+                      disabled={loadings.isSubmitting}
+                      aria-invalid={fieldState.invalid}
+                    />
+                  </Field>
+                )}
+              />
+              <Controller
+                name="endTime"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      htmlFor="form-end-time"
+                      className="text-muted-foreground flex items-center gap-1 text-sm font-light"
+                    >
+                      <LogOut size={14} />
+                      {t("forms.add-workday.end-time-label")}
+                      <span className="text-muted-foreground/60 text-xs">
+                        · {t("forms.add-workday.optional")}
+                      </span>
+                    </FieldLabel>
                     <TimeInput
                       id="form-end-time"
                       value={field.value ?? ""}
                       onChange={field.onChange}
-                      disabled={loadings.isSubmitting || !isRestPeriodsAvailable}
+                      disabled={loadings.isSubmitting}
                       aria-invalid={fieldState.invalid}
                     />
-                  )}
-                </div>
-              </Field>
-            )}
-          />
-          {!loadings.isGetRestPeriodsLoading && restPeriods.length > 0 && (
-            <p className="text-muted-foreground text-sm">
-              <Trans
-                i18nKey="forms.add-workday.rest-description"
-                components={{
-                  accountSettingsLink: <span className="text-primary underline" />,
-                }}
+                  </Field>
+                )}
               />
-            </p>
-          )}
-        </div>
-        <Controller
-          name="overnight"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field orientation="horizontal" data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-overnight">
-                {t("forms.add-workday.overnight-rest-label")}
-              </FieldLabel>
-              <Switch
-                id="form-overnight"
-                disabled={loadings.isSubmitting}
-                checked={field.value}
-                onCheckedChange={field.onChange}
+            </div>
+            <div className="flex flex-col gap-2">
+              <Controller
+                name="restTime"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      htmlFor="form-rest-time"
+                      className="text-muted-foreground flex items-center gap-1 text-sm font-light"
+                    >
+                      <Timer size={14} />
+                      {t("forms.add-workday.rest-time-label")}
+                    </FieldLabel>
+                    <div className="flex flex-row flex-wrap items-center gap-2">
+                      {loadings.isGetRestPeriodsLoading ? (
+                        Array.from({ length: 3 }).map((_, i) => (
+                          <Skeleton key={i} className="h-8 w-16 rounded-md" />
+                        ))
+                      ) : restPeriods.length > 0 ? (
+                        restPeriods.map((period) => {
+                          const isSelected = field.value === period.rest
+                          const isBest = bestRestTime === period.rest
+                          return (
+                            <button
+                              key={period.rest}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                userOverrideRef.current = true
+                                field.onChange(period.rest)
+                              }}
+                              className={cn(
+                                "border-border relative cursor-pointer rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50",
+                                isSelected && "border-primary bg-primary/10 text-primary"
+                              )}
+                              disabled={loadings.isGetRestPeriodsLoading || !isRestPeriodsAvailable}
+                            >
+                              {isBest && (
+                                <span className="bg-primary absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full">
+                                  <StarIcon size={8} fill="currentColor" className="text-white" />
+                                </span>
+                              )}
+                              {displayDuration(period.rest, t)}
+                            </button>
+                          )
+                        })
+                      ) : (
+                        <TimeInput
+                          id="form-end-time"
+                          value={field.value ?? ""}
+                          onChange={field.onChange}
+                          disabled={loadings.isSubmitting || !isRestPeriodsAvailable}
+                          aria-invalid={fieldState.invalid}
+                        />
+                      )}
+                    </div>
+                  </Field>
+                )}
               />
-            </Field>
-          )}
-        />
+              {!loadings.isGetRestPeriodsLoading && restPeriods.length > 0 && (
+                <p className="text-muted-foreground text-sm">
+                  <Trans
+                    i18nKey="forms.add-workday.rest-description"
+                    components={{
+                      accountSettingsLink: <span className="text-primary underline" />,
+                    }}
+                  />
+                </p>
+              )}
+            </div>
+            <Controller
+              name="overnight"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-overnight">
+                    {t("forms.add-workday.overnight-rest-label")}
+                  </FieldLabel>
+                  <Switch
+                    id="form-overnight"
+                    disabled={loadings.isSubmitting}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </Field>
+              )}
+            />
+          </>
+        )}
       </FieldGroup>
-      {errorMessage && <p className="my-2 text-sm text-red-600">{errorMessage}</p>}
-      <Button
-        type="submit"
-        disabled={loadings.isSubmitting}
-        isLoading={loadings.isSubmitting}
-        className="w-full py-5"
-      >
-        <CheckIcon />
-        {t("forms.add-workday.submit-button")}
-      </Button>
+      {errorCode === "WORKDAY_ALREADY_EXISTS" ? (
+        <div className="flex flex-row items-center justify-center gap-4">
+          <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
+            {t("forms.add-workday.no")}
+          </Button>
+          <Button
+            variant="default"
+            className="flex-1 py-5"
+            onClick={onReplaceExistingWorkday}
+            isLoading={loadings.isUpdatingWorkday}
+          >
+            {t("forms.add-workday.yes")}
+          </Button>
+        </div>
+      ) : (
+        <Button
+          type="submit"
+          disabled={loadings.isSubmitting}
+          isLoading={loadings.isSubmitting}
+          className="w-full py-5"
+        >
+          <CheckIcon />
+          {t("forms.add-workday.submit-button")}
+        </Button>
+      )}
     </form>
   )
 }

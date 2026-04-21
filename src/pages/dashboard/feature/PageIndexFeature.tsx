@@ -18,6 +18,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { displayDuration } from "@/shared/functions/displayDuration"
 import { getWeek } from "@/shared/functions/getWeek"
+import { workdayDocumentsKeys } from "@/shared/queries/documents/document.queries"
 
 export interface PeriodOfTime {
   from: Date
@@ -58,6 +59,11 @@ export default function PageDashboardIndexFeature() {
         exact: false,
         refetchType: "all",
       })
+      queryClient.invalidateQueries({
+        queryKey: workdayDocumentsKeys.all,
+        exact: false,
+        refetchType: "all",
+      })
     },
     onError: (error: Error) => {
       handleErrorResponse(error).then((apiError) => {
@@ -91,6 +97,11 @@ export default function PageDashboardIndexFeature() {
         exact: false,
         refetchType: "all",
       })
+      queryClient.invalidateQueries({
+        queryKey: workdayDocumentsKeys.all,
+        exact: false,
+        refetchType: "all",
+      })
     },
     onError: (error: Error) => {
       toast.error(t("pages.dashboard.workday-deletion-error"))
@@ -110,6 +121,11 @@ export default function PageDashboardIndexFeature() {
         end_time: null,
         rest_time: "00:00:00",
         overnight_rest: false,
+      })
+      queryClient.invalidateQueries({
+        queryKey: workdayDocumentsKeys.all,
+        exact: false,
+        refetchType: "all",
       })
     },
     onError: (error: Error) => {
