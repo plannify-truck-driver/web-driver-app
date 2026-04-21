@@ -45,9 +45,12 @@ export function AddWorkdayDialog({ isOpen, form, isLoading, setIsOpen }: AddWork
       <DrawerContent>
         <DrawerHeader className="flex flex-row items-center justify-between">
           <DrawerTitle>{t("components.add-dorkday-dialog.title")}</DrawerTitle>
-          <div className="bg-muted flex h-8 w-8 cursor-pointer items-center justify-center rounded-md">
+          <button
+            onClick={() => setIsOpen(false)}
+            className="text-muted-foreground hover:bg-muted bg-muted flex h-8 w-8 cursor-pointer items-center justify-center rounded-md p-1"
+          >
             <XIcon size={16} />
-          </div>
+          </button>
         </DrawerHeader>
         <div className="px-4">
           <AddWorkdayForm form={form} loading={isLoading} errorMessage={null} onSubmit={() => {}} />
