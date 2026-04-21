@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Controller, type UseFormReturn } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import type z from "zod"
@@ -8,13 +8,14 @@ import { Switch } from "../components/ui/Switch"
 import { TimeInput } from "../components/ui/TimeInput"
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/Popover"
 import { Calendar } from "../components/ui/Calendar"
-import { CalendarIcon, CheckIcon, LogIn, LogOut, Timer } from "lucide-react"
+import { CalendarIcon, CheckIcon, LogIn, LogOut, StarIcon, Timer } from "lucide-react"
 import { fr, enUS } from "react-day-picker/locale"
 import { getWeek } from "../functions/getWeek"
 import { cn } from "@/lib/utils"
 import { Button } from "../components/ui/Button"
 import type { RestPeriod } from "../models/rest-period"
 import { displayDuration } from "../functions/displayDuration"
+import { getBestRestPeriod } from "../functions/getBestRestPeriod"
 import { Skeleton } from "../components/ui/Skeleton"
 export interface AddWorkdayFormLoadings {
   isSubmitting: boolean
@@ -51,6 +52,23 @@ export function AddWorkdayForm({
   const isRestPeriodsAvailable = useMemo(() => {
     return startTimeValue.trim() !== "" && endTimeValue?.trim() !== ""
   }, [startTimeValue, endTimeValue])
+
+  const bestRestTime = useMemo(() => {
+    if (!isRestPeriodsAvailable || restPeriods.length === 0) return null
+    return getBestRestPeriod(startTimeValue, endTimeValue!, restPeriods)
+  }, [startTimeValue, endTimeValue, restPeriods, isRestPeriodsAvailable])
+
+  const userOverrideRef = useRef(false)
+
+  useEffect(() => {
+    userOverrideRef.current = false
+  }, [startTimeValue, endTimeValue])
+
+  useEffect(() => {
+    if (bestRestTime !== null && !userOverrideRef.current) {
+      form.setValue("restTime", bestRestTime)
+    }
+  }, [form, bestRestTime])
 
   return (
     <form
@@ -190,20 +208,32 @@ export function AddWorkdayForm({
                       <Skeleton key={i} className="h-8 w-16 rounded-md" />
                     ))
                   ) : restPeriods.length > 0 ? (
-                    restPeriods.map((period) => (
-                      <Button
-                        key={period.rest}
-                        variant={field.value === period.rest ? "default" : "outline"}
-                        size="sm"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          field.onChange(period.rest)
-                        }}
-                        disabled={loadings.isGetRestPeriodsLoading || !isRestPeriodsAvailable}
-                      >
-                        {displayDuration(period.rest, t)}
-                      </Button>
-                    ))
+                    restPeriods.map((period) => {
+                      const isSelected = field.value === period.rest
+                      const isBest = bestRestTime === period.rest
+                      return (
+                        <button
+                          key={period.rest}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            userOverrideRef.current = true
+                            field.onChange(period.rest)
+                          }}
+                          className={cn(
+                            "border-border relative cursor-pointer rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50",
+                            isSelected && "border-primary bg-primary/10 text-primary"
+                          )}
+                          disabled={loadings.isGetRestPeriodsLoading || !isRestPeriodsAvailable}
+                        >
+                          {isBest && (
+                            <span className="bg-primary absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full">
+                              <StarIcon size={8} fill="currentColor" className="text-white" />
+                            </span>
+                          )}
+                          {displayDuration(period.rest, t)}
+                        </button>
+                      )
+                    })
                   ) : (
                     <TimeInput
                       id="form-end-time"
