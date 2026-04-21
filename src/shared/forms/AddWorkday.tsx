@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next"
 import type z from "zod"
 import type { addWorkdayFormSchema } from "../zod/add-workday"
 import { Field, FieldGroup, FieldLabel } from "../components/ui/Field"
-import { Input } from "../components/ui/Input"
 import { Switch } from "../components/ui/Switch"
+import { TimeInput } from "../components/ui/TimeInput"
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/Popover"
 import { Calendar } from "../components/ui/Calendar"
-import { CalendarIcon, CheckIcon } from "lucide-react"
+import { CalendarIcon, CheckIcon, LogIn, LogOut, Timer } from "lucide-react"
 import { fr, enUS } from "react-day-picker/locale"
 import { getWeek } from "../functions/getWeek"
 import { cn } from "@/lib/utils"
@@ -19,6 +19,13 @@ interface AddWorkdayFormProps {
   loading: boolean
   errorMessage: string | null
   onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
+}
+
+function formatRestTime(time: string): string {
+  const [h, m] = time.split(":").map(Number)
+  if (h === 0) return `${m}min`
+  if (m === 0) return `${h}h`
+  return `${h}h${m}`
 }
 
 export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWorkdayFormProps) {
@@ -37,7 +44,7 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col gap-8"
     >
-      <FieldGroup className="flex flex-col gap-8">
+      <FieldGroup className="flex flex-col gap-5">
         <Controller
           name="date"
           control={form.control}
@@ -101,7 +108,7 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
             </Field>
           )}
         />
-        <div className="flex flex-row gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <Controller
             name="startTime"
             control={form.control}
@@ -109,14 +116,15 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="form-start-time"
-                  className="text-muted-foreground text-sm font-light"
+                  className="text-muted-foreground flex items-center gap-1 text-sm font-light"
                 >
+                  <LogIn size={14} />
                   Début
                 </FieldLabel>
-                <Input
-                  {...field}
+                <TimeInput
                   id="form-start-time"
-                  type="time"
+                  value={field.value}
+                  onChange={field.onChange}
                   disabled={loading}
                   aria-invalid={fieldState.invalid}
                 />
@@ -130,15 +138,16 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor="form-end-time"
-                  className="text-muted-foreground text-sm font-light"
+                  className="text-muted-foreground flex items-center gap-1 text-sm font-light"
                 >
+                  <LogOut size={14} />
                   Fin
+                  <span className="text-muted-foreground/60 text-xs">· facultatif</span>
                 </FieldLabel>
-                <Input
-                  {...field}
-                  value={field.value ?? ""}
+                <TimeInput
                   id="form-end-time"
-                  type="time"
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
                   disabled={loading}
                   aria-invalid={fieldState.invalid}
                 />
@@ -153,8 +162,9 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
             <Field data-invalid={false}>
               <FieldLabel
                 htmlFor="form-rest-time"
-                className="text-muted-foreground text-sm font-light"
+                className="text-muted-foreground flex items-center gap-1 text-sm font-light"
               >
+                <Timer size={14} />
                 Pause
               </FieldLabel>
               <div className="flex flex-row flex-wrap items-center gap-2">
@@ -173,11 +183,10 @@ export function AddWorkdayForm({ form, loading, errorMessage, onSubmit }: AddWor
                     key={time}
                     variant={field.value === time ? "default" : "outline"}
                     size="sm"
-                    className=""
                     onClick={() => field.onChange(time)}
                     disabled={loading}
                   >
-                    {time}
+                    {formatRestTime(time)}
                   </Button>
                 ))}
               </div>
