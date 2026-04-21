@@ -51,6 +51,7 @@ function TimeInput({
         disabled={disabled}
         aria-invalid={ariaInvalid}
         onChange={(e) => onChange?.(e.target.value)}
+        onInput={(e) => onChange?.((e.target as HTMLInputElement).value)}
         className="absolute inset-0 cursor-pointer opacity-0"
       />
     </div>
