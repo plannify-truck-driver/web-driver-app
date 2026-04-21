@@ -37,6 +37,7 @@ interface PageWorkdaysProps {
   onPreviousMonth: () => void
   onNextMonth: () => void
   setIsAddWorkdayOpen: (open: boolean) => void
+  onSubmitAddWorkdayForm: (values: z.infer<typeof addWorkdayFormSchema>) => void
 }
 
 export default function PageWorkdays({
@@ -52,6 +53,7 @@ export default function PageWorkdays({
   onPreviousMonth,
   onNextMonth,
   setIsAddWorkdayOpen,
+  onSubmitAddWorkdayForm,
 }: PageWorkdaysProps) {
   const { t, i18n } = useTranslation()
 
@@ -129,9 +131,10 @@ export default function PageWorkdays({
         form={addWorkdayForm}
         restPeriods={restPeriods}
         loadings={{
-          isSubmitting: false,
+          isSubmitting: loadings.isCreatingWorkday,
           isGetRestPeriodsLoading: loadings.isGetRestPeriodsLoading,
         }}
+        onSubmit={onSubmitAddWorkdayForm}
       />
     </div>
   )

@@ -2,7 +2,11 @@ import { useDocumentTitle } from "@/hooks/use-document-title"
 import PageWorkdays from "../ui/PageWorkdays"
 import { useTranslation } from "react-i18next"
 import { useEffect, useMemo, useState } from "react"
-import { useGetWorkdaysByMonth } from "@/shared/queries/workday/workday.queries"
+import {
+  useCreateWorkday,
+  useGetWorkdaysByMonth,
+  workdaysKeys,
+} from "@/shared/queries/workday/workday.queries"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 import { displayDuration } from "@/shared/functions/displayDuration"
 import { useForm, useWatch } from "react-hook-form"
@@ -10,9 +14,13 @@ import z from "zod"
 import { addWorkdayFormSchema } from "@/shared/zod/add-workday"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useGetRestPeriods } from "@/shared/queries/rest-period/rest-period.queries"
+import { queryClient } from "@/lib/queryClient"
+import { handleErrorResponse } from "@/shared/lib/error-response"
+import { toast } from "sonner"
 
 export interface PageWorkdaysFeatureLoadings {
   isGetMonthWorkdaysLoading: boolean
+  isCreatingWorkday: boolean
   isGetRestPeriodsLoading: boolean
 }
 
@@ -28,6 +36,21 @@ export default function PageWorkdaysFeature() {
     month: (selectedMonth.getMonth() + 1).toString().padStart(2, "0"),
     year: selectedMonth.getFullYear().toString(),
   })
+  const { mutateAsync: createWorkdayAsync, isPending: isCreatingWorkday } = useCreateWorkday({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: workdaysKeys.all,
+        exact: false,
+        refetchType: "all",
+      })
+      setIsAddWorkdayOpen(false)
+    },
+    onError: (error: Error) => {
+      handleErrorResponse(error).then((apiError) => {
+        toast.error("An error occurred while creating the workday : " + apiError?.error_code)
+      })
+    },
+  })
   const { data: restPeriods, isLoading: isRestPeriodsLoading } = useGetRestPeriods()
 
   const addWorkdayForm = useForm<z.infer<typeof addWorkdayFormSchema>>({
@@ -40,6 +63,17 @@ export default function PageWorkdaysFeature() {
       overnight: false,
     },
   })
+
+  function onSubmitAddWorkdayForm(data: z.infer<typeof addWorkdayFormSchema>) {
+    // setErrorMessage(null)
+    createWorkdayAsync({
+      date: data.date.toISOString().split("T")[0],
+      start_time: data.startTime,
+      end_time: (data.endTime?.trim() ?? "").length > 0 ? data.endTime!.trim() : null,
+      rest_time: (data.restTime?.trim() ?? "").length > 0 ? data.restTime!.trim() : "00:00:00",
+      overnight_rest: data.overnight,
+    })
+  }
 
   useEffect(() => {
     if (!isAddWorkdayOpen) {
@@ -109,6 +143,7 @@ export default function PageWorkdaysFeature() {
       restPeriods={restPeriods || []}
       loadings={{
         isGetMonthWorkdaysLoading: isMonthWorkdaysLoading,
+        isCreatingWorkday: isCreatingWorkday,
         isGetRestPeriodsLoading: isRestPeriodsLoading,
       }}
       isAddWorkdayOpen={isAddWorkdayOpen}
@@ -120,6 +155,7 @@ export default function PageWorkdaysFeature() {
       onPreviousMonth={selectPreviousMonth}
       onNextMonth={selectNextMonth}
       setIsAddWorkdayOpen={setIsAddWorkdayOpen}
+      onSubmitAddWorkdayForm={onSubmitAddWorkdayForm}
     />
   )
 }

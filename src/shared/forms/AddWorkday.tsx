@@ -277,7 +277,12 @@ export function AddWorkdayForm({
         />
       </FieldGroup>
       {errorMessage && <p className="my-2 text-sm text-red-600">{errorMessage}</p>}
-      <Button type="submit" disabled={loadings.isSubmitting} className="w-full py-5">
+      <Button
+        type="submit"
+        disabled={loadings.isSubmitting}
+        isLoading={loadings.isSubmitting}
+        className="w-full py-5"
+      >
         <CheckIcon />
         {t("forms.add-workday.submit-button")}
       </Button>

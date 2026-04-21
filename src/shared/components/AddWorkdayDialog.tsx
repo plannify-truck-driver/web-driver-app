@@ -15,6 +15,7 @@ export interface AddWorkdayDialog {
   restPeriods: RestPeriod[]
   loadings: AddWorkdayFormLoadings
   setIsOpen: (state: boolean) => void
+  onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
 }
 
 export function AddWorkdayDialog({
@@ -23,6 +24,7 @@ export function AddWorkdayDialog({
   restPeriods,
   loadings,
   setIsOpen,
+  onSubmit,
 }: AddWorkdayDialog) {
   const { t } = useTranslation()
 
@@ -41,9 +43,7 @@ export function AddWorkdayDialog({
             restPeriods={restPeriods}
             loadings={loadings}
             errorMessage={null}
-            onSubmit={() => {
-              // TODO
-            }}
+            onSubmit={onSubmit}
           />
         </DialogContent>
       </Dialog>
@@ -67,7 +67,7 @@ export function AddWorkdayDialog({
             restPeriods={restPeriods}
             loadings={loadings}
             errorMessage={null}
-            onSubmit={() => {}}
+            onSubmit={onSubmit}
           />
         </div>
       </DrawerContent>

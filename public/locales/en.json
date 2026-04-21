@@ -295,6 +295,12 @@
     "confirm-password": {
       "required": "Password confirmation is required.",
       "match": "Passwords do not match."
+    },
+    "date": {
+      "invalid": "The date is not valid."
+    },
+    "start-time": {
+      "required": "The start time is required."
     }
   }
 }

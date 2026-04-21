@@ -295,6 +295,12 @@
     "confirm-password": {
       "required": "La confirmation du mot de passe est obligatoire.",
       "match": "Les mots de passe ne correspondent pas."
+    },
+    "date": {
+      "invalid": "La date n'est pas valide."
+    },
+    "start-time": {
+      "required": "L'heure de début est obligatoire."
     }
   }
 }
