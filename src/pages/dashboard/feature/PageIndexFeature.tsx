@@ -19,6 +19,8 @@ import { handleErrorResponse } from "@/shared/lib/error-response"
 import { displayDuration } from "@/shared/functions/displayDuration"
 import { getWeek } from "@/shared/functions/getWeek"
 import { workdayDocumentsKeys } from "@/shared/queries/documents/document.queries"
+import { useGetRestPeriods } from "@/shared/queries/rest-period/rest-period.queries"
+import { getBestRestPeriod } from "@/shared/functions/getBestRestPeriod"
 
 export interface PeriodOfTime {
   from: Date
@@ -49,6 +51,7 @@ export default function PageDashboardIndexFeature() {
     month: (period.from.getMonth() + 1).toString().padStart(2, "0"),
     year: period.from.getFullYear().toString(),
   })
+  const { data: restPeriods } = useGetRestPeriods()
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
     date: today.toISOString().split("T")[0],
   })
@@ -186,14 +189,16 @@ export default function PageDashboardIndexFeature() {
     }
 
     const now = new Date()
+    const endTime = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}`
+    const bestRestTime = getBestRestPeriod(todayWorkday!.start_time, endTime, restPeriods ?? [])
     updateWorkdayAsync({
       date: todayWorkday!.date,
       start_time: todayWorkday!.start_time,
-      end_time: `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
-        .getSeconds()
-        .toString()
-        .padStart(2, "0")}`,
-      rest_time: todayWorkday!.rest_time,
+      end_time: endTime,
+      rest_time: bestRestTime ?? todayWorkday!.rest_time,
       overnight_rest: todayWorkday!.overnight_rest,
     })
   }
