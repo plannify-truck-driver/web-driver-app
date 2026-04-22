@@ -97,7 +97,12 @@ export default function PageWorkdaysFeature() {
 
   function onSubmitAddWorkdayForm(data: z.infer<typeof addWorkdayFormSchema>) {
     createWorkdayAsync({
-      date: data.date.toISOString().split("T")[0],
+      date:
+        data.date.getFullYear() +
+        "-" +
+        (data.date.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        data.date.getDate().toString().padStart(2, "0"),
       start_time: data.startTime,
       end_time: (data.endTime?.trim() ?? "").length > 0 ? data.endTime!.trim() : null,
       rest_time: (data.restTime?.trim() ?? "").length > 0 ? data.restTime!.trim() : "00:00:00",
@@ -114,7 +119,12 @@ export default function PageWorkdaysFeature() {
   function onReplaceExistingWorkday() {
     const values = addWorkdayForm.getValues()
     updateWorkdayAsync({
-      date: values.date.toISOString().split("T")[0],
+      date:
+        values.date.getFullYear() +
+        "-" +
+        (values.date.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        values.date.getDate().toString().padStart(2, "0"),
       start_time: values.startTime,
       end_time: (values.endTime?.trim() ?? "").length > 0 ? values.endTime!.trim() : null,
       rest_time: (values.restTime?.trim() ?? "").length > 0 ? values.restTime!.trim() : "00:00:00",
