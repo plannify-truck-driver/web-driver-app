@@ -18,16 +18,24 @@ import { upperCaseFirstLetter } from "@/shared/functions/upperCaseFirstLetter"
 import type { RestPeriod } from "@/shared/models/rest-period"
 import type { Workday } from "@/shared/models/workday"
 import type { addWorkdayFormSchema } from "@/shared/zod/add-workday"
-import { ChevronDownIcon, FileChartColumnIncreasingIcon, FileCodeIcon } from "lucide-react"
+import {
+  ChevronDownIcon,
+  EllipsisIcon,
+  FileChartColumnIncreasingIcon,
+  FileCodeIcon,
+} from "lucide-react"
 import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import type z from "zod"
 import type { PageWorkdaysFeatureLoadings } from "../feature/PageWorkdaysFeature"
+import { ImportWorkdaysFromFileDialog } from "@/shared/components/ImportWorkdaysFromFileDialog"
+import { useState } from "react"
 
 interface PageWorkdaysProps {
   workdays: Workday[]
   restPeriods: RestPeriod[]
   isAddWorkdayOpen: boolean
+  isImportingWorkdaysFromFileOpen: boolean
   selectedMonth: Date
   selectedMonthSubTitle: string
   maxWorkedDays: number
@@ -38,6 +46,7 @@ interface PageWorkdaysProps {
   onPreviousMonth: () => void
   onNextMonth: () => void
   setIsAddWorkdayOpen: (open: boolean) => void
+  setIsImportingWorkdaysFromFileOpen: (open: boolean) => void
   onSubmitAddWorkdayForm: (values: z.infer<typeof addWorkdayFormSchema>) => void
   onReplaceExistingWorkday: () => void
   onRestoreGarbageWorkday: () => void
@@ -48,6 +57,7 @@ export default function PageWorkdays({
   workdays,
   restPeriods,
   isAddWorkdayOpen,
+  isImportingWorkdaysFromFileOpen,
   selectedMonth,
   selectedMonthSubTitle,
   maxWorkedDays,
@@ -58,17 +68,44 @@ export default function PageWorkdays({
   onPreviousMonth,
   onNextMonth,
   setIsAddWorkdayOpen,
+  setIsImportingWorkdaysFromFileOpen,
   onSubmitAddWorkdayForm,
   onReplaceExistingWorkday,
   onRestoreGarbageWorkday,
   undoAddWorkdayFormErrorCode,
 }: PageWorkdaysProps) {
   const { t, i18n } = useTranslation()
+  const [importFileType, setImportFileType] = useState<"csv" | "xlsx">("xlsx")
+
+  const openImportDialog = (type: "csv" | "xlsx") => {
+    setImportFileType(type)
+    setIsImportingWorkdaysFromFileOpen(true)
+  }
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
-        <h1 className="text-2xl font-semibold">{t("pages.workdays.page-title")}</h1>
+        <div className="flex flex-row items-center justify-between gap-1">
+          <h1 className="text-2xl font-semibold">{t("pages.workdays.page-title")}</h1>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="text-muted-foreground flex h-10 w-10 items-center justify-center rounded-md sm:hidden"
+              >
+                <EllipsisIcon size={16} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-auto max-w-70 min-w-50">
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={() => openImportDialog("xlsx")}>
+                  <FileChartColumnIncreasingIcon />
+                  {t("pages.workdays.buttons.import-from-file")}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <div className="flex flex-col-reverse items-end gap-4 sm:flex-row sm:items-center">
           <ButtonGroup className="hidden sm:flex">
             <Button variant="default" onClick={() => setIsAddWorkdayOpen(true)}>
@@ -82,11 +119,11 @@ export default function PageWorkdays({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-auto max-w-70 min-w-50">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => openImportDialog("xlsx")}>
                     <FileChartColumnIncreasingIcon />
                     {t("pages.workdays.buttons.use-excel-file")}
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => openImportDialog("csv")}>
                     <FileCodeIcon />
                     {t("pages.workdays.buttons.use-csv-file")}
                   </DropdownMenuItem>
@@ -132,6 +169,11 @@ export default function PageWorkdays({
         isFirstWorkday={workdays.length === 0}
         onClick={() => setIsAddWorkdayOpen(true)}
         className="block sm:hidden"
+      />
+      <ImportWorkdaysFromFileDialog
+        isOpen={isImportingWorkdaysFromFileOpen}
+        setIsOpen={setIsImportingWorkdaysFromFileOpen}
+        initialFileType={importFileType}
       />
       <AddWorkdayDialog
         isOpen={isAddWorkdayOpen}

@@ -37,6 +37,8 @@ export default function PageWorkdaysFeature() {
   const [selectedMonth, setSelectedMonth] = useState<Date>(new Date())
   const [isAddWorkdayOpen, setIsAddWorkdayOpen] = useState<boolean>(false)
   const [addWorkdayFormErrorCode, setAddWorkdayFormErrorCode] = useState<string | null>(null)
+  const [isImportingWorkdaysFromFileOpen, setIsImportingWorkdaysFromFileOpen] =
+    useState<boolean>(false)
 
   const { data: monthWorkdays, isLoading: isMonthWorkdaysLoading } = useGetWorkdaysByMonth({
     month: (selectedMonth.getMonth() + 1).toString().padStart(2, "0"),
@@ -226,6 +228,7 @@ export default function PageWorkdaysFeature() {
         isGetRestPeriodsLoading: isRestPeriodsLoading,
       }}
       isAddWorkdayOpen={isAddWorkdayOpen}
+      isImportingWorkdaysFromFileOpen={isImportingWorkdaysFromFileOpen}
       selectedMonth={selectedMonth}
       selectedMonthSubTitle={selectedMonthSubTitle}
       maxWorkedDays={maxWorkedDays}
@@ -234,6 +237,7 @@ export default function PageWorkdaysFeature() {
       onPreviousMonth={selectPreviousMonth}
       onNextMonth={selectNextMonth}
       setIsAddWorkdayOpen={setIsAddWorkdayOpen}
+      setIsImportingWorkdaysFromFileOpen={setIsImportingWorkdaysFromFileOpen}
       onSubmitAddWorkdayForm={onSubmitAddWorkdayForm}
       addWorkdayFormErrorCode={addWorkdayFormErrorCode}
       onReplaceExistingWorkday={onReplaceExistingWorkday}

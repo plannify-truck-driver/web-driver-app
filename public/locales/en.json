@@ -72,8 +72,9 @@
       "other-month": "Other month",
       "buttons": {
         "add-workday": "Add a workday",
-        "use-excel-file": "Use an Excel file",
-        "use-csv-file": "Use a CSV file"
+        "use-excel-file": "Import workdays from an Excel file",
+        "use-csv-file": "Import workdays from a CSV file",
+        "import-from-file": "Import workdays from file"
       },
       "success": {
         "workday-created": "Your workday has been created successfully!",
@@ -93,6 +94,30 @@
     "add-dorkday-dialog": {
       "title": "New workday",
       "description": "Fill in the information below to add a workday."
+    },
+    "import-workdays-from-file-dialog": {
+      "title-csv": "Import a CSV file",
+      "title-xlsx": "Import an Excel file",
+      "description": "Import your workdays from a CSV or Excel file.",
+      "csv-label": "CSV",
+      "excel-label": "Excel",
+      "drop-zone-label-csv": "Drop your .csv file here",
+      "drop-zone-label-xlsx": "Drop your .xlsx file here",
+      "drop-zone-sublabel": "or tap to choose",
+      "browse-files": "Browse files",
+      "recognized-file": "File recognized for workday import.",
+      "unrecognized-file": "File type not recognized by Plannify. Please help us specify the fields to use for import.",
+      "import-button": "Import workdays",
+      "specify-attributes-button": "Specify attributes",
+      "mapping-description": "Match your file's columns to the expected Plannify attributes.",
+      "mapping-select-placeholder": "Choose a column...",
+      "mapping-confirm": "Confirm",
+      "mapping-back": "Back",
+      "mapping-attr-date": "Date",
+      "mapping-attr-start_time": "Start time",
+      "mapping-attr-end_time": "End time",
+      "mapping-attr-rest_time": "Rest period",
+      "mapping-attr-overnight_rest": "Overnight rest"
     },
     "add-workday-button": {
       "add-first-workday": "Add a first workday",

@@ -72,8 +72,9 @@
       "other-month": "Autre mois",
       "buttons": {
         "add-workday": "Ajouter une journée",
-        "use-excel-file": "Utiliser un fichier Excel",
-        "use-csv-file": "Utiliser un fichier CSV"
+        "use-excel-file": "Importer des journées à partir d'un fichier Excel",
+        "use-csv-file": "Importer des journées à partir d'un fichier CSV",
+        "import-from-file": "Importer des journées à partir d'un fichier"
       },
       "success": {
         "workday-created": "La journée a bien été créée !",
@@ -93,6 +94,30 @@
     "add-dorkday-dialog": {
       "title": "Nouvelle journée",
       "description": "Remplissez les informations ci-dessous pour ajouter une journée de travail."
+    },
+    "import-workdays-from-file-dialog": {
+      "title-csv": "Importer un fichier CSV",
+      "title-xlsx": "Importer un fichier Excel",
+      "description": "Importez vos journées de travail depuis un fichier CSV ou Excel.",
+      "csv-label": "CSV",
+      "excel-label": "Excel",
+      "drop-zone-label-csv": "Glissez votre fichier .csv",
+      "drop-zone-label-xlsx": "Glissez votre fichier .xlsx",
+      "drop-zone-sublabel": "ou appuyez pour choisir",
+      "browse-files": "Parcourir les fichiers",
+      "recognized-file": "Fichier reconnu pour l'import des journées.",
+      "unrecognized-file": "Type de fichier non reconnu par Plannify. Veuillez nous aider à spécifier les champs à utiliser pour l'import.",
+      "import-button": "Importer les journées",
+      "specify-attributes-button": "Spécifier les attributs",
+      "mapping-description": "Associez les colonnes de votre fichier aux attributs Plannify attendus.",
+      "mapping-select-placeholder": "Choisir une colonne...",
+      "mapping-confirm": "Confirmer",
+      "mapping-back": "Retour",
+      "mapping-attr-date": "Date",
+      "mapping-attr-start_time": "Heure de début",
+      "mapping-attr-end_time": "Heure de fin",
+      "mapping-attr-rest_time": "Coupure",
+      "mapping-attr-overnight_rest": "Repos nocturne"
     },
     "add-workday-button": {
       "add-first-workday": "Ajouter la première journée",
