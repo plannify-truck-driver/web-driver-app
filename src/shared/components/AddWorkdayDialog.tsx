@@ -18,6 +18,7 @@ export interface AddWorkdayDialog {
   setIsOpen: (state: boolean) => void
   onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
   onReplaceExistingWorkday: () => void
+  onRestoreGarbageWorkday: () => void
   undoErrorCode: () => void
 }
 
@@ -30,6 +31,7 @@ export function AddWorkdayDialog({
   setIsOpen,
   onSubmit,
   onReplaceExistingWorkday,
+  onRestoreGarbageWorkday,
   undoErrorCode,
 }: AddWorkdayDialog) {
   const { t } = useTranslation()
@@ -51,6 +53,7 @@ export function AddWorkdayDialog({
             errorCode={errorCode}
             onSubmit={onSubmit}
             onReplaceExistingWorkday={onReplaceExistingWorkday}
+            onRestoreGarbageWorkday={onRestoreGarbageWorkday}
             undoErrorCode={undoErrorCode}
           />
         </DialogContent>
@@ -77,6 +80,7 @@ export function AddWorkdayDialog({
             errorCode={errorCode}
             onSubmit={onSubmit}
             onReplaceExistingWorkday={onReplaceExistingWorkday}
+            onRestoreGarbageWorkday={onRestoreGarbageWorkday}
             undoErrorCode={undoErrorCode}
           />
         </div>

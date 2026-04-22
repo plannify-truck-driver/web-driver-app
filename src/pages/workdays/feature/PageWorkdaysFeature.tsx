@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react"
 import {
   useCreateWorkday,
   useGetWorkdaysByMonth,
+  useRestoreWorkday,
   useUpdateWorkday,
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
@@ -24,6 +25,7 @@ export interface PageWorkdaysFeatureLoadings {
   isGetMonthWorkdaysLoading: boolean
   isCreatingWorkday: boolean
   isUpdatingWorkday: boolean
+  isRestoringWorkday: boolean
   isGetRestPeriodsLoading: boolean
 }
 
@@ -59,6 +61,12 @@ export default function PageWorkdaysFeature() {
       handleErrorResponse(error).then((apiError) => {
         setAddWorkdayFormErrorCode(apiError?.error_code ?? null)
       })
+    },
+  })
+  const { mutateAsync: restoreWorkdayAsync, isPending: isRestoringWorkday } = useRestoreWorkday({
+    onError: (error: Error) => {
+      toast.error(t("pages.workdays.errors.workday-restore-error"))
+      console.error("Failed to restore workday:", error)
     },
   })
   const { mutateAsync: updateWorkdayAsync, isPending: isUpdatingWorkday } = useUpdateWorkday({
@@ -115,6 +123,24 @@ export default function PageWorkdaysFeature() {
       addWorkdayForm.reset()
     }
   }, [isAddWorkdayOpen, addWorkdayForm])
+
+  async function onRestoreGarbageWorkday() {
+    const values = addWorkdayForm.getValues()
+    const date =
+      values.date.getFullYear() +
+      "-" +
+      (values.date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      values.date.getDate().toString().padStart(2, "0")
+    await restoreWorkdayAsync({ date })
+    await updateWorkdayAsync({
+      date,
+      start_time: values.startTime,
+      end_time: (values.endTime?.trim() ?? "").length > 0 ? values.endTime!.trim() : null,
+      rest_time: (values.restTime?.trim() ?? "").length > 0 ? values.restTime!.trim() : "00:00:00",
+      overnight_rest: values.overnight,
+    })
+  }
 
   function onReplaceExistingWorkday() {
     const values = addWorkdayForm.getValues()
@@ -196,6 +222,7 @@ export default function PageWorkdaysFeature() {
         isGetMonthWorkdaysLoading: isMonthWorkdaysLoading,
         isCreatingWorkday: isCreatingWorkday,
         isUpdatingWorkday: isUpdatingWorkday,
+        isRestoringWorkday: isRestoringWorkday,
         isGetRestPeriodsLoading: isRestPeriodsLoading,
       }}
       isAddWorkdayOpen={isAddWorkdayOpen}
@@ -210,6 +237,7 @@ export default function PageWorkdaysFeature() {
       onSubmitAddWorkdayForm={onSubmitAddWorkdayForm}
       addWorkdayFormErrorCode={addWorkdayFormErrorCode}
       onReplaceExistingWorkday={onReplaceExistingWorkday}
+      onRestoreGarbageWorkday={onRestoreGarbageWorkday}
       undoAddWorkdayFormErrorCode={() => setAddWorkdayFormErrorCode(null)}
     />
   )

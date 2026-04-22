@@ -17,7 +17,6 @@ import type { RestPeriod } from "../models/rest-period"
 import { displayDuration } from "../functions/displayDuration"
 import { getBestRestPeriod } from "../functions/getBestRestPeriod"
 import { Skeleton } from "../components/ui/Skeleton"
-import { toast } from "sonner"
 export interface AddWorkdayFormLoadings {
   isSubmitting: boolean
   isUpdatingWorkday: boolean
@@ -31,6 +30,7 @@ interface AddWorkdayFormProps {
   errorCode: string | null
   onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
   onReplaceExistingWorkday: () => void
+  onRestoreGarbageWorkday: () => void
   undoErrorCode: () => void
 }
 
@@ -41,6 +41,7 @@ export function AddWorkdayForm({
   errorCode,
   onSubmit,
   onReplaceExistingWorkday,
+  onRestoreGarbageWorkday,
   undoErrorCode,
 }: AddWorkdayFormProps) {
   const { t, i18n } = useTranslation()
@@ -335,11 +336,7 @@ export function AddWorkdayForm({
             <Button
               variant="default"
               className="flex-1 py-5"
-              onClick={() =>
-                toast.info(
-                  "This feature is not implemented yet. Please contact support to restore the existing workday."
-                )
-              }
+              onClick={onRestoreGarbageWorkday}
               isLoading={loadings.isUpdatingWorkday}
             >
               {t("forms.add-workday.yes")}
