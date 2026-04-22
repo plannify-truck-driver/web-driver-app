@@ -467,7 +467,10 @@ export default function AppLayout() {
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
                     <DropdownMenuItem asChild>
-                      <Link to="/settings/application-preferences" className="text-responsive-base!">
+                      <Link
+                        to="/settings/application-preferences"
+                        className="text-responsive-base!"
+                      >
                         <Settings className="size-4" />
                         {t("settings")}
                       </Link>

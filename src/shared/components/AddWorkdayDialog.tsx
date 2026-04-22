@@ -60,7 +60,6 @@ export function AddWorkdayDialog({
       </Dialog>
     )
   }
-
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerContent>

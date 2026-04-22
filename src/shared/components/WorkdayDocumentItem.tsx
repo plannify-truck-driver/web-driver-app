@@ -36,7 +36,7 @@ export function WorkdayDocumentItem({
   return (
     <div
       ref={itemRef}
-      className={`flex flex-row items-center justify-between gap-3 rounded-lg border px-4 py-3 transition-colors ${isHighlighted ? "bg-amber-500/10 border-amber-500/50 ring-2 ring-amber-500/30" : "bg-sidebar border-border"}`}
+      className={`flex flex-row items-center justify-between gap-3 rounded-lg border px-4 py-3 transition-colors ${isHighlighted ? "border-amber-500/50 bg-amber-500/10 ring-2 ring-amber-500/30" : "bg-sidebar border-border"}`}
     >
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#EF4444]/10">
         <FileText className="text-[#EF4444]" />

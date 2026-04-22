@@ -38,7 +38,11 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
       header: t("components.workday-table-desktop.start-time"),
       cell: ({ row }) => {
         const value = row.getValue("start_time") as string | undefined
-        return value ? displayTime(value, showSeconds) : <Minus className="text-muted-foreground/80" size={16} />
+        return value ? (
+          displayTime(value, showSeconds)
+        ) : (
+          <Minus className="text-muted-foreground/80" size={16} />
+        )
       },
     },
     {
@@ -46,7 +50,11 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
       header: t("components.workday-table-desktop.end-time"),
       cell: ({ row }) => {
         const value = row.getValue("end_time") as string | undefined
-        return value ? displayTime(value, showSeconds) : <Minus className="text-muted-foreground/80" size={16} />
+        return value ? (
+          displayTime(value, showSeconds)
+        ) : (
+          <Minus className="text-muted-foreground/80" size={16} />
+        )
       },
     },
     {
@@ -134,7 +142,12 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
               key={row.id}
               data-state={row.getIsSelected() && "selected"}
               className="cursor-pointer"
-              onClick={() => navigate({ to: "/workdays/$workdayDate", params: { workdayDate: row.original.date } })}
+              onClick={() =>
+                navigate({
+                  to: "/workdays/$workdayDate",
+                  params: { workdayDate: row.original.date },
+                })
+              }
             >
               {row.getVisibleCells().map((cell) => {
                 return (

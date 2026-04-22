@@ -65,7 +65,13 @@ export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps
                         ? i.getDay() === 6
                         : i.getDay() === 5
                   }
-                  onClick={() => workday && navigate({ to: "/workdays/$workdayDate", params: { workdayDate: workday.date } })}
+                  onClick={() =>
+                    workday &&
+                    navigate({
+                      to: "/workdays/$workdayDate",
+                      params: { workdayDate: workday.date },
+                    })
+                  }
                 />
               )
             }
@@ -78,7 +84,9 @@ export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps
               workday={workday}
               isFirst={idx === 0}
               isLast={idx === workdays.length - 1}
-              onClick={() => navigate({ to: "/workdays/$workdayDate", params: { workdayDate: workday.date } })}
+              onClick={() =>
+                navigate({ to: "/workdays/$workdayDate", params: { workdayDate: workday.date } })
+              }
             />
           ))
         ) : (

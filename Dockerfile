@@ -46,6 +46,11 @@ USER root
 # RUN apk upgrade --no-cache zlib musl musl-utils
 USER nginx
 
+# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
+USER root
+RUN apk upgrade --no-cache zlib musl musl-utils
+USER nginx
+
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
