@@ -16,8 +16,6 @@ export default function PageDocuments({
   generatingDocument,
 }: PageDocumentsProps) {
   const { t } = useTranslation()
-  const currentYear = new Date().getFullYear()
-  const currentYearDocuments = workdayDocuments[currentYear]
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6">
@@ -26,15 +24,8 @@ export default function PageDocuments({
         <p className="text-muted-foreground text-sm">{t("pages.documents.page-description")}</p>
       </div>
       <div className="flex flex-col gap-3">
-        <WorkdayDocumentGroup
-          year={currentYear}
-          workdayDocuments={currentYearDocuments}
-          fetchDocumentsByYear={fetchDocumentsByYear}
-          onGenerateDocument={onGenerateDocument}
-          generatingDocument={generatingDocument}
-        />
         {Object.entries(workdayDocuments)
-          .filter(([year]) => year !== String(currentYear))
+          .sort(([a], [b]) => parseInt(b) - parseInt(a))
           .map(([year, documents]) => (
             <WorkdayDocumentGroup
               key={year}
