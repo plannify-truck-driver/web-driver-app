@@ -251,10 +251,13 @@
       "optional": "Optional",
       "submit-button": "Save workday",
       "errors": {
-        "workday-already-exists": "A workday already exists for this date. Do you want to replace it?"
+        "workday-already-exists": "A workday already exists for this date. Do you want to replace it?",
+        "workday-garbage-already-exists": "A deleted workday already exists for this date. Do you want to restore it?",
+        "generic": "An unexpected error occurred. Please try again later."
       },
       "no": "No",
-      "yes": "Yes"
+      "yes": "Yes",
+      "generic-error-undo": "Annuler"
     },
     "errors": {
       "unexpected-error": "An unexpected error occurred. Please try again later."

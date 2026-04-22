@@ -251,10 +251,13 @@
       "optional": "Facultatif",
       "submit-button": "Enregistrer la journée",
       "errors": {
-        "workday-already-exists": "Une journée de travail existe déjà pour cette date. Souhaitez-vous la remplacer ?"
+        "workday-already-exists": "Une journée de travail existe déjà pour cette date. Souhaitez-vous la remplacer ?",
+        "workday-garbage-already-exists": "Une journée supprimée existe déjà pour cette date. Souhaitez-vous la restaurer et la remplacer ?",
+        "generic": "Une erreur inattendue est survenue. Veuillez réessayer plus tard."
       },
       "no": "Non",
-      "yes": "Oui"
+      "yes": "Oui",
+      "generic-error-undo": "Annuler"
     },
     "errors": {
       "unexpected-error": "Une erreur inattendue est survenue. Veuillez réessayer plus tard."

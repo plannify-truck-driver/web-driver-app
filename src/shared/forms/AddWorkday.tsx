@@ -17,6 +17,7 @@ import type { RestPeriod } from "../models/rest-period"
 import { displayDuration } from "../functions/displayDuration"
 import { getBestRestPeriod } from "../functions/getBestRestPeriod"
 import { Skeleton } from "../components/ui/Skeleton"
+import { toast } from "sonner"
 export interface AddWorkdayFormLoadings {
   isSubmitting: boolean
   isUpdatingWorkday: boolean
@@ -105,7 +106,9 @@ export function AddWorkdayForm({
                         disabled={
                           loadings.isSubmitting ||
                           loadings.isUpdatingWorkday ||
-                          errorCode === "WORKDAY_ALREADY_EXISTS"
+                          ["WORKDAY_ALREADY_EXISTS", "WORKDAY_GARBAGE_ALREADY_EXISTS"].includes(
+                            errorCode ?? ""
+                          )
                         }
                         onClick={(e) => {
                           e.preventDefault()
@@ -133,7 +136,9 @@ export function AddWorkdayForm({
                     disabled={
                       loadings.isSubmitting ||
                       loadings.isUpdatingWorkday ||
-                      errorCode === "WORKDAY_ALREADY_EXISTS"
+                      ["WORKDAY_ALREADY_EXISTS", "WORKDAY_GARBAGE_ALREADY_EXISTS"].includes(
+                        errorCode ?? ""
+                      )
                     }
                   >
                     <CalendarIcon size={16} />
@@ -157,8 +162,16 @@ export function AddWorkdayForm({
             </Field>
           )}
         />
-        {errorCode === "WORKDAY_ALREADY_EXISTS" ? (
-          <p className="text-center">{t("forms.add-workday.errors.workday-already-exists")}</p>
+        {errorCode ? (
+          errorCode === "WORKDAY_ALREADY_EXISTS" ? (
+            <p className="text-center">{t("forms.add-workday.errors.workday-already-exists")}</p>
+          ) : errorCode === "WORKDAY_GARBAGE_ALREADY_EXISTS" ? (
+            <p className="text-center">
+              {t("forms.add-workday.errors.workday-garbage-already-exists")}
+            </p>
+          ) : (
+            <p className="text-center">{t("forms.add-workday.errors.generic")}</p>
+          )
         ) : (
           <>
             <div className="grid grid-cols-2 gap-4">
@@ -299,20 +312,44 @@ export function AddWorkdayForm({
           </>
         )}
       </FieldGroup>
-      {errorCode === "WORKDAY_ALREADY_EXISTS" ? (
-        <div className="flex flex-row items-center justify-center gap-4">
+      {errorCode ? (
+        errorCode === "WORKDAY_ALREADY_EXISTS" ? (
+          <div className="flex flex-row items-center justify-center gap-4">
+            <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
+              {t("forms.add-workday.no")}
+            </Button>
+            <Button
+              variant="default"
+              className="flex-1 py-5"
+              onClick={onReplaceExistingWorkday}
+              isLoading={loadings.isUpdatingWorkday}
+            >
+              {t("forms.add-workday.yes")}
+            </Button>
+          </div>
+        ) : errorCode === "WORKDAY_GARBAGE_ALREADY_EXISTS" ? (
+          <div className="flex flex-row items-center justify-center gap-4">
+            <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
+              {t("forms.add-workday.no")}
+            </Button>
+            <Button
+              variant="default"
+              className="flex-1 py-5"
+              onClick={() =>
+                toast.info(
+                  "This feature is not implemented yet. Please contact support to restore the existing workday."
+                )
+              }
+              isLoading={loadings.isUpdatingWorkday}
+            >
+              {t("forms.add-workday.yes")}
+            </Button>
+          </div>
+        ) : (
           <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
-            {t("forms.add-workday.no")}
+            {t("forms.add-workday.generic-error-undo")}
           </Button>
-          <Button
-            variant="default"
-            className="flex-1 py-5"
-            onClick={onReplaceExistingWorkday}
-            isLoading={loadings.isUpdatingWorkday}
-          >
-            {t("forms.add-workday.yes")}
-          </Button>
-        </div>
+        )
       ) : (
         <Button
           type="submit"
