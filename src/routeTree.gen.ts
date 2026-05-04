@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from "./routes/index"
 import { Route as WorkdaysIndexRouteImport } from "./routes/workdays/index"
 import { Route as DocumentsIndexRouteImport } from "./routes/documents/index"
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index"
+import { Route as AccountIndexRouteImport } from "./routes/account/index"
 import { Route as AuthenticationVerifyAccountRouteImport } from "./routes/authentication/verify-account"
 import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentication/suspended"
 import { Route as AuthenticationRegistrationRouteImport } from "./routes/authentication/registration"
@@ -37,6 +38,11 @@ const DocumentsIndexRoute = DocumentsIndexRouteImport.update({
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: "/dashboard/",
   path: "/dashboard/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountIndexRoute = AccountIndexRouteImport.update({
+  id: "/account/",
+  path: "/account/",
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticationVerifyAccountRoute =
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/account/": typeof AccountIndexRoute
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
   "/workdays/": typeof WorkdaysIndexRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/account": typeof AccountIndexRoute
   "/dashboard": typeof DashboardIndexRoute
   "/documents": typeof DocumentsIndexRoute
   "/workdays": typeof WorkdaysIndexRoute
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/account/": typeof AccountIndexRoute
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
   "/workdays/": typeof WorkdaysIndexRoute
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | "/authentication/registration"
     | "/authentication/suspended"
     | "/authentication/verify-account"
+    | "/account/"
     | "/dashboard/"
     | "/documents/"
     | "/workdays/"
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | "/authentication/registration"
     | "/authentication/suspended"
     | "/authentication/verify-account"
+    | "/account"
     | "/dashboard"
     | "/documents"
     | "/workdays"
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | "/authentication/registration"
     | "/authentication/suspended"
     | "/authentication/verify-account"
+    | "/account/"
     | "/dashboard/"
     | "/documents/"
     | "/workdays/"
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   AuthenticationRegistrationRoute: typeof AuthenticationRegistrationRoute
   AuthenticationSuspendedRoute: typeof AuthenticationSuspendedRoute
   AuthenticationVerifyAccountRoute: typeof AuthenticationVerifyAccountRoute
+  AccountIndexRoute: typeof AccountIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DocumentsIndexRoute: typeof DocumentsIndexRoute
   WorkdaysIndexRoute: typeof WorkdaysIndexRoute
@@ -178,6 +191,13 @@ declare module "@tanstack/react-router" {
       path: "/dashboard"
       fullPath: "/dashboard/"
       preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/account/": {
+      id: "/account/"
+      path: "/account"
+      fullPath: "/account/"
+      preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/authentication/verify-account": {
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticationRegistrationRoute: AuthenticationRegistrationRoute,
   AuthenticationSuspendedRoute: AuthenticationSuspendedRoute,
   AuthenticationVerifyAccountRoute: AuthenticationVerifyAccountRoute,
+  AccountIndexRoute: AccountIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DocumentsIndexRoute: DocumentsIndexRoute,
   WorkdaysIndexRoute: WorkdaysIndexRoute,

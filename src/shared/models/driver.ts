@@ -6,7 +6,6 @@ export interface Driver {
   verified: boolean
 }
 
-//needed because of the actual backend to be removed when the backend handles the jwt correctly
 export interface JwtDriverPayload {
   sub: string
   driver: Driver

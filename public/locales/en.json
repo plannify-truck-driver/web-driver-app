@@ -88,6 +88,21 @@
       "page-title": "Documents",
       "page-description": "Statements of your monthly hours",
       "generation-error": "Your document cannot be retrieved at the moment. Please try again later."
+    },
+    "account": {
+      "page-title": "My account",
+      "settings-actions": {
+        "account-section-title": "Settings",
+        "support-section-title": "Support",
+        "personal-information": "Personal information",
+        "email-preferences": "Email preferences",
+        "rest-preferences": "Rest preferences",
+        "theme": "Theme",
+        "language": "Language",
+        "help-support": "Help & Support",
+        "about-plannify": "About Plannify",
+        "logout": "Logout"
+      }
     }
   },
   "components": {
@@ -178,6 +193,10 @@
     "workday-document-item": {
       "description": "Hours statement",
       "generated": "Generated"
+    },
+    "no-driver-loaded": {
+      "title": "Not authenticated",
+      "description": "Something went wrong while loading your account information. Please try logging in again."
     }
   },
   "navigation": {

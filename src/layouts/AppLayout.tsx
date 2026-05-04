@@ -387,9 +387,7 @@ export default function AppLayout() {
                       </span>
                       <div className="w-ull flex h-full flex-col justify-between">
                         <p className="line-clamp-1 w-full p-0 leading-none">{driver.first_name}</p>
-                        <p className="line-clamp-1 w-full p-0 leading-none">
-                          {driver.last_name.toUpperCase()}
-                        </p>
+                        <p className="line-clamp-1 w-full p-0 leading-none">{driver.last_name}</p>
                       </div>
                       {isUserModalOpen ? (
                         <ChevronsDownUp className="ml-auto size-4" />

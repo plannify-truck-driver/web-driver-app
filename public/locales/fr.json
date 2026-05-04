@@ -88,6 +88,21 @@
       "page-title": "Documents",
       "page-description": "Relevés de vos heures mensuelles",
       "generation-error": "Votre document ne peut pas être récupéré pour le moment. Veuillez réessayer plus tard."
+    },
+    "account": {
+      "page-title": "Mon compte",
+      "settings-actions": {
+        "account-section-title": "Paramètres",
+        "support-section-title": "Support",
+        "personal-information": "Informations personnelles",
+        "email-preferences": "Préférences mail",
+        "rest-preferences": "Préférences de coupure",
+        "theme": "Thème",
+        "language": "Langue",
+        "help-support": "Aide & Support",
+        "about-plannify": "À propos de Plannify",
+        "logout": "Se déconnecter"
+      }
     }
   },
   "components": {
@@ -178,6 +193,10 @@
     "workday-document-item": {
       "description": "Relevé d'heures",
       "generated": "Définitif"
+    },
+    "no-driver-loaded": {
+      "title": "Pas authentifié",
+      "description": "Quelque chose s'est mal passé lors du chargement de votre compte. Veuillez vous reconnecter."
     }
   },
   "navigation": {
