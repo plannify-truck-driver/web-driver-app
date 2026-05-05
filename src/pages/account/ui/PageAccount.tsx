@@ -165,6 +165,7 @@ export default function PageAccount({
               {
                 icon: LogOutIcon,
                 label: t("pages.account.settings-actions.logout"),
+                labelColor: "var(--destructive)",
                 onClick: onLogout,
                 isLoading: isDeletingRefreshToken,
               },

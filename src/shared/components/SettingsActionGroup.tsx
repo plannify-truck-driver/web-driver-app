@@ -6,6 +6,7 @@ interface SettingsActionGroupProps {
   items: {
     icon: LucideIcon
     label: string
+    labelColor?: string
     content?: React.ReactNode
     onClick?: () => void
     isLoading?: boolean
@@ -21,8 +22,8 @@ export default function SettingsActionGroup({ title, items }: SettingsActionGrou
           item.content ? (
             <div className="flex w-full items-center justify-between gap-2 rounded-md p-2 text-sm">
               <div className="flex items-center gap-2">
-                <item.icon className="h-4 w-4" />
-                {item.label}
+                <item.icon style={{ color: item.labelColor }} className="h-4 w-4" />
+                <span style={{ color: item.labelColor }}>{item.label}</span>
               </div>
               {item.content}
             </div>
@@ -33,10 +34,10 @@ export default function SettingsActionGroup({ title, items }: SettingsActionGrou
               onClick={item.onClick}
               disabled={item.isLoading}
             >
-              <item.icon className="h-4 w-4" />
-              {item.label}
+              <item.icon style={{ color: item.labelColor }} className="h-4 w-4" />
+              <span style={{ color: item.labelColor }}>{item.label}</span>
               {item.isLoading && <div className="ml-auto h-4 w-4" />}
-              <ChevronRight className="ml-auto h-4 w-4" />
+              <ChevronRight style={{ color: item.labelColor }} className="ml-auto h-4 w-4" />
             </button>
           )
         )}
