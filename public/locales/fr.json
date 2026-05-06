@@ -86,7 +86,7 @@
     },
     "documents": {
       "page-title": "Documents",
-      "page-description": "Relevés de vos heures mensuelles",
+      "page-description": "Relevés de vos heures mensuelles.",
       "generation-error": "Votre document ne peut pas être récupéré pour le moment. Veuillez réessayer plus tard."
     },
     "account": {
@@ -102,6 +102,55 @@
         "help-support": "Aide & Support",
         "about-plannify": "À propos de Plannify",
         "logout": "Se déconnecter"
+      }
+    },
+    "settings": {
+      "rest-preferences": {
+        "page-title": "Préférences de coupure",
+        "how-it-works-title": "Comment ça fonctionne ?",
+        "how-it-works-description": "Chaque intervalle définit une durée de coupure en fonction du temps total travaillé dans la journée. En fin de journée, Plannify attribue automatiquement la durée de coupure correspondant au temps travaillé.",
+        "configuration-title": "Intervalles de coupure",
+        "column-worked": "Temps travaillé",
+        "column-rest": "Coupure",
+        "no-break": "Sans coupure",
+        "break-of": "{{duration}} de coupure",
+        "add-interval": "Ajouter un intervalle",
+        "add-first-interval": "Ajouter un premier intervalle",
+        "save": "Sauvegarder",
+        "reset-all": "Tout réinitialiser",
+        "empty-state": {
+          "title": "Aucun intervalle configuré",
+          "description": "Ajoutez votre premier intervalle pour calculer automatiquement votre coupure en fonction du temps travaillé."
+        },
+        "dialog": {
+          "title": "Ajouter un intervalle de coupure",
+          "description": "Définissez une plage de temps travaillé et la durée de coupure correspondante.",
+          "from-label": "De",
+          "from-auto": "automatique",
+          "to-label": "À",
+          "to-end-of-day": "Fin de journée (24h)",
+          "rest-label": "Durée de coupure",
+          "rest-unit": "minutes",
+          "add": "Ajouter",
+          "cancel": "Annuler",
+          "end-required": "Veuillez renseigner une heure de fin",
+          "end-after-start": "Doit être après {{start}}"
+        },
+        "reset-dialog": {
+          "title": "Réinitialiser tous les intervalles ?",
+          "description": "Tous les intervalles configurés seront définitivement supprimés.",
+          "confirm": "Oui, réinitialiser",
+          "cancel": "Annuler"
+        },
+        "warning": {
+          "incomplete": "La configuration ne couvre pas encore toute la journée. Ajoutez un intervalle se terminant en fin de journée (24h) pour pouvoir sauvegarder."
+        },
+        "toast": {
+          "save-success": "Préférences de coupure sauvegardées.",
+          "save-error": "Une erreur est survenue lors de la sauvegarde.",
+          "reset-success": "Préférences de coupure réinitialisées.",
+          "reset-error": "Une erreur est survenue lors de la réinitialisation."
+        }
       }
     }
   },
@@ -361,5 +410,8 @@
     "start-time": {
       "required": "L'heure de début est obligatoire."
     }
+  },
+  "common": {
+    "back": "Retour"
   }
 }

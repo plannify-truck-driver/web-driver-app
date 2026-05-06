@@ -17,6 +17,7 @@ import type { RestPeriod } from "../models/rest-period"
 import { displayDuration } from "../functions/displayDuration"
 import { getBestRestPeriod } from "../functions/getBestRestPeriod"
 import { Skeleton } from "../components/ui/Skeleton"
+
 export interface AddWorkdayFormLoadings {
   isSubmitting: boolean
   isUpdatingWorkday: boolean

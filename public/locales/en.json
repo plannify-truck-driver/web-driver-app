@@ -86,7 +86,7 @@
     },
     "documents": {
       "page-title": "Documents",
-      "page-description": "Statements of your monthly hours",
+      "page-description": "Statements of your monthly hours.",
       "generation-error": "Your document cannot be retrieved at the moment. Please try again later."
     },
     "account": {
@@ -102,6 +102,55 @@
         "help-support": "Help & Support",
         "about-plannify": "About Plannify",
         "logout": "Logout"
+      }
+    },
+    "settings": {
+      "rest-preferences": {
+        "page-title": "Rest Preferences",
+        "how-it-works-title": "How does it work?",
+        "how-it-works-description": "Each interval defines a break duration based on total hours worked in the day. At the end of a workday, Plannify automatically assigns the break duration that matches the time worked.",
+        "configuration-title": "Break intervals",
+        "column-worked": "Time worked",
+        "column-rest": "Break",
+        "no-break": "No break",
+        "break-of": "{{duration}} break",
+        "add-interval": "Add an interval",
+        "add-first-interval": "Add a first interval",
+        "save": "Save",
+        "reset-all": "Reset all",
+        "empty-state": {
+          "title": "No intervals configured",
+          "description": "Add your first interval to automatically calculate your break time based on hours worked."
+        },
+        "dialog": {
+          "title": "Add a break interval",
+          "description": "Define a worked time range and the corresponding break duration.",
+          "from-label": "From",
+          "from-auto": "automatic",
+          "to-label": "To",
+          "to-end-of-day": "End of day (24h)",
+          "rest-label": "Break duration",
+          "rest-unit": "minutes",
+          "add": "Add",
+          "cancel": "Cancel",
+          "end-required": "Please specify an end time",
+          "end-after-start": "Must be after {{start}}"
+        },
+        "reset-dialog": {
+          "title": "Reset all intervals?",
+          "description": "All configured intervals will be permanently deleted.",
+          "confirm": "Yes, reset",
+          "cancel": "Cancel"
+        },
+        "warning": {
+          "incomplete": "The configuration does not yet cover the full day. Add an interval ending at end of day (24h) to be able to save."
+        },
+        "toast": {
+          "save-success": "Rest preferences saved.",
+          "save-error": "An error occurred while saving.",
+          "reset-success": "Rest preferences reset.",
+          "reset-error": "An error occurred while resetting."
+        }
       }
     }
   },
@@ -361,5 +410,8 @@
     "start-time": {
       "required": "The start time is required."
     }
+  },
+  "common": {
+    "back": "Back"
   }
 }

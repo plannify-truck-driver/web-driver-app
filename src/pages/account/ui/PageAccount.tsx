@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/DropdownMenu"
 import type { Driver } from "@/shared/models/driver"
+import { useNavigate } from "@tanstack/react-router"
 import {
   BadgeCheckIcon,
   BookMarkedIcon,
@@ -39,6 +40,7 @@ export default function PageAccount({
 }: PageAccountProps) {
   const { t, i18n } = useTranslation()
   const { theme, setTheme } = useTheme()
+  const navigate = useNavigate()
 
   if (!driver) {
     return <NoDriverLoaded />
@@ -80,7 +82,7 @@ export default function PageAccount({
               {
                 icon: CirclePauseIcon,
                 label: t("pages.account.settings-actions.rest-preferences"),
-                onClick: () => {},
+                onClick: () => navigate({ to: "/settings/rest-preferences" }),
               },
               {
                 icon: theme === "light" ? SunIcon : theme === "dark" ? MoonIcon : LaptopIcon,
