@@ -39,11 +39,11 @@ USER reactuser
 
 RUN pnpm run build
 
-FROM nginxinc/nginx-unprivileged:1.29.5-alpine AS production
+FROM nginxinc/nginx-unprivileged:1.30.0-alpine AS production
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
 USER root
-RUN apk upgrade --no-cache zlib musl musl-utils
+# RUN apk upgrade --no-cache zlib musl musl-utils
 USER nginx
 
 COPY --from=builder /app/dist /usr/share/nginx/html
