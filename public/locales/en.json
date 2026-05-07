@@ -251,6 +251,14 @@
     "no-driver-loaded": {
       "title": "Not authenticated",
       "description": "Something went wrong while loading your account information. Please try logging in again."
+    },
+    "end-workday-rest-dialog": {
+      "title": "How long was your break?",
+      "description": "No break configuration found. Enter your break duration manually, or confirm with no break.",
+      "rest-label": "Break duration",
+      "rest-unit": "minutes",
+      "no-break": "No break",
+      "confirm": "End workday"
     }
   },
   "navigation": {

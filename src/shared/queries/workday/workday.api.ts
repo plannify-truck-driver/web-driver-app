@@ -1,3 +1,4 @@
+import { HTTPError } from "ky"
 import { api } from "@/shared/lib/api"
 import type {
   CreateWorkdayRequest,
@@ -29,8 +30,13 @@ export const getWorkdaysByMonth = (body: GetWorkdayByMonthRequest): Promise<Work
     .json()
 }
 
-export const getWorkdayByDate = (body: GetWorkdayByDateRequest): Promise<Workday | null> => {
-  return api.get(`workdays/${body.date}`).json()
+export const getWorkdayByDate = async (body: GetWorkdayByDateRequest): Promise<Workday | null> => {
+  try {
+    return await api.get(`workdays/${body.date}`).json<Workday>()
+  } catch (error) {
+    if (error instanceof HTTPError && error.response.status === 404) return null
+    throw error
+  }
 }
 
 export const createWorkday = (body: CreateWorkdayRequest): Promise<Workday> => {

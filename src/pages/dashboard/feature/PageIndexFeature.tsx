@@ -9,7 +9,11 @@ import {
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
 import PageDashboardIndex from "../ui/PageIndex"
-import { useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { endWorkdayRestSchema } from "@/shared/zod/end-workday-rest"
+import type z from "zod"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 import { useTranslation } from "react-i18next"
@@ -37,6 +41,12 @@ export default function PageDashboardIndexFeature() {
   const today: Date = useMemo(() => new Date(), [])
 
   const [period, setPeriod] = useState<PeriodOfTime>(getWeek(today))
+  const [isEndWorkdayRestDialogOpen, setIsEndWorkdayRestDialogOpen] = useState(false)
+  const pendingEndTimeRef = useRef<string | null>(null)
+  const endWorkdayRestForm = useForm<z.infer<typeof endWorkdayRestSchema>>({
+    resolver: zodResolver(endWorkdayRestSchema),
+    defaultValues: { restMins: 0 },
+  })
 
   const {
     data: periodWorkdays,
@@ -72,7 +82,7 @@ export default function PageDashboardIndexFeature() {
     },
     onError: (error: Error) => {
       handleErrorResponse(error).then((apiError) => {
-        if (apiError?.error_code === "WORKDAY_ALREADY_EXISTS") {
+        if (apiError?.error_code === "WORKDAY_ALREADY_EXISTS" || apiError?.error_code === "WORKDAY_GARBAGE_ALREADY_EXISTS") {
           restoreWorkdayAsync({
             date: today.toISOString().split("T")[0],
           })
@@ -193,6 +203,7 @@ export default function PageDashboardIndexFeature() {
 
     if (!todayWorkday) {
       toast.error(t("pages.dashboard.workday-not-found-error"))
+      return
     }
 
     const now = new Date()
@@ -200,14 +211,39 @@ export default function PageDashboardIndexFeature() {
       .getSeconds()
       .toString()
       .padStart(2, "0")}`
-    const bestRestTime = getBestRestPeriod(todayWorkday!.start_time, endTime, restPeriods ?? [])
+
+    if (!restPeriods || restPeriods.length === 0) {
+      pendingEndTimeRef.current = endTime
+      endWorkdayRestForm.reset({ restMins: 0 })
+      setIsEndWorkdayRestDialogOpen(true)
+      return
+    }
+
+    const bestRestTime = getBestRestPeriod(todayWorkday.start_time, endTime, restPeriods)
     updateWorkdayAsync({
-      date: todayWorkday!.date,
-      start_time: todayWorkday!.start_time,
+      date: todayWorkday.date,
+      start_time: todayWorkday.start_time,
       end_time: endTime,
-      rest_time: bestRestTime ?? todayWorkday!.rest_time,
-      overnight_rest: todayWorkday!.overnight_rest,
+      rest_time: bestRestTime ?? todayWorkday.rest_time,
+      overnight_rest: todayWorkday.overnight_rest,
     })
+  }
+
+  const onConfirmEndWorkday = (values: z.infer<typeof endWorkdayRestSchema>) => {
+    if (!todayWorkday || !pendingEndTimeRef.current) return
+    const totalSecs = values.restMins * 60
+    const hh = Math.floor(totalSecs / 3600).toString().padStart(2, "0")
+    const mm = Math.floor((totalSecs % 3600) / 60).toString().padStart(2, "0")
+    const ss = (totalSecs % 60).toString().padStart(2, "0")
+    updateWorkdayAsync({
+      date: todayWorkday.date,
+      start_time: todayWorkday.start_time,
+      end_time: pendingEndTimeRef.current,
+      rest_time: `${hh}:${mm}:${ss}`,
+      overnight_rest: todayWorkday.overnight_rest,
+    })
+    setIsEndWorkdayRestDialogOpen(false)
+    pendingEndTimeRef.current = null
   }
 
   const onDeleteWorkday = () => {
@@ -238,6 +274,10 @@ export default function PageDashboardIndexFeature() {
       onStartWorkday={onStartWorkday}
       onEndWorkday={onEndWorkday}
       onDeleteWorkday={onDeleteWorkday}
+      isEndWorkdayRestDialogOpen={isEndWorkdayRestDialogOpen}
+      endWorkdayRestForm={endWorkdayRestForm}
+      onEndWorkdayRestDialogClose={() => setIsEndWorkdayRestDialogOpen(false)}
+      onConfirmEndWorkday={onConfirmEndWorkday}
     />
   )
 }

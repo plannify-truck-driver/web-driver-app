@@ -251,6 +251,14 @@
     "no-driver-loaded": {
       "title": "Pas authentifié",
       "description": "Quelque chose s'est mal passé lors du chargement de votre compte. Veuillez vous reconnecter."
+    },
+    "end-workday-rest-dialog": {
+      "title": "Combien de temps a duré votre coupure ?",
+      "description": "Aucune configuration de coupure trouvée. Renseignez manuellement la durée de votre pause, ou confirmez sans coupure.",
+      "rest-label": "Durée de la coupure",
+      "rest-unit": "minutes",
+      "no-break": "Sans coupure",
+      "confirm": "Terminer ma journée"
     }
   },
   "navigation": {

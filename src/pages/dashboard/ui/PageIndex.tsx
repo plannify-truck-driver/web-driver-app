@@ -2,6 +2,10 @@ import type { Workday } from "@/shared/models/workday"
 import type { PeriodOfTime } from "../feature/PageIndexFeature"
 import { PeriodSelector } from "@/shared/components/PeriodSelector"
 import { useTranslation } from "react-i18next"
+import type { UseFormReturn } from "react-hook-form"
+import type z from "zod"
+import type { endWorkdayRestSchema } from "@/shared/zod/end-workday-rest"
+import { EndWorkdayRestDialog } from "../../../shared/components/EndWorkdayRestDialog"
 import { StatWorkedDays } from "@/shared/components/statistics/StatWorkedDays"
 import { StatTotalWorkedHours } from "@/shared/components/statistics/StatTotalWorkedHour"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
@@ -32,6 +36,10 @@ interface PageDashboardIndexProps {
   onStartWorkday: () => void
   onEndWorkday: () => void
   onDeleteWorkday: () => void
+  isEndWorkdayRestDialogOpen: boolean
+  endWorkdayRestForm: UseFormReturn<z.infer<typeof endWorkdayRestSchema>>
+  onEndWorkdayRestDialogClose: () => void
+  onConfirmEndWorkday: (values: z.infer<typeof endWorkdayRestSchema>) => void
 }
 
 export default function PageDashboardIndex({
@@ -53,6 +61,10 @@ export default function PageDashboardIndex({
   onStartWorkday,
   onEndWorkday,
   onDeleteWorkday,
+  isEndWorkdayRestDialogOpen,
+  endWorkdayRestForm,
+  onEndWorkdayRestDialogClose,
+  onConfirmEndWorkday,
 }: PageDashboardIndexProps) {
   const { t, i18n } = useTranslation()
 
@@ -181,6 +193,12 @@ export default function PageDashboardIndex({
         </div>
       )}
       <WorkdayTable workdays={workdays} periodType="week" period={period} />
+      <EndWorkdayRestDialog
+        isOpen={isEndWorkdayRestDialogOpen}
+        form={endWorkdayRestForm}
+        onClose={onEndWorkdayRestDialogClose}
+        onSubmit={onConfirmEndWorkday}
+      />
     </div>
   )
 }
