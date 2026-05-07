@@ -92,7 +92,21 @@
     "documents": {
       "page-title": "Documents",
       "page-description": "Statements of your monthly hours.",
-      "generation-error": "Your document cannot be retrieved at the moment. Please try again later."
+      "generation-error": "Your document cannot be retrieved at the moment. Please try again later.",
+      "generated-banner-title": "Some statements have been permanently generated",
+      "generated-banner-description": "Statements marked <badge></badge> are finalized and their workdays can no longer be edited. This happens automatically once a statement is over 3 months old.",
+      "generated-banner-dismiss": "Dismiss",
+      "generated-banner-why": "Discover why",
+      "generated-why-dialog": {
+        "title": "Why this process?",
+        "description": "Permanent generation was designed to improve your experience and ensure the reliability of your data.",
+        "reason-speed-title": "Up to 7x faster document delivery",
+        "reason-speed-description": "Finalized statements are pre-generated and instantly available, with no recalculation on each view.",
+        "reason-performance-title": "Better performance",
+        "reason-performance-description": "Associated workdays are removed from the active database, lightening the app and speeding up your daily actions.",
+        "reason-integrity-title": "Guaranteed data integrity",
+        "reason-integrity-description": "Once finalized, a statement can no longer be modified or deleted. Your data stays reliable and compliant in case of audit or dispute."
+      }
     },
     "account": {
       "page-title": "My account",

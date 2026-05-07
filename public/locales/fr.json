@@ -92,7 +92,21 @@
     "documents": {
       "page-title": "Documents",
       "page-description": "Relevés de vos heures mensuelles.",
-      "generation-error": "Votre document ne peut pas être récupéré pour le moment. Veuillez réessayer plus tard."
+      "generation-error": "Votre document ne peut pas être récupéré pour le moment. Veuillez réessayer plus tard.",
+      "generated-banner-title": "Certains relevés ont été générés définitivement",
+      "generated-banner-description": "Les relevés marqués <badge></badge> sont figés et leurs journées ne peuvent plus être modifiées. Ce processus se déclenche automatiquement à partir de 3 mois.",
+      "generated-banner-dismiss": "Masquer",
+      "generated-banner-why": "Découvrez pourquoi",
+      "generated-why-dialog": {
+        "title": "Pourquoi ce processus ?",
+        "description": "La génération définitive a été conçue pour améliorer votre expérience et garantir la fiabilité de vos données.",
+        "reason-speed-title": "Transmission jusqu'à 7x plus rapide",
+        "reason-speed-description": "Les relevés définitifs sont pré-générés et disponibles instantanément, sans recalcul à chaque consultation.",
+        "reason-performance-title": "De meilleures performances",
+        "reason-performance-description": "Les journées associées sont retirées de la base de données active, ce qui allège l'application et accélère vos actions au quotidien.",
+        "reason-integrity-title": "Une intégrité des données garantie",
+        "reason-integrity-description": "Une fois définitif, un relevé ne peut plus être modifié ni supprimé. Vos données restent fiables et conformes en cas de contrôle ou de litige."
+      }
     },
     "account": {
       "page-title": "Mon compte",

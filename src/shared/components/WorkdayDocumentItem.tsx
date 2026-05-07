@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next"
 import type { WorkdayDocument } from "../models/workday"
-import { Eye, FileText, Loader2, Lock } from "lucide-react"
+import { Eye, FileText, Loader2 } from "lucide-react"
 import { upperCaseFirstLetter } from "../functions/upperCaseFirstLetter"
 import { Skeleton } from "./ui/Skeleton"
+import { GeneratedBadge } from "./GeneratedBadge"
 
 export interface WorkdayDocumentItemProps {
   workdayDocument?: WorkdayDocument
@@ -41,10 +42,7 @@ export function WorkdayDocumentItem({
               {workdayDocument.generated_at && (
                 <>
                   <span>&bull;</span>
-                  <p className="bg-success/10 text-success flex items-center gap-1 rounded-md px-2 py-1 text-xs">
-                    <Lock size={12} />
-                    {t("components.workday-document-item.generated")}
-                  </p>
+                  <GeneratedBadge />
                 </>
               )}
             </div>
