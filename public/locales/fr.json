@@ -339,7 +339,7 @@
       "start-time-label": "Début",
       "end-time-label": "Fin",
       "rest-time-label": "Pause",
-      "rest-description": "Les pauses sont définies dans <accountSettingsLink>Compte > Pauses</accountSettingsLink>",
+      "rest-description": "Les pauses sont définies dans <accountSettingsLink>Compte > Préférences de coupure</accountSettingsLink>",
       "overnight-rest-label": "Repos nocturne",
       "optional": "Facultatif",
       "submit-button": "Enregistrer la journée",

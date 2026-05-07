@@ -339,7 +339,7 @@
       "start-time-label": "Start",
       "end-time-label": "End",
       "rest-time-label": "Rest",
-      "rest-description": "Rest periods are defined in <accountSettingsLink>Account > Rest Periods</accountSettingsLink>",
+      "rest-description": "Rest periods are defined in <accountSettingsLink>Account > Rest preferences</accountSettingsLink>",
       "overnight-rest-label": "Overnight rest",
       "optional": "Optional",
       "submit-button": "Save workday",
