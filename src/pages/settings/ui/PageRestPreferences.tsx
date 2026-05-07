@@ -85,7 +85,8 @@ const PERIOD_COLORS = [
 ] as const
 
 function timeToMinutes(time: string): number {
-  const [h, m] = time.split(":").map(Number)
+  const [h, m, s] = time.split(":").map(Number)
+  if (h === 23 && m === 59 && s === 59) return 24 * 60
   return (h || 0) * 60 + (m || 0)
 }
 
@@ -126,7 +127,7 @@ function RestPeriodsTimeline({ periods }: { periods: RestPeriod[] }) {
                 period.end !== "23:59:59" && "border-r border-white/30 dark:border-black/20",
                 color.segment
               )}
-              style={period.end === "23:59:59" ? { width: `100%` } : { width: `${widthPct}%` }}
+              style={{ width: `${widthPct}%` }}
               title={`${displayDuration(period.start, t)} → ${displayDuration(period.end, t)} · ${displayDuration(period.rest, t)}`}
             >
               {widthPct > 7 && (
@@ -171,7 +172,11 @@ function RestPeriodsTimeline({ periods }: { periods: RestPeriod[] }) {
             hasUnconfiguredTail ? "text-amber-500/70" : "text-muted-foreground"
           )}
         >
-          {hasUnconfiguredTail ? "24h ?" : displayDuration(periods[periods.length - 1].end, t)}
+          {hasUnconfiguredTail
+            ? "24h ?"
+            : periods[periods.length - 1].end === "23:59:59"
+              ? "24h"
+              : displayDuration(periods[periods.length - 1].end, t)}
         </span>
       </div>
     </div>

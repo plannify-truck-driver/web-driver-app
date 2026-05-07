@@ -108,8 +108,8 @@
       "rest-preferences": {
         "page-title": "Rest Preferences",
         "how-it-works-title": "How does it work?",
-        "how-it-works-description": "Each interval defines a break duration based on total hours worked in the day. At the end of a workday, Plannify automatically assigns the break duration that matches the time worked.",
-        "configuration-title": "Break intervals",
+        "how-it-works-description": "A configuration contains multiple intervals that define the break duration based on the total hours worked in the day. At the end of a workday, Plannify automatically assigns the break duration that matches the time worked.",
+        "configuration-title": "Break configuration",
         "column-worked": "Time worked",
         "column-rest": "Break",
         "no-break": "No break",
@@ -119,7 +119,7 @@
         "save": "Save",
         "reset-all": "Reset all",
         "empty-state": {
-          "title": "No intervals configured",
+          "title": "No configuration configured",
           "description": "Add your first interval to automatically calculate your break time based on hours worked."
         },
         "dialog": {
@@ -137,8 +137,8 @@
           "end-after-start": "Must be after {{start}}"
         },
         "reset-dialog": {
-          "title": "Reset all intervals?",
-          "description": "All configured intervals will be permanently deleted.",
+          "title": "Reset the configuration?",
+          "description": "Your configuration will be permanently deleted.",
           "confirm": "Yes, reset",
           "cancel": "Cancel"
         },

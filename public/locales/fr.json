@@ -108,22 +108,22 @@
       "rest-preferences": {
         "page-title": "Préférences de coupure",
         "how-it-works-title": "Comment ça fonctionne ?",
-        "how-it-works-description": "Chaque intervalle définit une durée de coupure en fonction du temps total travaillé dans la journée. En fin de journée, Plannify attribue automatiquement la durée de coupure correspondant au temps travaillé.",
-        "configuration-title": "Intervalles de coupure",
+        "how-it-works-description": "Une configuration de coupure contient plusieurs intervalles qui définissent la durée de coupure en fonction du temps total travaillé dans la journée. En fin de journée, Plannify attribue automatiquement la durée de coupure correspondant au temps travaillé.",
+        "configuration-title": "Configuration de coupure",
         "column-worked": "Temps travaillé",
         "column-rest": "Coupure",
         "no-break": "Sans coupure",
         "break-of": "{{duration}} de coupure",
-        "add-interval": "Ajouter un intervalle",
-        "add-first-interval": "Ajouter un premier intervalle",
+        "add-interval": "Ajouter une intervalle",
+        "add-first-interval": "Ajouter une première intervalle",
         "save": "Sauvegarder",
         "reset-all": "Tout réinitialiser",
         "empty-state": {
-          "title": "Aucun intervalle configuré",
-          "description": "Ajoutez votre premier intervalle pour calculer automatiquement votre coupure en fonction du temps travaillé."
+          "title": "Aucune configuration de coupure",
+          "description": "Ajoutez votre première intervalle pour calculer automatiquement votre coupure en fonction du temps travaillé."
         },
         "dialog": {
-          "title": "Ajouter un intervalle de coupure",
+          "title": "Ajouter une intervalle de coupure",
           "description": "Définissez une plage de temps travaillé et la durée de coupure correspondante.",
           "from-label": "De",
           "from-auto": "automatique",
@@ -137,13 +137,13 @@
           "end-after-start": "Doit être après {{start}}"
         },
         "reset-dialog": {
-          "title": "Réinitialiser tous les intervalles ?",
-          "description": "Tous les intervalles configurés seront définitivement supprimés.",
+          "title": "Réinitialiser la configuration ?",
+          "description": "Votre configuration sera définitivement supprimée.",
           "confirm": "Oui, réinitialiser",
           "cancel": "Annuler"
         },
         "warning": {
-          "incomplete": "La configuration ne couvre pas encore toute la journée. Ajoutez un intervalle se terminant en fin de journée (24h) pour pouvoir sauvegarder."
+          "incomplete": "La configuration ne couvre pas encore toute la journée. Ajoutez une intervalle se terminant en fin de journée (24h) pour pouvoir sauvegarder."
         },
         "toast": {
           "save-success": "Préférences de coupure sauvegardées.",
