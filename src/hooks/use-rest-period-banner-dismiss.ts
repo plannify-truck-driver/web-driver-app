@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react"
 
 const STORAGE_KEY = "rest-period-banner-dismiss"
-const MAX_DISMISSALS = 3
+const MAX_DISMISSALS = 5
 const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000
 
 interface DismissState {
