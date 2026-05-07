@@ -21,6 +21,7 @@ import { getWeek } from "@/shared/functions/getWeek"
 import { workdayDocumentsKeys } from "@/shared/queries/documents/document.queries"
 import { useGetRestPeriods } from "@/shared/queries/rest-period/rest-period.queries"
 import { getBestRestPeriod } from "@/shared/functions/getBestRestPeriod"
+import { useRestPeriodBannerDismiss } from "@/hooks/use-rest-period-banner-dismiss"
 
 export interface PeriodOfTime {
   from: Date
@@ -52,6 +53,7 @@ export default function PageDashboardIndexFeature() {
     year: period.from.getFullYear().toString(),
   })
   const { data: restPeriods, isLoading: isLoadingRestPeriods } = useGetRestPeriods()
+  const { isVisible: isBannerVisible, dismiss: onDismissBanner } = useRestPeriodBannerDismiss()
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
     date: today.toISOString().split("T")[0],
   })
@@ -222,6 +224,10 @@ export default function PageDashboardIndexFeature() {
       isPeriodWorkdaysLoading={isPeriodWorkdaysLoading}
       isMonthWorkdaysLoading={isMonthWorkdaysLoading}
       isTodayWorkdayLoading={isTodayWorkdayLoading}
+      showRestPeriodSuggestion={
+        !isLoadingRestPeriods && !(restPeriods && restPeriods.length > 0) && isBannerVisible
+      }
+      onDismissRestPeriodSuggestion={onDismissBanner}
       isCreatingWorkday={isCreatingWorkday || isUpdatingWorkday || isRestoringWorkday}
       isUpdatingWorkday={isUpdatingWorkday}
       isDeletingWorkday={isDeletingWorkday}

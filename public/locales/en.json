@@ -64,7 +64,11 @@
       "workday-deletion-error": "An error occurred while deleting your workday. Please try again later.",
       "workday-restoration-error": "An error occurred while restoring your workday. Please try again later.",
       "workday-not-found-error": "No workday found for today.",
-      "rest-periods-loading": "Rest periods are still loading, please wait a moment."
+      "rest-periods-loading": "Rest periods are still loading, please wait a moment.",
+      "suggest-configure-rest-title": "Automate your break detection",
+      "suggest-configure-rest-description": "Configure your rest periods so Plannify can automatically assign the right break duration when you end your workday.",
+      "suggest-configure-rest-action": "Configure rest periods",
+      "suggest-configure-rest-dismiss": "Dismiss"
     },
     "workdays": {
       "page-title": "Workdays",

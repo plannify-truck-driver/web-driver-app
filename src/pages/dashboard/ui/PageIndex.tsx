@@ -9,7 +9,8 @@ import { ActionButton } from "@/shared/components/ActionButton"
 import { WorkdayRecap } from "@/shared/components/WorkdayRecap"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
 import { Button } from "@/shared/components/ui/Button"
-import { X } from "lucide-react"
+import { Link } from "@tanstack/react-router"
+import { CoffeeIcon, X } from "lucide-react"
 import { StatOvernightRest } from "@/shared/components/statistics/StatOvernightRest"
 
 interface PageDashboardIndexProps {
@@ -19,6 +20,8 @@ interface PageDashboardIndexProps {
   isPeriodWorkdaysLoading: boolean
   isMonthWorkdaysLoading: boolean
   isTodayWorkdayLoading: boolean
+  showRestPeriodSuggestion: boolean
+  onDismissRestPeriodSuggestion: () => void
   isCreatingWorkday: boolean
   isUpdatingWorkday: boolean
   isDeletingWorkday: boolean
@@ -38,6 +41,8 @@ export default function PageDashboardIndex({
   isPeriodWorkdaysLoading,
   isMonthWorkdaysLoading,
   isTodayWorkdayLoading,
+  showRestPeriodSuggestion,
+  onDismissRestPeriodSuggestion,
   isCreatingWorkday,
   isUpdatingWorkday,
   isDeletingWorkday,
@@ -147,6 +152,34 @@ export default function PageDashboardIndex({
           />
         </div>
       </div>
+      {showRestPeriodSuggestion && (
+        <div className="from-primary/5 to-primary/10 relative overflow-hidden rounded-xl border bg-gradient-to-br p-5">
+          <CoffeeIcon className="text-primary/8 absolute -right-3 -bottom-3 size-24 rotate-12" />
+          <button
+            onClick={onDismissRestPeriodSuggestion}
+            className="text-muted-foreground/60 hover:text-muted-foreground absolute top-3 right-3 cursor-pointer rounded p-0.5 transition-colors"
+            aria-label={t("pages.dashboard.suggest-configure-rest-dismiss")}
+          >
+            <X size={14} />
+          </button>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+            <div className="bg-primary/10 flex size-11 shrink-0 items-center justify-center rounded-full">
+              <CoffeeIcon className="text-primary size-5" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold">{t("pages.dashboard.suggest-configure-rest-title")}</p>
+              <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
+                {t("pages.dashboard.suggest-configure-rest-description")}
+              </p>
+            </div>
+            <Button size="sm" className="w-fit shrink-0" asChild>
+              <Link to="/settings/rest-preferences">
+                {t("pages.dashboard.suggest-configure-rest-action")}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      )}
       <WorkdayTable workdays={workdays} periodType="week" period={period} />
     </div>
   )

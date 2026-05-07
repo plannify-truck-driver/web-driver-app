@@ -64,7 +64,11 @@
       "workday-deletion-error": "Une erreur est survenue lors de la suppression de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-not-found-error": "Aucune journée de travail n'a été trouvée pour aujourd'hui.",
-      "rest-periods-loading": "Les coupures sont encore en cours de chargement, veuillez patienter."
+      "rest-periods-loading": "Les coupures sont encore en cours de chargement, veuillez patienter.",
+      "suggest-configure-rest-title": "Automatisez la détection de vos coupures",
+      "suggest-configure-rest-description": "Configurez vos coupures pour que Plannify puisse attribuer automatiquement la bonne durée de pause lorsque vous terminez votre journée.",
+      "suggest-configure-rest-action": "Configurer les coupures",
+      "suggest-configure-rest-dismiss": "Masquer"
     },
     "workdays": {
       "page-title": "Journées",
