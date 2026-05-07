@@ -8,23 +8,33 @@ export interface ActionButtonProps {
   todayWorkday?: Workday
   className?: string
   isLoading: boolean
+  isDisabled?: boolean
   onClick: () => void
 }
 
-export function ActionButton({ todayWorkday, className, isLoading, onClick }: ActionButtonProps) {
+export function ActionButton({
+  todayWorkday,
+  className,
+  isLoading,
+  isDisabled = false,
+  onClick,
+}: ActionButtonProps) {
   const { t, i18n } = useTranslation()
 
   const today = new Date()
+  const inactive = isLoading || isDisabled
 
   return (
     <button
       className={cn(
         "bg-primary flex w-full flex-row items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-white sm:px-5 sm:py-4",
-        isLoading ? "cursor-not-allowed opacity-50" : "hover:bg-primary/90 cursor-pointer",
+        inactive
+          ? "cursor-not-allowed opacity-50"
+          : "hover:bg-primary/90 cursor-pointer",
         className
       )}
       onClick={onClick}
-      disabled={isLoading}
+      disabled={inactive}
     >
       <div className="flex flex-row gap-4">
         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10">
@@ -50,9 +60,11 @@ export function ActionButton({ todayWorkday, className, isLoading, onClick }: Ac
             <>
               <span>{t("pages.dashboard.end-workday")}</span>
               <span className="font-light text-white/60">
-                {t("pages.dashboard.workday-started-at", {
-                  startTime: todayWorkday.start_time,
-                })}
+                {isDisabled
+                  ? t("pages.dashboard.workday-end-disabled")
+                  : t("pages.dashboard.workday-started-at", {
+                      startTime: todayWorkday.start_time.substring(0, 5),
+                    })}
               </span>
             </>
           )}

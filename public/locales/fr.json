@@ -65,6 +65,8 @@
       "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-not-found-error": "Aucune journée de travail n'a été trouvée pour aujourd'hui.",
       "rest-periods-loading": "Les coupures sont encore en cours de chargement, veuillez patienter.",
+      "workday-too-old-error": "Cette journée a débuté il y a plus de {{maxHours}}h et ne peut plus être terminée depuis l'application.",
+      "workday-end-disabled": "Délai de {{maxHours}}h dépassé",
       "suggest-configure-rest-title": "Automatisez la détection de vos coupures",
       "suggest-configure-rest-description": "Configurez vos coupures pour que Plannify puisse attribuer automatiquement la bonne durée de pause lorsque vous terminez votre journée.",
       "suggest-configure-rest-action": "Configurer les coupures",

@@ -26,6 +26,9 @@ import { workdayDocumentsKeys } from "@/shared/queries/documents/document.querie
 import { useGetRestPeriods } from "@/shared/queries/rest-period/rest-period.queries"
 import { getBestRestPeriod } from "@/shared/functions/getBestRestPeriod"
 import { useRestPeriodBannerDismiss } from "@/hooks/use-rest-period-banner-dismiss"
+import { useMaxWorkdayDuration } from "@/hooks/use-max-workday-duration"
+import { getCanEndWorkday, isWithinWorkdayWindow } from "@/shared/functions/getCanEndWorkday"
+import { toLocalDateString } from "@/shared/functions/toLocalDateString"
 
 export interface PeriodOfTime {
   from: Date
@@ -39,6 +42,14 @@ export default function PageDashboardIndexFeature() {
   useDocumentTitle(t("navigation.dashboard.navigation-title.desktop"))
 
   const today: Date = useMemo(() => new Date(), [])
+  const yesterday: Date = useMemo(() => {
+    const d = new Date(today)
+    d.setDate(d.getDate() - 1)
+    return d
+  }, [today])
+
+  const todayLocalDate = toLocalDateString(today)
+  const yesterdayLocalDate = toLocalDateString(yesterday)
 
   const [period, setPeriod] = useState<PeriodOfTime>(getWeek(today))
   const [isEndWorkdayRestDialogOpen, setIsEndWorkdayRestDialogOpen] = useState(false)
@@ -64,9 +75,26 @@ export default function PageDashboardIndexFeature() {
   })
   const { data: restPeriods, isLoading: isLoadingRestPeriods } = useGetRestPeriods()
   const { isVisible: isBannerVisible, dismiss: onDismissBanner } = useRestPeriodBannerDismiss()
+  const { maxHours } = useMaxWorkdayDuration()
+
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
-    date: today.toISOString().split("T")[0],
+    date: todayLocalDate,
   })
+  // Fallback : workday started yesterday and not ended yet (night work)
+  const { data: yesterdayWorkday, isLoading: isYesterdayWorkdayLoading } = useGetWorkdayByDate({
+    date: yesterdayLocalDate,
+    enabled: !isTodayWorkdayLoading && todayWorkday === null,
+  })
+
+  const activeWorkday =
+    todayWorkday ??
+    (yesterdayWorkday && isWithinWorkdayWindow(yesterdayWorkday, maxHours)
+      ? yesterdayWorkday
+      : null)
+  const isActiveWorkdayLoading =
+    isTodayWorkdayLoading ||
+    (!isTodayWorkdayLoading && todayWorkday === null && isYesterdayWorkdayLoading)
+
   const { mutateAsync: createWorkdayAsync, isPending: isCreatingWorkday } = useCreateWorkday({
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -82,10 +110,11 @@ export default function PageDashboardIndexFeature() {
     },
     onError: (error: Error) => {
       handleErrorResponse(error).then((apiError) => {
-        if (apiError?.error_code === "WORKDAY_ALREADY_EXISTS" || apiError?.error_code === "WORKDAY_GARBAGE_ALREADY_EXISTS") {
-          restoreWorkdayAsync({
-            date: today.toISOString().split("T")[0],
-          })
+        if (
+          apiError?.error_code === "WORKDAY_ALREADY_EXISTS" ||
+          apiError?.error_code === "WORKDAY_GARBAGE_ALREADY_EXISTS"
+        ) {
+          restoreWorkdayAsync({ date: todayLocalDate })
         } else {
           toast.error(t("pages.dashboard.workday-creation-error"))
         }
@@ -128,7 +157,7 @@ export default function PageDashboardIndexFeature() {
       console.warn("Workday already exists for today, restoring it from garbage...")
       const now = new Date()
       updateWorkdayAsync({
-        date: today.toISOString().split("T")[0],
+        date: todayLocalDate,
         start_time: `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
           .getSeconds()
           .toString()
@@ -184,7 +213,7 @@ export default function PageDashboardIndexFeature() {
   const onStartWorkday = () => {
     const now = new Date()
     createWorkdayAsync({
-      date: today.toISOString().split("T")[0],
+      date: todayLocalDate,
       start_time: `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
         .getSeconds()
         .toString()
@@ -201,8 +230,13 @@ export default function PageDashboardIndexFeature() {
       return
     }
 
-    if (!todayWorkday) {
+    if (!activeWorkday) {
       toast.error(t("pages.dashboard.workday-not-found-error"))
+      return
+    }
+
+    if (!getCanEndWorkday(activeWorkday, maxHours)) {
+      toast.error(t("pages.dashboard.workday-too-old-error", { maxHours }))
       return
     }
 
@@ -219,28 +253,32 @@ export default function PageDashboardIndexFeature() {
       return
     }
 
-    const bestRestTime = getBestRestPeriod(todayWorkday.start_time, endTime, restPeriods)
+    const bestRestTime = getBestRestPeriod(activeWorkday.start_time, endTime, restPeriods)
     updateWorkdayAsync({
-      date: todayWorkday.date,
-      start_time: todayWorkday.start_time,
+      date: activeWorkday.date,
+      start_time: activeWorkday.start_time,
       end_time: endTime,
-      rest_time: bestRestTime ?? todayWorkday.rest_time,
-      overnight_rest: todayWorkday.overnight_rest,
+      rest_time: bestRestTime ?? activeWorkday.rest_time,
+      overnight_rest: activeWorkday.overnight_rest,
     })
   }
 
   const onConfirmEndWorkday = (values: z.infer<typeof endWorkdayRestSchema>) => {
-    if (!todayWorkday || !pendingEndTimeRef.current) return
+    if (!activeWorkday || !pendingEndTimeRef.current) return
     const totalSecs = values.restMins * 60
-    const hh = Math.floor(totalSecs / 3600).toString().padStart(2, "0")
-    const mm = Math.floor((totalSecs % 3600) / 60).toString().padStart(2, "0")
+    const hh = Math.floor(totalSecs / 3600)
+      .toString()
+      .padStart(2, "0")
+    const mm = Math.floor((totalSecs % 3600) / 60)
+      .toString()
+      .padStart(2, "0")
     const ss = (totalSecs % 60).toString().padStart(2, "0")
     updateWorkdayAsync({
-      date: todayWorkday.date,
-      start_time: todayWorkday.start_time,
+      date: activeWorkday.date,
+      start_time: activeWorkday.start_time,
       end_time: pendingEndTimeRef.current,
       rest_time: `${hh}:${mm}:${ss}`,
-      overnight_rest: todayWorkday.overnight_rest,
+      overnight_rest: activeWorkday.overnight_rest,
     })
     setIsEndWorkdayRestDialogOpen(false)
     pendingEndTimeRef.current = null
@@ -248,18 +286,18 @@ export default function PageDashboardIndexFeature() {
 
   const onDeleteWorkday = () => {
     deleteWorkdayAsync({
-      date: today.toISOString().split("T")[0],
+      date: activeWorkday?.date ?? todayLocalDate,
     })
   }
 
   return (
     <PageDashboardIndex
       workdays={periodWorkdays?.data ?? []}
-      todayWorkday={todayWorkday ?? null}
+      todayWorkday={activeWorkday ?? null}
       period={period}
       isPeriodWorkdaysLoading={isPeriodWorkdaysLoading}
       isMonthWorkdaysLoading={isMonthWorkdaysLoading}
-      isTodayWorkdayLoading={isTodayWorkdayLoading}
+      isTodayWorkdayLoading={isActiveWorkdayLoading}
       showRestPeriodSuggestion={
         !isLoadingRestPeriods && !(restPeriods && restPeriods.length > 0) && isBannerVisible
       }
@@ -271,6 +309,7 @@ export default function PageDashboardIndexFeature() {
       totalWorkingTime={totalWorkingTime}
       onNextPeriod={onNextPeriod}
       onPreviousPeriod={onPreviousPeriod}
+      canEndWorkday={getCanEndWorkday(activeWorkday ?? null, maxHours)}
       onStartWorkday={onStartWorkday}
       onEndWorkday={onEndWorkday}
       onDeleteWorkday={onDeleteWorkday}

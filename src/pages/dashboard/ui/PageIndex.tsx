@@ -33,6 +33,7 @@ interface PageDashboardIndexProps {
   totalWorkingTime: string
   onPreviousPeriod: () => void
   onNextPeriod: () => void
+  canEndWorkday: boolean
   onStartWorkday: () => void
   onEndWorkday: () => void
   onDeleteWorkday: () => void
@@ -58,6 +59,7 @@ export default function PageDashboardIndex({
   totalWorkingTime,
   onPreviousPeriod,
   onNextPeriod,
+  canEndWorkday,
   onStartWorkday,
   onEndWorkday,
   onDeleteWorkday,
@@ -123,6 +125,7 @@ export default function PageDashboardIndex({
             <ActionButton
               todayWorkday={todayWorkday}
               isLoading={isUpdatingWorkday}
+              isDisabled={!canEndWorkday}
               onClick={onEndWorkday}
             />
             <div className="flex flex-row items-center gap-1">

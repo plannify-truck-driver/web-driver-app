@@ -45,10 +45,11 @@ export const useGetWorkdaysByMonth = (request: GetWorkdayByMonthRequest) =>
     queryFn: () => getWorkdaysByMonth(request),
   })
 
-export const useGetWorkdayByDate = (request: GetWorkdayByDateRequest) =>
+export const useGetWorkdayByDate = (request: GetWorkdayByDateRequest & { enabled?: boolean }) =>
   useQuery({
     queryKey: workdaysKeys.getWorkdayByDate(request),
     queryFn: () => getWorkdayByDate(request),
+    enabled: request.enabled ?? true,
   })
 
 export const useCreateWorkday = (options?: {
