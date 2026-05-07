@@ -20,7 +20,7 @@ export default function PageDocumentsFeature() {
   const [previewBlob, setPreviewBlob] = useState<Blob | null>(null)
   const [previewFilename, setPreviewFilename] = useState("document.pdf")
 
-  const { data: yearsDocument } = useGetWorkdayDocuments()
+  const { data: yearsDocument, isLoading: isLoadingYears } = useGetWorkdayDocuments()
   const {
     mutate: generateWorkdayDocument,
     isPending: isGenerating,
@@ -67,6 +67,7 @@ export default function PageDocumentsFeature() {
     <>
       <PageDocuments
         workdayDocuments={workdayDocuments}
+        isLoadingYears={isLoadingYears}
         fetchDocumentsByYear={fetchDocumentsByYear}
         onGenerateDocument={generateDocument}
         generatingDocument={isGenerating ? generatingDocument : undefined}

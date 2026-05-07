@@ -1,9 +1,11 @@
 import { WorkdayDocumentGroup } from "@/shared/components/WorkdayDocumentGroup"
+import { Skeleton } from "@/shared/components/ui/Skeleton"
 import type { WorkdayDocument } from "@/shared/models/workday"
 import { useTranslation } from "react-i18next"
 
 interface PageDocumentsProps {
   workdayDocuments?: Record<number, WorkdayDocument[] | undefined>
+  isLoadingYears?: boolean
   fetchDocumentsByYear: (year: number) => void
   onGenerateDocument: (month: number, year: number) => void
   generatingDocument: { month: number; year: number } | undefined
@@ -11,6 +13,7 @@ interface PageDocumentsProps {
 
 export default function PageDocuments({
   workdayDocuments = {},
+  isLoadingYears = false,
   fetchDocumentsByYear,
   onGenerateDocument,
   generatingDocument,
@@ -24,18 +27,29 @@ export default function PageDocuments({
         <p className="text-muted-foreground text-sm">{t("pages.documents.page-description")}</p>
       </div>
       <div className="flex flex-col gap-3">
-        {Object.entries(workdayDocuments)
-          .sort(([a], [b]) => parseInt(b) - parseInt(a))
-          .map(([year, documents]) => (
-            <WorkdayDocumentGroup
-              key={year}
-              year={parseInt(year)}
-              workdayDocuments={documents}
-              fetchDocumentsByYear={fetchDocumentsByYear}
-              onGenerateDocument={onGenerateDocument}
-              generatingDocument={generatingDocument}
-            />
-          ))}
+        {isLoadingYears ? (
+          <>
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex items-center gap-2">
+                <Skeleton className="h-5 w-10" />
+                <Skeleton className="h-7 w-7 rounded-md" />
+              </div>
+            ))}
+          </>
+        ) : (
+          Object.entries(workdayDocuments)
+            .sort(([a], [b]) => parseInt(b) - parseInt(a))
+            .map(([year, documents]) => (
+              <WorkdayDocumentGroup
+                key={year}
+                year={parseInt(year)}
+                workdayDocuments={documents}
+                fetchDocumentsByYear={fetchDocumentsByYear}
+                onGenerateDocument={onGenerateDocument}
+                generatingDocument={generatingDocument}
+              />
+            ))
+        )}
       </div>
     </div>
   )
