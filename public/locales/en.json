@@ -63,7 +63,8 @@
       "workday-update-error": "An error occurred while updating your workday. Please try again later.",
       "workday-deletion-error": "An error occurred while deleting your workday. Please try again later.",
       "workday-restoration-error": "An error occurred while restoring your workday. Please try again later.",
-      "workday-not-found-error": "No workday found for today."
+      "workday-not-found-error": "No workday found for today.",
+      "rest-periods-loading": "Rest periods are still loading, please wait a moment."
     },
     "workdays": {
       "page-title": "Workdays",

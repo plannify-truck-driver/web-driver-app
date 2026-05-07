@@ -63,7 +63,8 @@
       "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-deletion-error": "Une erreur est survenue lors de la suppression de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement.",
-      "workday-not-found-error": "Aucune journée de travail n'a été trouvée pour aujourd'hui."
+      "workday-not-found-error": "Aucune journée de travail n'a été trouvée pour aujourd'hui.",
+      "rest-periods-loading": "Les coupures sont encore en cours de chargement, veuillez patienter."
     },
     "workdays": {
       "page-title": "Journées",

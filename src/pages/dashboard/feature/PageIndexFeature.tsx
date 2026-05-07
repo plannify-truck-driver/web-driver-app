@@ -51,7 +51,7 @@ export default function PageDashboardIndexFeature() {
     month: (period.from.getMonth() + 1).toString().padStart(2, "0"),
     year: period.from.getFullYear().toString(),
   })
-  const { data: restPeriods } = useGetRestPeriods()
+  const { data: restPeriods, isLoading: isLoadingRestPeriods } = useGetRestPeriods()
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
     date: today.toISOString().split("T")[0],
   })
@@ -184,6 +184,11 @@ export default function PageDashboardIndexFeature() {
   }
 
   const onEndWorkday = () => {
+    if (isLoadingRestPeriods) {
+      toast.info(t("pages.dashboard.rest-periods-loading"))
+      return
+    }
+
     if (!todayWorkday) {
       toast.error(t("pages.dashboard.workday-not-found-error"))
     }
