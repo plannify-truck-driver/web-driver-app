@@ -89,20 +89,30 @@ export default function PageDashboardIndexFeature() {
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
     date: todayLocalDate,
   })
-  // Fallback : workday started yesterday and not ended yet (night work)
   const { data: yesterdayWorkday, isLoading: isYesterdayWorkdayLoading } = useGetWorkdayByDate({
     date: yesterdayLocalDate,
-    enabled: !isTodayWorkdayLoading && todayWorkday === null,
+    enabled: !isTodayWorkdayLoading,
   })
 
-  const activeWorkday =
-    todayWorkday ??
-    (yesterdayWorkday && isWithinWorkdayWindow(yesterdayWorkday, maxHours)
-      ? yesterdayWorkday
-      : null)
-  const isActiveWorkdayLoading =
-    isTodayWorkdayLoading ||
-    (!isTodayWorkdayLoading && todayWorkday === null && isYesterdayWorkdayLoading)
+  const activeWorkday = (() => {
+    // Unfinished yesterday workday within the window takes priority (overnight shift)
+    if (
+      yesterdayWorkday &&
+      !yesterdayWorkday.end_time &&
+      isWithinWorkdayWindow(yesterdayWorkday, maxHours)
+    ) {
+      return yesterdayWorkday
+    }
+    if (todayWorkday) return todayWorkday
+
+    // Finished yesterday workday still within the window (show recap)
+    if (yesterdayWorkday && isWithinWorkdayWindow(yesterdayWorkday, maxHours)) {
+      return yesterdayWorkday
+    }
+
+    return null
+  })()
+  const isActiveWorkdayLoading = isTodayWorkdayLoading || isYesterdayWorkdayLoading
 
   const { mutateAsync: createWorkdayAsync, isPending: isCreatingWorkday } = useCreateWorkday({
     onSuccess: () => {
