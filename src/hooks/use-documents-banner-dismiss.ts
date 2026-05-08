@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react"
 
 const STORAGE_KEY = "documents-banner-dismiss"
-const MAX_DISMISSALS = 7
-const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000
+const MAX_DISMISSALS = 2
+const DISMISS_DURATION_MS = 31 * 7 * 24 * 60 * 60 * 1000
 
 interface DismissState {
   count: number
