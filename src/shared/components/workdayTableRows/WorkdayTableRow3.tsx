@@ -4,6 +4,7 @@ import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 import { displayDuration } from "@/shared/functions/displayDuration"
 import { displayTime } from "@/shared/functions/displayTime"
 import { Check, Minus } from "lucide-react"
+import { useShowSeconds } from "@/hooks/use-show-seconds"
 import { cn } from "@/lib/utils"
 
 export interface WorkdayTableRow3Props {
@@ -22,6 +23,7 @@ export function WorkdayTableRow3({
   onClick,
 }: WorkdayTableRow3Props) {
   const { t, i18n } = useTranslation()
+  const { showSeconds } = useShowSeconds()
 
   if (!workday && !date) {
     return null
@@ -104,12 +106,12 @@ export function WorkdayTableRow3({
       <div className="grid w-full grid-cols-4 gap-2">
         <div className="flex flex-col items-start gap-1 text-xs">
           <p className="text-muted-foreground">{t("components.workday-table-row-3.start")}</p>
-          <p className="text-sm">{displayTime(workday.start_time)}</p>
+          <p className="text-sm">{displayTime(workday.start_time, showSeconds)}</p>
         </div>
         <div className="flex flex-col items-start gap-1 text-xs">
           <p className="text-muted-foreground">{t("components.workday-table-row-3.end")}</p>
           {workday.end_time ? (
-            <p className="text-sm">{displayTime(workday.end_time)}</p>
+            <p className="text-sm">{displayTime(workday.end_time, showSeconds)}</p>
           ) : (
             <Minus size={16} className="text-muted-foreground/80" />
           )}

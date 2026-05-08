@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { getWorkingTime } from "../functions/getWorkingTime"
 import { displayTime } from "../functions/displayTime"
 import { displayDuration } from "../functions/displayDuration"
+import { useShowSeconds } from "@/hooks/use-show-seconds"
 
 export interface WorkdayRecapProps {
   workday: Workday
@@ -11,6 +12,7 @@ export interface WorkdayRecapProps {
 
 export function WorkdayRecap({ workday }: WorkdayRecapProps) {
   const { t, i18n } = useTranslation()
+  const { showSeconds } = useShowSeconds()
 
   const workdedTime = getWorkingTime(workday.start_time, workday.end_time, workday.rest_time)
 
@@ -37,13 +39,13 @@ export function WorkdayRecap({ workday }: WorkdayRecapProps) {
           <p className="text-xs font-light text-white/60 uppercase">
             {t("components.workday-recap.start")}
           </p>
-          <p className="font-semibold">{displayTime(workday.start_time)}</p>
+          <p className="font-semibold">{displayTime(workday.start_time, showSeconds)}</p>
         </div>
         <div className="flex flex-col gap-1 rounded-md bg-white/10 px-3 py-2 sm:px-4 sm:py-3">
           <p className="text-xs font-light text-white/60 uppercase">
             {t("components.workday-recap.end")}
           </p>
-          <p className="font-semibold">{displayTime(workday.end_time)}</p>
+          <p className="font-semibold">{displayTime(workday.end_time, showSeconds)}</p>
         </div>
         <div className="flex flex-col gap-1 rounded-md bg-white/10 px-3 py-2 sm:px-4 sm:py-3">
           <p className="text-xs font-light text-white/60 uppercase">

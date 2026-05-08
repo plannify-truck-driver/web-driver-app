@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { displayDuration } from "@/shared/functions/displayDuration"
 import { displayTime } from "@/shared/functions/displayTime"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
+import { useShowSeconds } from "@/hooks/use-show-seconds"
 
 export interface WorkdayTableDesktopProps {
   workdays: Workday[]
@@ -13,6 +14,7 @@ export interface WorkdayTableDesktopProps {
 
 export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
   const { t, i18n } = useTranslation()
+  const { showSeconds } = useShowSeconds()
 
   const DEFAULT_COLUMNS: ColumnDef<Workday>[] = [
     {
@@ -34,7 +36,7 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
       header: t("components.workday-table-desktop.start-time"),
       cell: ({ row }) => {
         const value = row.getValue("start_time") as string | undefined
-        return value ? displayTime(value) : <Minus className="text-muted-foreground/80" size={16} />
+        return value ? displayTime(value, showSeconds) : <Minus className="text-muted-foreground/80" size={16} />
       },
     },
     {
@@ -42,7 +44,7 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
       header: t("components.workday-table-desktop.end-time"),
       cell: ({ row }) => {
         const value = row.getValue("end_time") as string | undefined
-        return value ? displayTime(value) : <Minus className="text-muted-foreground/80" size={16} />
+        return value ? displayTime(value, showSeconds) : <Minus className="text-muted-foreground/80" size={16} />
       },
     },
     {

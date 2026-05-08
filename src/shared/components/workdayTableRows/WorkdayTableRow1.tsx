@@ -5,6 +5,7 @@ import { displayDuration } from "@/shared/functions/displayDuration"
 import { ChevronRight, Coffee, LogIn, LogOut, Minus } from "lucide-react"
 import { displayTime } from "@/shared/functions/displayTime"
 import { cn } from "@/lib/utils"
+import { useShowSeconds } from "@/hooks/use-show-seconds"
 
 export interface WorkdayTableRow1Props {
   date?: Date
@@ -22,6 +23,7 @@ export function WorkdayTableRow1({
   onClick,
 }: WorkdayTableRow1Props) {
   const { t, i18n } = useTranslation()
+  const { showSeconds } = useShowSeconds()
 
   if (!workday && !date) {
     return null
@@ -103,12 +105,12 @@ export function WorkdayTableRow1({
       <div className="flex flex-row items-center gap-2">
         <div className="bg-primary/10 text-primary flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">
           <LogIn size={16} />
-          <p>{displayTime(workday.start_time)}</p>
+          <p>{displayTime(workday.start_time, showSeconds)}</p>
         </div>
         {workday.end_time ? (
           <div className="bg-primary/10 text-primary flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">
             <LogOut size={16} />
-            <p>{displayTime(workday.end_time)}</p>
+            <p>{displayTime(workday.end_time, showSeconds)}</p>
           </div>
         ) : (
           <div className="bg-muted-foreground/10 text-muted-foreground/80 flex flex-row items-center gap-1 rounded-md px-2 py-1 text-xs">

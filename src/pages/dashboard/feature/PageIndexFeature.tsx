@@ -29,6 +29,7 @@ import { useRestPeriodBannerDismiss } from "@/hooks/use-rest-period-banner-dismi
 import { useMaxWorkdayDuration } from "@/hooks/use-max-workday-duration"
 import { getCanEndWorkday, isWithinWorkdayWindow } from "@/shared/functions/getCanEndWorkday"
 import { toLocalDateString } from "@/shared/functions/toLocalDateString"
+import { useShowSeconds } from "@/hooks/use-show-seconds"
 
 export interface PeriodOfTime {
   from: Date
@@ -38,6 +39,14 @@ export interface PeriodOfTime {
 export default function PageDashboardIndexFeature() {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const { showSeconds } = useShowSeconds()
+
+  const buildTimeString = (date: Date) => {
+    const hh = date.getHours().toString().padStart(2, "0")
+    const mm = date.getMinutes().toString().padStart(2, "0")
+    const ss = date.getSeconds().toString().padStart(2, "0")
+    return showSeconds ? `${hh}:${mm}:${ss}` : `${hh}:${mm}:00`
+  }
 
   useDocumentTitle(t("navigation.dashboard.navigation-title.desktop"))
 
@@ -158,10 +167,7 @@ export default function PageDashboardIndexFeature() {
       const now = new Date()
       updateWorkdayAsync({
         date: todayLocalDate,
-        start_time: `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
-          .getSeconds()
-          .toString()
-          .padStart(2, "0")}`,
+        start_time: buildTimeString(now),
         end_time: null,
         rest_time: "00:00:00",
         overnight_rest: false,
@@ -214,10 +220,7 @@ export default function PageDashboardIndexFeature() {
     const now = new Date()
     createWorkdayAsync({
       date: todayLocalDate,
-      start_time: `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
-        .getSeconds()
-        .toString()
-        .padStart(2, "0")}`,
+      start_time: buildTimeString(now),
       end_time: null,
       rest_time: "00:00:00",
       overnight_rest: false,
@@ -241,10 +244,7 @@ export default function PageDashboardIndexFeature() {
     }
 
     const now = new Date()
-    const endTime = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now
-      .getSeconds()
-      .toString()
-      .padStart(2, "0")}`
+    const endTime = buildTimeString(now)
 
     if (!restPeriods || restPeriods.length === 0) {
       pendingEndTimeRef.current = endTime
