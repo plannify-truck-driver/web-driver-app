@@ -537,21 +537,25 @@ export default function AppLayout() {
           <Outlet />
         </div>
         <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 py-2">
-          {navigationItems.map((item) => (
-            <Link
-              key={item.title}
-              to={item.link}
-              className={
-                "flex flex-col items-center" +
-                (location.pathname === item.link ? " " : " text-muted-foreground")
-              }
-            >
-              {<item.icon strokeWidth={1.5} size={26} />}
-              <p className="text-responsive-md p-0 leading-none">
-                {t(item.navigationTitle.mobile)}
-              </p>
-            </Link>
-          ))}
+          {navigationItems.map((item) => {
+            const isActive =
+              location.pathname.startsWith(item.link) ||
+              (item.link === "/account" && location.pathname.startsWith("/settings"))
+            return (
+              <Link
+                key={item.title}
+                to={item.link}
+                className={
+                  "flex flex-col items-center" + (isActive ? "" : " text-muted-foreground")
+                }
+              >
+                {<item.icon strokeWidth={1.5} size={26} />}
+                <p className="text-responsive-md p-0 leading-none">
+                  {t(item.navigationTitle.mobile)}
+                </p>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </>
