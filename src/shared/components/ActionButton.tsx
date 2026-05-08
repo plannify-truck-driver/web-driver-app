@@ -62,7 +62,7 @@ export function ActionButton({
           ) : (
             <>
               <span>{t("pages.dashboard.end-workday")}</span>
-              <span className="font-light text-white/60">
+              <span className="text-left font-light text-white/60">
                 {isDisabled
                   ? t("pages.dashboard.workday-end-disabled", {
                       maxHours: maxHours,
