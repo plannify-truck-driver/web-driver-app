@@ -3,6 +3,7 @@ import { Loader } from "./Loader"
 import { cn } from "@/lib/utils"
 import { useTranslation } from "react-i18next"
 import type { Workday } from "../models/workday"
+import { displayTime } from "../functions/displayTime"
 
 export interface ActionButtonProps {
   todayWorkday?: Workday
@@ -63,7 +64,7 @@ export function ActionButton({
                 {isDisabled
                   ? t("pages.dashboard.workday-end-disabled")
                   : t("pages.dashboard.workday-started-at", {
-                      startTime: todayWorkday.start_time.substring(0, 5),
+                      startTime: displayTime(todayWorkday.start_time, true),
                     })}
               </span>
             </>
