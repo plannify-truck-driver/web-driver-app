@@ -118,6 +118,7 @@
         "personal-information": "Personal information",
         "email-preferences": "Email preferences",
         "rest-preferences": "Rest preferences",
+        "application-preferences": "Application preferences",
         "theme": "Theme",
         "language": "Language",
         "help-support": "Help & Support",
@@ -126,6 +127,17 @@
       }
     },
     "settings": {
+      "application-preferences": {
+        "page-title": "Application preferences",
+        "display-section": "Display",
+        "show-seconds-label": "Show seconds",
+        "show-seconds-description": "Fine-tune your workdays down to the second.",
+        "workday-section": "Workday",
+        "max-workday-duration-label": "Maximum workday duration",
+        "max-workday-duration-description": "Beyond this duration, the \"End workday\" button will be disabled.",
+        "max-workday-duration-unit": "h",
+        "reset-default": "Reset to default"
+      },
       "rest-preferences": {
         "page-title": "Rest Preferences",
         "how-it-works-title": "How does it work?",

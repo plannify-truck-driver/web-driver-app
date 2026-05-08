@@ -15,6 +15,7 @@ import { Route as DocumentsIndexRouteImport } from "./routes/documents/index"
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index"
 import { Route as AccountIndexRouteImport } from "./routes/account/index"
 import { Route as SettingsRestPreferencesRouteImport } from "./routes/settings/rest-preferences"
+import { Route as SettingsApplicationPreferencesRouteImport } from "./routes/settings/application-preferences"
 import { Route as AuthenticationVerifyAccountRouteImport } from "./routes/authentication/verify-account"
 import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentication/suspended"
 import { Route as AuthenticationRegistrationRouteImport } from "./routes/authentication/registration"
@@ -51,6 +52,12 @@ const SettingsRestPreferencesRoute = SettingsRestPreferencesRouteImport.update({
   path: "/settings/rest-preferences",
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsApplicationPreferencesRoute =
+  SettingsApplicationPreferencesRouteImport.update({
+    id: "/settings/application-preferences",
+    path: "/settings/application-preferences",
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticationVerifyAccountRoute =
   AuthenticationVerifyAccountRouteImport.update({
     id: "/authentication/verify-account",
@@ -86,6 +93,7 @@ export interface FileRoutesByFullPath {
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
   "/account/": typeof AccountIndexRoute
   "/dashboard/": typeof DashboardIndexRoute
@@ -99,6 +107,7 @@ export interface FileRoutesByTo {
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
   "/account": typeof AccountIndexRoute
   "/dashboard": typeof DashboardIndexRoute
@@ -113,6 +122,7 @@ export interface FileRoutesById {
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
+  "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
   "/account/": typeof AccountIndexRoute
   "/dashboard/": typeof DashboardIndexRoute
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | "/authentication/registration"
     | "/authentication/suspended"
     | "/authentication/verify-account"
+    | "/settings/application-preferences"
     | "/settings/rest-preferences"
     | "/account/"
     | "/dashboard/"
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | "/authentication/registration"
     | "/authentication/suspended"
     | "/authentication/verify-account"
+    | "/settings/application-preferences"
     | "/settings/rest-preferences"
     | "/account"
     | "/dashboard"
@@ -154,6 +166,7 @@ export interface FileRouteTypes {
     | "/authentication/registration"
     | "/authentication/suspended"
     | "/authentication/verify-account"
+    | "/settings/application-preferences"
     | "/settings/rest-preferences"
     | "/account/"
     | "/dashboard/"
@@ -168,6 +181,7 @@ export interface RootRouteChildren {
   AuthenticationRegistrationRoute: typeof AuthenticationRegistrationRoute
   AuthenticationSuspendedRoute: typeof AuthenticationSuspendedRoute
   AuthenticationVerifyAccountRoute: typeof AuthenticationVerifyAccountRoute
+  SettingsApplicationPreferencesRoute: typeof SettingsApplicationPreferencesRoute
   SettingsRestPreferencesRoute: typeof SettingsRestPreferencesRoute
   AccountIndexRoute: typeof AccountIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -220,6 +234,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof SettingsRestPreferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/settings/application-preferences": {
+      id: "/settings/application-preferences"
+      path: "/settings/application-preferences"
+      fullPath: "/settings/application-preferences"
+      preLoaderRoute: typeof SettingsApplicationPreferencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     "/authentication/verify-account": {
       id: "/authentication/verify-account"
       path: "/authentication/verify-account"
@@ -264,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticationRegistrationRoute: AuthenticationRegistrationRoute,
   AuthenticationSuspendedRoute: AuthenticationSuspendedRoute,
   AuthenticationVerifyAccountRoute: AuthenticationVerifyAccountRoute,
+  SettingsApplicationPreferencesRoute: SettingsApplicationPreferencesRoute,
   SettingsRestPreferencesRoute: SettingsRestPreferencesRoute,
   AccountIndexRoute: AccountIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,

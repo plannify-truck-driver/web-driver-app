@@ -118,6 +118,7 @@
         "personal-information": "Informations personnelles",
         "email-preferences": "Préférences mail",
         "rest-preferences": "Préférences de coupure",
+        "application-preferences": "Préférences de l'application",
         "theme": "Thème",
         "language": "Langue",
         "help-support": "Aide & Support",
@@ -126,6 +127,17 @@
       }
     },
     "settings": {
+      "application-preferences": {
+        "page-title": "Préférences de l'application",
+        "display-section": "Affichage",
+        "show-seconds-label": "Afficher les secondes",
+        "show-seconds-description": "Gérez finement vos journées à la seconde près.",
+        "workday-section": "Journée de travail",
+        "max-workday-duration-label": "Durée maximale d'une journée",
+        "max-workday-duration-description": "Au-delà de cette durée, le bouton \"Terminer ma journée\" sera désactivé.",
+        "max-workday-duration-unit": "h",
+        "reset-default": "Réinitialiser la valeur par défaut"
+      },
       "rest-preferences": {
         "page-title": "Préférences de coupure",
         "how-it-works-title": "Comment ça fonctionne ?",

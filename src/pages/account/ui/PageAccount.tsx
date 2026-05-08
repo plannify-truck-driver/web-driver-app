@@ -22,6 +22,7 @@ import {
   LogOutIcon,
   MailsIcon,
   MoonIcon,
+  SettingsIcon,
   SunIcon,
   UserPenIcon,
 } from "lucide-react"
@@ -83,6 +84,11 @@ export default function PageAccount({
                 icon: CirclePauseIcon,
                 label: t("pages.account.settings-actions.rest-preferences"),
                 onClick: () => navigate({ to: "/settings/rest-preferences" }),
+              },
+              {
+                icon: SettingsIcon,
+                label: t("pages.account.settings-actions.application-preferences"),
+                onClick: () => navigate({ to: "/settings/application-preferences" }),
               },
               {
                 icon: theme === "light" ? SunIcon : theme === "dark" ? MoonIcon : LaptopIcon,
