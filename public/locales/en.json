@@ -87,6 +87,19 @@
         "workday-created": "Your workday has been created successfully!",
         "workday-updated": "Your workday has been updated successfully!"
       },
+      "detail": {
+        "page-title": "Workday details",
+        "not-found": "This workday does not exist.",
+        "save": "Save",
+        "save-success": "Workday updated.",
+        "delete-success": "Workday deleted.",
+        "delete-dialog": {
+          "title": "Delete this workday?",
+          "description": "The workday will be moved to the trash and permanently deleted after 30 days.",
+          "confirm": "Delete",
+          "cancel": "Cancel"
+        }
+      },
       "errors": {
         "workday-update-error": "An error occurred while updating your workday. Please try again later."
       }

@@ -14,6 +14,7 @@ import { Route as WorkdaysIndexRouteImport } from "./routes/workdays/index"
 import { Route as DocumentsIndexRouteImport } from "./routes/documents/index"
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index"
 import { Route as AccountIndexRouteImport } from "./routes/account/index"
+import { Route as WorkdaysWorkdayDateRouteImport } from "./routes/workdays/$workdayDate"
 import { Route as SettingsRestPreferencesRouteImport } from "./routes/settings/rest-preferences"
 import { Route as SettingsApplicationPreferencesRouteImport } from "./routes/settings/application-preferences"
 import { Route as AuthenticationVerifyAccountRouteImport } from "./routes/authentication/verify-account"
@@ -45,6 +46,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
 const AccountIndexRoute = AccountIndexRouteImport.update({
   id: "/account/",
   path: "/account/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkdaysWorkdayDateRoute = WorkdaysWorkdayDateRouteImport.update({
+  id: "/workdays/$workdayDate",
+  path: "/workdays/$workdayDate",
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRestPreferencesRoute = SettingsRestPreferencesRouteImport.update({
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
+  "/workdays/$workdayDate": typeof WorkdaysWorkdayDateRoute
   "/account/": typeof AccountIndexRoute
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
+  "/workdays/$workdayDate": typeof WorkdaysWorkdayDateRoute
   "/account": typeof AccountIndexRoute
   "/dashboard": typeof DashboardIndexRoute
   "/documents": typeof DocumentsIndexRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
+  "/workdays/$workdayDate": typeof WorkdaysWorkdayDateRoute
   "/account/": typeof AccountIndexRoute
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | "/authentication/verify-account"
     | "/settings/application-preferences"
     | "/settings/rest-preferences"
+    | "/workdays/$workdayDate"
     | "/account/"
     | "/dashboard/"
     | "/documents/"
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | "/authentication/verify-account"
     | "/settings/application-preferences"
     | "/settings/rest-preferences"
+    | "/workdays/$workdayDate"
     | "/account"
     | "/dashboard"
     | "/documents"
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | "/authentication/verify-account"
     | "/settings/application-preferences"
     | "/settings/rest-preferences"
+    | "/workdays/$workdayDate"
     | "/account/"
     | "/dashboard/"
     | "/documents/"
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   AuthenticationVerifyAccountRoute: typeof AuthenticationVerifyAccountRoute
   SettingsApplicationPreferencesRoute: typeof SettingsApplicationPreferencesRoute
   SettingsRestPreferencesRoute: typeof SettingsRestPreferencesRoute
+  WorkdaysWorkdayDateRoute: typeof WorkdaysWorkdayDateRoute
   AccountIndexRoute: typeof AccountIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DocumentsIndexRoute: typeof DocumentsIndexRoute
@@ -225,6 +238,13 @@ declare module "@tanstack/react-router" {
       path: "/account"
       fullPath: "/account/"
       preLoaderRoute: typeof AccountIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/workdays/$workdayDate": {
+      id: "/workdays/$workdayDate"
+      path: "/workdays/$workdayDate"
+      fullPath: "/workdays/$workdayDate"
+      preLoaderRoute: typeof WorkdaysWorkdayDateRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/settings/rest-preferences": {
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticationVerifyAccountRoute: AuthenticationVerifyAccountRoute,
   SettingsApplicationPreferencesRoute: SettingsApplicationPreferencesRoute,
   SettingsRestPreferencesRoute: SettingsRestPreferencesRoute,
+  WorkdaysWorkdayDateRoute: WorkdaysWorkdayDateRoute,
   AccountIndexRoute: AccountIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DocumentsIndexRoute: DocumentsIndexRoute,

@@ -3,8 +3,13 @@ import { useMaxWorkdayDuration } from "@/hooks/use-max-workday-duration"
 import { useRestPeriodBannerDismiss } from "@/hooks/use-rest-period-banner-dismiss"
 import { useDocumentsBannerDismiss } from "@/hooks/use-documents-banner-dismiss"
 import PageApplicationPreferences from "../ui/PageApplicationPreferences"
+import { useDocumentTitle } from "@/hooks/use-document-title"
+import { useTranslation } from "react-i18next"
 
 export default function PageApplicationPreferencesFeature() {
+  const { t } = useTranslation()
+  useDocumentTitle(t("pages.settings.application-preferences.page-title"))
+
   const { showSeconds, setShowSeconds } = useShowSeconds()
   const { maxHours, setMaxHours } = useMaxWorkdayDuration()
   const restPeriodBanner = useRestPeriodBannerDismiss()

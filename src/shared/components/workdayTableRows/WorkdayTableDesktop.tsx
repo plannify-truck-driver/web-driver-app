@@ -7,6 +7,7 @@ import { displayDuration } from "@/shared/functions/displayDuration"
 import { displayTime } from "@/shared/functions/displayTime"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 import { useShowSeconds } from "@/hooks/use-show-seconds"
+import { useNavigate } from "@tanstack/react-router"
 
 export interface WorkdayTableDesktopProps {
   workdays: Workday[]
@@ -15,6 +16,7 @@ export interface WorkdayTableDesktopProps {
 export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
   const { t, i18n } = useTranslation()
   const { showSeconds } = useShowSeconds()
+  const navigate = useNavigate()
 
   const DEFAULT_COLUMNS: ColumnDef<Workday>[] = [
     {
@@ -132,6 +134,7 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
               key={row.id}
               data-state={row.getIsSelected() && "selected"}
               className="cursor-pointer"
+              onClick={() => navigate({ to: "/workdays/$workdayDate", params: { workdayDate: row.original.date } })}
             >
               {row.getVisibleCells().map((cell) => {
                 return (

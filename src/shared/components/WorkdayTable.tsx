@@ -6,6 +6,7 @@ import { WorkdayTableRow3 } from "./workdayTableRows/WorkdayTableRow3"
 import type { PeriodOfTime } from "@/pages/dashboard/feature/PageIndexFeature"
 import { useTranslation } from "react-i18next"
 import { WorkdayTableDesktop } from "./workdayTableRows/WorkdayTableDesktop"
+import { useNavigate } from "@tanstack/react-router"
 
 export interface WorkdayTableProps {
   workdays: Workday[]
@@ -16,6 +17,7 @@ export interface WorkdayTableProps {
 export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps) {
   const { t } = useTranslation()
   const { preferences } = useDriverPreferences()
+  const navigate = useNavigate()
 
   const workdayTableRowsComponents = {
     1: WorkdayTableRow1,
@@ -63,7 +65,7 @@ export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps
                         ? i.getDay() === 6
                         : i.getDay() === 5
                   }
-                  onClick={() => {}}
+                  onClick={() => workday && navigate({ to: "/workdays/$workdayDate", params: { workdayDate: workday.date } })}
                 />
               )
             }
@@ -76,7 +78,7 @@ export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps
               workday={workday}
               isFirst={idx === 0}
               isLast={idx === workdays.length - 1}
-              onClick={() => {}}
+              onClick={() => navigate({ to: "/workdays/$workdayDate", params: { workdayDate: workday.date } })}
             />
           ))
         ) : (

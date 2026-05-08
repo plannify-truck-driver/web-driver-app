@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { ClockIcon } from "lucide-react"
+import { ClockIcon, XIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface TimeInputProps {
@@ -7,6 +7,7 @@ interface TimeInputProps {
   value?: string
   onChange?: (value: string) => void
   disabled?: boolean
+  clearable?: boolean
   "aria-invalid"?: boolean
   className?: string
 }
@@ -16,6 +17,7 @@ function TimeInput({
   value,
   onChange,
   disabled,
+  clearable = false,
   "aria-invalid": ariaInvalid,
   className,
 }: TimeInputProps) {
@@ -44,7 +46,21 @@ function TimeInput({
       <span className={cn("text-lg sm:text-base", !value && "text-muted-foreground")}>
         {value || "--:--"}
       </span>
-      <ClockIcon className="text-muted-foreground size-4 shrink-0" />
+      {clearable && value && !disabled ? (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            onChange?.("")
+          }}
+          className="text-muted-foreground hover:text-foreground relative z-10 cursor-pointer"
+          tabIndex={-1}
+        >
+          <XIcon className="size-4 shrink-0" />
+        </button>
+      ) : (
+        <ClockIcon className="text-muted-foreground size-4 shrink-0" />
+      )}
       <input
         ref={inputRef}
         id={id}
