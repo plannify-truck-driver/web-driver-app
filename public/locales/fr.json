@@ -136,7 +136,15 @@
         "max-workday-duration-label": "Durée maximale d'une journée",
         "max-workday-duration-description": "Au-delà de cette durée, le bouton \"Terminer ma journée\" sera désactivé.",
         "max-workday-duration-unit": "h",
-        "reset-default": "Réinitialiser la valeur par défaut"
+        "reset-default": "Réinitialiser la valeur par défaut",
+        "banners-section": "Bannières",
+        "banner-rest-period-label": "Configurer les coupures",
+        "banner-rest-period-description": "Invite à configurer des coupures automatiques pour que Plannify calcule la bonne durée de pause en fin de journée.",
+        "banner-documents-label": "Documents générés définitivement",
+        "banner-documents-description": "Explique pourquoi certains relevés sont figés et ne peuvent plus être modifiés après 3 mois.",
+        "banner-visible": "Active",
+        "banner-permanently-dismissed": "Désactivée",
+        "banner-next-display": "Réapparition le {{date}}"
       },
       "rest-preferences": {
         "page-title": "Préférences de coupure",

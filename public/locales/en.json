@@ -136,7 +136,15 @@
         "max-workday-duration-label": "Maximum workday duration",
         "max-workday-duration-description": "Beyond this duration, the \"End workday\" button will be disabled.",
         "max-workday-duration-unit": "h",
-        "reset-default": "Reset to default"
+        "reset-default": "Reset to default",
+        "banners-section": "Banners",
+        "banner-rest-period-label": "Configure rest periods",
+        "banner-rest-period-description": "Prompts you to set up automatic rest periods so Plannify can calculate the right break duration at the end of your workday.",
+        "banner-documents-label": "Permanently generated documents",
+        "banner-documents-description": "Explains why some statements are finalized and can no longer be edited after 3 months.",
+        "banner-visible": "Active",
+        "banner-permanently-dismissed": "Disabled",
+        "banner-next-display": "Reappears on {{date}}"
       },
       "rest-preferences": {
         "page-title": "Rest Preferences",

@@ -25,6 +25,13 @@ function isBannerVisible(state: DismissState): boolean {
   return Date.now() - state.lastDismissedAt >= DISMISS_DURATION_MS
 }
 
+function getNextDisplayAt(state: DismissState): Date | null {
+  if (state.count >= MAX_DISMISSALS) return null
+  if (state.lastDismissedAt === null) return null
+  if (isBannerVisible(state)) return null
+  return new Date(state.lastDismissedAt + DISMISS_DURATION_MS)
+}
+
 export function useRestPeriodBannerDismiss() {
   const [state, setState] = useState<DismissState>(readState)
 
@@ -39,5 +46,18 @@ export function useRestPeriodBannerDismiss() {
     })
   }, [])
 
-  return { isVisible: isBannerVisible(state), dismiss }
+  const reset = useCallback(() => {
+    const next: DismissState = { count: 0, lastDismissedAt: null }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+    setState(next)
+  }, [])
+
+  return {
+    isVisible: isBannerVisible(state),
+    dismiss,
+    reset,
+    count: state.count,
+    maxDismissals: MAX_DISMISSALS,
+    nextDisplayAt: getNextDisplayAt(state),
+  }
 }

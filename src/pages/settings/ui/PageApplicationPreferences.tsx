@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ClockIcon, RotateCcwIcon, TimerIcon } from "lucide-react"
+import { ArrowLeftIcon, BellIcon, ClockIcon, RotateCcwIcon, TimerIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { Switch } from "@/shared/components/ui/Switch"
 import { Input } from "@/shared/components/ui/Input"
@@ -7,11 +7,21 @@ import { Button } from "@/shared/components/ui/Button"
 const DEFAULT_SHOW_SECONDS = false
 const DEFAULT_MAX_HOURS = 18
 
+interface BannerInfo {
+  key: string
+  count: number
+  maxDismissals: number
+  nextDisplayAt: Date | null
+  isVisible: boolean
+  onReset: () => void
+}
+
 interface PageApplicationPreferencesProps {
   showSeconds: boolean
   onShowSecondsChange: (value: boolean) => void
   maxHours: number
   onMaxHoursChange: (value: number) => void
+  banners: BannerInfo[]
 }
 
 export default function PageApplicationPreferences({
@@ -19,8 +29,9 @@ export default function PageApplicationPreferences({
   onShowSecondsChange,
   maxHours,
   onMaxHoursChange,
+  banners,
 }: PageApplicationPreferencesProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const handleMaxHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10)
@@ -44,6 +55,7 @@ export default function PageApplicationPreferences({
         </h1>
       </div>
 
+      {/* Display */}
       <div className="flex flex-col gap-1.5">
         <h2 className="text-muted-foreground font-mono text-sm uppercase">
           {t("pages.settings.application-preferences.display-section")}
@@ -78,6 +90,7 @@ export default function PageApplicationPreferences({
         </div>
       </div>
 
+      {/* Workday */}
       <div className="flex flex-col gap-1.5">
         <h2 className="text-muted-foreground font-mono text-sm uppercase">
           {t("pages.settings.application-preferences.workday-section")}
@@ -121,6 +134,72 @@ export default function PageApplicationPreferences({
               </span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Banners */}
+      <div className="flex flex-col gap-1.5">
+        <h2 className="text-muted-foreground font-mono text-sm uppercase">
+          {t("pages.settings.application-preferences.banners-section")}
+        </h2>
+
+        <div className="flex flex-col divide-y rounded-lg border">
+          {banners.map((banner) => {
+            const isPermanentlyDismissed = banner.count >= banner.maxDismissals
+
+            return (
+              <div key={banner.key} className="flex items-start justify-between gap-4 px-4 py-3">
+                <div className="flex items-start gap-3">
+                  <BellIcon className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+                  <div className="flex flex-col gap-0.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-sm font-medium">
+                        {t(`pages.settings.application-preferences.banner-${banner.key}-label`)}
+                      </p>
+                      {isPermanentlyDismissed ? (
+                        <span className="bg-muted text-muted-foreground rounded-md px-2 py-0.5 text-xs font-medium">
+                          {t("pages.settings.application-preferences.banner-permanently-dismissed")}
+                        </span>
+                      ) : banner.isVisible ? (
+                        <span className="bg-success/10 text-success rounded-md px-2 py-0.5 text-xs font-medium">
+                          {t("pages.settings.application-preferences.banner-visible")}
+                        </span>
+                      ) : (
+                        <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600 dark:text-amber-400">
+                          {t("pages.settings.application-preferences.banner-next-display", {
+                            date: banner.nextDisplayAt!.toLocaleDateString(i18n.language, {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            }),
+                          })}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-muted-foreground text-sm">
+                      {t(`pages.settings.application-preferences.banner-${banner.key}-description`)}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex shrink-0 items-center gap-3 pt-0.5">
+                  <span className="text-muted-foreground tabular-nums text-sm">
+                    {banner.count}/{banner.maxDismissals}
+                  </span>
+                  {banner.count > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={banner.onReset}
+                      className="text-muted-foreground"
+                      title={t("pages.settings.application-preferences.reset-default")}
+                    >
+                      <RotateCcwIcon />
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import type { Workday } from "../models/workday"
 import { displayTime } from "../functions/displayTime"
 import { useShowSeconds } from "@/hooks/use-show-seconds"
+import { useMaxWorkdayDuration } from "@/hooks/use-max-workday-duration"
 
 export interface ActionButtonProps {
   todayWorkday?: Workday
@@ -22,6 +23,7 @@ export function ActionButton({
   onClick,
 }: ActionButtonProps) {
   const { t, i18n } = useTranslation()
+  const { maxHours } = useMaxWorkdayDuration()
   const { showSeconds } = useShowSeconds()
 
   const today = new Date()
@@ -31,9 +33,7 @@ export function ActionButton({
     <button
       className={cn(
         "bg-primary flex w-full flex-row items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-white sm:px-5 sm:py-4",
-        inactive
-          ? "cursor-not-allowed opacity-50"
-          : "hover:bg-primary/90 cursor-pointer",
+        inactive ? "cursor-not-allowed opacity-50" : "hover:bg-primary/90 cursor-pointer",
         className
       )}
       onClick={onClick}
@@ -64,7 +64,9 @@ export function ActionButton({
               <span>{t("pages.dashboard.end-workday")}</span>
               <span className="font-light text-white/60">
                 {isDisabled
-                  ? t("pages.dashboard.workday-end-disabled")
+                  ? t("pages.dashboard.workday-end-disabled", {
+                      maxHours: maxHours,
+                    })
                   : t("pages.dashboard.workday-started-at", {
                       startTime: displayTime(todayWorkday.start_time, showSeconds),
                     })}
