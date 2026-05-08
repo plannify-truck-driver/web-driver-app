@@ -103,7 +103,7 @@ export function AddWorkdayForm({
                         key={i}
                         className={cn(
                           "border-border flex h-14 w-12 shrink-0 cursor-pointer flex-col items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50",
-                          day.getTime() === dateValue.getTime() ? "text-secondary bg-primary" : ""
+                          day.getTime() === dateValue.getTime() ? "bg-primary text-white" : ""
                         )}
                         disabled={
                           loadings.isSubmitting ||
@@ -121,7 +121,7 @@ export function AddWorkdayForm({
                           className={cn(
                             "text-xs font-light",
                             day.getTime() === dateValue.getTime()
-                              ? "text-secondary"
+                              ? "text-white"
                               : "text-muted-foreground"
                           )}
                         >
