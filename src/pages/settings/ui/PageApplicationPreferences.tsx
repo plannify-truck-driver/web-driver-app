@@ -1,5 +1,6 @@
-import { ArrowLeftIcon, BellIcon, ClockIcon, RotateCcwIcon, TimerIcon } from "lucide-react"
+import { ArrowLeftIcon, BellIcon, ClockIcon, LaptopIcon, MonitorIcon, RotateCcwIcon, SmartphoneIcon, TabletIcon, TimerIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
+import { useState, useEffect } from "react"
 import { Switch } from "@/shared/components/ui/Switch"
 import { Input } from "@/shared/components/ui/Input"
 import { Button } from "@/shared/components/ui/Button"
@@ -33,10 +34,22 @@ export default function PageApplicationPreferences({
 }: PageApplicationPreferencesProps) {
   const { t, i18n } = useTranslation()
 
+  const [rawMaxHours, setRawMaxHours] = useState(String(maxHours))
+
+  useEffect(() => {
+    setRawMaxHours(String(maxHours))
+  }, [maxHours])
+
   const handleMaxHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10)
+    setRawMaxHours(e.target.value)
+  }
+
+  const handleMaxHoursBlur = () => {
+    const value = parseInt(rawMaxHours, 10)
     if (!isNaN(value) && value >= 1 && value <= 24) {
       onMaxHoursChange(value)
+    } else {
+      setRawMaxHours(String(maxHours))
     }
   }
 
@@ -53,6 +66,16 @@ export default function PageApplicationPreferences({
         <h1 className="text-2xl font-semibold">
           {t("pages.settings.application-preferences.page-title")}
         </h1>
+      </div>
+
+      <div className="flex items-center gap-3 rounded-lg border border-blue-200 bg-blue-50/60 px-4 py-3 text-sm text-blue-700 dark:border-blue-800/60 dark:bg-blue-950/20 dark:text-blue-400">
+        <SmartphoneIcon className="size-4 shrink-0 md:hidden" />
+        <TabletIcon className="hidden size-4 shrink-0 md:block lg:hidden" />
+        <LaptopIcon className="hidden size-4 shrink-0 lg:block xl:hidden" />
+        <MonitorIcon className="hidden size-4 shrink-0 xl:block" />
+        <p className="md:hidden">{t("pages.settings.application-preferences.device-notice-phone")}</p>
+        <p className="hidden md:block lg:hidden">{t("pages.settings.application-preferences.device-notice-tablet")}</p>
+        <p className="hidden lg:block">{t("pages.settings.application-preferences.device-notice-computer")}</p>
       </div>
 
       {/* Display */}
@@ -122,11 +145,12 @@ export default function PageApplicationPreferences({
             )}
             <div className="flex items-center gap-1.5">
               <Input
-                type="number"
-                min={1}
-                max={24}
-                value={maxHours}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={rawMaxHours}
                 onChange={handleMaxHoursChange}
+                onBlur={handleMaxHoursBlur}
                 className="w-16 text-center"
               />
               <span className="text-muted-foreground text-sm">

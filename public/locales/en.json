@@ -142,6 +142,9 @@
     "settings": {
       "application-preferences": {
         "page-title": "Application preferences",
+        "device-notice-phone": "Changes made on this page only apply to this phone.",
+        "device-notice-tablet": "Changes made on this page only apply to this tablet.",
+        "device-notice-computer": "Changes made on this page only apply to this computer.",
         "display-section": "Display",
         "show-seconds-label": "Show seconds",
         "show-seconds-description": "Fine-tune your workdays down to the second.",

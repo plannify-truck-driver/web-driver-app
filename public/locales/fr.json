@@ -142,6 +142,9 @@
     "settings": {
       "application-preferences": {
         "page-title": "Préférences de l'application",
+        "device-notice-phone": "Les modifications effectuées sur cette page s'appliquent uniquement à ce téléphone.",
+        "device-notice-tablet": "Les modifications effectuées sur cette page s'appliquent uniquement à cette tablette.",
+        "device-notice-computer": "Les modifications effectuées sur cette page s'appliquent uniquement à cet ordinateur.",
         "display-section": "Affichage",
         "show-seconds-label": "Afficher les secondes",
         "show-seconds-description": "Gérez finement vos journées à la seconde près.",
