@@ -87,7 +87,7 @@ export default function PageWorkdays({
   }
 
   return (
-    <div className="flex flex-col gap-5 sm:gap-6">
+    <div className="flex h-full flex-1 flex-col gap-5 sm:gap-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
         <div className="flex flex-row items-center justify-between gap-1">
           <h1 className="text-2xl font-semibold">{t("pages.workdays.page-title")}</h1>
@@ -149,47 +149,24 @@ export default function PageWorkdays({
           />
         </div>
       </div>
-      <div className="flex w-full flex-col gap-3">
-        <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">
-          {t("pages.dashboard.summary")}
-        </p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
-          <StatWorkedDays
-            statType="month"
-            workedDays={workdays.length}
-            maxWorkedDays={maxWorkedDays}
-            isLoading={loadings.isGetMonthWorkdaysLoading}
-          />
-          <StatTotalWorkedHours
-            totalString={totalWorkingTime}
-            month={selectedMonth}
-            isLoading={loadings.isGetMonthWorkdaysLoading}
-          />
-          <StatOvernightRest
-            workdays={workdays}
-            isLoading={loadings.isGetMonthWorkdaysLoading}
-            className="hidden sm:flex"
-          />
-        </div>
-      </div>
       {isMonthDocumentGenerated ? (
-        <div className="from-destructive/5 to-destructive/10 overflow-hidden rounded-xl border bg-gradient-to-br p-5">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
-            <div className="bg-destructive/10 flex size-11 shrink-0 items-center justify-center rounded-full">
-              <LockIcon className="text-destructive size-5" />
-            </div>
-            <div className="flex-1">
-              <p className="font-semibold">{t("pages.workdays.period-locked-title")}</p>
-              <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
-                {t("pages.workdays.period-locked-description", {
-                  period: selectedMonth.toLocaleDateString(i18n.language, {
-                    month: "long",
-                    year: "numeric",
-                  }),
-                })}
-              </p>
-            </div>
-            <Button variant="secondary" size="sm" className="w-fit shrink-0" asChild>
+        <div className="flex h-full flex-col items-center justify-center gap-8 overflow-hidden text-center">
+          <div className="bg-destructive/10 flex size-14 shrink-0 items-center justify-center rounded-full">
+            <LockIcon className="text-destructive size-6" />
+          </div>
+          <div className="flex max-w-sm flex-col gap-1">
+            <p className="font-semibold">{t("pages.workdays.period-locked-title")}</p>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              {t("pages.workdays.period-locked-description", {
+                period: selectedMonth.toLocaleDateString(i18n.language, {
+                  month: "long",
+                  year: "numeric",
+                }),
+              })}
+            </p>
+          </div>
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <Button asChild>
               <Link
                 to="/documents"
                 search={{
@@ -200,10 +177,52 @@ export default function PageWorkdays({
                 {t("pages.workdays.period-locked-action")}
               </Link>
             </Button>
+            <Button asChild variant="outline">
+              <a
+                href={
+                  "mailto:contact@plannify.be?subject=" +
+                  encodeURIComponent(t("pages.workdays.contact-support-subject")) +
+                  "&body=" +
+                  encodeURIComponent(
+                    t("pages.workdays.contact-support-body", {
+                      period: selectedMonth.toLocaleDateString(i18n.language, {
+                        month: "long",
+                        year: "numeric",
+                      }),
+                    })
+                  )
+                }
+              >
+                {t("pages.workdays.contact-support-button")}
+              </a>
+            </Button>
           </div>
         </div>
       ) : (
         <>
+          <div className="flex w-full flex-col gap-3">
+            <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">
+              {t("pages.dashboard.summary")}
+            </p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
+              <StatWorkedDays
+                statType="month"
+                workedDays={workdays.length}
+                maxWorkedDays={maxWorkedDays}
+                isLoading={loadings.isGetMonthWorkdaysLoading}
+              />
+              <StatTotalWorkedHours
+                totalString={totalWorkingTime}
+                month={selectedMonth}
+                isLoading={loadings.isGetMonthWorkdaysLoading}
+              />
+              <StatOvernightRest
+                workdays={workdays}
+                isLoading={loadings.isGetMonthWorkdaysLoading}
+                className="hidden sm:flex"
+              />
+            </div>
+          </div>
           <WorkdayTable workdays={workdays} periodType="month" />
           <AddWorkdayButton
             isFirstWorkday={workdays.length === 0}

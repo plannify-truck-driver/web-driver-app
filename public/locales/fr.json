@@ -79,8 +79,11 @@
       "previous-month": "Mois précédent",
       "other-month": "Autre mois",
       "period-locked-title": "Relevé mensuel verrouillé",
-      "period-locked-description": "Le relevé de {{period}} a été généré définitivement. Les journées de cette période ne peuvent plus être modifiées.",
+      "period-locked-description": "Le relevé du mois de {{period}} a été généré définitivement. Les journées de cette période ne peuvent plus être modifiées.",
       "period-locked-action": "Voir le document",
+      "contact-support-subject": "Relevé mensuel verrouillé: Demande d'informations complémentaires",
+      "contact-support-body": "Bonjour,\n\nJe souhaiterais obtenir des informations complémentaires concernant le verrouillage de mon relevé mensuel pour la période de {{period}}.\n\nMerci d'avance pour votre aide.",
+      "contact-support-button": "Contacter le support",
       "buttons": {
         "add-workday": "Ajouter une journée",
         "use-excel-file": "Importer des journées à partir d'un fichier Excel",
