@@ -135,32 +135,37 @@ export function WorkdayFormFields({
                     <Skeleton key={i} className="h-8 w-16 rounded-md" />
                   ))
                 ) : restPeriods.length > 0 ? (
-                  restPeriods.map((period) => {
-                    const isSelected = field.value === period.rest
-                    const isBest = bestRestTime === period.rest
-                    return (
-                      <button
-                        key={period.rest}
-                        type="button"
-                        onClick={() => {
-                          userOverrideRef.current = true
-                          field.onChange(period.rest)
-                        }}
-                        className={cn(
-                          "border-border relative cursor-pointer rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50",
-                          isSelected && "border-primary bg-primary/10 text-primary"
-                        )}
-                        disabled={isLoadingRestPeriods || !isRestPeriodsAvailable || disabled}
-                      >
-                        {isBest && (
-                          <span className="bg-primary absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full">
-                            <StarIcon size={8} fill="currentColor" className="text-white" />
-                          </span>
-                        )}
-                        {displayDuration(period.rest, t)}
-                      </button>
+                  restPeriods
+                    .filter(
+                      (period, index, self) =>
+                        self.findIndex((p) => p.rest === period.rest) === index
                     )
-                  })
+                    .map((period) => {
+                      const isSelected = field.value === period.rest
+                      const isBest = bestRestTime === period.rest
+                      return (
+                        <button
+                          key={period.rest}
+                          type="button"
+                          onClick={() => {
+                            userOverrideRef.current = true
+                            field.onChange(period.rest)
+                          }}
+                          className={cn(
+                            "border-border relative cursor-pointer rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50",
+                            isSelected && "border-primary bg-primary/10 text-primary"
+                          )}
+                          disabled={isLoadingRestPeriods || !isRestPeriodsAvailable || disabled}
+                        >
+                          {isBest && (
+                            <span className="bg-primary absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full">
+                              <StarIcon size={8} fill="currentColor" className="text-white" />
+                            </span>
+                          )}
+                          {displayDuration(period.rest, t)}
+                        </button>
+                      )
+                    })
                 ) : (
                   <TimeInput
                     id="wf-rest-time"

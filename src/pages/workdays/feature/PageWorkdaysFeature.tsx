@@ -82,8 +82,9 @@ export default function PageWorkdaysFeature() {
       toast.success(t("pages.workdays.success.workday-updated"))
     },
     onError: (error: Error) => {
-      toast.error(t("pages.workdays.errors.workday-update-error"))
-      console.error("Failed to update workday:", error)
+      handleErrorResponse(error).then(() => {
+        toast.error(t("pages.workdays.errors.workday-update-error"))
+      })
     },
   })
   const { data: restPeriods, isLoading: isRestPeriodsLoading } = useGetRestPeriods()

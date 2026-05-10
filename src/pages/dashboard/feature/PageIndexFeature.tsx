@@ -61,6 +61,7 @@ export default function PageDashboardIndexFeature() {
   const yesterdayLocalDate = toLocalDateString(yesterday)
 
   const [period, setPeriod] = useState<PeriodOfTime>(getWeek(today))
+  const [isDocumentAlreadyGenerated, setIsDocumentAlreadyGenerated] = useState(false)
   const [isEndWorkdayRestDialogOpen, setIsEndWorkdayRestDialogOpen] = useState(false)
   const pendingEndTimeRef = useRef<string | null>(null)
   const endWorkdayRestForm = useForm<z.infer<typeof endWorkdayRestSchema>>({
@@ -116,6 +117,7 @@ export default function PageDashboardIndexFeature() {
 
   const { mutateAsync: createWorkdayAsync, isPending: isCreatingWorkday } = useCreateWorkday({
     onSuccess: () => {
+      setIsDocumentAlreadyGenerated(false)
       queryClient.invalidateQueries({
         queryKey: workdaysKeys.all,
         exact: false,
@@ -134,6 +136,8 @@ export default function PageDashboardIndexFeature() {
           apiError?.error_code === "WORKDAY_GARBAGE_ALREADY_EXISTS"
         ) {
           restoreWorkdayAsync({ date: todayLocalDate })
+        } else if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
+          setIsDocumentAlreadyGenerated(true)
         } else {
           toast.error(t("pages.dashboard.workday-creation-error"))
         }
@@ -142,6 +146,7 @@ export default function PageDashboardIndexFeature() {
   })
   const { mutateAsync: updateWorkdayAsync, isPending: isUpdatingWorkday } = useUpdateWorkday({
     onSuccess: () => {
+      setIsDocumentAlreadyGenerated(false)
       queryClient.invalidateQueries({
         queryKey: workdaysKeys.all,
         exact: false,
@@ -149,12 +154,18 @@ export default function PageDashboardIndexFeature() {
       })
     },
     onError: (error: Error) => {
-      toast.error(t("pages.dashboard.workday-update-error"))
-      console.error("Failed to update workday:", error)
+      handleErrorResponse(error).then((apiError) => {
+        if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
+          setIsDocumentAlreadyGenerated(true)
+        } else {
+          toast.error(t("pages.dashboard.workday-update-error"))
+        }
+      })
     },
   })
   const { mutateAsync: deleteWorkdayAsync, isPending: isDeletingWorkday } = useDeleteWorkday({
     onSuccess: () => {
+      setIsDocumentAlreadyGenerated(false)
       queryClient.invalidateQueries({
         queryKey: workdaysKeys.all,
         exact: false,
@@ -167,8 +178,13 @@ export default function PageDashboardIndexFeature() {
       })
     },
     onError: (error: Error) => {
-      toast.error(t("pages.dashboard.workday-deletion-error"))
-      console.error("Failed to delete workday:", error)
+      handleErrorResponse(error).then((apiError) => {
+        if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
+          setIsDocumentAlreadyGenerated(true)
+        } else {
+          toast.error(t("pages.dashboard.workday-deletion-error"))
+        }
+      })
     },
   })
   const { mutateAsync: restoreWorkdayAsync, isPending: isRestoringWorkday } = useRestoreWorkday({
@@ -327,6 +343,8 @@ export default function PageDashboardIndexFeature() {
       endWorkdayRestForm={endWorkdayRestForm}
       onEndWorkdayRestDialogClose={() => setIsEndWorkdayRestDialogOpen(false)}
       onConfirmEndWorkday={onConfirmEndWorkday}
+      showDocumentGeneratedError={isDocumentAlreadyGenerated}
+      onDismissDocumentGeneratedError={() => setIsDocumentAlreadyGenerated(false)}
     />
   )
 }

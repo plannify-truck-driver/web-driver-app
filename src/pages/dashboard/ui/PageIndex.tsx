@@ -14,7 +14,7 @@ import { WorkdayRecap } from "@/shared/components/WorkdayRecap"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
 import { Button } from "@/shared/components/ui/Button"
 import { Link } from "@tanstack/react-router"
-import { CoffeeIcon, X } from "lucide-react"
+import { CoffeeIcon, LockIcon, X } from "lucide-react"
 import { StatOvernightRest } from "@/shared/components/statistics/StatOvernightRest"
 
 interface PageDashboardIndexProps {
@@ -41,6 +41,8 @@ interface PageDashboardIndexProps {
   endWorkdayRestForm: UseFormReturn<z.infer<typeof endWorkdayRestSchema>>
   onEndWorkdayRestDialogClose: () => void
   onConfirmEndWorkday: (values: z.infer<typeof endWorkdayRestSchema>) => void
+  showDocumentGeneratedError: boolean
+  onDismissDocumentGeneratedError: () => void
 }
 
 export default function PageDashboardIndex({
@@ -67,6 +69,8 @@ export default function PageDashboardIndex({
   endWorkdayRestForm,
   onEndWorkdayRestDialogClose,
   onConfirmEndWorkday,
+  showDocumentGeneratedError,
+  onDismissDocumentGeneratedError,
 }: PageDashboardIndexProps) {
   const { t, i18n } = useTranslation()
 
@@ -143,6 +147,24 @@ export default function PageDashboardIndex({
         )
       ) : (
         <ActionButton isLoading={isCreatingWorkday} onClick={onStartWorkday} />
+      )}
+      {showDocumentGeneratedError && (
+        <div className="from-destructive/5 to-destructive/10 relative overflow-hidden rounded-xl border bg-gradient-to-br p-4">
+          <button
+            onClick={onDismissDocumentGeneratedError}
+            className="text-muted-foreground/60 hover:text-muted-foreground absolute top-3 right-3 cursor-pointer rounded p-0.5 transition-colors"
+          >
+            <X size={14} />
+          </button>
+          <div className="flex items-start gap-3 pr-4 sm:items-center">
+            <div className="bg-destructive/10 flex size-9 shrink-0 items-center justify-center rounded-full">
+              <LockIcon className="text-destructive size-4" />
+            </div>
+            <p className="text-sm leading-relaxed">
+              {t("pages.dashboard.workday-document-already-generated")}
+            </p>
+          </div>
+        </div>
       )}
       <div className="flex w-full flex-col gap-3">
         <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">

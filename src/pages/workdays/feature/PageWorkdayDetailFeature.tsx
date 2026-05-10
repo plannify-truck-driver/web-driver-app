@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,6 +17,7 @@ import { workdayDocumentsKeys } from "@/shared/queries/documents/document.querie
 import { editWorkdayFormSchema } from "@/shared/zod/edit-workday"
 import PageWorkdayDetail from "../ui/PageWorkdayDetail"
 import { useDocumentTitle } from "@/hooks/use-document-title"
+import { handleErrorResponse } from "@/shared/lib/error-response"
 
 export default function PageWorkdayDetailFeature() {
   const { t } = useTranslation()
@@ -26,6 +27,7 @@ export default function PageWorkdayDetailFeature() {
 
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const [isDocumentAlreadyGenerated, setIsDocumentAlreadyGenerated] = useState(false)
 
   const { data: workday, isLoading } = useGetWorkdayByDate({ date: workdayDate })
   const { data: restPeriods, isLoading: isLoadingRestPeriods } = useGetRestPeriods()
@@ -48,6 +50,7 @@ export default function PageWorkdayDetailFeature() {
 
   const { mutateAsync: updateWorkdayAsync, isPending: isUpdating } = useUpdateWorkday({
     onSuccess: () => {
+      setIsDocumentAlreadyGenerated(false)
       queryClient.invalidateQueries({
         queryKey: workdaysKeys.all,
         exact: false,
@@ -55,7 +58,15 @@ export default function PageWorkdayDetailFeature() {
       })
       toast.success(t("pages.workdays.detail.save-success"))
     },
-    onError: () => toast.error(t("pages.workdays.errors.workday-update-error")),
+    onError: (error: Error) => {
+      handleErrorResponse(error).then((apiError) => {
+        if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
+          setIsDocumentAlreadyGenerated(true)
+        } else {
+          toast.error(t("pages.workdays.errors.workday-update-error"))
+        }
+      })
+    },
   })
 
   const { mutateAsync: deleteWorkdayAsync, isPending: isDeleting } = useDeleteWorkday({
@@ -73,7 +84,15 @@ export default function PageWorkdayDetailFeature() {
       toast.success(t("pages.workdays.detail.delete-success"))
       navigate({ to: "/workdays" })
     },
-    onError: () => toast.error(t("pages.dashboard.workday-deletion-error")),
+    onError: (error: Error) => {
+      handleErrorResponse(error).then((apiError) => {
+        if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
+          setIsDocumentAlreadyGenerated(true)
+        } else {
+          toast.error(t("pages.workdays.errors.workday-update-error"))
+        }
+      })
+    },
   })
 
   const onSave = async (values: z.infer<typeof editWorkdayFormSchema>) => {
@@ -101,6 +120,8 @@ export default function PageWorkdayDetailFeature() {
       isDeleting={isDeleting}
       onSave={onSave}
       onDelete={onDelete}
+      showDocumentGeneratedError={isDocumentAlreadyGenerated}
+      onDismissDocumentGeneratedError={() => setIsDocumentAlreadyGenerated(false)}
     />
   )
 }

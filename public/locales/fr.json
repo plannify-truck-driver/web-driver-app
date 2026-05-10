@@ -63,6 +63,7 @@
       "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-deletion-error": "Une erreur est survenue lors de la suppression de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement.",
+      "workday-document-already-generated": "Votre relevé mensuel pour cette période a déjà été généré définitivement. Les journées de cette période ne peuvent plus être modifiées.",
       "workday-not-found-error": "Aucune journée de travail n'a été trouvée pour aujourd'hui.",
       "rest-periods-loading": "Les coupures sont encore en cours de chargement, veuillez patienter.",
       "workday-too-old-error": "Cette journée a débuté il y a plus de {{maxHours}}h et ne peut plus être terminée depuis l'application.",
@@ -97,11 +98,13 @@
           "title": "Supprimer cette journée ?",
           "description": "La journée sera déplacée dans la corbeille et définitivement supprimée après 30 jours.",
           "confirm": "Supprimer",
-          "cancel": "Annuler"
+          "cancel": "Annuler",
+          "okay": "D'accord"
         }
       },
       "errors": {
-        "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement."
+        "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
+        "workday-document-already-generated": "Votre relevé mensuel pour {{month}} {{year}} a déjà été généré définitivement. Les journées de cette période ne peuvent plus être modifiées."
       }
     },
     "documents": {
@@ -415,6 +418,7 @@
       },
       "no": "Non",
       "yes": "Oui",
+      "okay": "D'accord",
       "generic-error-undo": "Annuler"
     },
     "errors": {

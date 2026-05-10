@@ -6,7 +6,7 @@ import type { addWorkdayFormSchema } from "../zod/add-workday"
 import { Field, FieldGroup, FieldLabel } from "../components/ui/Field"
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/Popover"
 import { Calendar } from "../components/ui/Calendar"
-import { CalendarIcon, CheckIcon } from "lucide-react"
+import { CalendarIcon, CheckIcon, LockIcon } from "lucide-react"
 import { fr, enUS } from "react-day-picker/locale"
 import { getWeek } from "../functions/getWeek"
 import { cn } from "@/lib/utils"
@@ -82,9 +82,11 @@ export function AddWorkdayForm({
                         disabled={
                           loadings.isSubmitting ||
                           loadings.isUpdatingWorkday ||
-                          ["WORKDAY_ALREADY_EXISTS", "WORKDAY_GARBAGE_ALREADY_EXISTS"].includes(
-                            errorCode ?? ""
-                          )
+                          [
+                            "WORKDAY_ALREADY_EXISTS",
+                            "WORKDAY_GARBAGE_ALREADY_EXISTS",
+                            "WORKDAY_DOCUMENT_ALREADY_GENERATED",
+                          ].includes(errorCode ?? "")
                         }
                         onClick={(e) => {
                           e.preventDefault()
@@ -112,9 +114,11 @@ export function AddWorkdayForm({
                     disabled={
                       loadings.isSubmitting ||
                       loadings.isUpdatingWorkday ||
-                      ["WORKDAY_ALREADY_EXISTS", "WORKDAY_GARBAGE_ALREADY_EXISTS"].includes(
-                        errorCode ?? ""
-                      )
+                      [
+                        "WORKDAY_ALREADY_EXISTS",
+                        "WORKDAY_GARBAGE_ALREADY_EXISTS",
+                        "WORKDAY_DOCUMENT_ALREADY_GENERATED",
+                      ].includes(errorCode ?? "")
                     }
                   >
                     <CalendarIcon size={16} />
@@ -145,6 +149,18 @@ export function AddWorkdayForm({
             <p className="text-center">
               {t("forms.add-workday.errors.workday-garbage-already-exists")}
             </p>
+          ) : errorCode === "WORKDAY_DOCUMENT_ALREADY_GENERATED" ? (
+            <div className="from-destructive/5 to-destructive/10 relative flex items-start gap-3 overflow-hidden rounded-xl border bg-gradient-to-br p-4 pr-4 sm:items-center">
+              <div className="bg-destructive/10 flex size-9 shrink-0 items-center justify-center rounded-full">
+                <LockIcon className="text-destructive size-4" />
+              </div>
+              <p className="text-sm leading-relaxed">
+                {t("pages.workdays.errors.workday-document-already-generated", {
+                  month: dateValue.toLocaleDateString(i18n.language, { month: "long" }),
+                  year: dateValue.getFullYear(),
+                })}
+              </p>
+            </div>
           ) : (
             <p className="text-center">{t("forms.add-workday.errors.generic")}</p>
           )
@@ -187,10 +203,18 @@ export function AddWorkdayForm({
               {t("forms.add-workday.yes")}
             </Button>
           </div>
+        ) : errorCode === "WORKDAY_DOCUMENT_ALREADY_GENERATED" ? (
+          <div className="flex flex-row items-center justify-center gap-4">
+            <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
+              {t("forms.add-workday.okay")}
+            </Button>
+          </div>
         ) : (
-          <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
-            {t("forms.add-workday.generic-error-undo")}
-          </Button>
+          <div className="flex flex-row items-center justify-center gap-4">
+            <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
+              {t("forms.add-workday.generic-error-undo")}
+            </Button>
+          </div>
         )
       ) : (
         <Button

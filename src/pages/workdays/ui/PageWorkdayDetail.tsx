@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { type UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { ArrowLeftIcon, SaveIcon, Trash2Icon } from "lucide-react"
+import { ArrowLeftIcon, LockIcon, SaveIcon, Trash2Icon, X } from "lucide-react"
 import z from "zod"
 import { editWorkdayFormSchema } from "@/shared/zod/edit-workday"
 import { FieldGroup } from "@/shared/components/ui/Field"
@@ -30,6 +30,8 @@ interface PageWorkdayDetailProps {
   isDeleting: boolean
   onSave: (values: z.infer<typeof editWorkdayFormSchema>) => void
   onDelete: () => void
+  showDocumentGeneratedError: boolean
+  onDismissDocumentGeneratedError: () => void
 }
 
 export default function PageWorkdayDetail({
@@ -43,6 +45,8 @@ export default function PageWorkdayDetail({
   isDeleting,
   onSave,
   onDelete,
+  showDocumentGeneratedError,
+  onDismissDocumentGeneratedError,
 }: PageWorkdayDetailProps) {
   const { t, i18n } = useTranslation()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -62,7 +66,9 @@ export default function PageWorkdayDetail({
           <Skeleton className="h-8 w-48 rounded-md" />
         </div>
         <div className="flex flex-col gap-4">
-          {[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-14 w-full rounded-md" />)}
+          {[0, 1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-14 w-full rounded-md" />
+          ))}
         </div>
       </div>
     )
@@ -119,6 +125,29 @@ export default function PageWorkdayDetail({
             />
           </FieldGroup>
 
+          {showDocumentGeneratedError && !isDeleteDialogOpen && (
+            <div className="from-destructive/5 to-destructive/10 relative overflow-hidden rounded-xl border bg-gradient-to-br p-4">
+              <button
+                onClick={onDismissDocumentGeneratedError}
+                className="text-muted-foreground/60 hover:text-muted-foreground absolute top-3 right-3 cursor-pointer rounded p-0.5 transition-colors"
+              >
+                <X size={14} />
+              </button>
+              <div className="flex items-start gap-3 pr-4 sm:items-center">
+                <div className="bg-destructive/10 flex size-9 shrink-0 items-center justify-center rounded-full">
+                  <LockIcon className="text-destructive size-4" />
+                </div>
+                <p className="text-sm leading-relaxed">
+                  {t("pages.workdays.errors.workday-document-already-generated", {
+                    month: new Date(workdayDate + "T00:00:00").toLocaleDateString(i18n.language, {
+                      month: "long",
+                    }),
+                    year: new Date(workdayDate + "T00:00:00").getFullYear(),
+                  })}
+                </p>
+              </div>
+            </div>
+          )}
           <Button
             type="submit"
             disabled={!form.formState.isDirty || isUpdating}
@@ -131,25 +160,43 @@ export default function PageWorkdayDetail({
         </form>
       </div>
 
-      <Dialog open={isDeleteDialogOpen} onOpenChange={(open) => !open && setIsDeleteDialogOpen(false)}>
+      <Dialog
+        open={isDeleteDialogOpen}
+        onOpenChange={(open) => !open && setIsDeleteDialogOpen(false)}
+      >
         <DialogContent className="sm:max-w-[360px]">
           <DialogHeader>
             <DialogTitle>{t("pages.workdays.detail.delete-dialog.title")}</DialogTitle>
-            <DialogDescription>
-              {t("pages.workdays.detail.delete-dialog.description")}
-            </DialogDescription>
+            {showDocumentGeneratedError ? (
+              <DialogDescription>
+                {t("pages.workdays.errors.workday-document-already-generated", {
+                  month: new Date(workdayDate + "T00:00:00").toLocaleDateString(i18n.language, {
+                    month: "long",
+                  }),
+                  year: new Date(workdayDate + "T00:00:00").getFullYear(),
+                })}
+              </DialogDescription>
+            ) : (
+              <DialogDescription>
+                {t("pages.workdays.detail.delete-dialog.description")}
+              </DialogDescription>
+            )}
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
-              {t("pages.workdays.detail.delete-dialog.cancel")}
-            </Button>
-            <Button
-              variant="destructive"
-              isLoading={isDeleting}
-              onClick={onDelete}
-            >
-              {t("pages.workdays.detail.delete-dialog.confirm")}
-            </Button>
+            {showDocumentGeneratedError ? (
+              <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+                {t("pages.workdays.detail.delete-dialog.okay")}
+              </Button>
+            ) : (
+              <>
+                <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+                  {t("pages.workdays.detail.delete-dialog.cancel")}
+                </Button>
+                <Button variant="destructive" isLoading={isDeleting} onClick={onDelete}>
+                  {t("pages.workdays.detail.delete-dialog.confirm")}
+                </Button>
+              </>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -63,6 +63,7 @@
       "workday-update-error": "An error occurred while updating your workday. Please try again later.",
       "workday-deletion-error": "An error occurred while deleting your workday. Please try again later.",
       "workday-restoration-error": "An error occurred while restoring your workday. Please try again later.",
+      "workday-document-already-generated": "Your monthly statement for this period has already been permanently generated. Workdays for this period can no longer be modified.",
       "workday-not-found-error": "No workday found for today.",
       "rest-periods-loading": "Rest periods are still loading, please wait a moment.",
       "workday-too-old-error": "This workday started more than {{maxHours}}h ago and can no longer be ended from the app.",
@@ -97,11 +98,13 @@
           "title": "Delete this workday?",
           "description": "The workday will be moved to the trash and permanently deleted after 30 days.",
           "confirm": "Delete",
-          "cancel": "Cancel"
+          "cancel": "Cancel",
+          "okay": "Okay"
         }
       },
       "errors": {
-        "workday-update-error": "An error occurred while updating your workday. Please try again later."
+        "workday-update-error": "An error occurred while updating your workday. Please try again later.",
+        "workday-document-already-generated": "Your monthly statement for {{month}} {{year}} has already been permanently generated. Workdays for this period can no longer be modified."
       }
     },
     "documents": {
@@ -415,6 +418,7 @@
       },
       "no": "No",
       "yes": "Yes",
+      "okay": "Okay",
       "generic-error-undo": "Annuler"
     },
     "errors": {
