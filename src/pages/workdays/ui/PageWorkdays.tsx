@@ -191,7 +191,7 @@ export default function PageWorkdays({
             </div>
             <Button variant="secondary" size="sm" className="w-fit shrink-0" asChild>
               <Link
-                to="/documents/"
+                to="/documents"
                 search={{
                   year: selectedMonth.getFullYear(),
                   month: selectedMonth.getMonth() + 1,
