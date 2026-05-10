@@ -21,6 +21,8 @@ interface PageDocumentsProps {
   fetchDocumentsByYear: (year: number) => void
   onGenerateDocument: (month: number, year: number) => void
   generatingDocument: { month: number; year: number } | undefined
+  highlightYear?: number
+  highlightMonth?: number
 }
 
 export default function PageDocuments({
@@ -29,6 +31,8 @@ export default function PageDocuments({
   fetchDocumentsByYear,
   onGenerateDocument,
   generatingDocument,
+  highlightYear,
+  highlightMonth,
 }: PageDocumentsProps) {
   const { t } = useTranslation()
   const [isWhyDialogOpen, setIsWhyDialogOpen] = useState(false)
@@ -153,6 +157,8 @@ export default function PageDocuments({
                 fetchDocumentsByYear={fetchDocumentsByYear}
                 onGenerateDocument={onGenerateDocument}
                 generatingDocument={generatingDocument}
+                highlightYear={highlightYear}
+                highlightMonth={highlightMonth}
               />
             ))
         )}

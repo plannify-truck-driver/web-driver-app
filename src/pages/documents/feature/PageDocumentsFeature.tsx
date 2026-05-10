@@ -10,10 +10,12 @@ import { useMemo, useState } from "react"
 import type { WorkdayDocument } from "@/shared/models/workday"
 import { toast } from "sonner"
 import { PdfPreviewSheet } from "@/shared/components/PdfPreviewSheet"
+import { useSearch } from "@tanstack/react-router"
 
 export default function PageDocumentsFeature() {
   const { t } = useTranslation()
   const currentYear = new Date().getFullYear()
+  const { year: highlightYear, month: highlightMonth } = useSearch({ from: "/documents/" })
 
   useDocumentTitle(t("pages.documents.page-title"))
 
@@ -36,7 +38,10 @@ export default function PageDocumentsFeature() {
     },
   })
 
-  const [fetchedYears, setFetchedYears] = useState<number[]>([currentYear])
+  const [fetchedYears, setFetchedYears] = useState<number[]>(() => {
+    if (highlightYear && highlightYear !== currentYear) return [currentYear, highlightYear]
+    return [currentYear]
+  })
   const documents = useGetWorkdayDocumentsByYears({ years: fetchedYears })
 
   const workdayDocuments = useMemo<Record<number, WorkdayDocument[] | undefined>>(() => {
@@ -71,6 +76,8 @@ export default function PageDocumentsFeature() {
         fetchDocumentsByYear={fetchDocumentsByYear}
         onGenerateDocument={generateDocument}
         generatingDocument={isGenerating ? generatingDocument : undefined}
+        highlightYear={highlightYear}
+        highlightMonth={highlightMonth}
       />
       <PdfPreviewSheet
         blob={previewBlob}

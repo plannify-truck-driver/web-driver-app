@@ -4,19 +4,29 @@ import { Eye, FileText, Loader2 } from "lucide-react"
 import { upperCaseFirstLetter } from "../functions/upperCaseFirstLetter"
 import { Skeleton } from "./ui/Skeleton"
 import { GeneratedBadge } from "./GeneratedBadge"
+import { useEffect, useRef } from "react"
 
 export interface WorkdayDocumentItemProps {
   workdayDocument?: WorkdayDocument
   onGenerateDocument: (month: number, year: number) => void
   isGenerating?: boolean
+  isHighlighted?: boolean
 }
 
 export function WorkdayDocumentItem({
   workdayDocument,
   onGenerateDocument,
   isGenerating = false,
+  isHighlighted = false,
 }: WorkdayDocumentItemProps) {
   const { t, i18n } = useTranslation()
+  const itemRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (isHighlighted && itemRef.current) {
+      itemRef.current.scrollIntoView({ behavior: "smooth", block: "center" })
+    }
+  }, [isHighlighted])
 
   const documentDate = new Date(workdayDocument?.year || 0, (workdayDocument?.month || 1) - 1)
   const documentLabel = upperCaseFirstLetter(
@@ -24,7 +34,10 @@ export function WorkdayDocumentItem({
   )
 
   return (
-    <div className="bg-sidebar border-border flex flex-row items-center justify-between gap-3 rounded-lg border px-4 py-3">
+    <div
+      ref={itemRef}
+      className={`flex flex-row items-center justify-between gap-3 rounded-lg border px-4 py-3 transition-colors ${isHighlighted ? "bg-amber-500/10 border-amber-500/50 ring-2 ring-amber-500/30" : "bg-sidebar border-border"}`}
+    >
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#EF4444]/10">
         <FileText className="text-[#EF4444]" />
       </div>

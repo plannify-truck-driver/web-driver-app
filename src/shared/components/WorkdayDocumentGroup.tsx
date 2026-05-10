@@ -11,6 +11,8 @@ export interface WorkdayDocumentGroupProps {
   fetchDocumentsByYear: (year: number) => void
   onGenerateDocument: (month: number, year: number) => void
   generatingDocument: { month: number; year: number } | undefined
+  highlightYear?: number
+  highlightMonth?: number
 }
 
 export function WorkdayDocumentGroup({
@@ -19,11 +21,15 @@ export function WorkdayDocumentGroup({
   fetchDocumentsByYear,
   onGenerateDocument,
   generatingDocument,
+  highlightYear,
+  highlightMonth,
 }: WorkdayDocumentGroupProps) {
   const { t } = useTranslation()
   const today = new Date()
 
-  const [isOpen, setIsOpen] = useState<boolean>(today.getFullYear() === year)
+  const [isOpen, setIsOpen] = useState<boolean>(
+    highlightYear ? highlightYear === year : today.getFullYear() === year
+  )
 
   const toggleOpen = () => {
     if (!isOpen) {
@@ -70,6 +76,7 @@ export function WorkdayDocumentGroup({
                     generatingDocument?.month === workdayDocument.month &&
                     generatingDocument?.year === workdayDocument.year
                   }
+                  isHighlighted={highlightYear === year && highlightMonth === workdayDocument.month}
                 />
               ))}
             </div>

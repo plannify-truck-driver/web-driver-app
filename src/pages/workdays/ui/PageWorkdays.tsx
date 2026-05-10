@@ -23,6 +23,7 @@ import {
   EllipsisIcon,
   FileChartColumnIncreasingIcon,
   FileCodeIcon,
+  LockIcon,
 } from "lucide-react"
 import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -30,6 +31,7 @@ import type z from "zod"
 import type { PageWorkdaysFeatureLoadings } from "../feature/PageWorkdaysFeature"
 import { ImportWorkdaysFromFileDialog } from "@/shared/components/ImportWorkdaysFromFileDialog"
 import { useState } from "react"
+import { Link } from "@tanstack/react-router"
 
 interface PageWorkdaysProps {
   workdays: Workday[]
@@ -51,6 +53,7 @@ interface PageWorkdaysProps {
   onReplaceExistingWorkday: () => void
   onRestoreGarbageWorkday: () => void
   undoAddWorkdayFormErrorCode: () => void
+  isMonthDocumentGenerated: boolean
 }
 
 export default function PageWorkdays({
@@ -73,6 +76,7 @@ export default function PageWorkdays({
   onReplaceExistingWorkday,
   onRestoreGarbageWorkday,
   undoAddWorkdayFormErrorCode,
+  isMonthDocumentGenerated,
 }: PageWorkdaysProps) {
   const { t, i18n } = useTranslation()
   const [importFileType, setImportFileType] = useState<"csv" | "xlsx">("xlsx")
@@ -87,50 +91,54 @@ export default function PageWorkdays({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
         <div className="flex flex-row items-center justify-between gap-1">
           <h1 className="text-2xl font-semibold">{t("pages.workdays.page-title")}</h1>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="text-muted-foreground flex h-10 w-10 items-center justify-center rounded-md sm:hidden"
-              >
-                <EllipsisIcon size={16} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-auto max-w-70 min-w-50">
-              <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => openImportDialog("xlsx")}>
-                  <FileChartColumnIncreasingIcon />
-                  {t("pages.workdays.buttons.import-from-file")}
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <div className="flex flex-col-reverse items-end gap-4 sm:flex-row sm:items-center">
-          <ButtonGroup className="hidden sm:flex">
-            <Button variant="default" onClick={() => setIsAddWorkdayOpen(true)}>
-              {t("pages.workdays.buttons.add-workday")}
-            </Button>
+          {!isMonthDocumentGenerated && (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild className="h-auto">
-                <Button variant="default">
-                  <ChevronDownIcon size={16} />
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="text-muted-foreground flex h-10 w-10 items-center justify-center rounded-md sm:hidden"
+                >
+                  <EllipsisIcon size={16} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-auto max-w-70 min-w-50">
                 <DropdownMenuGroup>
                   <DropdownMenuItem onClick={() => openImportDialog("xlsx")}>
                     <FileChartColumnIncreasingIcon />
-                    {t("pages.workdays.buttons.use-excel-file")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => openImportDialog("csv")}>
-                    <FileCodeIcon />
-                    {t("pages.workdays.buttons.use-csv-file")}
+                    {t("pages.workdays.buttons.import-from-file")}
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-          </ButtonGroup>
+          )}
+        </div>
+        <div className="flex flex-col-reverse items-end gap-4 sm:flex-row sm:items-center">
+          {!isMonthDocumentGenerated && (
+            <ButtonGroup className="hidden sm:flex">
+              <Button variant="default" onClick={() => setIsAddWorkdayOpen(true)}>
+                {t("pages.workdays.buttons.add-workday")}
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild className="h-auto">
+                  <Button variant="default">
+                    <ChevronDownIcon size={16} />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-auto max-w-70 min-w-50">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={() => openImportDialog("xlsx")}>
+                      <FileChartColumnIncreasingIcon />
+                      {t("pages.workdays.buttons.use-excel-file")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => openImportDialog("csv")}>
+                      <FileCodeIcon />
+                      {t("pages.workdays.buttons.use-csv-file")}
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </ButtonGroup>
+          )}
           <PeriodSelector
             label={upperCaseFirstLetter(
               selectedMonth.toLocaleDateString(i18n.language, { month: "long", year: "numeric" })
@@ -164,12 +172,46 @@ export default function PageWorkdays({
           />
         </div>
       </div>
-      <WorkdayTable workdays={workdays} periodType="month" />
-      <AddWorkdayButton
-        isFirstWorkday={workdays.length === 0}
-        onClick={() => setIsAddWorkdayOpen(true)}
-        className="block sm:hidden"
-      />
+      {isMonthDocumentGenerated ? (
+        <div className="from-destructive/5 to-destructive/10 overflow-hidden rounded-xl border bg-gradient-to-br p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+            <div className="bg-destructive/10 flex size-11 shrink-0 items-center justify-center rounded-full">
+              <LockIcon className="text-destructive size-5" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold">{t("pages.workdays.period-locked-title")}</p>
+              <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
+                {t("pages.workdays.period-locked-description", {
+                  period: selectedMonth.toLocaleDateString(i18n.language, {
+                    month: "long",
+                    year: "numeric",
+                  }),
+                })}
+              </p>
+            </div>
+            <Button variant="secondary" size="sm" className="w-fit shrink-0" asChild>
+              <Link
+                to="/documents/"
+                search={{
+                  year: selectedMonth.getFullYear(),
+                  month: selectedMonth.getMonth() + 1,
+                }}
+              >
+                {t("pages.workdays.period-locked-action")}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <WorkdayTable workdays={workdays} periodType="month" />
+          <AddWorkdayButton
+            isFirstWorkday={workdays.length === 0}
+            onClick={() => setIsAddWorkdayOpen(true)}
+            className="block sm:hidden"
+          />
+        </>
+      )}
       <ImportWorkdaysFromFileDialog
         isOpen={isImportingWorkdaysFromFileOpen}
         setIsOpen={setIsImportingWorkdaysFromFileOpen}

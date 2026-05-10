@@ -19,7 +19,10 @@ import { useGetRestPeriods } from "@/shared/queries/rest-period/rest-period.quer
 import { queryClient } from "@/lib/queryClient"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { toast } from "sonner"
-import { workdayDocumentsKeys } from "@/shared/queries/documents/document.queries"
+import {
+  useGetWorkdayDocumentsByYears,
+  workdayDocumentsKeys,
+} from "@/shared/queries/documents/document.queries"
 
 export interface PageWorkdaysFeatureLoadings {
   isGetMonthWorkdaysLoading: boolean
@@ -44,6 +47,18 @@ export default function PageWorkdaysFeature() {
     month: (selectedMonth.getMonth() + 1).toString().padStart(2, "0"),
     year: selectedMonth.getFullYear().toString(),
   })
+
+  const [yearDocumentsResult] = useGetWorkdayDocumentsByYears({
+    years: [selectedMonth.getFullYear()],
+  })
+  const isMonthDocumentGenerated = useMemo(() => {
+    const month = selectedMonth.getMonth() + 1
+    return (
+      yearDocumentsResult.data?.some((doc) => doc.month === month && doc.generated_at !== null) ??
+      false
+    )
+  }, [yearDocumentsResult.data, selectedMonth])
+
   const { mutateAsync: createWorkdayAsync, isPending: isCreatingWorkday } = useCreateWorkday({
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -244,6 +259,7 @@ export default function PageWorkdaysFeature() {
       onReplaceExistingWorkday={onReplaceExistingWorkday}
       onRestoreGarbageWorkday={onRestoreGarbageWorkday}
       undoAddWorkdayFormErrorCode={() => setAddWorkdayFormErrorCode(null)}
+      isMonthDocumentGenerated={isMonthDocumentGenerated}
     />
   )
 }

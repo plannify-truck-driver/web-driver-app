@@ -78,6 +78,9 @@
       "current-month": "Current month",
       "previous-month": "Previous month",
       "other-month": "Other month",
+      "period-locked-title": "Monthly statement locked",
+      "period-locked-description": "The {{period}} statement has been permanently generated. Workdays for this period can no longer be modified.",
+      "period-locked-action": "View document",
       "buttons": {
         "add-workday": "Add a workday",
         "use-excel-file": "Import workdays from an Excel file",
