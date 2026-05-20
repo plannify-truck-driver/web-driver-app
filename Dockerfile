@@ -8,7 +8,7 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S reactuser -u 1001
 
 # Install pnpm globally
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.33.2
 
 WORKDIR /app
 
