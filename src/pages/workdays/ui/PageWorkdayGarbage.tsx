@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { Trash2Icon, RotateCcwIcon, LockIcon, X, ArrowLeftIcon } from "lucide-react"
+import { useConfig } from "@/shared/queries/config/config.queries"
 import { Button } from "@/shared/components/ui/Button"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
 import type { WorkdayGarbage } from "@/shared/models/workday"
@@ -30,6 +31,7 @@ export default function PageWorkdayGarbage({
   onDismissDocumentGeneratedError,
 }: PageWorkdayGarbageProps) {
   const { t, i18n } = useTranslation()
+  const { data: config } = useConfig()
 
   return (
     <div className="flex h-full flex-1 flex-col gap-5 sm:gap-6">
@@ -44,7 +46,11 @@ export default function PageWorkdayGarbage({
           </button>
           <h1 className="text-2xl font-semibold">{t("pages.workdays.garbage.page-title")}</h1>
         </div>
-        <p className="text-muted-foreground text-sm">{t("pages.workdays.garbage.description")}</p>
+        <p className="text-muted-foreground text-sm">
+          {t("pages.workdays.garbage.description", {
+            retentionDays: config ? config.workday_garbage_retention_days : 30,
+          })}
+        </p>
       </div>
 
       {documentGeneratedErrorDate && (

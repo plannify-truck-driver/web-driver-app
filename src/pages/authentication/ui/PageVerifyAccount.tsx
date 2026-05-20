@@ -1,5 +1,6 @@
 import { useAuth } from "@/app/providers/AuthProvider"
 import { Button } from "@/shared/components/ui/Button"
+import { useConfig } from "@/shared/queries/config/config.queries"
 import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
@@ -7,6 +8,7 @@ export default function PageVerifyAccount() {
   const { driver, logout } = useAuth()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { data: config } = useConfig()
 
   return (
     <div className="flex flex-col gap-4">
@@ -22,7 +24,9 @@ export default function PageVerifyAccount() {
         <Button asChild variant="outline">
           <a
             href={
-              "mailto:contact@plannify.be?subject=" +
+              "mailto:" +
+              (config ? config.support_email : "contact@plannify.be") +
+              "?subject=" +
               encodeURIComponent(t("pages.authentication.verify-account.email-subject")) +
               "&body=" +
               encodeURIComponent(t("pages.authentication.verify-account.email-body"))

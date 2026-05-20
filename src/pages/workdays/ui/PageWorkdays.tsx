@@ -30,6 +30,7 @@ import { useTranslation } from "react-i18next"
 import type z from "zod"
 import type { PageWorkdaysFeatureLoadings } from "../feature/PageWorkdaysFeature"
 import { ImportWorkdaysFromFileDialog } from "@/shared/components/ImportWorkdaysFromFileDialog"
+import { useConfig } from "@/shared/queries/config/config.queries"
 import { useState } from "react"
 import { Link, useNavigate } from "@tanstack/react-router"
 
@@ -79,6 +80,7 @@ export default function PageWorkdays({
   isMonthDocumentGenerated,
 }: PageWorkdaysProps) {
   const { t, i18n } = useTranslation()
+  const { data: config } = useConfig()
   const [importFileType, setImportFileType] = useState<"csv" | "xlsx">("xlsx")
 
   const navigate = useNavigate()
@@ -180,7 +182,9 @@ export default function PageWorkdays({
             <Button asChild variant="outline">
               <a
                 href={
-                  "mailto:contact@plannify.be?subject=" +
+                  "mailto:" +
+                  (config ? config.support_email : "contact@plannify.be") +
+                  "?subject=" +
                   encodeURIComponent(t("pages.workdays.contact-support-subject")) +
                   "&body=" +
                   encodeURIComponent(

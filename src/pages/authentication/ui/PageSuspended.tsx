@@ -1,4 +1,5 @@
 import type { SuspendedContent } from "@/shared/queries/auth/auth.types"
+import { useConfig } from "@/shared/queries/config/config.queries"
 import { useTranslation } from "react-i18next"
 
 export interface PageSuspendedProps {
@@ -7,6 +8,7 @@ export interface PageSuspendedProps {
 
 export default function PageSuspended({ state }: PageSuspendedProps) {
   const { t } = useTranslation()
+  const { data: config } = useConfig()
 
   const from: Date = new Date(state.start_at)
   const to: Date | null = state.end_at ? new Date(state.end_at) : null
@@ -51,14 +53,16 @@ export default function PageSuspended({ state }: PageSuspendedProps) {
           {t("pages.authentication.suspended.contact-support")}{" "}
           <a
             href={
-              "mailto:contact@plannify.be?subject=" +
+              "mailto:" +
+              (config ? config.support_email : "contact@plannify.be") +
+              "?subject=" +
               encodeURIComponent(t("pages.authentication.suspended.email-subject")) +
               "&body=" +
               encodeURIComponent(t("pages.authentication.suspended.email-body"))
             }
             className="text-primary underline"
           >
-            contact@plannify.be
+            {config ? config.support_email : "contact@plannify.be"}
           </a>
         </p>
       </div>

@@ -102,7 +102,7 @@
         "delete-success": "Journée supprimée.",
         "delete-dialog": {
           "title": "Supprimer cette journée ?",
-          "description": "La journée sera déplacée dans la corbeille et définitivement supprimée après 30 jours.",
+          "description": "La journée sera déplacée dans la corbeille et définitivement supprimée après {{retentionDays}} jours.",
           "confirm": "Supprimer",
           "cancel": "Annuler",
           "okay": "D'accord"
@@ -114,7 +114,7 @@
       },
       "garbage": {
         "page-title": "Corbeille",
-        "description": "Les journées supprimées sont automatiquement effacées après 30 jours.",
+        "description": "Les journées supprimées sont automatiquement effacées après {{retentionDays}} jours.",
         "empty-title": "Corbeille vide",
         "empty-description": "Aucune journée supprimée pour le moment.",
         "permanent-deletion": "Suppression définitive le {{date}}",
