@@ -111,6 +111,24 @@
       "errors": {
         "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
         "workday-document-already-generated": "Votre relevé mensuel pour {{month}} {{year}} a déjà été généré définitivement. Les journées de cette période ne peuvent plus être modifiées."
+      },
+      "garbage": {
+        "page-title": "Corbeille",
+        "description": "Les journées supprimées sont automatiquement effacées après 30 jours.",
+        "empty-title": "Corbeille vide",
+        "empty-description": "Aucune journée supprimée pour le moment.",
+        "permanent-deletion": "Suppression définitive le {{date}}",
+        "days-remaining_one": "{{count}} jour restant",
+        "days-remaining_other": "{{count}} jours restants",
+        "restore": "Restaurer",
+        "restore-success": "La journée a été restaurée avec succès !",
+        "restore-error": "Une erreur est survenue lors de la restauration. Veuillez réessayer.",
+        "table": {
+          "date": "Date",
+          "deleted-on": "Supprimée le",
+          "permanent-deletion": "Suppression définitive",
+          "remaining": "Jours restants"
+        }
       }
     },
     "documents": {

@@ -20,10 +20,10 @@ import type { Workday } from "@/shared/models/workday"
 import type { addWorkdayFormSchema } from "@/shared/zod/add-workday"
 import {
   ChevronDownIcon,
-  EllipsisIcon,
   FileChartColumnIncreasingIcon,
   FileCodeIcon,
   LockIcon,
+  Trash2Icon,
 } from "lucide-react"
 import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -31,7 +31,7 @@ import type z from "zod"
 import type { PageWorkdaysFeatureLoadings } from "../feature/PageWorkdaysFeature"
 import { ImportWorkdaysFromFileDialog } from "@/shared/components/ImportWorkdaysFromFileDialog"
 import { useState } from "react"
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 
 interface PageWorkdaysProps {
   workdays: Workday[]
@@ -81,6 +81,8 @@ export default function PageWorkdays({
   const { t, i18n } = useTranslation()
   const [importFileType, setImportFileType] = useState<"csv" | "xlsx">("xlsx")
 
+  const navigate = useNavigate()
+
   const openImportDialog = (type: "csv" | "xlsx") => {
     setImportFileType(type)
     setIsImportingWorkdaysFromFileOpen(true)
@@ -92,52 +94,50 @@ export default function PageWorkdays({
         <div className="flex flex-row items-center justify-between gap-1">
           <h1 className="text-2xl font-semibold">{t("pages.workdays.page-title")}</h1>
           {!isMonthDocumentGenerated && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="text-muted-foreground flex h-10 w-10 items-center justify-center rounded-md sm:hidden"
-                >
-                  <EllipsisIcon size={16} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-auto max-w-70 min-w-50">
-                <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => openImportDialog("xlsx")}>
-                    <FileChartColumnIncreasingIcon />
-                    {t("pages.workdays.buttons.import-from-file")}
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button
+              variant="outline"
+              className="text-muted-foreground flex h-10 w-10 items-center justify-center rounded-md sm:hidden"
+              onClick={() => navigate({ to: "/workdays/garbage" })}
+            >
+              <Trash2Icon size={16} />
+            </Button>
           )}
         </div>
         <div className="flex flex-col-reverse items-end gap-4 sm:flex-row sm:items-center">
           {!isMonthDocumentGenerated && (
-            <ButtonGroup className="hidden sm:flex">
-              <Button variant="default" onClick={() => setIsAddWorkdayOpen(true)}>
-                {t("pages.workdays.buttons.add-workday")}
+            <>
+              <ButtonGroup className="hidden sm:flex">
+                <Button variant="default" onClick={() => setIsAddWorkdayOpen(true)}>
+                  {t("pages.workdays.buttons.add-workday")}
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild className="h-auto">
+                    <Button variant="default">
+                      <ChevronDownIcon size={16} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-auto max-w-70 min-w-50">
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem onClick={() => openImportDialog("xlsx")}>
+                        <FileChartColumnIncreasingIcon />
+                        {t("pages.workdays.buttons.use-excel-file")}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openImportDialog("csv")}>
+                        <FileCodeIcon />
+                        {t("pages.workdays.buttons.use-csv-file")}
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </ButtonGroup>
+              <Button
+                variant="outline"
+                className="text-muted-foreground flex hidden h-10 w-10 items-center justify-center rounded-md sm:flex"
+                onClick={() => navigate({ to: "/workdays/garbage" })}
+              >
+                <Trash2Icon size={16} />
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild className="h-auto">
-                  <Button variant="default">
-                    <ChevronDownIcon size={16} />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-auto max-w-70 min-w-50">
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => openImportDialog("xlsx")}>
-                      <FileChartColumnIncreasingIcon />
-                      {t("pages.workdays.buttons.use-excel-file")}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => openImportDialog("csv")}>
-                      <FileCodeIcon />
-                      {t("pages.workdays.buttons.use-csv-file")}
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </ButtonGroup>
+            </>
           )}
           <PeriodSelector
             label={upperCaseFirstLetter(

@@ -6,6 +6,12 @@ export interface Workday {
   overnight_rest: boolean
 }
 
+export interface WorkdayGarbage {
+  workday_date: string
+  scheduled_deletion_date: string
+  created_at: string
+}
+
 export interface WorkdayDocument {
   month: number
   year: number

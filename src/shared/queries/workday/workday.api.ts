@@ -10,7 +10,7 @@ import type {
   RestoreWorkdayRequest,
   UpdateWorkdayRequest,
 } from "./workday.types"
-import type { Workday } from "@/shared/models/workday"
+import type { Workday, WorkdayGarbage } from "@/shared/models/workday"
 
 export const getWorkdaysByPeriod = (
   body: GetWorkdaysByPeriodRequest
@@ -49,6 +49,10 @@ export const updateWorkday = (body: UpdateWorkdayRequest): Promise<Workday> => {
 
 export const deleteWorkday = (body: DeleteWorkdayRequest): Promise<void> => {
   return api.delete(`workdays/${body.date}`).json()
+}
+
+export const getWorkdayGarbage = (): Promise<WorkdayGarbage[]> => {
+  return api.get("workdays/garbage").json()
 }
 
 export const restoreWorkday = (body: RestoreWorkdayRequest): Promise<void> => {

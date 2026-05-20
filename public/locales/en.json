@@ -111,6 +111,24 @@
       "errors": {
         "workday-update-error": "An error occurred while updating your workday. Please try again later.",
         "workday-document-already-generated": "Your monthly statement for {{month}} {{year}} has already been permanently generated. Workdays for this period can no longer be modified."
+      },
+      "garbage": {
+        "page-title": "Trash",
+        "description": "Deleted workdays are automatically removed after 30 days.",
+        "empty-title": "Trash is empty",
+        "empty-description": "No deleted workdays at the moment.",
+        "permanent-deletion": "Permanent deletion on {{date}}",
+        "days-remaining_one": "{{count}} day left",
+        "days-remaining_other": "{{count}} days left",
+        "restore": "Restore",
+        "restore-success": "Workday restored successfully!",
+        "restore-error": "An error occurred while restoring. Please try again.",
+        "table": {
+          "date": "Date",
+          "deleted-on": "Deleted on",
+          "permanent-deletion": "Permanent deletion",
+          "remaining": "Days left"
+        }
       }
     },
     "documents": {
