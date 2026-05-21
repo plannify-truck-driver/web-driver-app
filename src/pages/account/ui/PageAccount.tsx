@@ -203,9 +203,7 @@ export default function PageAccount({
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <SparklesIcon className="text-primary size-4" />
-              <h3 className="text-sm font-semibold">
-                {t("pages.account.updates.section-title")}
-              </h3>
+              <h3 className="text-sm font-semibold">{t("pages.account.updates.section-title")}</h3>
             </div>
             <button
               onClick={() => window.location.reload()}
@@ -238,7 +236,9 @@ export default function PageAccount({
                     </span>
                   )}
                 </div>
-                <p className="text-muted-foreground text-sm leading-relaxed">{update.description}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {update.description}
+                </p>
               </div>
             ))}
           </div>

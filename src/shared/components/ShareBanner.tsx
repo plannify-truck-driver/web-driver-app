@@ -94,7 +94,7 @@ export function ShareBanner({ onDismiss, variant = "card" }: ShareBannerProps) {
           <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-violet-500/15">
             <Share2 className="size-5 text-violet-500" />
           </div>
-          <p className="text-sm font-bold leading-tight">{t("components.share-banner.title")}</p>
+          <p className="text-sm leading-tight font-bold">{t("components.share-banner.title")}</p>
         </div>
         <ul className="flex flex-col gap-1.5">
           <li className="flex items-center gap-2">
