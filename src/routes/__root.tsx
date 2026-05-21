@@ -22,6 +22,14 @@ function RootComponent() {
     }
 
     if (
+      location.pathname.startsWith("/authentication/verify-account") &&
+      !accessToken
+    ) {
+      navigate({ to: "/authentication/login" })
+      return
+    }
+
+    if (
       driver &&
       !driver.verified &&
       !location.pathname.startsWith("/authentication/verify-account")

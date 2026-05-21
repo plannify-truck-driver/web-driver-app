@@ -12,6 +12,12 @@ import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useAuth } from "@/app/providers/AuthProvider"
 import { useNavigate } from "@tanstack/react-router"
 
+const STEP_FIELDS: Record<number, (keyof z.infer<typeof registrationFormSchema>)[]> = {
+  1: ["firstname", "lastname"],
+  2: ["gender"],
+  3: ["email"],
+}
+
 export default function PageRegistrationFeature() {
   const { t, i18n } = useTranslation()
   const { accessToken, login } = useAuth()
@@ -19,6 +25,9 @@ export default function PageRegistrationFeature() {
 
   const { mutateAsync, data, error, isPending } = useRegistrationMutation()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1)
+  const [workdayRowType, setWorkdayRowType] = useState<1 | 2 | 3>(1)
+  const [accountCreated, setAccountCreated] = useState(false)
 
   useDocumentTitle(t("pages.authentication.registration.page-title"))
 
@@ -33,6 +42,20 @@ export default function PageRegistrationFeature() {
       confirmPassword: "",
     },
   })
+
+  async function onNextStep() {
+    const fields = STEP_FIELDS[step]
+    if (fields) {
+      const valid = await form.trigger(fields)
+      if (!valid) return
+    }
+    setStep((s) => (s + 1) as 1 | 2 | 3 | 4 | 5)
+    form.clearErrors()
+  }
+
+  function onPrevStep() {
+    setStep((s) => (s - 1) as 1 | 2 | 3 | 4 | 5)
+  }
 
   function onSubmit(data: z.infer<typeof registrationFormSchema>) {
     if (!isPasswordStrong(data.password)) {
@@ -52,6 +75,7 @@ export default function PageRegistrationFeature() {
     }
 
     setErrorMessage(null)
+    setStep(5)
 
     mutateAsync({
       firstname: data.firstname,
@@ -65,27 +89,34 @@ export default function PageRegistrationFeature() {
 
   useEffect(() => {
     if (data && !accessToken) {
-      login(data.access_token)
-      navigate({ to: "/dashboard", replace: true })
+      setAccountCreated(true)
     } else if (error) {
       handleErrorResponse(error).then((apiError) => {
         if (apiError) {
           switch (apiError.error_code) {
             case "DRIVER_ALREADY_EXISTS":
-              form.setError("email", {
-                type: "manual",
-              })
+              form.setError("email", { type: "manual" })
               setErrorMessage(t("forms.registration.errors.driver-already-exists"))
+              setStep(3)
               break
             default:
               setErrorMessage(t("forms.errors.unexpected-error"))
+              setStep(1)
           }
           return
         }
+        setStep(1)
         console.error("Registration error:", error)
       })
     }
-  }, [data, error, t, form, accessToken, login, navigate])
+  }, [data, error, t, form, accessToken])
+
+  function onComplete() {
+    if (!data) return
+    localStorage.setItem("driver-preferences", String(workdayRowType))
+    login(data.access_token)
+    navigate({ to: "/dashboard", replace: true })
+  }
 
   return (
     <PageRegistration
@@ -93,6 +124,13 @@ export default function PageRegistrationFeature() {
       form={form}
       onSubmit={onSubmit}
       loading={isPending}
+      step={step}
+      onNextStep={onNextStep}
+      onPrevStep={onPrevStep}
+      workdayRowType={workdayRowType}
+      onWorkdayRowTypeChange={setWorkdayRowType}
+      accountCreated={accountCreated}
+      onComplete={onComplete}
     />
   )
 }

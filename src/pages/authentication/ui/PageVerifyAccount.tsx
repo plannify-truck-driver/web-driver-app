@@ -1,13 +1,11 @@
 import { useAuth } from "@/app/providers/AuthProvider"
 import { Button } from "@/shared/components/ui/Button"
 import { useConfig } from "@/shared/queries/config/config.queries"
-import { useNavigate } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
 export default function PageVerifyAccount() {
-  const { driver, logout } = useAuth()
+  const { driver, logout, isDeletingRefreshToken } = useAuth()
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const { data: config } = useConfig()
 
   return (
@@ -36,10 +34,10 @@ export default function PageVerifyAccount() {
           </a>
         </Button>
         <Button
+          isLoading={isDeletingRefreshToken}
           onClick={(e) => {
             e.preventDefault()
             logout()
-            navigate({ to: "/authentication/login" })
           }}
         >
           {t("pages.authentication.verify-account.logout-button")}

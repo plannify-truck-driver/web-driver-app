@@ -11,7 +11,26 @@
         "page-title": "Registration",
         "description": "Create an account to get started",
         "has-account": "Already have an account?",
-        "has-account-link": "Log in"
+        "has-account-link": "Log in",
+        "step-name": {
+          "title": "Your information"
+        },
+        "step-gender": {
+          "title": "Your gender"
+        },
+        "step-email": {
+          "title": "Your email address"
+        },
+        "step-password": {
+          "title": "Secure your account"
+        },
+        "workday-preferences": {
+          "title": "Your workday display",
+          "description": "Choose how your workdays appear in the app.",
+          "creating-account": "Creating your account...",
+          "account-created": "Account created!",
+          "hint": "You can change this setting at any time in your preferences."
+        }
       },
       "suspended": {
         "page-title": "Account suspended",
@@ -494,6 +513,8 @@
     }
   },
   "common": {
-    "back": "Back"
+    "back": "Back",
+    "next": "Next",
+    "continue": "Continue"
   }
 }

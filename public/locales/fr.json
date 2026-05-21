@@ -11,7 +11,26 @@
         "page-title": "Inscription",
         "description": "Créez un compte pour commencer",
         "has-account": "Vous avez déjà un compte ?",
-        "has-account-link": "Connectez-vous"
+        "has-account-link": "Connectez-vous",
+        "step-name": {
+          "title": "Vos informations"
+        },
+        "step-gender": {
+          "title": "Votre genre"
+        },
+        "step-email": {
+          "title": "Votre adresse e-mail"
+        },
+        "step-password": {
+          "title": "Sécurisez votre compte"
+        },
+        "workday-preferences": {
+          "title": "Votre affichage de journée",
+          "description": "Choisissez comment vos journées de travail apparaissent dans l'application.",
+          "creating-account": "Création de votre compte en cours...",
+          "account-created": "Compte créé !",
+          "hint": "Vous pourrez modifier ce paramètre à tout moment dans vos préférences."
+        }
       },
       "suspended": {
         "page-title": "Compte suspendu",
@@ -494,6 +513,8 @@
     }
   },
   "common": {
-    "back": "Retour"
+    "back": "Retour",
+    "next": "Suivant",
+    "continue": "Continuer"
   }
 }
