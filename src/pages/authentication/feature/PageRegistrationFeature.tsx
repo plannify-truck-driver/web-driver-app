@@ -19,6 +19,12 @@ const STEP_FIELDS: Record<number, (keyof z.infer<typeof registrationFormSchema>)
   3: ["email"],
 }
 
+const STEP_FIELDS: Record<number, (keyof z.infer<typeof registrationFormSchema>)[]> = {
+  1: ["firstname", "lastname"],
+  2: ["gender"],
+  3: ["email"],
+}
+
 export default function PageRegistrationFeature() {
   const { t, i18n } = useTranslation()
   const { accessToken, login } = useAuth()
