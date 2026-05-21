@@ -1,5 +1,6 @@
 import { useTheme } from "@/app/providers/ThemeProvider"
 import { NoDriverLoaded } from "@/shared/components/NoDriverLoaded"
+import { ShareBanner } from "@/shared/components/ShareBanner"
 import SettingsActionGroup from "@/shared/components/SettingsActionGroup"
 import {
   DropdownMenu,
@@ -32,12 +33,16 @@ interface PageAccountProps {
   driver: Driver | null
   onLogout: () => void
   isDeletingRefreshToken: boolean
+  isShareBannerVisible: boolean
+  onDismissShareBanner: () => void
 }
 
 export default function PageAccount({
   driver,
   onLogout,
   isDeletingRefreshToken,
+  isShareBannerVisible,
+  onDismissShareBanner,
 }: PageAccountProps) {
   const { t, i18n } = useTranslation()
   const { theme, setTheme } = useTheme()
@@ -65,6 +70,11 @@ export default function PageAccount({
           </div>
         </div>
       </div>
+      {isShareBannerVisible && (
+        <div className="sm:hidden">
+          <ShareBanner onDismiss={onDismissShareBanner} />
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <SettingsActionGroup

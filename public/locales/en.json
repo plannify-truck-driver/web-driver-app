@@ -185,6 +185,8 @@
         "banner-rest-period-description": "Prompts you to set up automatic rest periods so Plannify can calculate the right break duration at the end of your workday.",
         "banner-documents-label": "Permanently generated documents",
         "banner-documents-description": "Explains why some statements are finalized and can no longer be edited after 3 months.",
+        "banner-share-label": "Share Plannify",
+        "banner-share-description": "Invites you to share the app with other drivers.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Disabled",
         "banner-next-display": "Reappears on {{date}}"
@@ -338,6 +340,16 @@
       "rest-unit": "minutes",
       "no-break": "No break",
       "confirm": "End workday"
+    },
+    "share-banner": {
+      "title": "Share Plannify",
+      "reason-free": "Free and secure",
+      "reason-student": "Support a student's project",
+      "reason-opensource": "Open source project",
+      "share-button": "Share",
+      "share-text": "Plannify is a free app developed by an engineering student to manage your working hours as a driver.\n\nCheck it out here 👉 {{url}}",
+      "dismiss": "Dismiss",
+      "copied": "Link copied to clipboard!"
     }
   },
   "navigation": {

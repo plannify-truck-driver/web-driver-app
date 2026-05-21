@@ -185,6 +185,8 @@
         "banner-rest-period-description": "Invite à configurer des coupures automatiques pour que Plannify calcule la bonne durée de pause en fin de journée.",
         "banner-documents-label": "Documents générés définitivement",
         "banner-documents-description": "Explique pourquoi certains relevés sont figés et ne peuvent plus être modifiés après 3 mois.",
+        "banner-share-label": "Partager Plannify",
+        "banner-share-description": "Invite à partager l'application avec d'autres conducteurs.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Désactivée",
         "banner-next-display": "Réapparition le {{date}}"
@@ -338,6 +340,16 @@
       "rest-unit": "minutes",
       "no-break": "Sans coupure",
       "confirm": "Terminer ma journée"
+    },
+    "share-banner": {
+      "title": "Partagez Plannify",
+      "reason-free": "Gratuite et sécurisée",
+      "reason-student": "Soutien à un projet étudiant",
+      "reason-opensource": "Projet open source",
+      "share-button": "Partager",
+      "share-text": "Plannify est une application gratuite et développée par un étudiant ingénieur pour gérer vos heures de travail en tant que chauffeur.\n\nRendez-vous ici 👉 {{url}}",
+      "dismiss": "Masquer",
+      "copied": "Lien copié dans le presse-papiers !"
     }
   },
   "navigation": {

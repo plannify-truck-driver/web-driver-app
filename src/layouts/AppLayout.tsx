@@ -1,6 +1,8 @@
 import { useAuth } from "@/app/providers/AuthProvider"
 import { useTheme } from "@/app/providers/ThemeProvider"
+import { useShareBannerDismiss } from "@/hooks/use-share-banner-dismiss"
 import { Loader } from "@/shared/components/Loader"
+import { ShareBanner } from "@/shared/components/ShareBanner"
 import { Button } from "@/shared/components/ui/Button"
 import {
   DropdownMenu,
@@ -63,6 +65,7 @@ export default function AppLayout() {
   const { theme, setTheme } = useTheme()
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
+  const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -182,6 +185,13 @@ export default function AppLayout() {
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
+            {open && isShareBannerVisible && (
+              <SidebarGroup className="mt-auto">
+                <SidebarGroupContent>
+                  <ShareBanner variant="sidebar" onDismiss={dismissShareBanner} />
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
           </SidebarContent>
           <SidebarFooter>
             <SidebarMenu>
