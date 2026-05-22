@@ -183,6 +183,12 @@
         "help-support": "Aide & Support",
         "about-plannify": "À propos de Plannify",
         "logout": "Se déconnecter"
+      },
+      "updates": {
+        "section-title": "Nouveautés",
+        "refresh": "Mettre à jour",
+        "mandatory-before": "Obligatoire avant le {{date}}",
+        "empty": "Aucune mise à jour disponible"
       }
     },
     "settings": {
