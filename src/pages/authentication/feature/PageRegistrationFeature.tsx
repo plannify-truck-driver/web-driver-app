@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useAuth } from "@/app/providers/AuthProvider"
 import { useNavigate } from "@tanstack/react-router"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const STEP_FIELDS: Record<number, (keyof z.infer<typeof registrationFormSchema>)[]> = {
   1: ["firstname", "lastname"],
@@ -23,11 +24,12 @@ export default function PageRegistrationFeature() {
   const { accessToken, login } = useAuth()
   const navigate = useNavigate()
 
+  const isMobile = useIsMobile()
   const { mutateAsync, data, error, isPending } = useRegistrationMutation()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1)
   const [workdayRowType, setWorkdayRowType] = useState<1 | 2 | 3>(1)
-  const [accountCreated, setAccountCreated] = useState(false)
+  const accountCreated = !!data
 
   useDocumentTitle(t("pages.authentication.registration.page-title"))
 
@@ -89,7 +91,10 @@ export default function PageRegistrationFeature() {
 
   useEffect(() => {
     if (data && !accessToken) {
-      setAccountCreated(true)
+      if (!isMobile) {
+        login(data.access_token)
+        navigate({ to: "/dashboard", replace: true })
+      }
     } else if (error) {
       handleErrorResponse(error).then((apiError) => {
         if (apiError) {
@@ -109,7 +114,7 @@ export default function PageRegistrationFeature() {
         console.error("Registration error:", error)
       })
     }
-  }, [data, error, t, form, accessToken])
+  }, [data, error, t, form, accessToken, isMobile, login, navigate])
 
   function onComplete() {
     if (!data) return
