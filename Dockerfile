@@ -25,9 +25,11 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 
 ARG VITE_ENV=development
+ARG VITE_VERSION=0.1.0
 ARG VITE_API_URL=http://localhost:3000
 
 ENV VITE_ENV=$VITE_ENV
+ENV VITE_VERSION=$VITE_VERSION
 ENV VITE_API_URL=$VITE_API_URL
 
 # Copy node_modules from deps stage
