@@ -15,8 +15,12 @@ function copyPdfWorkerPlugin(): Plugin {
   const dest = path.resolve(__dirname, "public/pdf.worker.min.js")
   return {
     name: "copy-pdf-worker",
-    buildStart() { copyFileSync(src, dest) },
-    configureServer() { copyFileSync(src, dest) },
+    buildStart() {
+      copyFileSync(src, dest)
+    },
+    configureServer() {
+      copyFileSync(src, dest)
+    },
   }
 }
 
