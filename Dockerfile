@@ -20,7 +20,7 @@ FROM base AS deps
 USER reactuser
 
 COPY --chown=reactuser:nodejs package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 FROM base AS builder
 
