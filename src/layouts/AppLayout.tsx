@@ -360,7 +360,7 @@ export default function AppLayout() {
         <div className="h-full overflow-y-auto px-4 py-2">
           <Outlet />
         </div>
-        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 py-2">
+        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
           {navigationItems.map((item) => {
             const isActive =
               location.pathname.startsWith(item.link) ||
