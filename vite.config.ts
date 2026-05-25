@@ -67,7 +67,7 @@ export default defineConfig({
       },
       workbox: {
         skipWaiting: true,
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+        globPatterns: ["**/*.{js,mjs,css,html,ico,png,svg,woff2}"],
         runtimeCaching: [
           {
             urlPattern: /\/locales\/.*/i,
