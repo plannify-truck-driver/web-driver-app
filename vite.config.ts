@@ -36,7 +36,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "logo-small.png"],
       manifest: {
         name: "Plannify Driver",
@@ -66,7 +66,6 @@ export default defineConfig({
         ],
       },
       workbox: {
-        skipWaiting: true,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         runtimeCaching: [
           {

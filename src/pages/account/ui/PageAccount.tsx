@@ -19,6 +19,7 @@ import {
   ChevronDownIcon,
   CirclePauseIcon,
   ClockAlertIcon,
+  DownloadIcon,
   EarthIcon,
   InfoIcon,
   LaptopIcon,
@@ -31,6 +32,8 @@ import {
   SunIcon,
   UserPenIcon,
 } from "lucide-react"
+import { usePwaUpdate } from "@/app/providers/PwaUpdateProvider"
+import { Button } from "@/shared/components/ui/Button"
 import { useTranslation } from "react-i18next"
 
 interface PageAccountProps {
@@ -53,6 +56,7 @@ export default function PageAccount({
   const { t, i18n } = useTranslation()
   const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
+  const { needRefresh, updateServiceWorker } = usePwaUpdate()
 
   if (!driver) {
     return <NoDriverLoaded />
@@ -79,6 +83,22 @@ export default function PageAccount({
       {isShareBannerVisible && (
         <div className="sm:hidden">
           <ShareBanner onDismiss={onDismissShareBanner} />
+        </div>
+      )}
+      {needRefresh && (
+        <div className="from-primary/5 to-background border-primary/15 flex items-center justify-between gap-3 rounded-lg border bg-gradient-to-br p-4">
+          <div className="flex items-center gap-3">
+            <DownloadIcon className="text-primary size-4 shrink-0" />
+            <div>
+              <p className="text-sm font-medium">{t("pages.account.pwa-update.available")}</p>
+              <p className="text-muted-foreground text-xs">
+                {t("pages.account.pwa-update.description")}
+              </p>
+            </div>
+          </div>
+          <Button onClick={() => updateServiceWorker()} size="sm" className="shrink-0">
+            {t("pages.account.pwa-update.action")}
+          </Button>
         </div>
       )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

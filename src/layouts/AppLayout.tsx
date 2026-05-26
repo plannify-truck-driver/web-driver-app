@@ -49,6 +49,7 @@ import {
 } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { usePwaUpdate } from "@/app/providers/PwaUpdateProvider"
 
 interface NavbarNavigationItem {
   title: string
@@ -66,6 +67,7 @@ export default function AppLayout() {
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
+  const { needRefresh } = usePwaUpdate()
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -110,12 +112,6 @@ export default function AppLayout() {
   const location = useLocation()
 
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false)
-
-  // const currentSection =
-  //   navigationItems.find((item) => location.pathname.startsWith(item.link))?.title ?? ""
-  // const currentSubSections = navigationItems
-  //   .find((item) => location.pathname.startsWith(item.link))
-  //   ?.subItems.filter((subItem) => typeof subItem.action === "string" && subItem.title.mobile)
 
   if (!driver) return null
 
@@ -166,7 +162,12 @@ export default function AppLayout() {
                           isActive={isActive}
                         >
                           <Link to={item.link}>
-                            <item.icon size={20} />
+                            <div className="relative">
+                              <item.icon size={20} />
+                              {needRefresh && item.link === "/account" && (
+                                <span className="bg-primary ring-sidebar absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2" />
+                              )}
+                            </div>
                             <span>
                               {toUpperCaseFirstLetter(
                                 t(item.navigationTitle.desktop, {
@@ -373,7 +374,12 @@ export default function AppLayout() {
                   "flex flex-col items-center" + (isActive ? "" : " text-muted-foreground")
                 }
               >
-                {<item.icon strokeWidth={1.5} size={26} />}
+                <div className="relative">
+                  <item.icon strokeWidth={1.5} size={26} />
+                  {needRefresh && item.link === "/account" && (
+                    <span className="bg-primary ring-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2" />
+                  )}
+                </div>
                 <p className="text-responsive-md p-0 leading-none">
                   {t(item.navigationTitle.mobile)}
                 </p>

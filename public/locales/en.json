@@ -189,6 +189,11 @@
         "refresh": "Refresh",
         "mandatory-before": "Required before {{date}}",
         "empty": "No updates available"
+      },
+      "pwa-update": {
+        "available": "Update available",
+        "description": "A new version of the application is ready to install.",
+        "action": "Install"
       }
     },
     "settings": {
