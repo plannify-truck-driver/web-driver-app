@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import "react-pdf/dist/Page/AnnotationLayer.css"
 import "react-pdf/dist/Page/TextLayer.css"
 
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js"
 
 interface PdfPreviewSheetProps {
   blob: Blob | null

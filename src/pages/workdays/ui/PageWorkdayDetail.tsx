@@ -18,6 +18,7 @@ import {
 import type { Workday } from "@/shared/models/workday"
 import type { RestPeriod } from "@/shared/models/rest-period"
 import { WorkdayFormFields, type WorkdayFieldValues } from "@/shared/forms/WorkdayFormFields"
+import { useConfig } from "@/shared/queries/config/config.queries"
 
 interface PageWorkdayDetailProps {
   workdayDate: string
@@ -49,6 +50,7 @@ export default function PageWorkdayDetail({
   onDismissDocumentGeneratedError,
 }: PageWorkdayDetailProps) {
   const { t, i18n } = useTranslation()
+  const { data: config } = useConfig()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const formattedDate = new Date(workdayDate + "T00:00:00").toLocaleDateString(i18n.language, {
@@ -178,7 +180,9 @@ export default function PageWorkdayDetail({
               </DialogDescription>
             ) : (
               <DialogDescription>
-                {t("pages.workdays.detail.delete-dialog.description")}
+                {t("pages.workdays.detail.delete-dialog.description", {
+                  retentionDays: config ? config.workday_garbage_retention_days : 30,
+                })}
               </DialogDescription>
             )}
           </DialogHeader>

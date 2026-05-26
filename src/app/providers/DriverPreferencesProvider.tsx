@@ -19,7 +19,18 @@ const initialState: DriverPreferencesProviderState = {
 const DriverPreferencesProviderContext = createContext<DriverPreferencesProviderState>(initialState)
 
 export function DriverPreferencesProvider({ children, ...props }: { children: React.ReactNode }) {
-  const [preferences, setPreferencesState] = useState<DriverPreferences>(initialState.preferences)
+  const [preferences, setPreferencesState] = useState<DriverPreferences>(() => {
+    try {
+      const raw = localStorage.getItem("driver-preferences")
+      if (raw) {
+        const parsed = parseInt(raw, 10)
+        if (parsed === 1 || parsed === 2 || parsed === 3) {
+          return { workdayTableRowType: parsed }
+        }
+      }
+    } catch {}
+    return initialState.preferences
+  })
 
   const setPreferences = (preferences: DriverPreferences) => {
     localStorage.setItem("driver-preferences", String(preferences.workdayTableRowType))

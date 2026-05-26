@@ -1,5 +1,6 @@
 import { useTheme } from "@/app/providers/ThemeProvider"
 import { NoDriverLoaded } from "@/shared/components/NoDriverLoaded"
+import { ShareBanner } from "@/shared/components/ShareBanner"
 import SettingsActionGroup from "@/shared/components/SettingsActionGroup"
 import {
   DropdownMenu,
@@ -9,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/DropdownMenu"
 import type { Driver } from "@/shared/models/driver"
+import type { Update } from "@/shared/queries/updates/updates.types"
 import { useNavigate } from "@tanstack/react-router"
 import {
   BadgeCheckIcon,
@@ -16,13 +18,16 @@ import {
   CheckIcon,
   ChevronDownIcon,
   CirclePauseIcon,
+  ClockAlertIcon,
   EarthIcon,
   InfoIcon,
   LaptopIcon,
   LogOutIcon,
   MailsIcon,
   MoonIcon,
+  RefreshCwIcon,
   SettingsIcon,
+  SparklesIcon,
   SunIcon,
   UserPenIcon,
 } from "lucide-react"
@@ -32,12 +37,18 @@ interface PageAccountProps {
   driver: Driver | null
   onLogout: () => void
   isDeletingRefreshToken: boolean
+  isShareBannerVisible: boolean
+  onDismissShareBanner: () => void
+  updates: Update[]
 }
 
 export default function PageAccount({
   driver,
   onLogout,
   isDeletingRefreshToken,
+  isShareBannerVisible,
+  onDismissShareBanner,
+  updates,
 }: PageAccountProps) {
   const { t, i18n } = useTranslation()
   const { theme, setTheme } = useTheme()
@@ -65,6 +76,11 @@ export default function PageAccount({
           </div>
         </div>
       </div>
+      {isShareBannerVisible && (
+        <div className="sm:hidden">
+          <ShareBanner onDismiss={onDismissShareBanner} />
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <SettingsActionGroup
@@ -181,6 +197,61 @@ export default function PageAccount({
           />
         </div>
       </div>
+
+      {updates.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <SparklesIcon className="text-primary size-4" />
+              <h3 className="text-sm font-semibold">
+                {t("pages.account.updates.section-title")}
+              </h3>
+            </div>
+            <button
+              onClick={() => window.location.reload()}
+              className="text-muted-foreground hover:text-foreground hidden items-center gap-1.5 text-xs transition-colors sm:flex"
+            >
+              <RefreshCwIcon className="size-3.5" />
+              {t("pages.account.updates.refresh")}
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {updates.map((update) => (
+              <div
+                key={update.version}
+                className="from-primary/5 to-background border-primary/15 relative flex flex-col gap-3 overflow-hidden rounded-lg border bg-gradient-to-br p-4"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-primary font-mono text-base font-bold">
+                    v{update.version}
+                  </span>
+                  {update.mandatory_completion_date && (
+                    <span className="flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-600 dark:text-amber-400">
+                      <ClockAlertIcon className="size-3" />
+                      {t("pages.account.updates.mandatory-before", {
+                        date: new Date(update.mandatory_completion_date).toLocaleDateString(
+                          i18n.language,
+                          { day: "numeric", month: "long", year: "numeric" }
+                        ),
+                      })}
+                    </span>
+                  )}
+                </div>
+                <p className="text-muted-foreground text-sm leading-relaxed">{update.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => window.location.reload()}
+            className="border-primary/20 text-primary hover:bg-primary/5 flex w-full items-center justify-center gap-2 rounded-lg border py-3 text-sm font-medium transition-colors sm:hidden"
+          >
+            <RefreshCwIcon className="size-4" />
+            {t("pages.account.updates.refresh")}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

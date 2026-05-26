@@ -191,7 +191,7 @@ export default function PageDashboardIndex({
       </div>
       {showRestPeriodSuggestion && (
         <div className="from-primary/5 to-primary/10 relative overflow-hidden rounded-xl border bg-gradient-to-br p-5">
-          <CoffeeIcon className="text-primary/8 absolute -right-3 -bottom-3 size-24 rotate-12" />
+          <CoffeeIcon className="pointer-events-none text-primary/8 absolute -right-3 -bottom-3 size-24 rotate-12" />
           <button
             onClick={onDismissRestPeriodSuggestion}
             className="text-muted-foreground/60 hover:text-muted-foreground absolute top-3 right-3 cursor-pointer rounded p-0.5 transition-colors"

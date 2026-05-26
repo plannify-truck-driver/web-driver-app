@@ -1,12 +1,9 @@
 import { useAuth } from "@/app/providers/AuthProvider"
 import { useTheme } from "@/app/providers/ThemeProvider"
+import { useShareBannerDismiss } from "@/hooks/use-share-banner-dismiss"
 import { Loader } from "@/shared/components/Loader"
+import { ShareBanner } from "@/shared/components/ShareBanner"
 import { Button } from "@/shared/components/ui/Button"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/shared/components/ui/Collapsible"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,18 +26,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   useSidebar,
 } from "@/shared/components/ui/Sidebar"
 import { Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router"
 import {
   CalendarSearch,
   Check,
-  ChevronDown,
-  ChevronRight,
-  // ChevronDown,
   ChevronsDownUp,
   ChevronsUpDown,
   Earth,
@@ -58,7 +49,6 @@ import {
 } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { toast } from "sonner"
 
 interface NavbarNavigationItem {
   title: string
@@ -68,13 +58,6 @@ interface NavbarNavigationItem {
   }
   icon: LucideIcon
   link: string
-  subItems: {
-    title: {
-      mobile: string | null
-      desktop: string
-    }
-    action: string | (() => void)
-  }[]
 }
 
 export default function AppLayout() {
@@ -82,6 +65,7 @@ export default function AppLayout() {
   const { theme, setTheme } = useTheme()
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
+  const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -92,29 +76,6 @@ export default function AppLayout() {
       },
       icon: Truck,
       link: "/dashboard",
-      subItems: [
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.dashboard.start-workday",
-          },
-          action: () => toast.info("Fonctionnalité à venir"),
-        },
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.dashboard.end-workday",
-          },
-          action: () => toast.info("Fonctionnalité à venir"),
-        },
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.dashboard.configure-rest-periods",
-          },
-          action: "/dashboard/configure-rest-periods",
-        },
-      ],
     },
     {
       title: "navigation.workdays.title",
@@ -124,37 +85,6 @@ export default function AppLayout() {
       },
       icon: CalendarSearch,
       link: "/workdays",
-      subItems: [
-        {
-          title: {
-            mobile: "navigation.workdays.view-workdays-current-month.mobile",
-            desktop: "navigation.workdays.view-workdays-current-month.desktop",
-          },
-          action: "/workdays",
-        },
-        {
-          title: {
-            mobile: "navigation.workdays.view-workdays-previous-month.mobile",
-            desktop: "navigation.workdays.view-workdays-previous-month.desktop",
-          },
-          action: "/workdays/previous-month",
-        },
-        {
-          title: {
-            mobile: "navigation.workdays.view-workdays-custom.mobile",
-            desktop: "navigation.workdays.view-workdays-custom.desktop",
-          },
-          action: "/workdays/custom",
-        },
-        {
-          title: { mobile: null, desktop: "navigation.workdays.add-workday" },
-          action: () => toast.info("Fonctionnalité à venir"),
-        },
-        {
-          title: { mobile: null, desktop: "navigation.workdays.view-garbage-workdays" },
-          action: "/workdays/garbage",
-        },
-      ],
     },
     {
       title: "navigation.documents.title",
@@ -164,29 +94,6 @@ export default function AppLayout() {
       },
       icon: FileText,
       link: "/documents",
-      subItems: [
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.documents.view-documents-year",
-          },
-          action: "/documents/current-year",
-        },
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.documents.view-documents-previous-year",
-          },
-          action: "/documents/previous-year",
-        },
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.documents.view-documents-custom",
-          },
-          action: "/documents/custom",
-        },
-      ],
     },
     {
       title: "navigation.account.title",
@@ -196,29 +103,6 @@ export default function AppLayout() {
       },
       icon: User,
       link: "/account",
-      subItems: [
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.account.view-my-informations",
-          },
-          action: "/account/informations",
-        },
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.account.view-my-mails",
-          },
-          action: "/account/mails",
-        },
-        {
-          title: {
-            mobile: null,
-            desktop: "navigation.account.update-notification-preferences",
-          },
-          action: "/account/notification-preferences",
-        },
-      ],
     },
   ]
 
@@ -226,7 +110,6 @@ export default function AppLayout() {
   const location = useLocation()
 
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false)
-  const [isSubMenuOpen, setIsSubMenuOpen] = useState<{ [key: string]: boolean }>({})
 
   // const currentSection =
   //   navigationItems.find((item) => location.pathname.startsWith(item.link))?.title ?? ""
@@ -269,108 +152,46 @@ export default function AppLayout() {
           <SidebarContent className="mt-4">
             <SidebarGroup>
               <SidebarGroupContent>
-                <SidebarMenu className={open ? "pl-2" : ""}>
-                  {navigationItems.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      {!open ? (
-                        <SidebarMenuButton asChild>
-                          <Link
-                            to={item.link}
-                            className="flex cursor-pointer flex-row items-center gap-2"
-                          >
-                            {<item.icon size={20} />}
+                <SidebarMenu>
+                  {navigationItems.map((item) => {
+                    const isActive =
+                      location.pathname.startsWith(item.link) ||
+                      (item.link === "/account" && location.pathname.startsWith("/settings"))
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          asChild
+                          variant="navigation"
+                          size="navigation"
+                          isActive={isActive}
+                        >
+                          <Link to={item.link}>
+                            <item.icon size={20} />
+                            <span>
+                              {toUpperCaseFirstLetter(
+                                t(item.navigationTitle.desktop, {
+                                  currentYear,
+                                  previousYear,
+                                  previousMonth,
+                                  yearFromPreviousMonth,
+                                })
+                              )}
+                            </span>
                           </Link>
                         </SidebarMenuButton>
-                      ) : (
-                        <Collapsible className="group/collapsible">
-                          <div className="flex flex-row items-center justify-between">
-                            <SidebarMenuButton asChild>
-                              <Link
-                                to={item.link}
-                                className="flex cursor-pointer flex-row items-center gap-2"
-                              >
-                                {<item.icon size={20} />}
-                                <span>
-                                  {toUpperCaseFirstLetter(
-                                    t(item.navigationTitle.desktop, {
-                                      currentYear,
-                                      previousYear,
-                                      previousMonth,
-                                      yearFromPreviousMonth,
-                                    })
-                                  )}
-                                </span>
-                              </Link>
-                            </SidebarMenuButton>
-                            {item.subItems.length > 0 && (
-                              <CollapsibleTrigger
-                                asChild
-                                className="w-auto"
-                                onClick={() =>
-                                  setIsSubMenuOpen((prev) => ({
-                                    ...prev,
-                                    [item.title]: !prev[item.title],
-                                  }))
-                                }
-                              >
-                                <SidebarMenuButton size="sm">
-                                  {isSubMenuOpen[item.title] ? <ChevronDown /> : <ChevronRight />}
-                                </SidebarMenuButton>
-                              </CollapsibleTrigger>
-                            )}
-                          </div>
-                          {item.subItems.length > 0 && (
-                            <CollapsibleContent>
-                              <SidebarMenuSub>
-                                {item.subItems.map((subItem) => (
-                                  <SidebarMenuSubItem key={subItem.title.desktop}>
-                                    <SidebarMenuSubButton asChild>
-                                      {typeof subItem.action === "function" ? (
-                                        <button
-                                          onClick={() => (subItem.action as () => void)()}
-                                          className="flex w-full cursor-pointer flex-row items-center gap-2"
-                                        >
-                                          <span>
-                                            {toUpperCaseFirstLetter(
-                                              t(subItem.title.desktop, {
-                                                currentYear,
-                                                previousYear,
-                                                previousMonth,
-                                                yearFromPreviousMonth,
-                                              })
-                                            )}
-                                          </span>
-                                        </button>
-                                      ) : (
-                                        <Link
-                                          to={subItem.action}
-                                          className="flex w-full cursor-pointer flex-row items-center gap-2"
-                                        >
-                                          <span>
-                                            {toUpperCaseFirstLetter(
-                                              t(subItem.title.desktop, {
-                                                currentYear,
-                                                previousYear,
-                                                previousMonth,
-                                                yearFromPreviousMonth,
-                                              })
-                                            )}
-                                          </span>
-                                        </Link>
-                                      )}
-                                    </SidebarMenuSubButton>
-                                  </SidebarMenuSubItem>
-                                ))}
-                              </SidebarMenuSub>
-                            </CollapsibleContent>
-                          )}
-                        </Collapsible>
-                      )}
-                    </SidebarMenuItem>
-                  ))}
+                      </SidebarMenuItem>
+                    )
+                  })}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
+            {open && isShareBannerVisible && (
+              <SidebarGroup className="mt-auto">
+                <SidebarGroupContent>
+                  <ShareBanner variant="sidebar" onDismiss={dismissShareBanner} />
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
           </SidebarContent>
           <SidebarFooter>
             <SidebarMenu>
@@ -539,7 +360,7 @@ export default function AppLayout() {
         <div className="h-full overflow-y-auto px-4 py-2">
           <Outlet />
         </div>
-        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 py-2">
+        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
           {navigationItems.map((item) => {
             const isActive =
               location.pathname.startsWith(item.link) ||

@@ -1,4 +1,4 @@
-FROM node:25.6-alpine AS base
+FROM node:22-alpine AS base
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
 RUN apk upgrade --no-cache zlib musl musl-utils
@@ -7,8 +7,8 @@ RUN apk upgrade --no-cache zlib musl musl-utils
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S reactuser -u 1001
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Install pnpm via corepack (built into Node, no extra layer)
+RUN corepack enable && corepack prepare pnpm@10.33.2 --activate
 
 WORKDIR /app
 
@@ -20,22 +20,24 @@ FROM base AS deps
 USER reactuser
 
 COPY --chown=reactuser:nodejs package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 FROM base AS builder
 
 ARG VITE_ENV=development
+ARG VITE_VERSION=0.1.0
 ARG VITE_API_URL=http://localhost:3000
 
 ENV VITE_ENV=$VITE_ENV
+ENV VITE_VERSION=$VITE_VERSION
 ENV VITE_API_URL=$VITE_API_URL
+
+USER reactuser
 
 # Copy node_modules from deps stage
 COPY --from=deps --chown=reactuser:nodejs /app/node_modules ./node_modules
 
 COPY --chown=reactuser:nodejs . .
-
-USER reactuser
 
 RUN pnpm run build
 
@@ -43,7 +45,7 @@ FROM nginxinc/nginx-unprivileged:1.30.0-alpine AS production
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
 USER root
-# RUN apk upgrade --no-cache zlib musl musl-utils
+RUN apk upgrade --no-cache zlib musl musl-utils
 USER nginx
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
@@ -60,8 +62,8 @@ USER root
 RUN chmod +x /docker-entrypoint.sh
 USER nginx
 
-EXPOSE 5173
+EXPOSE 80
 
-ENV NGINX_PORT=5173
+ENV NGINX_PORT=80
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

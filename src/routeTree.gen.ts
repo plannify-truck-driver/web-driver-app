@@ -14,6 +14,7 @@ import { Route as WorkdaysIndexRouteImport } from "./routes/workdays/index"
 import { Route as DocumentsIndexRouteImport } from "./routes/documents/index"
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index"
 import { Route as AccountIndexRouteImport } from "./routes/account/index"
+import { Route as WorkdaysGarbageRouteImport } from "./routes/workdays/garbage"
 import { Route as WorkdaysWorkdayDateRouteImport } from "./routes/workdays/$workdayDate"
 import { Route as SettingsRestPreferencesRouteImport } from "./routes/settings/rest-preferences"
 import { Route as SettingsApplicationPreferencesRouteImport } from "./routes/settings/application-preferences"
@@ -46,6 +47,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
 const AccountIndexRoute = AccountIndexRouteImport.update({
   id: "/account/",
   path: "/account/",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkdaysGarbageRoute = WorkdaysGarbageRouteImport.update({
+  id: "/workdays/garbage",
+  path: "/workdays/garbage",
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkdaysWorkdayDateRoute = WorkdaysWorkdayDateRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
   "/workdays/$workdayDate": typeof WorkdaysWorkdayDateRoute
+  "/workdays/garbage": typeof WorkdaysGarbageRoute
   "/account/": typeof AccountIndexRoute
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
   "/workdays/$workdayDate": typeof WorkdaysWorkdayDateRoute
+  "/workdays/garbage": typeof WorkdaysGarbageRoute
   "/account": typeof AccountIndexRoute
   "/dashboard": typeof DashboardIndexRoute
   "/documents": typeof DocumentsIndexRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
   "/settings/rest-preferences": typeof SettingsRestPreferencesRoute
   "/workdays/$workdayDate": typeof WorkdaysWorkdayDateRoute
+  "/workdays/garbage": typeof WorkdaysGarbageRoute
   "/account/": typeof AccountIndexRoute
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | "/settings/application-preferences"
     | "/settings/rest-preferences"
     | "/workdays/$workdayDate"
+    | "/workdays/garbage"
     | "/account/"
     | "/dashboard/"
     | "/documents/"
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | "/settings/application-preferences"
     | "/settings/rest-preferences"
     | "/workdays/$workdayDate"
+    | "/workdays/garbage"
     | "/account"
     | "/dashboard"
     | "/documents"
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | "/settings/application-preferences"
     | "/settings/rest-preferences"
     | "/workdays/$workdayDate"
+    | "/workdays/garbage"
     | "/account/"
     | "/dashboard/"
     | "/documents/"
@@ -196,6 +208,7 @@ export interface RootRouteChildren {
   SettingsApplicationPreferencesRoute: typeof SettingsApplicationPreferencesRoute
   SettingsRestPreferencesRoute: typeof SettingsRestPreferencesRoute
   WorkdaysWorkdayDateRoute: typeof WorkdaysWorkdayDateRoute
+  WorkdaysGarbageRoute: typeof WorkdaysGarbageRoute
   AccountIndexRoute: typeof AccountIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DocumentsIndexRoute: typeof DocumentsIndexRoute
@@ -238,6 +251,13 @@ declare module "@tanstack/react-router" {
       path: "/account"
       fullPath: "/account/"
       preLoaderRoute: typeof AccountIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/workdays/garbage": {
+      id: "/workdays/garbage"
+      path: "/workdays/garbage"
+      fullPath: "/workdays/garbage"
+      preLoaderRoute: typeof WorkdaysGarbageRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/workdays/$workdayDate": {
@@ -308,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsApplicationPreferencesRoute: SettingsApplicationPreferencesRoute,
   SettingsRestPreferencesRoute: SettingsRestPreferencesRoute,
   WorkdaysWorkdayDateRoute: WorkdaysWorkdayDateRoute,
+  WorkdaysGarbageRoute: WorkdaysGarbageRoute,
   AccountIndexRoute: AccountIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DocumentsIndexRoute: DocumentsIndexRoute,

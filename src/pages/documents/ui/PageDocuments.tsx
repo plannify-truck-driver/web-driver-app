@@ -51,7 +51,7 @@ export default function PageDocuments({
       {hasGeneratedDocuments && isBannerVisible && (
         <>
           <div className="relative overflow-hidden rounded-xl border bg-gradient-to-br from-amber-500/5 to-amber-500/10 p-5">
-            <LockIcon className="absolute -right-3 -bottom-3 size-24 rotate-12 text-amber-500/8" />
+            <LockIcon className="pointer-events-none absolute -right-3 -bottom-3 size-24 rotate-12 text-amber-500/8" />
             <button
               onClick={dismissBanner}
               className="text-muted-foreground/60 hover:text-muted-foreground absolute top-3 right-3 cursor-pointer rounded p-0.5 transition-colors"

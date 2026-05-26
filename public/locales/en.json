@@ -11,7 +11,26 @@
         "page-title": "Registration",
         "description": "Create an account to get started",
         "has-account": "Already have an account?",
-        "has-account-link": "Log in"
+        "has-account-link": "Log in",
+        "step-name": {
+          "title": "Your information"
+        },
+        "step-gender": {
+          "title": "Your gender"
+        },
+        "step-email": {
+          "title": "Your email address"
+        },
+        "step-password": {
+          "title": "Secure your account"
+        },
+        "workday-preferences": {
+          "title": "Your workday display",
+          "description": "Choose how your workdays appear in the app.",
+          "creating-account": "Creating your account...",
+          "account-created": "Account created!",
+          "hint": "You can change this setting at any time in your preferences."
+        }
       },
       "suspended": {
         "page-title": "Account suspended",
@@ -102,7 +121,7 @@
         "delete-success": "Workday deleted.",
         "delete-dialog": {
           "title": "Delete this workday?",
-          "description": "The workday will be moved to the trash and permanently deleted after 30 days.",
+          "description": "The workday will be moved to the trash and permanently deleted after {{retentionDays}} days.",
           "confirm": "Delete",
           "cancel": "Cancel",
           "okay": "Okay"
@@ -111,6 +130,24 @@
       "errors": {
         "workday-update-error": "An error occurred while updating your workday. Please try again later.",
         "workday-document-already-generated": "Your monthly statement for {{month}} {{year}} has already been permanently generated. Workdays for this period can no longer be modified."
+      },
+      "garbage": {
+        "page-title": "Trash",
+        "description": "Deleted workdays are automatically removed after {{retentionDays}} days.",
+        "empty-title": "Trash is empty",
+        "empty-description": "No deleted workdays at the moment.",
+        "permanent-deletion": "Permanent deletion on {{date}}",
+        "days-remaining_one": "{{count}} day left",
+        "days-remaining_other": "{{count}} days left",
+        "restore": "Restore",
+        "restore-success": "Workday restored successfully!",
+        "restore-error": "An error occurred while restoring. Please try again.",
+        "table": {
+          "date": "Date",
+          "deleted-on": "Deleted on",
+          "permanent-deletion": "Permanent deletion",
+          "remaining": "Days left"
+        }
       }
     },
     "documents": {
@@ -146,6 +183,12 @@
         "help-support": "Help & Support",
         "about-plannify": "About Plannify",
         "logout": "Logout"
+      },
+      "updates": {
+        "section-title": "What's new",
+        "refresh": "Refresh",
+        "mandatory-before": "Required before {{date}}",
+        "empty": "No updates available"
       }
     },
     "settings": {
@@ -167,6 +210,8 @@
         "banner-rest-period-description": "Prompts you to set up automatic rest periods so Plannify can calculate the right break duration at the end of your workday.",
         "banner-documents-label": "Permanently generated documents",
         "banner-documents-description": "Explains why some statements are finalized and can no longer be edited after 3 months.",
+        "banner-share-label": "Share Plannify",
+        "banner-share-description": "Invites you to share the app with other drivers.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Disabled",
         "banner-next-display": "Reappears on {{date}}"
@@ -320,6 +365,16 @@
       "rest-unit": "minutes",
       "no-break": "No break",
       "confirm": "End workday"
+    },
+    "share-banner": {
+      "title": "Share Plannify",
+      "reason-free": "Free and secure",
+      "reason-student": "Support a student's project",
+      "reason-opensource": "Open source project",
+      "share-button": "Share",
+      "share-text": "Plannify is a free app developed by an engineering student to manage your working hours as a driver.\n\nCheck it out here 👉 {{url}}",
+      "dismiss": "Dismiss",
+      "copied": "Link copied to clipboard!"
     }
   },
   "navigation": {
@@ -328,51 +383,28 @@
       "navigation-title": {
         "mobile": "Home",
         "desktop": "Dashboard"
-      },
-      "start-workday": "Start a workday",
-      "end-workday": "End a workday",
-      "configure-rest-periods": "Configure rest periods"
+      }
     },
     "workdays": {
       "title": "Workdays",
       "navigation-title": {
         "mobile": "Workdays",
         "desktop": "Workdays"
-      },
-      "view-workdays-current-month": {
-        "mobile": "This month",
-        "desktop": "This month"
-      },
-      "view-workdays-previous-month": {
-        "mobile": "{{previousMonth}}",
-        "desktop": "{{previousMonth}} {{yearFromPreviousMonth}}"
-      },
-      "view-workdays-custom": {
-        "mobile": "Advanced search",
-        "desktop": "Search workdays"
-      },
-      "add-workday": "Add a workday",
-      "view-garbage-workdays": "Deleted workdays"
+      }
     },
     "documents": {
       "title": "Documents",
       "navigation-title": {
         "mobile": "Documents",
         "desktop": "Documents"
-      },
-      "view-documents-year": "{{currentYear}}",
-      "view-documents-previous-year": "{{previousYear}}",
-      "view-documents-custom": "Search documents"
+      }
     },
     "account": {
       "title": "My account",
       "navigation-title": {
         "mobile": "Account",
         "desktop": "Account"
-      },
-      "view-my-informations": "View my informations",
-      "view-my-mails": "View sent mails",
-      "update-notification-preferences": "Update notification preferences"
+      }
     }
   },
   "forms": {
@@ -487,6 +519,8 @@
     }
   },
   "common": {
-    "back": "Back"
+    "back": "Back",
+    "next": "Next",
+    "continue": "Continue"
   }
 }

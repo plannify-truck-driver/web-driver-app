@@ -1,12 +1,12 @@
 import { useAuth } from "@/app/providers/AuthProvider"
 import { Button } from "@/shared/components/ui/Button"
-import { useNavigate } from "@tanstack/react-router"
+import { useConfig } from "@/shared/queries/config/config.queries"
 import { useTranslation } from "react-i18next"
 
 export default function PageVerifyAccount() {
-  const { driver, logout } = useAuth()
+  const { driver, logout, isDeletingRefreshToken } = useAuth()
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { data: config } = useConfig()
 
   return (
     <div className="flex flex-col gap-4">
@@ -22,7 +22,9 @@ export default function PageVerifyAccount() {
         <Button asChild variant="outline">
           <a
             href={
-              "mailto:contact@plannify.be?subject=" +
+              "mailto:" +
+              (config ? config.support_email : "contact@plannify.be") +
+              "?subject=" +
               encodeURIComponent(t("pages.authentication.verify-account.email-subject")) +
               "&body=" +
               encodeURIComponent(t("pages.authentication.verify-account.email-body"))
@@ -32,10 +34,10 @@ export default function PageVerifyAccount() {
           </a>
         </Button>
         <Button
+          isLoading={isDeletingRefreshToken}
           onClick={(e) => {
             e.preventDefault()
             logout()
-            navigate({ to: "/authentication/login" })
           }}
         >
           {t("pages.authentication.verify-account.logout-button")}

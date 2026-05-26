@@ -3,6 +3,7 @@ import {
   createWorkday,
   deleteWorkday,
   getWorkdayByDate,
+  getWorkdayGarbage,
   getWorkdaysByMonth,
   getWorkdaysByPeriod,
   restoreWorkday,
@@ -80,6 +81,12 @@ export const useDeleteWorkday = (options?: {
     mutationFn: (body: DeleteWorkdayRequest) => deleteWorkday(body),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
+  })
+
+export const useGetWorkdayGarbage = () =>
+  useQuery({
+    queryKey: [...workdaysKeys.all, "garbage"] as const,
+    queryFn: () => getWorkdayGarbage(),
   })
 
 export const useRestoreWorkday = (options?: {

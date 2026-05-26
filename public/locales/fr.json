@@ -11,7 +11,26 @@
         "page-title": "Inscription",
         "description": "Créez un compte pour commencer",
         "has-account": "Vous avez déjà un compte ?",
-        "has-account-link": "Connectez-vous"
+        "has-account-link": "Connectez-vous",
+        "step-name": {
+          "title": "Vos informations"
+        },
+        "step-gender": {
+          "title": "Votre genre"
+        },
+        "step-email": {
+          "title": "Votre adresse e-mail"
+        },
+        "step-password": {
+          "title": "Sécurisez votre compte"
+        },
+        "workday-preferences": {
+          "title": "Votre affichage de journée",
+          "description": "Choisissez comment vos journées de travail apparaissent dans l'application.",
+          "creating-account": "Création de votre compte en cours...",
+          "account-created": "Compte créé !",
+          "hint": "Vous pourrez modifier ce paramètre à tout moment dans vos préférences."
+        }
       },
       "suspended": {
         "page-title": "Compte suspendu",
@@ -102,7 +121,7 @@
         "delete-success": "Journée supprimée.",
         "delete-dialog": {
           "title": "Supprimer cette journée ?",
-          "description": "La journée sera déplacée dans la corbeille et définitivement supprimée après 30 jours.",
+          "description": "La journée sera déplacée dans la corbeille et définitivement supprimée après {{retentionDays}} jours.",
           "confirm": "Supprimer",
           "cancel": "Annuler",
           "okay": "D'accord"
@@ -111,6 +130,24 @@
       "errors": {
         "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
         "workday-document-already-generated": "Votre relevé mensuel pour {{month}} {{year}} a déjà été généré définitivement. Les journées de cette période ne peuvent plus être modifiées."
+      },
+      "garbage": {
+        "page-title": "Corbeille",
+        "description": "Les journées supprimées sont automatiquement effacées après {{retentionDays}} jours.",
+        "empty-title": "Corbeille vide",
+        "empty-description": "Aucune journée supprimée pour le moment.",
+        "permanent-deletion": "Suppression définitive le {{date}}",
+        "days-remaining_one": "{{count}} jour restant",
+        "days-remaining_other": "{{count}} jours restants",
+        "restore": "Restaurer",
+        "restore-success": "La journée a été restaurée avec succès !",
+        "restore-error": "Une erreur est survenue lors de la restauration. Veuillez réessayer.",
+        "table": {
+          "date": "Date",
+          "deleted-on": "Supprimée le",
+          "permanent-deletion": "Suppression définitive",
+          "remaining": "Jours restants"
+        }
       }
     },
     "documents": {
@@ -146,6 +183,12 @@
         "help-support": "Aide & Support",
         "about-plannify": "À propos de Plannify",
         "logout": "Se déconnecter"
+      },
+      "updates": {
+        "section-title": "Nouveautés",
+        "refresh": "Mettre à jour",
+        "mandatory-before": "Obligatoire avant le {{date}}",
+        "empty": "Aucune mise à jour disponible"
       }
     },
     "settings": {
@@ -167,6 +210,8 @@
         "banner-rest-period-description": "Invite à configurer des coupures automatiques pour que Plannify calcule la bonne durée de pause en fin de journée.",
         "banner-documents-label": "Documents générés définitivement",
         "banner-documents-description": "Explique pourquoi certains relevés sont figés et ne peuvent plus être modifiés après 3 mois.",
+        "banner-share-label": "Partager Plannify",
+        "banner-share-description": "Invite à partager l'application avec d'autres conducteurs.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Désactivée",
         "banner-next-display": "Réapparition le {{date}}"
@@ -320,6 +365,16 @@
       "rest-unit": "minutes",
       "no-break": "Sans coupure",
       "confirm": "Terminer ma journée"
+    },
+    "share-banner": {
+      "title": "Partagez Plannify",
+      "reason-free": "Gratuite et sécurisée",
+      "reason-student": "Soutien à un projet étudiant",
+      "reason-opensource": "Projet open source",
+      "share-button": "Partager",
+      "share-text": "Plannify est une application gratuite et développée par un étudiant ingénieur pour gérer vos heures de travail en tant que chauffeur.\n\nRendez-vous ici 👉 {{url}}",
+      "dismiss": "Masquer",
+      "copied": "Lien copié dans le presse-papiers !"
     }
   },
   "navigation": {
@@ -328,51 +383,28 @@
       "navigation-title": {
         "mobile": "Accueil",
         "desktop": "Accueil"
-      },
-      "start-workday": "Commencer une journée",
-      "end-workday": "Terminer une journée",
-      "configure-rest-periods": "Configurer les périodes de repos"
+      }
     },
     "workdays": {
       "title": "Gestion des journées",
       "navigation-title": {
         "mobile": "Journées",
         "desktop": "Journées"
-      },
-      "view-workdays-current-month": {
-        "mobile": "Ce mois",
-        "desktop": "Ce mois"
-      },
-      "view-workdays-previous-month": {
-        "mobile": "{{previousMonth}}",
-        "desktop": "{{previousMonth}} {{yearFromPreviousMonth}}"
-      },
-      "view-workdays-custom": {
-        "mobile": "Recherche avancée",
-        "desktop": "Rechercher des journées"
-      },
-      "add-workday": "Ajouter une journée",
-      "view-garbage-workdays": "Journées supprimées"
+      }
     },
     "documents": {
       "title": "Documents",
       "navigation-title": {
         "mobile": "Documents",
         "desktop": "Documents"
-      },
-      "view-documents-year": "{{currentYear}}",
-      "view-documents-previous-year": "{{previousYear}}",
-      "view-documents-custom": "Rechercher des documents"
+      }
     },
     "account": {
       "title": "Mon compte",
       "navigation-title": {
         "mobile": "Compte",
         "desktop": "Compte"
-      },
-      "view-my-informations": "Voir mes informations",
-      "view-my-mails": "Voir les mails envoyés",
-      "update-notification-preferences": "Modifier mes préférences de notification"
+      }
     }
   },
   "forms": {
@@ -487,6 +519,8 @@
     }
   },
   "common": {
-    "back": "Retour"
+    "back": "Retour",
+    "next": "Suivant",
+    "continue": "Continuer"
   }
 }
