@@ -1,13 +1,29 @@
 import path from "path"
-import { defineConfig } from "vite"
+import { copyFileSync } from "fs"
+import { createRequire } from "module"
+import { defineConfig, type Plugin } from "vite"
 import react from "@vitejs/plugin-react"
 import tailwindcss from "@tailwindcss/vite"
 import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import { VitePWA } from "vite-plugin-pwa"
 
+const require = createRequire(import.meta.url)
+
+// Copies the PDF.js worker with a .js extension so any server serves it with the correct MIME type
+function copyPdfWorkerPlugin(): Plugin {
+  const src = require.resolve("pdfjs-dist/build/pdf.worker.min.mjs")
+  const dest = path.resolve(__dirname, "public/pdf.worker.min.js")
+  return {
+    name: "copy-pdf-worker",
+    buildStart() { copyFileSync(src, dest) },
+    configureServer() { copyFileSync(src, dest) },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    copyPdfWorkerPlugin(),
     tanstackRouter({
       target: "react",
       autoCodeSplitting: true,
@@ -47,7 +63,7 @@ export default defineConfig({
       },
       workbox: {
         skipWaiting: true,
-        globPatterns: ["**/*.{js,mjs,css,html,ico,png,svg,woff2}"],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         runtimeCaching: [
           {
             urlPattern: /\/locales\/.*/i,
