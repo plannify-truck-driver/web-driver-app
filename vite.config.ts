@@ -37,7 +37,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "prompt",
-      includeAssets: ["favicon.ico", "apple-touch-icon.png", "logo-small.png"],
+      includeAssets: ["favicon.ico", "apple-touch-icon.png", "logo.svg", "logo-small.png"],
       manifest: {
         name: "Plannify Driver",
         short_name: "Plannify",
@@ -47,6 +47,11 @@ export default defineConfig({
         display: "standalone",
         start_url: "/",
         icons: [
+          {
+            src: "logo.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+          },
           {
             src: "pwa-192x192.png",
             sizes: "192x192",
@@ -61,7 +66,7 @@ export default defineConfig({
             src: "pwa-512x512.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any maskable",
+            purpose: "maskable",
           },
         ],
       },
