@@ -302,10 +302,7 @@ export default function PagePersonalInformation({
                       {t(
                         "pages.account.personal-information.sections.danger-zone.deactivated-description",
                         {
-                          date: new Date(
-                            new Date(meData.deactivated_at).getTime() +
-                              (deactivationDays ?? 0) * 86_400_000
-                          ).toLocaleDateString(i18n.language, {
+                          date: new Date(meData.deactivated_at).toLocaleDateString(i18n.language, {
                             day: "numeric",
                             month: "long",
                             year: "numeric",

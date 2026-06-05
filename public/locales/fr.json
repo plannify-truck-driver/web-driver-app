@@ -232,8 +232,8 @@
             "deactivate-title": "Désactiver mon compte",
             "deactivate-description": "Votre compte sera définitivement supprimé {{days}} jours après la désactivation. Vous pouvez le restaurer à tout moment avant cette date.",
             "deactivate-button": "Désactiver",
-            "deactivated-title": "Compte programmé pour suppression",
-            "deactivated-description": "Votre compte sera définitivement supprimé le {{date}}. Restaurez-le pour annuler la suppression.",
+            "deactivated-title": "Compte désactivé",
+            "deactivated-description": "Votre compte sera définitivement supprimé le {{date}}. Restaurez-le pour annuler sa suppression.",
             "restore-button": "Restaurer mon compte"
           }
         }

@@ -232,8 +232,8 @@
             "deactivate-title": "Deactivate my account",
             "deactivate-description": "Your account will be permanently deleted {{days}} days after deactivation. You can restore it at any time before that date.",
             "deactivate-button": "Deactivate",
-            "deactivated-title": "Account scheduled for deletion",
-            "deactivated-description": "Your account will be permanently deleted on {{date}}. Restore it to cancel the deletion.",
+            "deactivated-title": "Account deactivated",
+            "deactivated-description": "Your account will be permanently deleted on {{date}}. Restore it to cancel its deletion.",
             "restore-button": "Restore my account"
           }
         }
