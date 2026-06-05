@@ -559,7 +559,8 @@
     "email": {
       "required": "L'adresse e-mail est obligatoire.",
       "invalid": "L'adresse e-mail n'est pas valide.",
-      "max-length": "L'adresse e-mail ne peut pas dépasser 255 caractères."
+      "max-length": "L'adresse e-mail ne peut pas dépasser 255 caractères.",
+      "already-exists": "Cette adresse e-mail est déjà associée à un compte."
     },
     "password": {
       "required": "Le mot de passe est obligatoire.",

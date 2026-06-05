@@ -12,6 +12,7 @@ import type z from "zod"
 import { toast } from "sonner"
 import { useNavigate } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
+import { handleErrorResponse } from "@/shared/lib/error-response"
 
 export default function PagePersonalInformationFeature() {
   const { login, refreshToken } = useAuth()
@@ -114,8 +115,13 @@ export default function PagePersonalInformationFeature() {
       else await refreshToken()
       setIsEmailDialogOpen(false)
       toast.success(t("pages.account.personal-information.toast.email-update-success"))
-    } catch {
-      toast.error(t("pages.account.personal-information.toast.update-error"))
+    } catch (error) {
+      const apiError = await handleErrorResponse(error)
+      if (apiError?.error_code === "DRIVER_ALREADY_EXISTS") {
+        emailForm.setError("email", { message: "validation.email.already-exists" })
+      } else {
+        toast.error(t("pages.account.personal-information.toast.update-error"))
+      }
     }
   }
 

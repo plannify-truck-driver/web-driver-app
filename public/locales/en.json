@@ -559,7 +559,8 @@
     "email": {
       "required": "Email address is required.",
       "invalid": "Email address is not valid.",
-      "max-length": "Email address cannot exceed 255 characters."
+      "max-length": "Email address cannot exceed 255 characters.",
+      "already-exists": "This email address is already associated with an account."
     },
     "password": {
       "required": "Password is required.",
