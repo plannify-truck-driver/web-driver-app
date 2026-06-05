@@ -86,7 +86,7 @@ export default function PagePersonalInformationFeature() {
         gender: values.gender === "O" ? null : (values.gender ?? null),
         phone_number: values.phone_number ?? null,
         email: meData.email,
-        language: i18n.language,
+        language: i18n.language.split("-")[0].toLowerCase(),
         password: null,
       })
       if (response?.access_token) login(response.access_token)
@@ -102,12 +102,12 @@ export default function PagePersonalInformationFeature() {
     if (!meData) return
     try {
       const response = await updateMe({
-        email: values.email,
+        email: values.email.toLowerCase(),
         firstname: meData.firstname,
         lastname: meData.lastname,
         gender: meData.gender,
         phone_number: meData.phone_number,
-        language: i18n.language,
+        language: i18n.language.split("-")[0].toLowerCase(),
         password: null,
       })
       if (response?.access_token) login(response.access_token)
@@ -129,7 +129,7 @@ export default function PagePersonalInformationFeature() {
         lastname: meData.lastname,
         gender: meData.gender,
         phone_number: meData.phone_number,
-        language: i18n.language,
+        language: i18n.language.split("-")[0].toLowerCase(),
       })
       if (response?.access_token) login(response.access_token)
       else await refreshToken()
