@@ -8,3 +8,11 @@ export const getMe = (): Promise<GetMeResponse> => {
 export const updateMe = (body: UpdateMeRequest): Promise<UpdateMeResponse> => {
   return api.patch("me", { json: body }).json()
 }
+
+export const deactivateMe = (): Promise<void> => {
+  return api.post("me/deactivate").json()
+}
+
+export const reactivateMe = (): Promise<void> => {
+  return api.post("me/reactivate").json()
+}

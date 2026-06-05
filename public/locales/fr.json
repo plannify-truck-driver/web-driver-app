@@ -201,6 +201,8 @@
           "profile-update-success": "Profil mis à jour.",
           "email-update-success": "Adresse e-mail mise à jour.",
           "password-update-success": "Mot de passe modifié.",
+          "deactivate-success": "Votre compte a été désactivé.",
+          "restore-success": "Votre compte a été restauré.",
           "update-error": "Une erreur est survenue. Veuillez réessayer."
         },
         "sections": {
@@ -228,8 +230,11 @@
           "danger-zone": {
             "title": "Zone de danger",
             "deactivate-title": "Désactiver mon compte",
-            "deactivate-description": "Désactivez définitivement votre compte. Cette action est irréversible.",
-            "deactivate-button": "Désactiver"
+            "deactivate-description": "Votre compte sera définitivement supprimé {{days}} jours après la désactivation. Vous pouvez le restaurer à tout moment avant cette date.",
+            "deactivate-button": "Désactiver",
+            "deactivated-title": "Compte programmé pour suppression",
+            "deactivated-description": "Votre compte sera définitivement supprimé le {{date}}. Restaurez-le pour annuler la suppression.",
+            "restore-button": "Restaurer mon compte"
           }
         }
       }
@@ -421,6 +426,19 @@
     "edit-password-dialog": {
       "title": "Modifier le mot de passe",
       "description": "Choisissez un nouveau mot de passe fort."
+    },
+    "account-status-dialog": {
+      "cancel": "Annuler",
+      "deactivate": {
+        "title": "Désactiver votre compte ?",
+        "description": "Votre compte sera programmé pour suppression dans {{days}} jours. Vous pouvez le restaurer à tout moment avant cette date.",
+        "confirm": "Désactiver"
+      },
+      "restore": {
+        "title": "Restaurer votre compte ?",
+        "description": "Votre compte ne sera plus programmé pour suppression.",
+        "confirm": "Restaurer"
+      }
     },
     "share-banner": {
       "title": "Partagez Plannify",

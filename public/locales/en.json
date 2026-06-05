@@ -201,6 +201,8 @@
           "profile-update-success": "Profile updated.",
           "email-update-success": "Email address updated.",
           "password-update-success": "Password changed.",
+          "deactivate-success": "Your account has been deactivated.",
+          "restore-success": "Your account has been restored.",
           "update-error": "An error occurred. Please try again."
         },
         "sections": {
@@ -228,8 +230,11 @@
           "danger-zone": {
             "title": "Danger zone",
             "deactivate-title": "Deactivate my account",
-            "deactivate-description": "Permanently deactivate your account. This action is irreversible.",
-            "deactivate-button": "Deactivate"
+            "deactivate-description": "Your account will be permanently deleted {{days}} days after deactivation. You can restore it at any time before that date.",
+            "deactivate-button": "Deactivate",
+            "deactivated-title": "Account scheduled for deletion",
+            "deactivated-description": "Your account will be permanently deleted on {{date}}. Restore it to cancel the deletion.",
+            "restore-button": "Restore my account"
           }
         }
       }
@@ -421,6 +426,19 @@
     "edit-password-dialog": {
       "title": "Change password",
       "description": "Choose a strong new password."
+    },
+    "account-status-dialog": {
+      "cancel": "Cancel",
+      "deactivate": {
+        "title": "Deactivate your account?",
+        "description": "Your account will be scheduled for deletion in {{days}} days. You can restore it at any time before that date.",
+        "confirm": "Deactivate"
+      },
+      "restore": {
+        "title": "Restore your account?",
+        "description": "Your account will no longer be scheduled for deletion.",
+        "confirm": "Restore"
+      }
     },
     "share-banner": {
       "title": "Share Plannify",

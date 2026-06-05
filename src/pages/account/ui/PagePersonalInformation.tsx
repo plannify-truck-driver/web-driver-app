@@ -7,6 +7,7 @@ import {
   MailIcon,
   PencilIcon,
   PhoneIcon,
+  RotateCcwIcon,
   ShieldAlertIcon,
   UserIcon,
 } from "lucide-react"
@@ -21,27 +22,34 @@ import { Skeleton } from "@/shared/components/ui/Skeleton"
 import { EditProfileDialog } from "@/shared/components/EditProfileDialog"
 import { EditEmailDialog } from "@/shared/components/EditEmailDialog"
 import { EditPasswordDialog } from "@/shared/components/EditPasswordDialog"
+import { AccountStatusDialog } from "@/shared/components/AccountStatusDialog"
 import type { GetMeResponse } from "@/shared/queries/driver/driver.types"
 
 interface PagePersonalInformationProps {
   meData: GetMeResponse | null
   isLoadingMe: boolean
   isUpdatingMe: boolean
+  isDeactivating: boolean
   isProfileDialogOpen: boolean
   isEmailDialogOpen: boolean
   isPasswordDialogOpen: boolean
+  accountStatusDialog: "deactivate" | "restore" | null
   profileForm: UseFormReturn<z.infer<typeof editProfileFormSchema>>
   emailForm: UseFormReturn<z.infer<typeof editEmailFormSchema>>
   passwordForm: UseFormReturn<z.infer<typeof editPasswordFormSchema>>
+  deactivationDays?: number
   onOpenProfileDialog: () => void
   onOpenEmailDialog: () => void
   onOpenPasswordDialog: () => void
   onProfileDialogOpenChange: (open: boolean) => void
   onEmailDialogOpenChange: (open: boolean) => void
   onPasswordDialogOpenChange: (open: boolean) => void
+  onAccountStatusDialogChange: (mode: "deactivate" | "restore" | null) => void
   onProfileSubmit: (values: z.infer<typeof editProfileFormSchema>) => void
   onEmailSubmit: (values: z.infer<typeof editEmailFormSchema>) => void
   onPasswordSubmit: (values: z.infer<typeof editPasswordFormSchema>) => void
+  onDeactivate: () => void
+  onRestore: () => void
   onBack: () => void
 }
 
@@ -95,30 +103,34 @@ export default function PagePersonalInformation({
   meData,
   isLoadingMe,
   isUpdatingMe,
+  isDeactivating,
   isProfileDialogOpen,
   isEmailDialogOpen,
   isPasswordDialogOpen,
+  accountStatusDialog,
   profileForm,
   emailForm,
   passwordForm,
+  deactivationDays,
   onOpenProfileDialog,
   onOpenEmailDialog,
   onOpenPasswordDialog,
   onProfileDialogOpenChange,
   onEmailDialogOpenChange,
   onPasswordDialogOpenChange,
+  onAccountStatusDialogChange,
   onProfileSubmit,
   onEmailSubmit,
   onPasswordSubmit,
+  onDeactivate,
+  onRestore,
   onBack,
 }: PagePersonalInformationProps) {
   const { t, i18n } = useTranslation()
 
   const notSet = <span className="text-muted-foreground font-normal">—</span>
 
-  const genderLabel = meData?.gender
-    ? t(`forms.registration.genders.${meData.gender}`)
-    : notSet
+  const genderLabel = meData?.gender ? t(`forms.registration.genders.${meData.gender}`) : notSet
 
   return (
     <div className="flex flex-col gap-6">
@@ -274,27 +286,74 @@ export default function PagePersonalInformation({
             <h2 className="text-muted-foreground font-mono text-sm uppercase">
               {t("pages.account.personal-information.sections.danger-zone.title")}
             </h2>
-            <div className="flex items-center justify-between gap-4 rounded-lg border border-red-200 px-4 py-3 dark:border-red-900/50">
-              <div className="flex items-center gap-3">
-                <ShieldAlertIcon className="size-4 shrink-0 text-red-500" />
-                <div className="flex flex-col gap-0.5">
-                  <p className="text-sm font-medium">
-                    {t("pages.account.personal-information.sections.danger-zone.deactivate-title")}
-                  </p>
-                  <p className="text-muted-foreground text-sm">
-                    {t("pages.account.personal-information.sections.danger-zone.deactivate-description")}
-                  </p>
+            {isLoadingMe ? (
+              <Skeleton className="h-[68px] w-full rounded-lg" />
+            ) : meData?.deactivated_at ? (
+              <div className="flex items-center justify-between gap-4 rounded-lg border border-amber-200 px-4 py-3 dark:border-amber-800/50">
+                <div className="flex items-center gap-3">
+                  <RotateCcwIcon className="size-4 shrink-0 text-amber-500" />
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-sm font-medium">
+                      {t(
+                        "pages.account.personal-information.sections.danger-zone.deactivated-title"
+                      )}
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      {t(
+                        "pages.account.personal-information.sections.danger-zone.deactivated-description",
+                        {
+                          date: new Date(
+                            new Date(meData.deactivated_at).getTime() +
+                              (deactivationDays ?? 0) * 86_400_000
+                          ).toLocaleDateString(i18n.language, {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          }),
+                        }
+                      )}
+                    </p>
+                  </div>
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onAccountStatusDialogChange("restore")}
+                  disabled={isDeactivating}
+                  className="shrink-0"
+                >
+                  {t("pages.account.personal-information.sections.danger-zone.restore-button")}
+                </Button>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                disabled
-                className="shrink-0 border-red-200 text-red-500 hover:bg-red-50 hover:text-red-600 disabled:opacity-50 dark:border-red-900/50 dark:hover:bg-red-950/20"
-              >
-                {t("pages.account.personal-information.sections.danger-zone.deactivate-button")}
-              </Button>
-            </div>
+            ) : (
+              <div className="flex items-center justify-between gap-4 rounded-lg border border-red-200 px-4 py-3 dark:border-red-900/50">
+                <div className="flex items-center gap-3">
+                  <ShieldAlertIcon className="size-4 shrink-0 text-red-500" />
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-sm font-medium">
+                      {t(
+                        "pages.account.personal-information.sections.danger-zone.deactivate-title"
+                      )}
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      {t(
+                        "pages.account.personal-information.sections.danger-zone.deactivate-description",
+                        { days: deactivationDays ?? "…" }
+                      )}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onAccountStatusDialogChange("deactivate")}
+                  disabled={isLoadingMe || isDeactivating}
+                  className="shrink-0 border-red-200 text-red-500 hover:bg-red-50 hover:text-red-600 dark:border-red-900/50 dark:hover:bg-red-950/20"
+                >
+                  {t("pages.account.personal-information.sections.danger-zone.deactivate-button")}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -320,6 +379,16 @@ export default function PagePersonalInformation({
         setIsOpen={onPasswordDialogOpenChange}
         onSubmit={onPasswordSubmit}
       />
+      {accountStatusDialog && (
+        <AccountStatusDialog
+          mode={accountStatusDialog}
+          isOpen={true}
+          setIsOpen={(open) => !open && onAccountStatusDialogChange(null)}
+          isLoading={isDeactivating}
+          deactivationDays={deactivationDays}
+          onConfirm={accountStatusDialog === "deactivate" ? onDeactivate : onRestore}
+        />
+      )}
     </div>
   )
 }

@@ -2,7 +2,13 @@ import { useAuth } from "@/app/providers/AuthProvider"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useTranslation } from "react-i18next"
 import PagePersonalInformation from "../ui/PagePersonalInformation"
-import { useGetMe, useUpdateMeMutation } from "@/shared/queries/driver/driver.queries"
+import {
+  useDeactivateMeMutation,
+  useGetMe,
+  useReactivateMeMutation,
+  useUpdateMeMutation,
+} from "@/shared/queries/driver/driver.queries"
+import { useConfig } from "@/shared/queries/config/config.queries"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { editProfileFormSchema } from "@/shared/zod/edit-profile"
@@ -20,11 +26,17 @@ export default function PagePersonalInformationFeature() {
   const navigate = useNavigate()
 
   const { data: meData, isLoading: isLoadingMe } = useGetMe()
+  const { data: configData } = useConfig()
   const { mutateAsync: updateMe, isPending: isUpdatingMe } = useUpdateMeMutation()
+  const { mutateAsync: deactivateMe, isPending: isDeactivating } = useDeactivateMeMutation()
+  const { mutateAsync: reactivateMe, isPending: isReactivating } = useReactivateMeMutation()
 
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
   const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false)
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false)
+  const [accountStatusDialog, setAccountStatusDialog] = useState<"deactivate" | "restore" | null>(
+    null
+  )
 
   const profileForm = useForm<z.infer<typeof editProfileFormSchema>>({
     resolver: zodResolver(editProfileFormSchema),
@@ -147,6 +159,26 @@ export default function PagePersonalInformationFeature() {
     }
   }
 
+  async function handleDeactivate() {
+    try {
+      await deactivateMe()
+      setAccountStatusDialog(null)
+      toast.success(t("pages.account.personal-information.toast.deactivate-success"))
+    } catch {
+      toast.error(t("pages.account.personal-information.toast.update-error"))
+    }
+  }
+
+  async function handleRestore() {
+    try {
+      await reactivateMe()
+      setAccountStatusDialog(null)
+      toast.success(t("pages.account.personal-information.toast.restore-success"))
+    } catch {
+      toast.error(t("pages.account.personal-information.toast.update-error"))
+    }
+  }
+
   useDocumentTitle(t("pages.account.personal-information.page-title"))
 
   return (
@@ -157,18 +189,24 @@ export default function PagePersonalInformationFeature() {
       isProfileDialogOpen={isProfileDialogOpen}
       isEmailDialogOpen={isEmailDialogOpen}
       isPasswordDialogOpen={isPasswordDialogOpen}
+      accountStatusDialog={accountStatusDialog}
       profileForm={profileForm}
       emailForm={emailForm}
       passwordForm={passwordForm}
+      deactivationDays={configData?.account_deactivation_days}
+      isDeactivating={isDeactivating || isReactivating}
       onOpenProfileDialog={handleOpenProfileDialog}
       onOpenEmailDialog={handleOpenEmailDialog}
       onOpenPasswordDialog={handleOpenPasswordDialog}
       onProfileDialogOpenChange={setIsProfileDialogOpen}
       onEmailDialogOpenChange={setIsEmailDialogOpen}
       onPasswordDialogOpenChange={setIsPasswordDialogOpen}
+      onAccountStatusDialogChange={setAccountStatusDialog}
       onProfileSubmit={handleProfileSubmit}
       onEmailSubmit={handleEmailSubmit}
       onPasswordSubmit={handlePasswordSubmit}
+      onDeactivate={handleDeactivate}
+      onRestore={handleRestore}
       onBack={() => navigate({ to: "/account" })}
     />
   )
