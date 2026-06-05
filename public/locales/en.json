@@ -194,6 +194,44 @@
         "available": "Update available",
         "description": "A new version of the application is ready to install.",
         "action": "Install"
+      },
+      "personal-information": {
+        "page-title": "Personal information",
+        "toast": {
+          "profile-update-success": "Profile updated.",
+          "email-update-success": "Email address updated.",
+          "password-update-success": "Password changed.",
+          "update-error": "An error occurred. Please try again."
+        },
+        "sections": {
+          "profile": {
+            "title": "Profile",
+            "edit-button": "Edit"
+          },
+          "email": {
+            "title": "Email address",
+            "edit-button": "Edit"
+          },
+          "password": {
+            "title": "Password",
+            "edit-button": "Change",
+            "placeholder": "••••••••"
+          },
+          "account-info": {
+            "title": "Account",
+            "member-since": "Member since",
+            "last-login": "Last login",
+            "verified": "Verified account",
+            "verified-yes": "Verified",
+            "verified-no": "Not verified"
+          },
+          "danger-zone": {
+            "title": "Danger zone",
+            "deactivate-title": "Deactivate my account",
+            "deactivate-description": "Permanently deactivate your account. This action is irreversible.",
+            "deactivate-button": "Deactivate"
+          }
+        }
       }
     },
     "settings": {
@@ -371,6 +409,19 @@
       "no-break": "No break",
       "confirm": "End workday"
     },
+    "edit-profile-dialog": {
+      "title": "Edit profile",
+      "description": "Update your first name, last name, gender and phone number."
+    },
+    "edit-email-dialog": {
+      "title": "Change email address",
+      "description": "Enter your new email address.",
+      "unverification-warning": "Changing your email address will revoke your account verification. A new verification email will be sent to the new address."
+    },
+    "edit-password-dialog": {
+      "title": "Change password",
+      "description": "Choose a strong new password."
+    },
     "share-banner": {
       "title": "Share Plannify",
       "reason-free": "Free and secure",
@@ -464,6 +515,16 @@
       "okay": "Okay",
       "generic-error-undo": "Annuler"
     },
+    "edit-personal-information": {
+      "phone-number-label": "Phone number",
+      "phone-number-placeholder": "+32 470 00 00 00",
+      "submit-button": "Save changes"
+    },
+    "edit-password": {
+      "new-password-label": "New password",
+      "confirm-password-label": "Confirm new password",
+      "submit-button": "Change password"
+    },
     "errors": {
       "unexpected-error": "An unexpected error occurred. Please try again later."
     }
@@ -515,6 +576,9 @@
     "confirm-password": {
       "required": "Password confirmation is required.",
       "match": "Passwords do not match."
+    },
+    "phone-number": {
+      "max-length": "Phone number cannot exceed 30 characters."
     },
     "date": {
       "invalid": "The date is not valid."

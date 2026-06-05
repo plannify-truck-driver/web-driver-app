@@ -22,6 +22,7 @@ import { Route as AuthenticationVerifyAccountRouteImport } from "./routes/authen
 import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentication/suspended"
 import { Route as AuthenticationRegistrationRouteImport } from "./routes/authentication/registration"
 import { Route as AuthenticationLoginRouteImport } from "./routes/authentication/login"
+import { Route as AccountPersonalInformationRouteImport } from "./routes/account/personal-information"
 import { Route as AuthenticationTokenVerifyAccountRouteImport } from "./routes/authentication/token/verify-account"
 
 const IndexRoute = IndexRouteImport.update({
@@ -92,6 +93,12 @@ const AuthenticationLoginRoute = AuthenticationLoginRouteImport.update({
   path: "/authentication/login",
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountPersonalInformationRoute =
+  AccountPersonalInformationRouteImport.update({
+    id: "/account/personal-information",
+    path: "/account/personal-information",
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticationTokenVerifyAccountRoute =
   AuthenticationTokenVerifyAccountRouteImport.update({
     id: "/authentication/token/verify-account",
@@ -101,6 +108,7 @@ const AuthenticationTokenVerifyAccountRoute =
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
+  "/account/personal-information": typeof AccountPersonalInformationRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
@@ -117,6 +125,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
+  "/account/personal-information": typeof AccountPersonalInformationRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
@@ -134,6 +143,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
+  "/account/personal-information": typeof AccountPersonalInformationRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | "/"
+    | "/account/personal-information"
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/suspended"
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
+    | "/account/personal-information"
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/suspended"
@@ -184,6 +196,7 @@ export interface FileRouteTypes {
   id:
     | "__root__"
     | "/"
+    | "/account/personal-information"
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/suspended"
@@ -201,6 +214,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountPersonalInformationRoute: typeof AccountPersonalInformationRoute
   AuthenticationLoginRoute: typeof AuthenticationLoginRoute
   AuthenticationRegistrationRoute: typeof AuthenticationRegistrationRoute
   AuthenticationSuspendedRoute: typeof AuthenticationSuspendedRoute
@@ -309,6 +323,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticationLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/account/personal-information": {
+      id: "/account/personal-information"
+      path: "/account/personal-information"
+      fullPath: "/account/personal-information"
+      preLoaderRoute: typeof AccountPersonalInformationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     "/authentication/token/verify-account": {
       id: "/authentication/token/verify-account"
       path: "/authentication/token/verify-account"
@@ -321,6 +342,7 @@ declare module "@tanstack/react-router" {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountPersonalInformationRoute: AccountPersonalInformationRoute,
   AuthenticationLoginRoute: AuthenticationLoginRoute,
   AuthenticationRegistrationRoute: AuthenticationRegistrationRoute,
   AuthenticationSuspendedRoute: AuthenticationSuspendedRoute,

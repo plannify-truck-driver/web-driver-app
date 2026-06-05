@@ -109,7 +109,7 @@ export default function PageAccount({
               {
                 icon: UserPenIcon,
                 label: t("pages.account.settings-actions.personal-information"),
-                onClick: () => {},
+                onClick: () => navigate({ to: "/account/personal-information" }),
               },
               {
                 icon: MailsIcon,
@@ -159,7 +159,7 @@ export default function PageAccount({
                   <DropdownMenu>
                     <DropdownMenuTrigger className="flex cursor-pointer items-center gap-2">
                       <span className="text-muted-foreground">
-                        {t(`languages.${i18n.language}`)}
+                        {t(`languages.${i18n.language.split("-")[0].toLowerCase()}`)}
                       </span>
                       <ChevronDownIcon className="h-4 w-4" />
                     </DropdownMenuTrigger>

@@ -26,6 +26,7 @@ export const useRefreshToken = () =>
     queryKey: authKeys.refreshToken(),
     queryFn: refreshToken,
     enabled: false,
+    retry: false,
   })
 
 export const useDeleteRefreshTokenMutation = () =>

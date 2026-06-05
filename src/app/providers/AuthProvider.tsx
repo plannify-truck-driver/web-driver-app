@@ -2,6 +2,7 @@ import type { Driver, JwtDriverPayload } from "@/shared/models/driver"
 import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useDeleteRefreshTokenMutation, useRefreshToken } from "@/shared/queries/auth/auth.queries"
+import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useQueryClient } from "@tanstack/react-query"
 
 export interface AuthProviderState {
@@ -38,23 +39,33 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
     setDriver(decoded.driver)
   }, [])
 
+  const clearSession = useCallback(() => {
+    setAccessToken(null)
+    setDriver(null)
+    queryClient.clear()
+  }, [queryClient])
+
   function logout() {
     mutateAsync().then(() => {
-      setAccessToken(null)
-      setDriver(null)
-      queryClient.clear()
+      clearSession()
     })
   }
 
   const refreshToken = useCallback(async () => {
-    return refetch().then((res) => {
+    return refetch().then(async (res) => {
       if (res.data) {
         login(res.data.access_token)
         return true
       }
+      if (res.error) {
+        const apiError = await handleErrorResponse(res.error)
+        if (apiError?.error_code === "INVALID_REFRESH_TOKEN") {
+          clearSession()
+        }
+      }
       return false
     })
-  }, [refetch, login])
+  }, [refetch, login, clearSession])
 
   useEffect(() => {
     if (!accessToken) return

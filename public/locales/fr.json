@@ -194,6 +194,44 @@
         "available": "Mise à jour disponible",
         "description": "Une nouvelle version de l'application est prête à être installée.",
         "action": "Installer"
+      },
+      "personal-information": {
+        "page-title": "Informations personnelles",
+        "toast": {
+          "profile-update-success": "Profil mis à jour.",
+          "email-update-success": "Adresse e-mail mise à jour.",
+          "password-update-success": "Mot de passe modifié.",
+          "update-error": "Une erreur est survenue. Veuillez réessayer."
+        },
+        "sections": {
+          "profile": {
+            "title": "Profil",
+            "edit-button": "Modifier"
+          },
+          "email": {
+            "title": "Adresse e-mail",
+            "edit-button": "Modifier"
+          },
+          "password": {
+            "title": "Mot de passe",
+            "edit-button": "Modifier",
+            "placeholder": "••••••••"
+          },
+          "account-info": {
+            "title": "Compte",
+            "member-since": "Membre depuis",
+            "last-login": "Dernière connexion",
+            "verified": "Compte vérifié",
+            "verified-yes": "Vérifié",
+            "verified-no": "Non vérifié"
+          },
+          "danger-zone": {
+            "title": "Zone de danger",
+            "deactivate-title": "Désactiver mon compte",
+            "deactivate-description": "Désactivez définitivement votre compte. Cette action est irréversible.",
+            "deactivate-button": "Désactiver"
+          }
+        }
       }
     },
     "settings": {
@@ -371,6 +409,19 @@
       "no-break": "Sans coupure",
       "confirm": "Terminer ma journée"
     },
+    "edit-profile-dialog": {
+      "title": "Modifier le profil",
+      "description": "Mettez à jour votre prénom, nom, genre et numéro de téléphone."
+    },
+    "edit-email-dialog": {
+      "title": "Modifier l'adresse e-mail",
+      "description": "Saisissez votre nouvelle adresse e-mail.",
+      "unverification-warning": "Modifier votre adresse e-mail révoquera la vérification de votre compte. Un nouvel e-mail de vérification sera envoyé à la nouvelle adresse."
+    },
+    "edit-password-dialog": {
+      "title": "Modifier le mot de passe",
+      "description": "Choisissez un nouveau mot de passe fort."
+    },
     "share-banner": {
       "title": "Partagez Plannify",
       "reason-free": "Gratuite et sécurisée",
@@ -464,6 +515,16 @@
       "okay": "D'accord",
       "generic-error-undo": "Annuler"
     },
+    "edit-personal-information": {
+      "phone-number-label": "Numéro de téléphone",
+      "phone-number-placeholder": "+32 470 00 00 00",
+      "submit-button": "Enregistrer les modifications"
+    },
+    "edit-password": {
+      "new-password-label": "Nouveau mot de passe",
+      "confirm-password-label": "Confirmer le nouveau mot de passe",
+      "submit-button": "Modifier le mot de passe"
+    },
     "errors": {
       "unexpected-error": "Une erreur inattendue est survenue. Veuillez réessayer plus tard."
     }
@@ -515,6 +576,9 @@
     "confirm-password": {
       "required": "La confirmation du mot de passe est obligatoire.",
       "match": "Les mots de passe ne correspondent pas."
+    },
+    "phone-number": {
+      "max-length": "Le numéro de téléphone ne peut pas dépasser 30 caractères."
     },
     "date": {
       "invalid": "La date n'est pas valide."
