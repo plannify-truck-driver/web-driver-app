@@ -114,7 +114,7 @@ export default function PageAccount({
               {
                 icon: MailsIcon,
                 label: t("pages.account.settings-actions.email-preferences"),
-                onClick: () => {},
+                onClick: () => navigate({ to: "/account/mails" }),
               },
               {
                 icon: CirclePauseIcon,

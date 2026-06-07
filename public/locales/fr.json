@@ -195,6 +195,60 @@
         "description": "Une nouvelle version de l'application est prête à être installée.",
         "action": "Installer"
       },
+      "mails": {
+        "page-title": "Mes mails",
+        "section-title": "Mails envoyés",
+        "total_one": "{{count}} mail",
+        "total_other": "{{count}} mails",
+        "empty": "Aucun mail envoyé pour le moment.",
+        "sent-at": "Envoyé le {{date}}",
+        "created-at": "Créé le {{date}}",
+        "description-language-notice": "Cette description est fournie en anglais par le système.",
+        "table": {
+          "type": "Type",
+          "description": "Description",
+          "email": "Adresse e-mail",
+          "date": "Date",
+          "attachments": "P.J.",
+          "status": "Statut"
+        },
+        "attachments_one": "{{count}} pièce jointe",
+        "attachments_other": "{{count}} pièces jointes",
+        "types": {
+          "ACCOUNT_VERIFICATION": "Vérification du compte",
+          "PASSWORD_RESET": "Réinitialisation du mot de passe",
+          "ACCOUNT_CHANGEMENT": "Modification du compte",
+          "MONTHLY_REPORTS": "Relevé mensuel"
+        },
+        "status": {
+          "PENDING": "En attente",
+          "SUCCESS": "Envoyé",
+          "FAILED": "Échoué"
+        }
+      },
+      "mail-detail": {
+        "page-title": "Détail du mail",
+        "sections": {
+          "info": {
+            "title": "Informations",
+            "created-at": "Créé le",
+            "sent-at": "Envoyé le"
+          },
+          "description": {
+            "title": "Description"
+          },
+          "content": {
+            "title": "Contenu"
+          },
+          "attachments": {
+            "title": "Pièces jointes",
+            "empty": "Aucune pièce jointe.",
+            "download": "Télécharger",
+            "download-error": "Impossible de télécharger la pièce jointe.",
+            "download-error-not-found": "Cette pièce jointe est introuvable."
+          }
+        }
+      },
       "personal-information": {
         "page-title": "Informations personnelles",
         "toast": {
@@ -609,6 +663,11 @@
   "common": {
     "back": "Retour",
     "next": "Suivant",
-    "continue": "Continuer"
+    "continue": "Continuer",
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {{page}} / {{total}}"
+    }
   }
 }

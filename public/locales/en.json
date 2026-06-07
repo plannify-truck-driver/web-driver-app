@@ -195,6 +195,60 @@
         "description": "A new version of the application is ready to install.",
         "action": "Install"
       },
+      "mails": {
+        "page-title": "My emails",
+        "section-title": "Sent emails",
+        "total_one": "{{count}} email",
+        "total_other": "{{count}} emails",
+        "empty": "No emails sent yet.",
+        "sent-at": "Sent on {{date}}",
+        "created-at": "Created on {{date}}",
+        "description-language-notice": "This description is provided in English by the system.",
+        "table": {
+          "type": "Type",
+          "description": "Description",
+          "email": "Email address",
+          "date": "Date",
+          "attachments": "Att.",
+          "status": "Status"
+        },
+        "attachments_one": "{{count}} attachment",
+        "attachments_other": "{{count}} attachments",
+        "types": {
+          "ACCOUNT_VERIFICATION": "Account verification",
+          "PASSWORD_RESET": "Password reset",
+          "ACCOUNT_CHANGEMENT": "Account update",
+          "MONTHLY_REPORTS": "Monthly statement"
+        },
+        "status": {
+          "PENDING": "Pending",
+          "SUCCESS": "Sent",
+          "FAILED": "Failed"
+        }
+      },
+      "mail-detail": {
+        "page-title": "Email detail",
+        "sections": {
+          "info": {
+            "title": "Information",
+            "created-at": "Created on",
+            "sent-at": "Sent on"
+          },
+          "description": {
+            "title": "Description"
+          },
+          "content": {
+            "title": "Content"
+          },
+          "attachments": {
+            "title": "Attachments",
+            "empty": "No attachments.",
+            "download": "Download",
+            "download-error": "Unable to download the attachment.",
+            "download-error-not-found": "This attachment could not be found."
+          }
+        }
+      },
       "personal-information": {
         "page-title": "Personal information",
         "toast": {
@@ -609,6 +663,11 @@
   "common": {
     "back": "Back",
     "next": "Next",
-    "continue": "Continue"
+    "continue": "Continue",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{page}} / {{total}}"
+    }
   }
 }

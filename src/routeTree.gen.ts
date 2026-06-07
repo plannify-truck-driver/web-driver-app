@@ -23,7 +23,10 @@ import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentica
 import { Route as AuthenticationRegistrationRouteImport } from "./routes/authentication/registration"
 import { Route as AuthenticationLoginRouteImport } from "./routes/authentication/login"
 import { Route as AccountPersonalInformationRouteImport } from "./routes/account/personal-information"
+import { Route as AccountMailsRouteImport } from "./routes/account/mails"
+import { Route as AccountMailsIndexRouteImport } from "./routes/account/mails/index"
 import { Route as AuthenticationTokenVerifyAccountRouteImport } from "./routes/authentication/token/verify-account"
+import { Route as AccountMailsMailIdRouteImport } from "./routes/account/mails/$mailId"
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
@@ -99,15 +102,31 @@ const AccountPersonalInformationRoute =
     path: "/account/personal-information",
     getParentRoute: () => rootRouteImport,
   } as any)
+const AccountMailsRoute = AccountMailsRouteImport.update({
+  id: "/account/mails",
+  path: "/account/mails",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountMailsIndexRoute = AccountMailsIndexRouteImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => AccountMailsRoute,
+} as any)
 const AuthenticationTokenVerifyAccountRoute =
   AuthenticationTokenVerifyAccountRouteImport.update({
     id: "/authentication/token/verify-account",
     path: "/authentication/token/verify-account",
     getParentRoute: () => rootRouteImport,
   } as any)
+const AccountMailsMailIdRoute = AccountMailsMailIdRouteImport.update({
+  id: "/$mailId",
+  path: "/$mailId",
+  getParentRoute: () => AccountMailsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
+  "/account/mails": typeof AccountMailsRouteWithChildren
   "/account/personal-information": typeof AccountPersonalInformationRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
@@ -121,7 +140,9 @@ export interface FileRoutesByFullPath {
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
   "/workdays/": typeof WorkdaysIndexRoute
+  "/account/mails/$mailId": typeof AccountMailsMailIdRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
+  "/account/mails/": typeof AccountMailsIndexRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
@@ -138,11 +159,14 @@ export interface FileRoutesByTo {
   "/dashboard": typeof DashboardIndexRoute
   "/documents": typeof DocumentsIndexRoute
   "/workdays": typeof WorkdaysIndexRoute
+  "/account/mails/$mailId": typeof AccountMailsMailIdRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
+  "/account/mails": typeof AccountMailsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
+  "/account/mails": typeof AccountMailsRouteWithChildren
   "/account/personal-information": typeof AccountPersonalInformationRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
@@ -156,12 +180,15 @@ export interface FileRoutesById {
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
   "/workdays/": typeof WorkdaysIndexRoute
+  "/account/mails/$mailId": typeof AccountMailsMailIdRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
+  "/account/mails/": typeof AccountMailsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | "/"
+    | "/account/mails"
     | "/account/personal-information"
     | "/authentication/login"
     | "/authentication/registration"
@@ -175,7 +202,9 @@ export interface FileRouteTypes {
     | "/dashboard/"
     | "/documents/"
     | "/workdays/"
+    | "/account/mails/$mailId"
     | "/authentication/token/verify-account"
+    | "/account/mails/"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
@@ -192,10 +221,13 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/documents"
     | "/workdays"
+    | "/account/mails/$mailId"
     | "/authentication/token/verify-account"
+    | "/account/mails"
   id:
     | "__root__"
     | "/"
+    | "/account/mails"
     | "/account/personal-information"
     | "/authentication/login"
     | "/authentication/registration"
@@ -209,11 +241,14 @@ export interface FileRouteTypes {
     | "/dashboard/"
     | "/documents/"
     | "/workdays/"
+    | "/account/mails/$mailId"
     | "/authentication/token/verify-account"
+    | "/account/mails/"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountMailsRoute: typeof AccountMailsRouteWithChildren
   AccountPersonalInformationRoute: typeof AccountPersonalInformationRoute
   AuthenticationLoginRoute: typeof AuthenticationLoginRoute
   AuthenticationRegistrationRoute: typeof AuthenticationRegistrationRoute
@@ -330,6 +365,20 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AccountPersonalInformationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/account/mails": {
+      id: "/account/mails"
+      path: "/account/mails"
+      fullPath: "/account/mails"
+      preLoaderRoute: typeof AccountMailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/account/mails/": {
+      id: "/account/mails/"
+      path: "/"
+      fullPath: "/account/mails/"
+      preLoaderRoute: typeof AccountMailsIndexRouteImport
+      parentRoute: typeof AccountMailsRoute
+    }
     "/authentication/token/verify-account": {
       id: "/authentication/token/verify-account"
       path: "/authentication/token/verify-account"
@@ -337,11 +386,33 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticationTokenVerifyAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/account/mails/$mailId": {
+      id: "/account/mails/$mailId"
+      path: "/$mailId"
+      fullPath: "/account/mails/$mailId"
+      preLoaderRoute: typeof AccountMailsMailIdRouteImport
+      parentRoute: typeof AccountMailsRoute
+    }
   }
 }
 
+interface AccountMailsRouteChildren {
+  AccountMailsMailIdRoute: typeof AccountMailsMailIdRoute
+  AccountMailsIndexRoute: typeof AccountMailsIndexRoute
+}
+
+const AccountMailsRouteChildren: AccountMailsRouteChildren = {
+  AccountMailsMailIdRoute: AccountMailsMailIdRoute,
+  AccountMailsIndexRoute: AccountMailsIndexRoute,
+}
+
+const AccountMailsRouteWithChildren = AccountMailsRoute._addFileChildren(
+  AccountMailsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountMailsRoute: AccountMailsRouteWithChildren,
   AccountPersonalInformationRoute: AccountPersonalInformationRoute,
   AuthenticationLoginRoute: AuthenticationLoginRoute,
   AuthenticationRegistrationRoute: AuthenticationRegistrationRoute,
