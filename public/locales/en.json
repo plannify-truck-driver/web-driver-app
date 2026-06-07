@@ -175,7 +175,7 @@
         "account-section-title": "Settings",
         "support-section-title": "Support",
         "personal-information": "Personal information",
-        "email-preferences": "Email preferences",
+        "email-management": "Email management",
         "rest-preferences": "Rest preferences",
         "application-preferences": "Application preferences",
         "theme": "Theme",
@@ -196,8 +196,9 @@
         "action": "Install"
       },
       "mails": {
-        "page-title": "My emails",
-        "section-title": "Sent emails",
+        "page-title": "Email management",
+        "preferences-management": "Preference management",
+        "mail-sent": "Sent emails",
         "total_one": "{{count}} email",
         "total_other": "{{count}} emails",
         "empty": "No emails sent yet.",
@@ -224,7 +225,23 @@
           "PENDING": "Pending",
           "SUCCESS": "Sent",
           "FAILED": "Failed"
+        },
+        "preferences": {
+          "section-title": "Notification preferences",
+          "empty": "No configurable preferences.",
+          "toggle-error": "Unable to update the preference. Please try again.",
+          "descriptions": {
+            "ACCOUNT_VERIFICATION": "Receive an email when creating your account to verify it.",
+            "PASSWORD_RESET": "Receive an email with a link to reset your password in case of forgetfulness.",
+            "ACCOUNT_CHANGEMENT": "Receive a notification email in case of modification to your account (e.g., email address, password, etc.).",
+            "MONTHLY_REPORTS": "Receive a monthly summary of your activity."
+          }
         }
+      },
+      "mail-preferences": {
+        "page-title": "Notification preferences",
+        "section-title": "Email notifications",
+        "empty": "No configurable preferences."
       },
       "mail-detail": {
         "page-title": "Email detail",
@@ -667,7 +684,8 @@
     "pagination": {
       "previous": "Previous",
       "next": "Next",
-      "page": "Page {{page}} / {{total}}"
+      "page": "Page {{page}} / {{total}}",
+      "per-page": "{{count}} items per page"
     }
   }
 }

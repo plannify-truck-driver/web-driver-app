@@ -175,7 +175,7 @@
         "account-section-title": "Paramètres",
         "support-section-title": "Support",
         "personal-information": "Informations personnelles",
-        "email-preferences": "Préférences mail",
+        "email-management": "Gestion des mails",
         "rest-preferences": "Préférences de coupure",
         "application-preferences": "Préférences de l'application",
         "theme": "Thème",
@@ -196,8 +196,9 @@
         "action": "Installer"
       },
       "mails": {
-        "page-title": "Mes mails",
-        "section-title": "Mails envoyés",
+        "page-title": "Gestion des mails",
+        "preferences-management": "Gestion des préférences",
+        "mail-sent": "Mails envoyés",
         "total_one": "{{count}} mail",
         "total_other": "{{count}} mails",
         "empty": "Aucun mail envoyé pour le moment.",
@@ -224,7 +225,23 @@
           "PENDING": "En attente",
           "SUCCESS": "Envoyé",
           "FAILED": "Échoué"
+        },
+        "preferences": {
+          "section-title": "Préférences de notification",
+          "empty": "Aucune préférence configurable.",
+          "toggle-error": "Impossible de modifier la préférence. Veuillez réessayer.",
+          "descriptions": {
+            "ACCOUNT_VERIFICATION": "Recevoir un mail lors de la création de votre compte pour le vérifier.",
+            "PASSWORD_RESET": "Recevoir un mail avec un lien pour réinitialiser votre mot de passe en cas d'oubli.",
+            "ACCOUNT_CHANGEMENT": "Recevoir un mail de notification en cas de modification de votre compte (ex: changement d'adresse e-mail, mot de passe, etc.).",
+            "MONTHLY_REPORTS": "Recevoir un récapitulatif mensuel de votre activité."
+          }
         }
+      },
+      "mail-preferences": {
+        "page-title": "Préférences de notification",
+        "section-title": "Notifications par e-mail",
+        "empty": "Aucune préférence configurable."
       },
       "mail-detail": {
         "page-title": "Détail du mail",
@@ -667,7 +684,8 @@
     "pagination": {
       "previous": "Précédent",
       "next": "Suivant",
-      "page": "Page {{page}} / {{total}}"
+      "page": "Page {{page}} / {{total}}",
+      "per-page": "{{count}} éléments par page"
     }
   }
 }

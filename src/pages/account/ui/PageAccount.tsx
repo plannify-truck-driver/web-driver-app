@@ -113,7 +113,7 @@ export default function PageAccount({
               },
               {
                 icon: MailsIcon,
-                label: t("pages.account.settings-actions.email-preferences"),
+                label: t("pages.account.settings-actions.email-management"),
                 onClick: () => navigate({ to: "/account/mails" }),
               },
               {

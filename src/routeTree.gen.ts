@@ -26,6 +26,7 @@ import { Route as AccountPersonalInformationRouteImport } from "./routes/account
 import { Route as AccountMailsRouteImport } from "./routes/account/mails"
 import { Route as AccountMailsIndexRouteImport } from "./routes/account/mails/index"
 import { Route as AuthenticationTokenVerifyAccountRouteImport } from "./routes/authentication/token/verify-account"
+import { Route as AccountMailsPreferencesRouteImport } from "./routes/account/mails/preferences"
 import { Route as AccountMailsMailIdRouteImport } from "./routes/account/mails/$mailId"
 
 const IndexRoute = IndexRouteImport.update({
@@ -118,6 +119,11 @@ const AuthenticationTokenVerifyAccountRoute =
     path: "/authentication/token/verify-account",
     getParentRoute: () => rootRouteImport,
   } as any)
+const AccountMailsPreferencesRoute = AccountMailsPreferencesRouteImport.update({
+  id: "/preferences",
+  path: "/preferences",
+  getParentRoute: () => AccountMailsRoute,
+} as any)
 const AccountMailsMailIdRoute = AccountMailsMailIdRouteImport.update({
   id: "/$mailId",
   path: "/$mailId",
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   "/documents/": typeof DocumentsIndexRoute
   "/workdays/": typeof WorkdaysIndexRoute
   "/account/mails/$mailId": typeof AccountMailsMailIdRoute
+  "/account/mails/preferences": typeof AccountMailsPreferencesRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
   "/account/mails/": typeof AccountMailsIndexRoute
 }
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   "/documents": typeof DocumentsIndexRoute
   "/workdays": typeof WorkdaysIndexRoute
   "/account/mails/$mailId": typeof AccountMailsMailIdRoute
+  "/account/mails/preferences": typeof AccountMailsPreferencesRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
   "/account/mails": typeof AccountMailsIndexRoute
 }
@@ -181,6 +189,7 @@ export interface FileRoutesById {
   "/documents/": typeof DocumentsIndexRoute
   "/workdays/": typeof WorkdaysIndexRoute
   "/account/mails/$mailId": typeof AccountMailsMailIdRoute
+  "/account/mails/preferences": typeof AccountMailsPreferencesRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
   "/account/mails/": typeof AccountMailsIndexRoute
 }
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | "/documents/"
     | "/workdays/"
     | "/account/mails/$mailId"
+    | "/account/mails/preferences"
     | "/authentication/token/verify-account"
     | "/account/mails/"
   fileRoutesByTo: FileRoutesByTo
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | "/documents"
     | "/workdays"
     | "/account/mails/$mailId"
+    | "/account/mails/preferences"
     | "/authentication/token/verify-account"
     | "/account/mails"
   id:
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | "/documents/"
     | "/workdays/"
     | "/account/mails/$mailId"
+    | "/account/mails/preferences"
     | "/authentication/token/verify-account"
     | "/account/mails/"
   fileRoutesById: FileRoutesById
@@ -386,6 +398,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticationTokenVerifyAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/account/mails/preferences": {
+      id: "/account/mails/preferences"
+      path: "/preferences"
+      fullPath: "/account/mails/preferences"
+      preLoaderRoute: typeof AccountMailsPreferencesRouteImport
+      parentRoute: typeof AccountMailsRoute
+    }
     "/account/mails/$mailId": {
       id: "/account/mails/$mailId"
       path: "/$mailId"
@@ -398,11 +417,13 @@ declare module "@tanstack/react-router" {
 
 interface AccountMailsRouteChildren {
   AccountMailsMailIdRoute: typeof AccountMailsMailIdRoute
+  AccountMailsPreferencesRoute: typeof AccountMailsPreferencesRoute
   AccountMailsIndexRoute: typeof AccountMailsIndexRoute
 }
 
 const AccountMailsRouteChildren: AccountMailsRouteChildren = {
   AccountMailsMailIdRoute: AccountMailsMailIdRoute,
+  AccountMailsPreferencesRoute: AccountMailsPreferencesRoute,
   AccountMailsIndexRoute: AccountMailsIndexRoute,
 }
 

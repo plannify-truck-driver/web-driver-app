@@ -94,20 +94,20 @@ function MailCard({ mail }: { mail: Mail }) {
           </p>
         </div>
       )}
-      <div className="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+      <div className="text-muted-foreground flex flex-row items-center justify-between gap-x-4 gap-y-1 text-xs">
         <span className="truncate">{mail.email_used}</span>
         <span>
           {mail.sent_at
             ? t("pages.account.mails.sent-at", { date: formatDate(dateStr, i18n.language) })
             : t("pages.account.mails.created-at", { date: formatDate(dateStr, i18n.language) })}
         </span>
-        {mail.attachments.length > 0 && (
-          <span className="flex items-center gap-1">
-            <PaperclipIcon className="size-3" />
-            {t("pages.account.mails.attachments", { count: mail.attachments.length })}
-          </span>
-        )}
       </div>
+      {mail.attachments.length > 0 && (
+        <span className="text-muted-foreground flex items-center gap-1 text-xs">
+          <PaperclipIcon className="size-3" />
+          {t("pages.account.mails.attachments", { count: mail.attachments.length })}
+        </span>
+      )}
     </div>
   )
 }
@@ -283,6 +283,7 @@ export default function PageMails({
   onBack,
 }: PageMailsProps) {
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const pagination = totalPages > 1 && (
     <div className="flex items-center justify-between pt-2">
@@ -295,7 +296,11 @@ export default function PageMails({
         <ChevronLeftIcon className="size-4" />
         {t("common.pagination.previous")}
       </Button>
-      <span className="text-muted-foreground text-sm">
+      <span className="text-muted-foreground hidden text-sm sm:inline-flex">
+        {t("common.pagination.page", { page, total: totalPages })}&nbsp;-&nbsp;
+        {t("common.pagination.per-page", { count: mails.length })}
+      </span>
+      <span className="text-muted-foreground inline-flex text-sm sm:hidden">
         {t("common.pagination.page", { page, total: totalPages })}
       </span>
       <Button
@@ -323,10 +328,20 @@ export default function PageMails({
         <h1 className="text-2xl font-semibold">{t("pages.account.mails.page-title")}</h1>
       </div>
 
+      <div className="flex flex-row items-center justify-between">
+        <p className="text-muted-foreground font-mono text-sm uppercase">
+          {t("pages.account.mails.preferences-management")}
+        </p>
+
+        <Button variant="outline" onClick={() => navigate({ to: "/account/mails/preferences" })}>
+          {t("pages.account.mails.preferences-management")}
+        </Button>
+      </div>
+
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between">
           <p className="text-muted-foreground font-mono text-sm uppercase">
-            {t("pages.account.mails.section-title")}
+            {t("pages.account.mails.mail-sent")}
           </p>
           {!isLoading && total > 0 && (
             <span className="text-muted-foreground text-xs">

@@ -1,11 +1,20 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { downloadMailAttachment, getMailById, getMails } from "./mails.api"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import {
+  downloadMailAttachment,
+  getMailById,
+  getMails,
+  getMailPreferences,
+  getMailTypes,
+  updateMailPreference,
+} from "./mails.api"
 import type { MailsParams } from "./mails.types"
 
 export const mailsKeys = {
   all: ["mails"] as const,
   list: (params: MailsParams) => [...mailsKeys.all, params] as const,
   detail: (mailId: string) => [...mailsKeys.all, mailId] as const,
+  types: () => [...mailsKeys.all, "types"] as const,
+  preferences: () => [...mailsKeys.all, "preferences"] as const,
 }
 
 export const useGetMails = (params: MailsParams = {}) =>
@@ -19,6 +28,29 @@ export const useGetMailById = (mailId: string) =>
     queryKey: mailsKeys.detail(mailId),
     queryFn: () => getMailById(mailId),
   })
+
+export const useGetMailTypes = () =>
+  useQuery({
+    queryKey: mailsKeys.types(),
+    queryFn: getMailTypes,
+  })
+
+export const useGetMailPreferences = () =>
+  useQuery({
+    queryKey: mailsKeys.preferences(),
+    queryFn: getMailPreferences,
+  })
+
+export const useUpdateMailPreference = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ mailTypeId, isEnabled }: { mailTypeId: number; isEnabled: boolean }) =>
+      updateMailPreference(mailTypeId, isEnabled),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: mailsKeys.preferences() })
+    },
+  })
+}
 
 export const useDownloadMailAttachment = () =>
   useMutation({

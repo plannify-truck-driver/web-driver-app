@@ -1,5 +1,5 @@
 import { api } from "@/shared/lib/api"
-import type { Mail, MailsParams, MailsResponse } from "./mails.types"
+import type { Mail, MailPreference, MailsParams, MailsResponse, MailType } from "./mails.types"
 
 export const getMails = ({ page = 1, limit = 10 }: MailsParams = {}): Promise<MailsResponse> => {
   return api.get("mails", { searchParams: { page, limit } }).json()
@@ -8,6 +8,14 @@ export const getMails = ({ page = 1, limit = 10 }: MailsParams = {}): Promise<Ma
 export const getMailById = (mailId: string): Promise<Mail> => {
   return api.get(`mails/${mailId}`).json()
 }
+
+export const getMailTypes = (): Promise<MailType[]> => api.get("mails/types").json()
+
+export const getMailPreferences = (): Promise<MailPreference[]> =>
+  api.get("mails/preferences").json()
+
+export const updateMailPreference = (mailTypeId: number, isEnabled: boolean): Promise<void> =>
+  api.put(`mails/preferences/${mailTypeId}`, { json: { is_enabled: isEnabled } }).json()
 
 export const downloadMailAttachment = async (
   attachmentId: string,

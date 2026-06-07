@@ -34,3 +34,10 @@ export interface MailsParams {
   page?: number
   limit?: number
 }
+
+export interface MailPreference {
+  mail_type_id: number
+  label: string
+  is_editable: boolean
+  is_enabled: boolean
+}
