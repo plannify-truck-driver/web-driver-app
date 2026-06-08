@@ -1,4 +1,14 @@
-import { ArrowLeftIcon, BellIcon, ClockIcon, LaptopIcon, MonitorIcon, RotateCcwIcon, SmartphoneIcon, TabletIcon, TimerIcon } from "lucide-react"
+import {
+  ArrowLeftIcon,
+  BellIcon,
+  ClockIcon,
+  LaptopIcon,
+  MonitorIcon,
+  RotateCcwIcon,
+  SmartphoneIcon,
+  TabletIcon,
+  TimerIcon,
+} from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useState, useEffect } from "react"
 import { Switch } from "@/shared/components/ui/Switch"
@@ -73,9 +83,15 @@ export default function PageApplicationPreferences({
         <TabletIcon className="hidden size-4 shrink-0 md:block lg:hidden" />
         <LaptopIcon className="hidden size-4 shrink-0 lg:block xl:hidden" />
         <MonitorIcon className="hidden size-4 shrink-0 xl:block" />
-        <p className="md:hidden">{t("pages.settings.application-preferences.device-notice-phone")}</p>
-        <p className="hidden md:block lg:hidden">{t("pages.settings.application-preferences.device-notice-tablet")}</p>
-        <p className="hidden lg:block">{t("pages.settings.application-preferences.device-notice-computer")}</p>
+        <p className="md:hidden">
+          {t("pages.settings.application-preferences.device-notice-phone")}
+        </p>
+        <p className="hidden md:block lg:hidden">
+          {t("pages.settings.application-preferences.device-notice-tablet")}
+        </p>
+        <p className="hidden lg:block">
+          {t("pages.settings.application-preferences.device-notice-computer")}
+        </p>
       </div>
 
       {/* Display */}
@@ -206,7 +222,7 @@ export default function PageApplicationPreferences({
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-3 pt-0.5">
-                  <span className="text-muted-foreground tabular-nums text-sm">
+                  <span className="text-muted-foreground text-sm tabular-nums">
                     {banner.count}/{banner.maxDismissals}
                   </span>
                   {banner.count > 0 && (

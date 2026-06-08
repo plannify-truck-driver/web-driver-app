@@ -9,7 +9,7 @@ import { useLoginMutation } from "@/shared/queries/auth/auth.queries"
 import { useEffect, useRef, useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import { useAuth } from "@/app/providers/AuthProvider"
+import { useAuth } from "@/app/providers/useAuth"
 
 export default function PageLoginFeature() {
   const { t } = useTranslation()

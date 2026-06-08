@@ -1,29 +1,11 @@
-import type { Driver, JwtDriverPayload } from "@/shared/models/driver"
-import { createContext, useCallback, useContext, useEffect, useState } from "react"
+import type { JwtDriverPayload } from "@/shared/models/driver"
+import { useCallback, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useDeleteRefreshTokenMutation, useRefreshToken } from "@/shared/queries/auth/auth.queries"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useQueryClient } from "@tanstack/react-query"
-
-export interface AuthProviderState {
-  driver: Driver | null
-  accessToken: string | null
-  login: (token: string) => void
-  logout: () => void
-  isDeletingRefreshToken: boolean
-  refreshToken: () => Promise<boolean>
-}
-
-const initialState: AuthProviderState = {
-  driver: null,
-  accessToken: null,
-  login: () => null,
-  logout: () => null,
-  isDeletingRefreshToken: false,
-  refreshToken: async () => false,
-}
-
-const AuthProviderContext = createContext<AuthProviderState>(initialState)
+import { AuthProviderContext } from "./AuthProviderContext"
+import type { AuthProviderState } from "./AuthProviderContext"
 
 export function AuthProvider({ children, ...props }: { children: React.ReactNode }) {
   const { refetch } = useRefreshToken()
@@ -31,7 +13,7 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
   const queryClient = useQueryClient()
 
   const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [driver, setDriver] = useState<Driver | null>(null)
+  const [driver, setDriver] = useState<AuthProviderState["driver"]>(null)
 
   const login = useCallback((token: string) => {
     setAccessToken(token)
@@ -91,10 +73,4 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
       {children}
     </AuthProviderContext.Provider>
   )
-}
-
-export function useAuth() {
-  const context = useContext(AuthProviderContext)
-
-  return context
 }

@@ -606,7 +606,6 @@
     },
     "edit-personal-information": {
       "phone-number-label": "Numéro de téléphone",
-      "phone-number-placeholder": "+32 470 00 00 00",
       "submit-button": "Enregistrer les modifications"
     },
     "edit-password": {

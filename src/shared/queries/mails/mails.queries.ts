@@ -54,11 +54,6 @@ export const useUpdateMailPreference = () => {
 
 export const useDownloadMailAttachment = () =>
   useMutation({
-    mutationFn: ({
-      attachmentId,
-      fileName,
-    }: {
-      attachmentId: string
-      fileName: string
-    }) => downloadMailAttachment(attachmentId, fileName),
+    mutationFn: ({ attachmentId, fileName }: { attachmentId: string; fileName: string }) =>
+      downloadMailAttachment(attachmentId, fileName),
   })

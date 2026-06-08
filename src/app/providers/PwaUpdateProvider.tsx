@@ -1,15 +1,6 @@
-import { createContext, useContext, type ReactNode } from "react"
+import type { ReactNode } from "react"
 import { useRegisterSW } from "virtual:pwa-register/react"
-
-interface PwaUpdateContextValue {
-  needRefresh: boolean
-  updateServiceWorker: () => Promise<void>
-}
-
-const PwaUpdateContext = createContext<PwaUpdateContextValue>({
-  needRefresh: false,
-  updateServiceWorker: async () => {},
-})
+import { PwaUpdateContext } from "./PwaUpdateProviderContext"
 
 export function PwaUpdateProvider({ children }: { children: ReactNode }) {
   const {
@@ -22,8 +13,4 @@ export function PwaUpdateProvider({ children }: { children: ReactNode }) {
       {children}
     </PwaUpdateContext.Provider>
   )
-}
-
-export function usePwaUpdate() {
-  return useContext(PwaUpdateContext)
 }

@@ -179,7 +179,10 @@ export default function PageRegistration({
                     onValueChange={field.onChange}
                     disabled={loading}
                   >
-                    <SelectTrigger className="bg-background w-full" aria-invalid={fieldState.invalid}>
+                    <SelectTrigger
+                      className="bg-background w-full"
+                      aria-invalid={fieldState.invalid}
+                    >
                       <SelectValue placeholder={t("forms.registration.gender-placeholder")} />
                     </SelectTrigger>
                     <SelectContent>
@@ -302,7 +305,11 @@ export default function PageRegistration({
               </Button>
             )}
             {step < 4 ? (
-              <Button type="button" className={cn(step === 1 ? "w-full" : "flex-1")} onClick={onNextStep}>
+              <Button
+                type="button"
+                className={cn(step === 1 ? "w-full" : "flex-1")}
+                onClick={onNextStep}
+              >
                 {t("common.next")}
               </Button>
             ) : (

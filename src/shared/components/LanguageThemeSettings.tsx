@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/Select"
-import { useTheme } from "@/app/providers/ThemeProvider"
+import { useTheme } from "@/app/providers/useTheme"
 import { useTranslation } from "react-i18next"
 
 export function LanguageThemeSettings() {

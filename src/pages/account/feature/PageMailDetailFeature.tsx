@@ -14,8 +14,11 @@ export default function PageMailDetailFeature() {
   useDocumentTitle(t("pages.account.mail-detail.page-title"))
 
   const { data: mail, isLoading } = useGetMailById(mailId)
-  const { mutate: downloadAttachment, isPending: isDownloading, variables: downloadingVariables } =
-    useDownloadMailAttachment()
+  const {
+    mutate: downloadAttachment,
+    isPending: isDownloading,
+    variables: downloadingVariables,
+  } = useDownloadMailAttachment()
 
   async function handleDownload(attachmentId: string, fileName: string) {
     downloadAttachment(
@@ -24,7 +27,9 @@ export default function PageMailDetailFeature() {
         onError: async (error) => {
           const apiError = await handleErrorResponse(error)
           if (apiError?.error_code === "MAIL_ATTACHMENT_NOT_FOUND") {
-            toast.error(t("pages.account.mail-detail.sections.attachments.download-error-not-found"))
+            toast.error(
+              t("pages.account.mail-detail.sections.attachments.download-error-not-found")
+            )
           } else {
             toast.error(t("pages.account.mail-detail.sections.attachments.download-error"))
           }

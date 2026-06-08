@@ -1,5 +1,5 @@
-import { useAuth } from "@/app/providers/AuthProvider"
-import { useTheme } from "@/app/providers/ThemeProvider"
+import { useAuth } from "@/app/providers/useAuth"
+import { useTheme } from "@/app/providers/useTheme"
 import { useShareBannerDismiss } from "@/hooks/use-share-banner-dismiss"
 import { Loader } from "@/shared/components/Loader"
 import { ShareBanner } from "@/shared/components/ShareBanner"
@@ -26,8 +26,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/shared/components/ui/Sidebar"
+import { useSidebar } from "@/shared/components/ui/useSidebar"
 import { Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router"
 import {
   CalendarSearch,
@@ -49,7 +49,7 @@ import {
 } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { usePwaUpdate } from "@/app/providers/PwaUpdateProvider"
+import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
 
 interface NavbarNavigationItem {
   title: string

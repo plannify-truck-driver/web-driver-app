@@ -55,10 +55,7 @@ function EditPasswordForm({
             </Field>
           )}
         />
-        <PasswordComplexityMeter
-          key={form.watch("password")}
-          password={form.watch("password")}
-        />
+        <PasswordComplexityMeter key={form.watch("password")} password={form.watch("password")} />
         <Controller
           name="confirmPassword"
           control={form.control}
@@ -105,7 +102,9 @@ export function EditPasswordDialog({
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{t("components.edit-password-dialog.title")}</DialogTitle>
-            <DialogDescription>{t("components.edit-password-dialog.description")}</DialogDescription>
+            <DialogDescription>
+              {t("components.edit-password-dialog.description")}
+            </DialogDescription>
           </DialogHeader>
           <EditPasswordForm form={form} isLoading={isLoading} onSubmit={onSubmit} />
         </DialogContent>

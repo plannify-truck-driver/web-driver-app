@@ -87,9 +87,7 @@ export function EndWorkdayRestDialog({
             >
               {t("components.end-workday-rest-dialog.no-break")}
             </Button>
-            <Button type="submit">
-              {t("components.end-workday-rest-dialog.confirm")}
-            </Button>
+            <Button type="submit">{t("components.end-workday-rest-dialog.confirm")}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

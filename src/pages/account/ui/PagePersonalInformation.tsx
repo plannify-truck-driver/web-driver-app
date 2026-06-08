@@ -12,6 +12,7 @@ import {
   UserIcon,
 } from "lucide-react"
 import { useTranslation } from "react-i18next"
+import { formatPhoneNumberIntl } from "react-phone-number-input"
 import type { UseFormReturn } from "react-hook-form"
 import type z from "zod"
 import type { editProfileFormSchema } from "@/shared/zod/edit-profile"
@@ -178,7 +179,13 @@ export default function PagePersonalInformation({
             <InfoRow
               icon={PhoneIcon}
               label={t("forms.edit-personal-information.phone-number-label")}
-              value={isLoadingMe ? undefined : (meData?.phone_number ?? notSet)}
+              value={
+                isLoadingMe
+                  ? undefined
+                  : meData?.phone_number
+                    ? formatPhoneNumberIntl(meData.phone_number) || meData.phone_number
+                    : notSet
+              }
               isLoading={isLoadingMe}
             />
           </div>

@@ -1,22 +1,9 @@
-import { createContext, useContext, useState } from "react"
-
-interface DriverPreferences {
-  workdayTableRowType: 1 | 2 | 3
-}
-
-export interface DriverPreferencesProviderState {
-  preferences: DriverPreferences
-  setPreferences: (preferences: DriverPreferences) => void
-}
-
-const initialState: DriverPreferencesProviderState = {
-  preferences: {
-    workdayTableRowType: 1,
-  },
-  setPreferences: () => null,
-}
-
-const DriverPreferencesProviderContext = createContext<DriverPreferencesProviderState>(initialState)
+import { useState } from "react"
+import {
+  DriverPreferencesProviderContext,
+  type DriverPreferences,
+  type DriverPreferencesProviderState,
+} from "./DriverPreferencesProviderContext"
 
 export function DriverPreferencesProvider({ children, ...props }: { children: React.ReactNode }) {
   const [preferences, setPreferencesState] = useState<DriverPreferences>(() => {
@@ -28,8 +15,10 @@ export function DriverPreferencesProvider({ children, ...props }: { children: Re
           return { workdayTableRowType: parsed }
         }
       }
-    } catch {}
-    return initialState.preferences
+    } catch {
+      // ignore localStorage errors (private browsing, quota exceeded, etc.)
+    }
+    return { workdayTableRowType: 1 }
   })
 
   const setPreferences = (preferences: DriverPreferences) => {
@@ -47,10 +36,4 @@ export function DriverPreferencesProvider({ children, ...props }: { children: Re
       {children}
     </DriverPreferencesProviderContext.Provider>
   )
-}
-
-export function useDriverPreferences() {
-  const ctx = useContext(DriverPreferencesProviderContext)
-  if (!ctx) throw new Error("useDriverPreferences must be used within DriverPreferencesProvider")
-  return ctx
 }

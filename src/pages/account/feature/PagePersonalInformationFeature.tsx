@@ -1,4 +1,4 @@
-import { useAuth } from "@/app/providers/AuthProvider"
+import { useAuth } from "@/app/providers/useAuth"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useTranslation } from "react-i18next"
 import PagePersonalInformation from "../ui/PagePersonalInformation"

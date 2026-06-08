@@ -9,7 +9,7 @@ import { isPasswordStrong } from "@/shared/functions/isPasswordStrong"
 import { useRegistrationMutation } from "@/shared/queries/auth/auth.queries"
 import { useEffect, useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
-import { useAuth } from "@/app/providers/AuthProvider"
+import { useAuth } from "@/app/providers/useAuth"
 import { useNavigate } from "@tanstack/react-router"
 import { useIsMobile } from "@/hooks/use-mobile"
 

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import PageVerifyAccount from "../ui/PageVerifyAccount"
 import { useTranslation } from "react-i18next"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useVerifyAccountMutation } from "@/shared/queries/auth/auth.queries"
 import { handleErrorResponse } from "@/shared/lib/error-response"
-import { useAuth } from "@/app/providers/AuthProvider"
+import { useAuth } from "@/app/providers/useAuth"
 
 export default function PageVerifyAccountFeature() {
   const { t } = useTranslation()
@@ -17,59 +17,56 @@ export default function PageVerifyAccountFeature() {
   useDocumentTitle(t("pages.authentication.token-verify-account.page-title"))
 
   const { mutateAsync, data, error, isPending } = useVerifyAccountMutation()
-  const [message, setMessage] = useState<{ success: string; error: string } | null>(null)
+  const [asyncError, setAsyncError] = useState("")
 
   useEffect(() => {
     if (token && driverId) {
       mutateAsync({ token, driver_id: driverId })
-    } else {
-      setMessage({
-        success: "",
-        error: t("pages.authentication.token-verify-account.invalid-url-parameters"),
-      })
     }
-  }, [token, driverId, mutateAsync, t])
+  }, [token, driverId, mutateAsync])
 
   useEffect(() => {
     if (data && !accessToken) {
       login(data.access_token)
-      setMessage({
-        success: t("pages.authentication.token-verify-account.success-message"),
-        error: "",
-      })
     }
-  }, [data, t, login, accessToken])
+  }, [data, accessToken, login])
 
   useEffect(() => {
-    if (error) {
-      handleErrorResponse(error).then((apiError) => {
-        if (apiError) {
-          switch (apiError.error_code) {
-            case "ACCOUNT_ALREADY_VERIFIED":
-              setMessage({
-                success: t("pages.authentication.token-verify-account.already-verified"),
-                error: "",
-              })
-              break
-            case "INVALID_VERIFICATION_KEY":
-              setMessage({
-                success: "",
-                error: t("pages.authentication.token-verify-account.invalid-verification-key"),
-              })
-              break
-            case "MISSING_ATTRIBUTE":
-              setMessage({
-                success: "",
-                error: t("pages.authentication.token-verify-account.invalid-url-parameters"),
-              })
-              break
-          }
-          console.error("API Error:", apiError)
+    if (!error) return
+    handleErrorResponse(error).then((apiError) => {
+      if (apiError) {
+        switch (apiError.error_code) {
+          case "ACCOUNT_ALREADY_VERIFIED":
+            setAsyncError(t("pages.authentication.token-verify-account.already-verified"))
+            break
+          case "INVALID_VERIFICATION_KEY":
+            setAsyncError(t("pages.authentication.token-verify-account.invalid-verification-key"))
+            break
+          case "MISSING_ATTRIBUTE":
+            setAsyncError(t("pages.authentication.token-verify-account.invalid-url-parameters"))
+            break
         }
-        console.error("Registration error:", error)
-      })
-    }
+        console.error("API Error:", apiError)
+      }
+      console.error("Registration error:", error)
+    })
   }, [error, t])
+
+  const message = useMemo<{ success: string; error: string } | null>(() => {
+    if (!token || !driverId) {
+      return {
+        success: "",
+        error: t("pages.authentication.token-verify-account.invalid-url-parameters"),
+      }
+    }
+    if (data && accessToken) {
+      return { success: t("pages.authentication.token-verify-account.success-message"), error: "" }
+    }
+    if (asyncError) {
+      return { success: "", error: asyncError }
+    }
+    return null
+  }, [token, driverId, data, accessToken, asyncError, t])
 
   return <PageVerifyAccount message={message} loading={isPending} />
 }

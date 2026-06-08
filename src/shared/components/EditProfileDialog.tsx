@@ -18,6 +18,8 @@ import {
   SelectValue,
 } from "./ui/Select"
 import { XIcon } from "lucide-react"
+import { PhoneInput } from "./ui/PhoneInput"
+import { useDefaultPhoneCountry } from "@/hooks/use-default-phone-country"
 
 interface EditProfileDialogProps {
   isOpen: boolean
@@ -33,6 +35,7 @@ function EditProfileForm({
   onSubmit,
 }: Pick<EditProfileDialogProps, "form" | "isLoading" | "onSubmit">) {
   const { t } = useTranslation()
+  const defaultCountry = useDefaultPhoneCountry()
 
   return (
     <form
@@ -99,7 +102,11 @@ function EditProfileForm({
                 onValueChange={(val) => field.onChange(val === "" ? null : val)}
                 disabled={isLoading}
               >
-                <SelectTrigger id="ep-gender" className="bg-background w-full" aria-invalid={fieldState.invalid}>
+                <SelectTrigger
+                  id="ep-gender"
+                  className="bg-background w-full"
+                  aria-invalid={fieldState.invalid}
+                >
                   <SelectValue placeholder={t("forms.registration.gender-placeholder")} />
                 </SelectTrigger>
                 <SelectContent>
@@ -125,16 +132,14 @@ function EditProfileForm({
               <FieldLabel htmlFor="ep-phone">
                 {t("forms.edit-personal-information.phone-number-label")}
               </FieldLabel>
-              <Input
-                {...field}
-                value={field.value ?? ""}
-                onChange={(e) => field.onChange(e.target.value || null)}
+              <PhoneInput
+                onChange={(value) => field.onChange(value || null)}
+                value={field.value || undefined}
+                defaultCountry={defaultCountry}
                 id="ep-phone"
-                type="tel"
                 disabled={isLoading}
                 aria-invalid={fieldState.invalid}
                 autoComplete="tel"
-                placeholder={t("forms.edit-personal-information.phone-number-placeholder")}
               />
               {fieldState.invalid && fieldState.error && (
                 <FieldError>{t(fieldState.error.message as string)}</FieldError>

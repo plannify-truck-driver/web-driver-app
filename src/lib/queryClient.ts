@@ -23,7 +23,10 @@ export const setRefreshTokenHandler = (refreshFn: () => Promise<unknown>) => {
   })
 
   // Global error handler
-  queryClient.getQueryCache().config.onError = async (error: Error, query: Query<unknown, unknown, unknown, readonly unknown[]>) => {
+  queryClient.getQueryCache().config.onError = async (
+    error: Error,
+    query: Query<unknown, unknown, unknown, readonly unknown[]>
+  ) => {
     if (query.queryKey.join(".") === authKeys.refreshToken().join(".")) return
     await handleUnauthorized(error, refreshFn)
   }

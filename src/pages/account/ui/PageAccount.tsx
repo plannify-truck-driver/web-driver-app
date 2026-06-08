@@ -1,4 +1,4 @@
-import { useTheme } from "@/app/providers/ThemeProvider"
+import { useTheme } from "@/app/providers/useTheme"
 import { NoDriverLoaded } from "@/shared/components/NoDriverLoaded"
 import { ShareBanner } from "@/shared/components/ShareBanner"
 import SettingsActionGroup from "@/shared/components/SettingsActionGroup"
@@ -32,7 +32,7 @@ import {
   SunIcon,
   UserPenIcon,
 } from "lucide-react"
-import { usePwaUpdate } from "@/app/providers/PwaUpdateProvider"
+import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
 import { Button } from "@/shared/components/ui/Button"
 import { useTranslation } from "react-i18next"
 
