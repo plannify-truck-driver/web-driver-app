@@ -333,7 +333,8 @@
         "banner-share-description": "Invites you to share the app with other drivers.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Disabled",
-        "banner-next-display": "Reappears on {{date}}"
+        "banner-next-display": "Reappears on {{date}}",
+        "workday-display-format-section": "Workday display format"
       },
       "rest-preferences": {
         "page-title": "Rest Preferences",

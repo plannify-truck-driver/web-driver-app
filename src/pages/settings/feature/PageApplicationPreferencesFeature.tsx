@@ -3,6 +3,7 @@ import { useMaxWorkdayDuration } from "@/hooks/use-max-workday-duration"
 import { useRestPeriodBannerDismiss } from "@/hooks/use-rest-period-banner-dismiss"
 import { useDocumentsBannerDismiss } from "@/hooks/use-documents-banner-dismiss"
 import { useShareBannerDismiss } from "@/hooks/use-share-banner-dismiss"
+import { useDriverPreferences } from "@/app/providers/useDriverPreferences"
 import PageApplicationPreferences from "../ui/PageApplicationPreferences"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useTranslation } from "react-i18next"
@@ -13,6 +14,7 @@ export default function PageApplicationPreferencesFeature() {
 
   const { showSeconds, setShowSeconds } = useShowSeconds()
   const { maxHours, setMaxHours } = useMaxWorkdayDuration()
+  const { preferences, setPreferences } = useDriverPreferences()
   const restPeriodBanner = useRestPeriodBannerDismiss()
   const documentsBanner = useDocumentsBannerDismiss()
   const shareBanner = useShareBannerDismiss()
@@ -23,6 +25,10 @@ export default function PageApplicationPreferencesFeature() {
       onShowSecondsChange={setShowSeconds}
       maxHours={maxHours}
       onMaxHoursChange={setMaxHours}
+      workdayRowType={preferences.workdayTableRowType}
+      onWorkdayRowTypeChange={(type) =>
+        setPreferences({ ...preferences, workdayTableRowType: type })
+      }
       banners={[
         {
           key: "rest-period",

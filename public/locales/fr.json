@@ -333,7 +333,8 @@
         "banner-share-description": "Invite à partager l'application avec d'autres conducteurs.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Désactivée",
-        "banner-next-display": "Réapparition le {{date}}"
+        "banner-next-display": "Réapparition le {{date}}",
+        "workday-display-format-section": "Format d'affichage des journées"
       },
       "rest-preferences": {
         "page-title": "Préférences de coupure",
