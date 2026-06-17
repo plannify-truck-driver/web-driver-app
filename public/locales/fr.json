@@ -583,7 +583,8 @@
       "errors": {
         "cannot-copy-password-to-clipboard": "Impossible de copier le mot de passe dans le presse-papiers.",
         "cannot-generate-password-while-loading": "Impossible de générer un mot de passe pendant la création du compte.",
-        "driver-already-exists": "Un compte existe déjà avec cette adresse e-mail."
+        "driver-already-exists": "Un compte existe déjà avec cette adresse e-mail.",
+        "email-domain-denylisted": "Les adresses e-mail du domaine {{domain}} ne sont pas acceptées. Veuillez utiliser une autre adresse e-mail."
       }
     },
     "add-workday": {

@@ -583,7 +583,8 @@
       "errors": {
         "cannot-copy-password-to-clipboard": "Cannot copy the password to the clipboard.",
         "cannot-generate-password-while-loading": "Cannot generate a password while the account is being created.",
-        "driver-already-exists": "An account already exists with this email address."
+        "driver-already-exists": "An account already exists with this email address.",
+        "email-domain-denylisted": "Email addresses from {{domain}} are not accepted. Please use a different email address."
       }
     },
     "add-workday": {

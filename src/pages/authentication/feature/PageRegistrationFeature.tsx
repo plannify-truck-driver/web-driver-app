@@ -104,6 +104,15 @@ export default function PageRegistrationFeature() {
               setErrorMessage(t("forms.registration.errors.driver-already-exists"))
               setStep(3)
               break
+            case "EMAIL_DOMAIN_DENYLISTED":
+              form.setError("email", { type: "manual" })
+              setErrorMessage(
+                t("forms.registration.errors.email-domain-denylisted", {
+                  domain: apiError.content?.domain,
+                }),
+              )
+              setStep(3)
+              break
             default:
               setErrorMessage(t("forms.errors.unexpected-error"))
               setStep(1)
