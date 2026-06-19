@@ -92,7 +92,7 @@ function TimeInput({
     setOpen(false)
   }
 
-  const columnClass = "h-52 overflow-y-auto overscroll-contain p-1"
+  const columnClass = "h-52 overflow-y-auto overscroll-contain touch-pan-y p-1"
   const itemClass = (active: boolean) =>
     cn(
       "flex w-full items-center justify-center rounded px-3 py-1.5 text-sm font-medium",
