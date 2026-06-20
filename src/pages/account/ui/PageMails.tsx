@@ -18,10 +18,11 @@ import {
   TableRow,
 } from "@/shared/components/ui/Table"
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table"
-import type { Mail, MailStatus } from "@/shared/queries/mails/mails.types"
-import { cn } from "@/lib/utils"
+import type { Mail } from "@/shared/queries/mails/mails.types"
 import { useNavigate } from "@tanstack/react-router"
 import type { TFunction } from "i18next"
+import { StatusBadge } from "@/shared/components/MailStatusBadge"
+import { MailCard } from "@/shared/components/MailCard"
 
 interface PageMailsProps {
   mails: Mail[]
@@ -31,26 +32,6 @@ interface PageMailsProps {
   total: number
   onPageChange: (page: number) => void
   onBack: () => void
-}
-
-const STATUS_STYLES: Record<MailStatus, string> = {
-  PENDING: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  SUCCESS: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  FAILED: "bg-red-500/10 text-red-500 dark:text-red-400",
-}
-
-function StatusBadge({ status }: { status: MailStatus }) {
-  const { t } = useTranslation()
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap",
-        STATUS_STYLES[status] ?? STATUS_STYLES.PENDING
-      )}
-    >
-      {t(`pages.account.mails.status.${status}`)}
-    </span>
-  )
 }
 
 function formatDate(dateStr: string, locale: string) {
@@ -63,66 +44,6 @@ function formatDate(dateStr: string, locale: string) {
 
 function mailTypeLabel(label: string, t: TFunction) {
   return t(`pages.account.mails.types.${label}`, { defaultValue: label })
-}
-
-// ─── Mobile cards ─────────────────────────────────────────────────────────────
-
-function MailCard({ mail }: { mail: Mail }) {
-  const { t, i18n } = useTranslation()
-  const navigate = useNavigate()
-  const dateStr = mail.sent_at ?? mail.created_at
-
-  return (
-    <div
-      className="flex flex-col gap-2 px-4 py-3"
-      onClick={() =>
-        navigate({
-          to: "/account/mails/$mailId",
-          params: { mailId: mail.pk_driver_mail_id },
-        })
-      }
-    >
-      <div className="flex items-start justify-between gap-2">
-        <p className="text-sm leading-snug font-medium">{mailTypeLabel(mail.mail_type.label, t)}</p>
-        <StatusBadge status={mail.status} />
-      </div>
-      {mail.description && (
-        <div className="flex flex-col gap-0.5">
-          <p className="text-muted-foreground line-clamp-2 text-sm">{mail.description}</p>
-          <p className="text-muted-foreground/60 text-xs italic">
-            {t("pages.account.mails.description-language-notice")}
-          </p>
-        </div>
-      )}
-      <div className="text-muted-foreground flex flex-row items-center justify-between gap-x-4 gap-y-1 text-xs">
-        <span className="truncate">{mail.email_used}</span>
-        <span>
-          {mail.sent_at
-            ? t("pages.account.mails.sent-at", { date: formatDate(dateStr, i18n.language) })
-            : t("pages.account.mails.created-at", { date: formatDate(dateStr, i18n.language) })}
-        </span>
-      </div>
-      {mail.attachments.length > 0 && (
-        <span className="text-muted-foreground flex items-center gap-1 text-xs">
-          <PaperclipIcon className="size-3" />
-          {t("pages.account.mails.attachments", { count: mail.attachments.length })}
-        </span>
-      )}
-    </div>
-  )
-}
-
-function MailCardSkeleton() {
-  return (
-    <div className="flex flex-col gap-2 px-4 py-3">
-      <div className="flex items-center justify-between gap-2">
-        <Skeleton className="h-4 w-44" />
-        <Skeleton className="h-5 w-16 rounded-full" />
-      </div>
-      <Skeleton className="h-3 w-64" />
-      <Skeleton className="h-3 w-36" />
-    </div>
-  )
 }
 
 // ─── Desktop table ─────────────────────────────────────────────────────────────
@@ -351,16 +272,25 @@ export default function PageMails({
         </div>
 
         {/* Mobile */}
-        <div className="flex flex-col divide-y rounded-lg border sm:hidden">
+        <div className="flex flex-col sm:hidden">
           {isLoading ? (
-            Array.from({ length: 5 }).map((_, i) => <MailCardSkeleton key={i} />)
+            Array.from({ length: 5 }).map((_, i) => (
+              <MailCard key={i} isFirst={i === 0} isLast={i === 4} />
+            ))
           ) : mails.length === 0 ? (
             <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
               <MailIcon className="text-muted-foreground size-8" />
               <p className="text-muted-foreground text-sm">{t("pages.account.mails.empty")}</p>
             </div>
           ) : (
-            mails.map((mail) => <MailCard key={mail.pk_driver_mail_id} mail={mail} />)
+            mails.map((mail, index) => (
+              <MailCard
+                key={mail.pk_driver_mail_id}
+                mail={mail}
+                isFirst={index === 0}
+                isLast={index === mails.length - 1}
+              />
+            ))
           )}
         </div>
 
