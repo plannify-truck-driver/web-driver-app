@@ -92,7 +92,8 @@ function TimeInput({
     setOpen(false)
   }
 
-  const columnClass = "h-52 overflow-y-auto overscroll-contain touch-pan-y p-1"
+  const columnClass = "h-52 overflow-y-auto overscroll-contain touch-pan-y p-1 select-none"
+  const columnProps = { "data-vaul-no-drag": true } as const
   const itemClass = (active: boolean) =>
     cn(
       "flex w-full items-center justify-center rounded px-3 py-1.5 text-sm font-medium",
@@ -152,6 +153,7 @@ function TimeInput({
             ref={hourListRef}
             className={columnClass}
             onWheel={(e) => e.stopPropagation()}
+            {...columnProps}
           >
             {HOURS.map((hour) => (
               <button
@@ -169,6 +171,7 @@ function TimeInput({
             ref={minuteListRef}
             className={columnClass}
             onWheel={(e) => e.stopPropagation()}
+            {...columnProps}
           >
             {MINUTES.map((minute) => (
               <button
@@ -187,6 +190,7 @@ function TimeInput({
               ref={secondListRef}
               className={columnClass}
               onWheel={(e) => e.stopPropagation()}
+              {...columnProps}
             >
               {SECONDS.map((second) => (
                 <button
