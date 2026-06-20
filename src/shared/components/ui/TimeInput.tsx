@@ -93,7 +93,12 @@ function TimeInput({
   }
 
   const columnClass = "h-52 overflow-y-auto overscroll-contain touch-pan-y p-1 select-none"
-  const columnProps = { "data-vaul-no-drag": true } as const
+  const stopEvents = {
+    onWheel: (e: React.WheelEvent) => e.stopPropagation(),
+    onTouchStart: (e: React.TouchEvent) => e.stopPropagation(),
+    onTouchMove: (e: React.TouchEvent) => e.stopPropagation(),
+    "data-vaul-no-drag": true,
+  } as const
   const itemClass = (active: boolean) =>
     cn(
       "flex w-full items-center justify-center rounded px-3 py-1.5 text-sm font-medium",
@@ -149,12 +154,7 @@ function TimeInput({
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <div className="flex divide-x">
-          <div
-            ref={hourListRef}
-            className={columnClass}
-            onWheel={(e) => e.stopPropagation()}
-            {...columnProps}
-          >
+          <div ref={hourListRef} className={columnClass} {...stopEvents}>
             {HOURS.map((hour) => (
               <button
                 key={hour}
@@ -167,12 +167,7 @@ function TimeInput({
               </button>
             ))}
           </div>
-          <div
-            ref={minuteListRef}
-            className={columnClass}
-            onWheel={(e) => e.stopPropagation()}
-            {...columnProps}
-          >
+          <div ref={minuteListRef} className={columnClass} {...stopEvents}>
             {MINUTES.map((minute) => (
               <button
                 key={minute}
@@ -186,12 +181,7 @@ function TimeInput({
             ))}
           </div>
           {showSeconds && (
-            <div
-              ref={secondListRef}
-              className={columnClass}
-              onWheel={(e) => e.stopPropagation()}
-              {...columnProps}
-            >
+            <div ref={secondListRef} className={columnClass} {...stopEvents}>
               {SECONDS.map((second) => (
                 <button
                   key={second}
