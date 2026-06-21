@@ -49,6 +49,7 @@ export default function PageVerifyAccountFeature() {
     if (token && driverId) {
       mutateAsync({ token, driver_id: driverId })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const message = useMemo<{ success: string; error: string } | null>(() => {

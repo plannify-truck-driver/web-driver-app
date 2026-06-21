@@ -67,7 +67,7 @@ export default function PageLoginFeature() {
         }
       })
     }
-  }, [accessToken, refreshToken, navigate])
+  }, [accessToken, refreshToken, navigate, redirect])
 
   return (
     <PageLogin errorMessage={errorMessage} form={form} loading={isPending} onSubmit={onSubmit} />

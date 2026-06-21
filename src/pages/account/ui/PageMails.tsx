@@ -114,6 +114,7 @@ function MailsTableDesktop({ mails, isLoading }: { mails: Mail[]; isLoading: boo
     },
   ]
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: mails,
     columns,

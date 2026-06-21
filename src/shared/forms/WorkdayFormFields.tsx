@@ -59,7 +59,7 @@ export function WorkdayFormFields({
       return
     }
     userOverrideRef.current = false
-  }, [startTimeValue, endTimeValue])
+  }, [startTimeValue, endTimeValue, form])
 
   useEffect(() => {
     if (bestRestTime !== null && !userOverrideRef.current) {
