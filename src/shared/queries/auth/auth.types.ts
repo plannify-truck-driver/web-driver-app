@@ -38,3 +38,13 @@ export interface VerifyAccountResponse {
 export interface RefreshTokenResponse {
   access_token: string
 }
+
+export interface ResetPasswordRequest {
+  email: string
+}
+
+export interface ConfirmResetPasswordRequest {
+  driver_id: string
+  token: string
+  password: string
+}

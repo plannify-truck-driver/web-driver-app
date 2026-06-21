@@ -335,31 +335,10 @@ export default function AppLayout() {
       </div>
       {/* For mobile screens */}
       <div className="bg-background flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
-        {/* {currentSubSections && (
-            <div className="flex w-full flex-row items-center justify-between gap-2 overflow-auto px-4">
-              {currentSubSections.map((subSection, index) => (
-                <Link
-                  key={index}
-                  to={typeof subSection.action === "string" ? subSection.action : "#"}
-                  className={
-                    "text-responsive-xl" +
-                    (location.pathname === subSection.action ? " underline" : "")
-                  }
-                >
-                  {toUpperCaseFirstLetter(
-                    t(subSection.title.mobile!, {
-                      currentYear,
-                      previousYear,
-                      previousMonth,
-                      yearFromPreviousMonth,
-                    })
-                  )}
-                </Link>
-              ))}
-            </div>
-          )} */}
-        <div className="h-full overflow-y-auto px-4 py-2">
-          <Outlet />
+        <div className="h-full overflow-y-auto">
+          <div className="px-4 py-2 pb-4">
+            <Outlet />
+          </div>
         </div>
         <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
           {navigationItems.map((item) => {

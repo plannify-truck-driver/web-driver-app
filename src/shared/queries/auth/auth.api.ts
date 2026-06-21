@@ -1,10 +1,12 @@
 import { api } from "@/shared/lib/api"
 import type {
+  ConfirmResetPasswordRequest,
   LoginRequest,
   LoginResponse,
   RefreshTokenResponse,
   RegistrationRequest,
   RegistrationResponse,
+  ResetPasswordRequest,
   VerifyAccountRequest,
   VerifyAccountResponse,
 } from "./auth.types"
@@ -26,4 +28,12 @@ export const refreshToken = (): Promise<RefreshTokenResponse> => {
 }
 export const deleteRefreshToken = (): Promise<void> => {
   return api.delete("authentication/refresh").json()
+}
+
+export const resetPassword = (body: ResetPasswordRequest): Promise<void> => {
+  return api.post("authentication/reset-password", { json: body }).json()
+}
+
+export const confirmResetPassword = (body: ConfirmResetPasswordRequest): Promise<void> => {
+  return api.post("authentication/confirm-reset-password", { json: body }).json()
 }

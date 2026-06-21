@@ -8,7 +8,7 @@ import { useAuth } from "@/app/providers/useAuth"
 
 export default function PageVerifyAccountFeature() {
   const { t } = useTranslation()
-  const { accessToken, login } = useAuth()
+  const { login } = useAuth()
 
   const params = new URLSearchParams(window.location.search)
   const token = params.get("token")
@@ -16,24 +16,16 @@ export default function PageVerifyAccountFeature() {
 
   useDocumentTitle(t("pages.authentication.token-verify-account.page-title"))
 
-  const { mutateAsync, data, error, isPending } = useVerifyAccountMutation()
+  const [success, setSuccess] = useState(false)
   const [asyncError, setAsyncError] = useState("")
 
-  useEffect(() => {
-    if (token && driverId) {
-      mutateAsync({ token, driver_id: driverId })
-    }
-  }, [token, driverId, mutateAsync])
-
-  useEffect(() => {
-    if (data && !accessToken) {
+  const { mutateAsync, isPending } = useVerifyAccountMutation({
+    onSuccess: (data) => {
       login(data.access_token)
-    }
-  }, [data, accessToken, login])
-
-  useEffect(() => {
-    if (!error) return
-    handleErrorResponse(error).then((apiError) => {
+      setSuccess(true)
+    },
+    onError: async (error) => {
+      const apiError = await handleErrorResponse(error)
       if (apiError) {
         switch (apiError.error_code) {
           case "ACCOUNT_ALREADY_VERIFIED":
@@ -47,10 +39,17 @@ export default function PageVerifyAccountFeature() {
             break
         }
         console.error("API Error:", apiError)
+        return
       }
-      console.error("Registration error:", error)
-    })
-  }, [error, t])
+      console.error("Verify account error:", error)
+    },
+  })
+
+  useEffect(() => {
+    if (token && driverId) {
+      mutateAsync({ token, driver_id: driverId })
+    }
+  }, [])
 
   const message = useMemo<{ success: string; error: string } | null>(() => {
     if (!token || !driverId) {
@@ -59,14 +58,14 @@ export default function PageVerifyAccountFeature() {
         error: t("pages.authentication.token-verify-account.invalid-url-parameters"),
       }
     }
-    if (data && accessToken) {
+    if (success) {
       return { success: t("pages.authentication.token-verify-account.success-message"), error: "" }
     }
     if (asyncError) {
       return { success: "", error: asyncError }
     }
     return null
-  }, [token, driverId, data, accessToken, asyncError, t])
+  }, [token, driverId, success, asyncError, t])
 
   return <PageVerifyAccount message={message} loading={isPending} />
 }

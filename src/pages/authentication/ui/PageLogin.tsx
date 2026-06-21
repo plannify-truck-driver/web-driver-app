@@ -22,8 +22,14 @@ export default function PageLogin({ errorMessage, form, loading, onSubmit }: Pag
       <p className="text-muted-foreground inline text-sm">
         {t("pages.authentication.login.description")}
       </p>
-      <div className="flex w-full flex-col gap-4">
-        <LoginForm errorMessage={errorMessage} loading={loading} onSubmit={onSubmit} form={form} />
+      <div className="flex w-full max-w-sm flex-col gap-4">
+        <LoginForm
+          errorMessage={errorMessage}
+          loading={loading}
+          onSubmit={onSubmit}
+          form={form}
+          onForgotPassword={() => navigate({ to: "/authentication/reset-password" })}
+        />
         <hr className="border-border/50 w-full border-t" />
         <div className="flex flex-row items-center gap-2 text-sm">
           <p>{t("pages.authentication.login.no-account-text")}</p>

@@ -5,7 +5,16 @@
         "page-title": "Login",
         "description": "Connect to your account to continue",
         "no-account-text": "Don't have an account?",
-        "no-account-link": "Sign up"
+        "no-account-link": "Sign up",
+        "forgot-password-text": "Forgot your password?",
+        "forgot-password-link": "Reset it"
+      },
+      "reset-password": {
+        "page-title": "Reset password",
+        "description": "Enter your email address to receive a password reset link.",
+        "success-description": "An email has been sent to you with a link to reset your password.",
+        "mail-spam-warning": "The email may arrive in your spam folder.",
+        "back-to-login": "Back to login"
       },
       "registration": {
         "page-title": "Registration",
@@ -53,6 +62,14 @@
         "email-subject": "Account verification issue",
         "email-body": "Hello,\n\nI'm having trouble verifying my account. Could you help me resolve this issue?\n\nThank you in advance for your assistance.",
         "logout-button": "Log out"
+      },
+      "token-reset-password": {
+        "page-title": "Reset password",
+        "description": "Enter your new password.",
+        "success-message": "Your password has been successfully reset. You can now log in.",
+        "login-button": "Log in",
+        "invalid-url-parameters": "The reset link is invalid. Please check that you have used the correct link or request a new one.",
+        "invalid-reset-password-token": "This reset link is invalid or has expired. Please request a new one."
       },
       "token-verify-account": {
         "page-title": "Account verification",
@@ -614,6 +631,23 @@
       "new-password-label": "New password",
       "confirm-password-label": "Confirm new password",
       "submit-button": "Change password"
+    },
+    "reset-password": {
+      "email-label": "Email address",
+      "email-placeholder": "firstname.lastname@mail.com",
+      "submit-button": "Send reset link",
+      "errors": {
+        "driver-not-found": "No account is associated with this email address.",
+        "token-already-exists": "A reset link has already been sent. Please check your inbox or try again later."
+      }
+    },
+    "confirm-reset-password": {
+      "password-label": "New password",
+      "confirm-password-label": "Confirm new password",
+      "submit-button": "Reset password",
+      "errors": {
+        "invalid-token": "This reset link is invalid or has expired. Please request a new one."
+      }
     },
     "errors": {
       "unexpected-error": "An unexpected error occurred. Please try again later."
