@@ -328,8 +328,10 @@ export default function AppLayout() {
               {open ? <PanelLeftClose /> : <PanelLeftOpen />}
             </Button>
           </div>
-          <div className="px-4">
-            <Outlet />
+          <div className="h-full overflow-y-auto">
+            <div className="px-4 pb-4">
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>
