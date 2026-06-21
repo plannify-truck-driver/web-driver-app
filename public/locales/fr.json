@@ -201,6 +201,14 @@
         "about-plannify": "À propos de Plannify",
         "logout": "Se déconnecter"
       },
+      "support": {
+        "page-title": "Aide & Support",
+        "email-label": "Adresse e-mail du support",
+        "registration-email-label": "Votre adresse e-mail d'inscription",
+        "response-time-label": "Délai de réponse",
+        "response-time-value": "Environ une semaine",
+        "description": "Pour contacter le support, envoyez un e-mail à l'adresse ci-dessus en précisant votre adresse e-mail d'inscription. Les demandes sont traitées dans un délai d'environ une semaine."
+      },
       "updates": {
         "section-title": "Nouveautés",
         "refresh": "Mettre à jour",

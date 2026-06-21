@@ -201,6 +201,14 @@
         "about-plannify": "About Plannify",
         "logout": "Logout"
       },
+      "support": {
+        "page-title": "Help & Support",
+        "email-label": "Support email address",
+        "registration-email-label": "Your registration email address",
+        "response-time-label": "Response time",
+        "response-time-value": "About one week",
+        "description": "To contact support, send an email to the address above and include your registration email address. Requests are handled within approximately one week."
+      },
       "updates": {
         "section-title": "What's new",
         "refresh": "Refresh",

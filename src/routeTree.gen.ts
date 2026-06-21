@@ -23,6 +23,7 @@ import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentica
 import { Route as AuthenticationResetPasswordRouteImport } from "./routes/authentication/reset-password"
 import { Route as AuthenticationRegistrationRouteImport } from "./routes/authentication/registration"
 import { Route as AuthenticationLoginRouteImport } from "./routes/authentication/login"
+import { Route as AccountSupportRouteImport } from "./routes/account/support"
 import { Route as AccountPersonalInformationRouteImport } from "./routes/account/personal-information"
 import { Route as AccountMailsRouteImport } from "./routes/account/mails"
 import { Route as AccountMailsIndexRouteImport } from "./routes/account/mails/index"
@@ -105,6 +106,11 @@ const AuthenticationLoginRoute = AuthenticationLoginRouteImport.update({
   path: "/authentication/login",
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountSupportRoute = AccountSupportRouteImport.update({
+  id: "/account/support",
+  path: "/account/support",
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccountPersonalInformationRoute =
   AccountPersonalInformationRouteImport.update({
     id: "/account/personal-information",
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
   "/account/mails": typeof AccountMailsRouteWithChildren
   "/account/personal-information": typeof AccountPersonalInformationRoute
+  "/account/support": typeof AccountSupportRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/reset-password": typeof AuthenticationResetPasswordRoute
@@ -170,6 +177,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
   "/account/personal-information": typeof AccountPersonalInformationRoute
+  "/account/support": typeof AccountSupportRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/reset-password": typeof AuthenticationResetPasswordRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   "/": typeof IndexRoute
   "/account/mails": typeof AccountMailsRouteWithChildren
   "/account/personal-information": typeof AccountPersonalInformationRoute
+  "/account/support": typeof AccountSupportRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
   "/authentication/reset-password": typeof AuthenticationResetPasswordRoute
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | "/"
     | "/account/mails"
     | "/account/personal-information"
+    | "/account/support"
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/reset-password"
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
   to:
     | "/"
     | "/account/personal-information"
+    | "/account/support"
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/reset-password"
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | "/"
     | "/account/mails"
     | "/account/personal-information"
+    | "/account/support"
     | "/authentication/login"
     | "/authentication/registration"
     | "/authentication/reset-password"
@@ -288,6 +300,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountMailsRoute: typeof AccountMailsRouteWithChildren
   AccountPersonalInformationRoute: typeof AccountPersonalInformationRoute
+  AccountSupportRoute: typeof AccountSupportRoute
   AuthenticationLoginRoute: typeof AuthenticationLoginRoute
   AuthenticationRegistrationRoute: typeof AuthenticationRegistrationRoute
   AuthenticationResetPasswordRoute: typeof AuthenticationResetPasswordRoute
@@ -405,6 +418,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticationLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/account/support": {
+      id: "/account/support"
+      path: "/account/support"
+      fullPath: "/account/support"
+      preLoaderRoute: typeof AccountSupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     "/account/personal-information": {
       id: "/account/personal-information"
       path: "/account/personal-information"
@@ -477,6 +497,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountMailsRoute: AccountMailsRouteWithChildren,
   AccountPersonalInformationRoute: AccountPersonalInformationRoute,
+  AccountSupportRoute: AccountSupportRoute,
   AuthenticationLoginRoute: AuthenticationLoginRoute,
   AuthenticationRegistrationRoute: AuthenticationRegistrationRoute,
   AuthenticationResetPasswordRoute: AuthenticationResetPasswordRoute,

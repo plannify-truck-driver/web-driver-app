@@ -199,7 +199,7 @@ export default function PageAccount({
               {
                 icon: InfoIcon,
                 label: t("pages.account.settings-actions.help-support"),
-                onClick: () => {},
+                onClick: () => navigate({ to: "/account/support" }),
               },
               {
                 icon: BookMarkedIcon,
