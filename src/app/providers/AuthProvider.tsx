@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useDeleteRefreshTokenMutation, useRefreshToken } from "@/shared/queries/auth/auth.queries"
 import { handleErrorResponse } from "@/shared/lib/error-response"
+import { setApiAccessToken } from "@/shared/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
 import { AuthProviderContext } from "./AuthProviderContext"
 import type { AuthProviderState } from "./AuthProviderContext"
@@ -17,12 +18,14 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
 
   const login = useCallback((token: string) => {
     setAccessToken(token)
+    setApiAccessToken(token)
     const decoded: JwtDriverPayload = jwtDecode(token)
     setDriver(decoded.driver)
   }, [])
 
   const clearSession = useCallback(() => {
     setAccessToken(null)
+    setApiAccessToken(null)
     setDriver(null)
     queryClient.clear()
   }, [queryClient])
