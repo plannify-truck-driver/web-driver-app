@@ -1,4 +1,4 @@
-FROM 26.3.1-alpine AS base
+FROM node:26.3.1-alpine AS base
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
 RUN apk upgrade --no-cache zlib musl musl-utils
