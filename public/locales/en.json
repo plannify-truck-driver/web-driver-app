@@ -207,7 +207,7 @@
         "registration-email-label": "Your registration email address",
         "response-time-label": "Response time",
         "response-time-value": "About one week",
-        "description": "To contact support, send an email to the address above and include your registration email address. Requests are handled within approximately one week."
+        "description": "To contact support, send an email to the address above and using your registration email address. Requests are handled within approximately one week."
       },
       "updates": {
         "section-title": "What's new",
