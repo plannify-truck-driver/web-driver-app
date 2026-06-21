@@ -1,7 +1,7 @@
 FROM node:26.3.1-alpine AS base
 
-# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
-RUN apk upgrade --no-cache zlib musl musl-utils
+# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH), CVE-2026-45186 (libexpat HIGH)
+RUN apk upgrade --no-cache zlib musl musl-utils libexpat
 
 # Create a non-root user for security
 RUN addgroup -g 1001 -S nodejs
@@ -43,9 +43,9 @@ RUN pnpm run build
 
 FROM nginxinc/nginx-unprivileged:1.31.2-alpine AS production
 
-# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
+# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH), CVE-2026-45186 (libexpat HIGH)
 USER root
-RUN apk upgrade --no-cache zlib musl musl-utils
+RUN apk upgrade --no-cache zlib musl musl-utils libexpat
 USER nginx
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
