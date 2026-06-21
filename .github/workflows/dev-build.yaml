@@ -13,7 +13,36 @@ permissions:
   packages: write
 
 jobs:
+  gitleaks:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sast:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Run Semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: >-
+            p/typescript
+            p/react
+            p/owasp-top-ten
+            p/secrets
+
   build-and-push:
+    needs: [gitleaks, sast]
     runs-on: ${{ matrix.runner.name }}
     strategy:
       matrix:
