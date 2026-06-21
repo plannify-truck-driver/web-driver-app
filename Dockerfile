@@ -7,8 +7,8 @@ RUN apk upgrade --no-cache zlib musl musl-utils
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S reactuser -u 1001
 
-# Install pnpm via corepack (built into Node, no extra layer)
-RUN corepack enable && corepack prepare pnpm@10.33.2 --activate
+# Install pnpm
+RUN npm install -g pnpm@10.33.2 --ignore-scripts
 
 WORKDIR /app
 
