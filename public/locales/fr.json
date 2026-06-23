@@ -79,6 +79,15 @@
         "already-verified": "Votre compte a déjà été vérifié. Vous pouvez vous connecter.",
         "invalid-verification-key": "Clé de vérification invalide ou expirée. Veuillez réessayer ou contacter le support si le problème persiste.",
         "invalid-url-parameters": "Le lien de vérification est invalide. Veuillez vérifier que vous avez utilisé le bon lien ou contactez le support pour obtenir de l'aide."
+      },
+      "registration-closed": {
+        "title": "Inscriptions fermées",
+        "description": "Les inscriptions sont temporairement fermées.",
+        "closed-since-label": "Fermé depuis :",
+        "reopens-label": "Réouverture prévue :",
+        "reopens-undefined": "Date non définie",
+        "date": "{{date}} à {{time}}",
+        "back-to-login": "Retour à la connexion"
       }
     },
     "dashboard": {

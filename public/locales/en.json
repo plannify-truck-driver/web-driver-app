@@ -79,6 +79,15 @@
         "already-verified": "Your account has already been verified. You can log in.",
         "invalid-verification-key": "Invalid or expired verification key. Please try again or contact support if the problem persists.",
         "invalid-url-parameters": "The verification link is invalid. Please check that you have used the correct link or contact support for assistance."
+      },
+      "registration-closed": {
+        "title": "Registration closed",
+        "description": "Registrations are temporarily closed.",
+        "closed-since-label": "Closed since:",
+        "reopens-label": "Expected reopening:",
+        "reopens-undefined": "Date not defined",
+        "date": "{{date}} at {{time}}",
+        "back-to-login": "Back to login"
       }
     },
     "dashboard": {

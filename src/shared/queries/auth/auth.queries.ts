@@ -2,6 +2,7 @@ import { useMutation, useQuery, type UseMutationOptions } from "@tanstack/react-
 import {
   confirmResetPassword,
   deleteRefreshToken,
+  getRegistrationLimitation,
   login,
   refreshToken,
   registration,
@@ -44,3 +45,12 @@ export const useResetPasswordMutation = (options?: UseMutationOptions<void, Erro
 
 export const useConfirmResetPasswordMutation = (options?: UseMutationOptions<Awaited<ReturnType<typeof confirmResetPassword>>, Error, Parameters<typeof confirmResetPassword>[0]>) =>
   useMutation({ mutationFn: confirmResetPassword, ...options })
+
+export const useRegistrationLimitationQuery = () =>
+  useQuery({
+    queryKey: ["registrationLimitation"],
+    queryFn: getRegistrationLimitation,
+    gcTime: 0,
+    staleTime: 0,
+    retry: false,
+  })

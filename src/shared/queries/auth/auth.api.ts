@@ -4,6 +4,7 @@ import type {
   LoginRequest,
   LoginResponse,
   RefreshTokenResponse,
+  RegistrationLimitationResponse,
   RegistrationRequest,
   RegistrationResponse,
   ResetPasswordRequest,
@@ -36,4 +37,8 @@ export const resetPassword = (body: ResetPasswordRequest): Promise<void> => {
 
 export const confirmResetPassword = (body: ConfirmResetPasswordRequest): Promise<void> => {
   return api.post("authentication/confirm-reset-password", { json: body }).json()
+}
+
+export const getRegistrationLimitation = (): Promise<RegistrationLimitationResponse | null> => {
+  return api.get("limitation").json()
 }

@@ -48,3 +48,8 @@ export interface ConfirmResetPasswordRequest {
   token: string
   password: string
 }
+
+export interface RegistrationLimitationResponse {
+  start_at: string
+  end_at: string | null
+}
