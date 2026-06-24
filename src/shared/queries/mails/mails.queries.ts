@@ -36,10 +36,11 @@ export const useGetMailTypes = ({ enabled = true }: { enabled?: boolean } = {}) 
     enabled,
   })
 
-export const useGetMailPreferences = () =>
+export const useGetMailPreferences = ({ enabled = true }: { enabled?: boolean } = {}) =>
   useQuery({
     queryKey: mailsKeys.preferences(),
     queryFn: getMailPreferences,
+    enabled,
   })
 
 export const useUpdateMailPreference = () => {

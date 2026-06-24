@@ -1,11 +1,15 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import PageVerifyAccount from "../ui/PageVerifyAccount"
 import { useTranslation } from "react-i18next"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useVerifyAccountMutation } from "@/shared/queries/auth/auth.queries"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useAuth } from "@/app/providers/useAuth"
-import { useGetMailTypes, useUpdateMailPreference } from "@/shared/queries/mails/mails.queries"
+import {
+  useGetMailPreferences,
+  useGetMailTypes,
+  useUpdateMailPreference,
+} from "@/shared/queries/mails/mails.queries"
 import { useNavigate } from "@tanstack/react-router"
 import { toast } from "sonner"
 
@@ -23,19 +27,32 @@ export default function PageVerifyAccountFeature() {
   const [success, setSuccess] = useState(false)
   const [asyncError, setAsyncError] = useState("")
   const [localPreferences, setLocalPreferences] = useState<Map<number, boolean>>(new Map())
+  const initializedRef = useRef(false)
 
-  const { data: mailTypes = [], isLoading: isLoadingMailTypes } = useGetMailTypes({ enabled: success })
+  const { data: mailTypes = [], isLoading: isLoadingMailTypes } = useGetMailTypes({
+    enabled: success,
+  })
+  const { data: preferences = [], isLoading: isLoadingPreferences } = useGetMailPreferences({
+    enabled: success,
+  })
 
   useEffect(() => {
-    if (mailTypes.length === 0) return
+    if (initializedRef.current || mailTypes.length === 0 || isLoadingPreferences) return
+
+    const prefMap = new Map(preferences.map((p) => [p.mail_type_id, p.is_enabled]))
+
     setLocalPreferences(
       new Map(
         mailTypes
           .filter((type) => type.is_editable)
-          .map((type) => [type.pk_driver_mail_type_id, true])
+          .map((type) => [
+            type.pk_driver_mail_type_id,
+            prefMap.get(type.pk_driver_mail_type_id) ?? true,
+          ])
       )
     )
-  }, [mailTypes])
+    initializedRef.current = true
+  }, [mailTypes, preferences, isLoadingPreferences])
 
   const {
     mutate: updatePreference,
@@ -114,7 +131,7 @@ export default function PageVerifyAccountFeature() {
       message={message}
       loading={isPending}
       mailTypes={editableMailTypes}
-      isLoadingMailTypes={isLoadingMailTypes}
+      isLoadingMailTypes={isLoadingMailTypes || isLoadingPreferences}
       localPreferences={localPreferences}
       updatingTypeId={isUpdatingPreference ? (updatingVariables?.mailTypeId ?? null) : null}
       onTogglePreference={handleTogglePreference}

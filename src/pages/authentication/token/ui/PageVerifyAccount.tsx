@@ -47,7 +47,8 @@ export default function PageVerifyAccount({
             </p>
           </div>
 
-          <div className="flex flex-col divide-y rounded-lg border">
+          <div className="relative">
+            <div className="flex max-h-72 flex-col divide-y overflow-y-auto rounded-lg border">
             {isLoadingMailTypes ? (
               Array.from({ length: 3 }).map((_, i) => (
                 <div key={i} className="flex items-center gap-3 px-4 py-3.5">
@@ -87,6 +88,8 @@ export default function PageVerifyAccount({
                 </div>
               ))
             )}
+            </div>
+            <div className="from-background pointer-events-none absolute right-0 bottom-0 left-0 h-6 rounded-b-lg bg-gradient-to-t to-transparent" />
           </div>
 
           <div className="flex justify-end">
