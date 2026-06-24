@@ -9,7 +9,7 @@ import { routeTree } from "@/routeTree.gen"
 import { Toaster } from "./shared/components/ui/Sonner"
 import { AuthProvider } from "./app/providers/AuthProvider"
 import { PwaUpdateProvider } from "./app/providers/PwaUpdateProvider"
-import { queryClient, QueryClientConfigurator } from "./lib/queryClient"
+import { queryClient } from "./lib/queryClient"
 
 // Set up a Router instance
 const router = createRouter({
@@ -32,16 +32,14 @@ createRoot(document.getElementById("root")!).render(
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <PwaUpdateProvider>
         <QueryClientProvider client={queryClient}>
-          <QueryClientConfigurator>
-            <AuthProvider>
-              <RouterProvider router={router} />
-              <Toaster
-                theme="system"
-                position={window.innerWidth < 768 ? "top-center" : "bottom-right"}
-                closeButton={true}
-              />
-            </AuthProvider>
-          </QueryClientConfigurator>
+          <AuthProvider>
+            <RouterProvider router={router} />
+            <Toaster
+              theme="system"
+              position={window.innerWidth < 768 ? "top-center" : "bottom-right"}
+              closeButton={true}
+            />
+          </AuthProvider>
         </QueryClientProvider>
       </PwaUpdateProvider>
     </ThemeProvider>

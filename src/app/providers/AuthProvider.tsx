@@ -5,6 +5,7 @@ import { useDeleteRefreshTokenMutation, useRefreshToken } from "@/shared/queries
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { setApiAccessToken } from "@/shared/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
+import { setRefreshTokenHandler } from "@/lib/queryClient"
 import { AuthProviderContext } from "./AuthProviderContext"
 import type { AuthProviderState } from "./AuthProviderContext"
 
@@ -53,13 +54,35 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
   }, [refetch, login, clearSession])
 
   useEffect(() => {
+    setRefreshTokenHandler(refreshToken)
+  }, [refreshToken])
+
+  useEffect(() => {
     if (!accessToken) return
     const decoded: JwtDriverPayload = jwtDecode(accessToken)
+
+    // Refresh the token 1 minute before it expires
     const delay = decoded.exp * 1000 - Date.now() - 60_000
 
-    if (delay <= 0) return
+    if (delay <= 0) {
+      refreshToken()
+      return
+    }
+
     const timerId = setTimeout(() => refreshToken(), delay)
     return () => clearTimeout(timerId)
+  }, [accessToken, refreshToken])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== "visible" || !accessToken) return
+      const decoded: JwtDriverPayload = jwtDecode(accessToken)
+      const delay = decoded.exp * 1000 - Date.now() - 60_000
+      if (delay <= 0) refreshToken()
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
   }, [accessToken, refreshToken])
 
   const value: AuthProviderState = {
