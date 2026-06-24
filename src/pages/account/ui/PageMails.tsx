@@ -250,11 +250,7 @@ export default function PageMails({
         <h1 className="text-2xl font-semibold">{t("pages.account.mails.page-title")}</h1>
       </div>
 
-      <div className="flex flex-row items-center justify-between">
-        <p className="text-muted-foreground font-mono text-sm uppercase">
-          {t("pages.account.mails.preferences-management")}
-        </p>
-
+      <div className="flex flex-row-reverse items-center justify-between">
         <Button variant="outline" onClick={() => navigate({ to: "/account/mails/preferences" })}>
           {t("pages.account.mails.preferences-management")}
         </Button>
