@@ -5,10 +5,14 @@ import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useVerifyAccountMutation } from "@/shared/queries/auth/auth.queries"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useAuth } from "@/app/providers/useAuth"
+import { useGetMailTypes, useUpdateMailPreference } from "@/shared/queries/mails/mails.queries"
+import { useNavigate } from "@tanstack/react-router"
+import { toast } from "sonner"
 
 export default function PageVerifyAccountFeature() {
   const { t } = useTranslation()
   const { login } = useAuth()
+  const navigate = useNavigate()
 
   const params = new URLSearchParams(window.location.search)
   const token = params.get("token")
@@ -18,6 +22,41 @@ export default function PageVerifyAccountFeature() {
 
   const [success, setSuccess] = useState(false)
   const [asyncError, setAsyncError] = useState("")
+  const [localPreferences, setLocalPreferences] = useState<Map<number, boolean>>(new Map())
+
+  const { data: mailTypes = [], isLoading: isLoadingMailTypes } = useGetMailTypes({ enabled: success })
+
+  useEffect(() => {
+    if (mailTypes.length === 0) return
+    setLocalPreferences(
+      new Map(
+        mailTypes
+          .filter((type) => type.is_editable)
+          .map((type) => [type.pk_driver_mail_type_id, true])
+      )
+    )
+  }, [mailTypes])
+
+  const {
+    mutate: updatePreference,
+    isPending: isUpdatingPreference,
+    variables: updatingVariables,
+  } = useUpdateMailPreference()
+
+  function handleTogglePreference(mailTypeId: number, isEnabled: boolean) {
+    setLocalPreferences((prev) => new Map(prev).set(mailTypeId, isEnabled))
+    updatePreference(
+      { mailTypeId, isEnabled },
+      {
+        onError: async (error) => {
+          setLocalPreferences((prev) => new Map(prev).set(mailTypeId, !isEnabled))
+          const apiError = await handleErrorResponse(error)
+          void apiError
+          toast.error(t("pages.account.mails.preferences.toggle-error"))
+        },
+      }
+    )
+  }
 
   const { mutateAsync, isPending } = useVerifyAccountMutation({
     onSuccess: (data) => {
@@ -68,5 +107,18 @@ export default function PageVerifyAccountFeature() {
     return null
   }, [token, driverId, success, asyncError, t])
 
-  return <PageVerifyAccount message={message} loading={isPending} />
+  const editableMailTypes = mailTypes.filter((type) => type.is_editable)
+
+  return (
+    <PageVerifyAccount
+      message={message}
+      loading={isPending}
+      mailTypes={editableMailTypes}
+      isLoadingMailTypes={isLoadingMailTypes}
+      localPreferences={localPreferences}
+      updatingTypeId={isUpdatingPreference ? (updatingVariables?.mailTypeId ?? null) : null}
+      onTogglePreference={handleTogglePreference}
+      onContinue={() => navigate({ to: "/dashboard" })}
+    />
+  )
 }

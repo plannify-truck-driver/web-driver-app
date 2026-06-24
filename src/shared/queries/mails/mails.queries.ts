@@ -29,10 +29,11 @@ export const useGetMailById = (mailId: string) =>
     queryFn: () => getMailById(mailId),
   })
 
-export const useGetMailTypes = () =>
+export const useGetMailTypes = ({ enabled = true }: { enabled?: boolean } = {}) =>
   useQuery({
     queryKey: mailsKeys.types(),
     queryFn: getMailTypes,
+    enabled,
   })
 
 export const useGetMailPreferences = () =>

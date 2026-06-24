@@ -78,7 +78,9 @@
         "access-account-button": "Access my account",
         "already-verified": "Your account has already been verified. You can log in.",
         "invalid-verification-key": "Invalid or expired verification key. Please try again or contact support if the problem persists.",
-        "invalid-url-parameters": "The verification link is invalid. Please check that you have used the correct link or contact support for assistance."
+        "invalid-url-parameters": "The verification link is invalid. Please check that you have used the correct link or contact support for assistance.",
+        "mail-preferences-title": "Your notification preferences",
+        "mail-preferences-description": "Choose which notifications you want to receive by email. You can change them at any time in your settings."
       },
       "registration-closed": {
         "title": "Registration closed",

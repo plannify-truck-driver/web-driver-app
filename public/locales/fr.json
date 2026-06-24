@@ -78,7 +78,9 @@
         "access-account-button": "Accéder à mon compte",
         "already-verified": "Votre compte a déjà été vérifié. Vous pouvez vous connecter.",
         "invalid-verification-key": "Clé de vérification invalide ou expirée. Veuillez réessayer ou contacter le support si le problème persiste.",
-        "invalid-url-parameters": "Le lien de vérification est invalide. Veuillez vérifier que vous avez utilisé le bon lien ou contactez le support pour obtenir de l'aide."
+        "invalid-url-parameters": "Le lien de vérification est invalide. Veuillez vérifier que vous avez utilisé le bon lien ou contactez le support pour obtenir de l'aide.",
+        "mail-preferences-title": "Vos préférences de notification",
+        "mail-preferences-description": "Choisissez les notifications que vous souhaitez recevoir par e-mail. Vous pourrez les modifier à tout moment dans vos paramètres."
       },
       "registration-closed": {
         "title": "Inscriptions fermées",
