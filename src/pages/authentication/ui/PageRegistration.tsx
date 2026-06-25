@@ -23,7 +23,7 @@ import { PasswordComplexityMeter } from "@/shared/components/PasswordComplexityM
 import { generateStrongPassword } from "@/shared/functions/generateStrongPassword"
 import { toast } from "sonner"
 import type { SyntheticEvent } from "react"
-import { StepIndicator } from "@/shared/components/Stepindicator"
+import { StepIndicator } from "@/shared/components/StepIndicator"
 
 interface PageRegistrationProps {
   errorMessage: string | null
