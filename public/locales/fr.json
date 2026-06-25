@@ -262,6 +262,10 @@
           "SUCCESS": "Envoyé",
           "FAILED": "Échoué"
         },
+        "type-status": {
+          "true": "Activée",
+          "false": "Désactivée"
+        },
         "preferences": {
           "section-title": "Préférences de notification",
           "empty": "Aucune préférence configurable.",
@@ -276,6 +280,7 @@
       },
       "mail-preferences": {
         "page-title": "Préférences de notification",
+        "support-help": "Si vous avez des questions sur vos préférences de notification, vous pouvez contacter notre support.",
         "section-title": "Notifications par e-mail",
         "empty": "Aucune préférence configurable."
       },

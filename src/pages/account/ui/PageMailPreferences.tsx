@@ -1,8 +1,9 @@
-import { ArrowLeftIcon, SettingsIcon } from "lucide-react"
+import { ArrowLeftIcon, CircleQuestionMarkIcon, SettingsIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
 import { Switch } from "@/shared/components/ui/Switch"
 import type { MailPreference } from "@/shared/queries/mails/mails.types"
+import { MailTypeStatusBadge } from "@/shared/components/MailTypeStatusBadge"
 
 interface PageMailPreferencesProps {
   preferences: MailPreference[]
@@ -32,6 +33,13 @@ export default function PageMailPreferences({
         </button>
         <h1 className="text-2xl font-semibold">{t("pages.account.mail-preferences.page-title")}</h1>
       </div>
+
+      {preferences.length > 0 && (
+        <div className="flex items-center gap-3 rounded-lg border border-blue-200 bg-blue-50/60 px-4 py-3 text-sm text-blue-700 dark:border-blue-800/60 dark:bg-blue-950/20 dark:text-blue-400">
+          <CircleQuestionMarkIcon className="size-4 shrink-0" />
+          <p>{t("pages.account.mail-preferences.support-help")}</p>
+        </div>
+      )}
 
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center gap-2">
@@ -71,13 +79,19 @@ export default function PageMailPreferences({
                       })}
                     </p>
                   </div>
-                  <Switch
-                    checked={preference?.is_enabled}
-                    disabled={!preference.is_editable || togglingTypeId === preference.mail_type_id}
-                    onCheckedChange={(checked) =>
-                      onTogglePreference(preference.mail_type_id, checked)
-                    }
-                  />
+                  {preference.is_editable ? (
+                    <Switch
+                      checked={preference.is_enabled}
+                      disabled={
+                        !preference.is_editable || togglingTypeId === preference.mail_type_id
+                      }
+                      onCheckedChange={(checked) =>
+                        onTogglePreference(preference.mail_type_id, checked)
+                      }
+                    />
+                  ) : (
+                    <MailTypeStatusBadge status={preference.is_enabled} />
+                  )}
                 </div>
               )
             })
