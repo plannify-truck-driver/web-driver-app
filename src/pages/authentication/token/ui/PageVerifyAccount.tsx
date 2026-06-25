@@ -49,47 +49,49 @@ export default function PageVerifyAccount({
 
           <div className="relative">
             <div className="flex max-h-72 flex-col divide-y overflow-y-auto rounded-lg border">
-            {isLoadingMailTypes ? (
-              Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-3 px-4 py-3.5">
-                  <div className="flex flex-1 flex-col gap-1.5">
-                    <Skeleton className="h-4 w-36" />
-                    <Skeleton className="h-3 w-56" />
+              {isLoadingMailTypes ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-3 px-4 py-3.5">
+                    <div className="flex flex-1 flex-col gap-1.5">
+                      <Skeleton className="h-4 w-36" />
+                      <Skeleton className="h-3 w-56" />
+                    </div>
+                    <Skeleton className="h-5 w-8 rounded-full" />
                   </div>
-                  <Skeleton className="h-5 w-8 rounded-full" />
-                </div>
-              ))
-            ) : mailTypes.length === 0 ? (
-              <p className="text-muted-foreground px-4 py-3 text-sm">
-                {t("pages.account.mail-preferences.empty")}
-              </p>
-            ) : (
-              mailTypes.map((type) => (
-                <div key={type.pk_driver_mail_type_id} className="flex items-center gap-3 px-4 py-3.5">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium">
-                      {t(`pages.account.mails.types.${type.label}`, {
-                        defaultValue: type.label,
-                      })}
-                    </p>
-                    <p className="text-muted-foreground text-xs">
-                      {t(`pages.account.mails.preferences.descriptions.${type.label}`, {
-                        defaultValue: "",
-                      })}
-                    </p>
+                ))
+              ) : mailTypes.length === 0 ? (
+                <p className="text-muted-foreground px-4 py-3 text-sm">
+                  {t("pages.account.mail-preferences.empty")}
+                </p>
+              ) : (
+                mailTypes.map((type) => (
+                  <div
+                    key={type.pk_driver_mail_type_id}
+                    className="flex items-center gap-3 px-4 py-3.5"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium">
+                        {t(`pages.account.mails.types.${type.label}`, {
+                          defaultValue: type.label,
+                        })}
+                      </p>
+                      <p className="text-muted-foreground text-xs">
+                        {t(`pages.account.mails.preferences.descriptions.${type.label}`, {
+                          defaultValue: "",
+                        })}
+                      </p>
+                    </div>
+                    <Switch
+                      checked={localPreferences.get(type.pk_driver_mail_type_id) ?? true}
+                      disabled={updatingTypeId === type.pk_driver_mail_type_id}
+                      onCheckedChange={(checked) =>
+                        onTogglePreference(type.pk_driver_mail_type_id, checked)
+                      }
+                    />
                   </div>
-                  <Switch
-                    checked={localPreferences.get(type.pk_driver_mail_type_id) ?? true}
-                    disabled={updatingTypeId === type.pk_driver_mail_type_id}
-                    onCheckedChange={(checked) =>
-                      onTogglePreference(type.pk_driver_mail_type_id, checked)
-                    }
-                  />
-                </div>
-              ))
-            )}
+                ))
+              )}
             </div>
-            <div className="from-background pointer-events-none absolute right-0 bottom-0 left-0 h-6 rounded-b-lg bg-gradient-to-t to-transparent" />
           </div>
 
           <div className="flex justify-end">

@@ -144,7 +144,7 @@ export default function PageRegistrationFeature() {
   if (isLimitationPending) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader size={8} />
+        <Loader size={4} />
       </div>
     )
   }

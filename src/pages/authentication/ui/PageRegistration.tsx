@@ -23,6 +23,7 @@ import { PasswordComplexityMeter } from "@/shared/components/PasswordComplexityM
 import { generateStrongPassword } from "@/shared/functions/generateStrongPassword"
 import { toast } from "sonner"
 import type { SyntheticEvent } from "react"
+import { StepIndicator } from "@/shared/components/Stepindicator"
 
 interface PageRegistrationProps {
   errorMessage: string | null
@@ -369,22 +370,6 @@ export default function PageRegistration({
           </Button>
         </div>
       </div>
-    </div>
-  )
-}
-
-function StepIndicator({ current, total }: { current: number; total: number }) {
-  return (
-    <div className="flex w-full items-center gap-1.5">
-      {Array.from({ length: total }, (_, i) => (
-        <div
-          key={i}
-          className={cn(
-            "h-1.5 flex-1 rounded-full transition-colors duration-300",
-            i + 1 <= current ? "bg-primary" : "bg-muted-foreground/30"
-          )}
-        />
-      ))}
     </div>
   )
 }
