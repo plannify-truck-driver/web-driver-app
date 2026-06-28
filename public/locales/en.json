@@ -14,7 +14,9 @@
         "description": "Enter your email address to receive a password reset link.",
         "success-description": "An email has been sent to you with a link to reset your password.",
         "mail-spam-warning": "The email may arrive in your spam folder.",
-        "back-to-login": "Back to login"
+        "back-to-login": "Back to login",
+        "mail-preference-disabled-description": "Password reset by email is disabled for this account.",
+        "contact-support": "For assistance, please contact support:"
       },
       "registration": {
         "page-title": "Registration",

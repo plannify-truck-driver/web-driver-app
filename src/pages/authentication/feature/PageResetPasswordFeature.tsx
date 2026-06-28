@@ -13,6 +13,7 @@ export default function PageResetPasswordFeature() {
   const { t } = useTranslation()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean>(false)
+  const [mailPreferenceDisabled, setMailPreferenceDisabled] = useState<boolean>(false)
 
   useDocumentTitle(t("pages.authentication.reset-password.page-title"))
 
@@ -27,6 +28,9 @@ export default function PageResetPasswordFeature() {
             break
           case "RESET_PASSWORD_TOKEN_ALREADY_EXISTS":
             setErrorMessage("forms.reset-password.errors.token-already-exists")
+            break
+          case "MAIL_PREFERENCE_DISABLED":
+            setMailPreferenceDisabled(true)
             break
           default:
             setErrorMessage("forms.errors.unexpected-error")
@@ -55,6 +59,7 @@ export default function PageResetPasswordFeature() {
       form={form}
       loading={isPending}
       success={success}
+      mailPreferenceDisabled={mailPreferenceDisabled}
       onSubmit={onSubmit}
     />
   )

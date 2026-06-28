@@ -14,7 +14,9 @@
         "description": "Saisissez votre adresse e-mail pour recevoir un lien de réinitialisation.",
         "success-description": "Un e-mail vous a été envoyé avec un lien pour réinitialiser votre mot de passe.",
         "mail-spam-warning": "Il se peut que le mail arrive dans vos courriers indésirables (spam).",
-        "back-to-login": "Retour à la connexion"
+        "back-to-login": "Retour à la connexion",
+        "mail-preference-disabled-description": "La réinitialisation du mot de passe par e-mail est désactivée pour ce compte.",
+        "contact-support": "Pour obtenir de l'aide, contactez le support :"
       },
       "registration": {
         "page-title": "Inscription",
