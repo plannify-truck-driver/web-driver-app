@@ -50,6 +50,7 @@ import {
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
+import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
 
 interface NavbarNavigationItem {
   title: string
@@ -68,6 +69,7 @@ export default function AppLayout() {
   const { open, toggleSidebar } = useSidebar()
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
   const { needRefresh } = usePwaUpdate()
+  const changeLanguage = useChangeLanguage()
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -276,7 +278,7 @@ export default function AppLayout() {
                                 )
                                 .map((lng) => (
                                   <DropdownMenuItem
-                                    onClick={() => i18n.changeLanguage(lng)}
+                                    onClick={() => changeLanguage(lng)}
                                     className="text-responsive-base!"
                                     key={lng}
                                   >

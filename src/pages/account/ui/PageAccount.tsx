@@ -35,6 +35,7 @@ import {
 import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
 import { Button } from "@/shared/components/ui/Button"
 import { useTranslation } from "react-i18next"
+import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
 
 interface PageAccountProps {
   driver: Driver | null
@@ -57,6 +58,7 @@ export default function PageAccount({
   const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
   const { needRefresh, updateServiceWorker } = usePwaUpdate()
+  const changeLanguage = useChangeLanguage()
 
   if (!driver) {
     return <NoDriverLoaded />
@@ -173,7 +175,7 @@ export default function PageAccount({
                               )
                               .map((lng) => (
                                 <DropdownMenuItem
-                                  onClick={() => i18n.changeLanguage(lng)}
+                                  onClick={() => changeLanguage(lng)}
                                   className="text-responsive-base!"
                                   key={lng}
                                 >
