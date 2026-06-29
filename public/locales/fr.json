@@ -212,6 +212,7 @@
         "language": "Langue",
         "help-support": "Aide & Support",
         "about-plannify": "À propos de Plannify",
+        "about-plannify-toast": "Ce bouton est actuellement désactivé.",
         "logout": "Se déconnecter"
       },
       "support": {

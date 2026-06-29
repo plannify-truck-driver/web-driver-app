@@ -36,6 +36,7 @@ import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
 import { Button } from "@/shared/components/ui/Button"
 import { useTranslation } from "react-i18next"
 import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
+import { toast } from "sonner"
 
 interface PageAccountProps {
   driver: Driver | null
@@ -206,7 +207,7 @@ export default function PageAccount({
               {
                 icon: BookMarkedIcon,
                 label: t("pages.account.settings-actions.about-plannify"),
-                onClick: () => {},
+                onClick: () => toast.info(t("pages.account.settings-actions.about-plannify-toast")),
               },
               {
                 icon: LogOutIcon,

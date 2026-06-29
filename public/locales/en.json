@@ -212,6 +212,7 @@
         "language": "Language",
         "help-support": "Help & Support",
         "about-plannify": "About Plannify",
+        "about-plannify-toast": "This button is currently disabled.",
         "logout": "Logout"
       },
       "support": {
