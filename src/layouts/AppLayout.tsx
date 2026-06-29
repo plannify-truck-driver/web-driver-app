@@ -344,7 +344,7 @@ export default function AppLayout() {
             <Outlet />
           </div>
         </div>
-        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
+        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-6 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
           {navigationItems.map((item) => {
             const isActive =
               location.pathname.startsWith(item.link) ||
