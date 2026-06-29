@@ -100,7 +100,10 @@ export function AccountStatusDialog({
             <XIcon size={16} />
           </button>
         </DrawerHeader>
-        <div className="px-4 pb-4">
+        <div
+          className="px-4"
+          style={{ paddingBottom: "max(1rem, calc(1rem + env(safe-area-inset-bottom)))" }}
+        >
           <AccountStatusDialogContent
             mode={mode}
             isLoading={isLoading}
