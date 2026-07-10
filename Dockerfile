@@ -43,9 +43,9 @@ RUN pnpm run build
 
 FROM nginxinc/nginx-unprivileged:1.31.2-alpine AS production
 
-# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH), CVE-2026-45186 (libexpat HIGH)
+# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH), CVE-2026-45186 (libexpat HIGH), CVE-2026-33630 (c-ares HIGH)
 USER root
-RUN apk upgrade --no-cache zlib musl musl-utils libexpat
+RUN apk upgrade --no-cache zlib musl musl-utils libexpat c-ares
 USER nginx
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
