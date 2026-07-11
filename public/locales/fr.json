@@ -5,7 +5,18 @@
         "page-title": "Connexion",
         "description": "Connectez-vous à votre compte pour continuer",
         "no-account-text": "Vous n'avez pas de compte ?",
-        "no-account-link": "Inscrivez-vous"
+        "no-account-link": "Inscrivez-vous",
+        "forgot-password-text": "Mot de passe oublié ?",
+        "forgot-password-link": "Réinitialisez-le"
+      },
+      "reset-password": {
+        "page-title": "Réinitialisation du mot de passe",
+        "description": "Saisissez votre adresse e-mail pour recevoir un lien de réinitialisation.",
+        "success-description": "Un e-mail vous a été envoyé avec un lien pour réinitialiser votre mot de passe.",
+        "mail-spam-warning": "Il se peut que le mail arrive dans vos courriers indésirables (spam).",
+        "back-to-login": "Retour à la connexion",
+        "mail-preference-disabled-description": "La réinitialisation du mot de passe par e-mail est désactivée pour ce compte.",
+        "contact-support": "Pour obtenir de l'aide, contactez le support :"
       },
       "registration": {
         "page-title": "Inscription",
@@ -54,6 +65,14 @@
         "email-body": "Bonjour,\n\nJe rencontre un problème pour vérifier mon compte. Pourriez-vous m'aider à résoudre ce problème ?\n\nMerci d'avance pour votre aide.",
         "logout-button": "Se déconnecter"
       },
+      "token-reset-password": {
+        "page-title": "Réinitialisation du mot de passe",
+        "description": "Saisissez votre nouveau mot de passe.",
+        "success-message": "Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.",
+        "login-button": "Se connecter",
+        "invalid-url-parameters": "Le lien de réinitialisation est invalide. Veuillez vérifier que vous avez utilisé le bon lien ou en demander un nouveau.",
+        "invalid-reset-password-token": "Ce lien de réinitialisation est invalide ou a expiré. Veuillez en demander un nouveau."
+      },
       "token-verify-account": {
         "page-title": "Vérification du compte",
         "description": "Vérification de votre compte",
@@ -61,7 +80,18 @@
         "access-account-button": "Accéder à mon compte",
         "already-verified": "Votre compte a déjà été vérifié. Vous pouvez vous connecter.",
         "invalid-verification-key": "Clé de vérification invalide ou expirée. Veuillez réessayer ou contacter le support si le problème persiste.",
-        "invalid-url-parameters": "Le lien de vérification est invalide. Veuillez vérifier que vous avez utilisé le bon lien ou contactez le support pour obtenir de l'aide."
+        "invalid-url-parameters": "Le lien de vérification est invalide. Veuillez vérifier que vous avez utilisé le bon lien ou contactez le support pour obtenir de l'aide.",
+        "mail-preferences-title": "Vos préférences de notification",
+        "mail-preferences-description": "Choisissez les notifications que vous souhaitez recevoir par e-mail. Vous pourrez les modifier à tout moment dans vos paramètres."
+      },
+      "registration-closed": {
+        "title": "Inscriptions fermées",
+        "description": "Les inscriptions sont temporairement fermées.",
+        "closed-since-label": "Fermé depuis :",
+        "reopens-label": "Réouverture prévue :",
+        "reopens-undefined": "Date non définie",
+        "date": "{{date}} à {{time}}",
+        "back-to-login": "Retour à la connexion"
       }
     },
     "dashboard": {
@@ -175,20 +205,153 @@
         "account-section-title": "Paramètres",
         "support-section-title": "Support",
         "personal-information": "Informations personnelles",
-        "email-preferences": "Préférences mail",
+        "email-management": "Gestion des mails",
         "rest-preferences": "Préférences de coupure",
         "application-preferences": "Préférences de l'application",
         "theme": "Thème",
         "language": "Langue",
         "help-support": "Aide & Support",
         "about-plannify": "À propos de Plannify",
+        "about-plannify-toast": "Ce bouton est actuellement désactivé.",
         "logout": "Se déconnecter"
+      },
+      "support": {
+        "page-title": "Aide & Support",
+        "email-label": "Adresse e-mail du support",
+        "registration-email-label": "Votre adresse e-mail d'inscription",
+        "response-time-label": "Délai de réponse",
+        "response-time-value": "Environ une semaine",
+        "description": "Pour contacter le support, envoyez un e-mail à l'adresse ci-dessus en utilisant votre adresse e-mail d'inscription. Les demandes sont traitées dans un délai d'environ une semaine."
       },
       "updates": {
         "section-title": "Nouveautés",
         "refresh": "Mettre à jour",
         "mandatory-before": "Obligatoire avant le {{date}}",
         "empty": "Aucune mise à jour disponible"
+      },
+      "pwa-update": {
+        "available": "Mise à jour disponible",
+        "description": "Une nouvelle version de l'application est prête à être installée.",
+        "action": "Installer"
+      },
+      "mails": {
+        "page-title": "Gestion des mails",
+        "preferences-management": "Gestion des préférences",
+        "mail-sent": "Mails envoyés",
+        "total_one": "{{count}} mail",
+        "total_other": "{{count}} mails",
+        "empty": "Aucun mail envoyé pour le moment.",
+        "sent-at": "Envoyé le {{date}}",
+        "created-at": "Créé le {{date}}",
+        "description-language-notice": "Cette description est fournie en anglais par le système.",
+        "table": {
+          "type": "Type",
+          "description": "Description",
+          "email": "Adresse e-mail",
+          "date": "Date",
+          "attachments": "P.J.",
+          "status": "Statut"
+        },
+        "attachments_one": "{{count}} pièce jointe",
+        "attachments_other": "{{count}} pièces jointes",
+        "types": {
+          "ACCOUNT_VERIFICATION": "Vérification du compte",
+          "PASSWORD_RESET": "Réinitialisation du mot de passe",
+          "ACCOUNT_CHANGEMENT": "Modification du compte",
+          "MONTHLY_REPORTS": "Relevé mensuel"
+        },
+        "status": {
+          "PENDING": "En attente",
+          "SUCCESS": "Envoyé",
+          "FAILED": "Échoué"
+        },
+        "type-status": {
+          "true": "Activée",
+          "false": "Désactivée"
+        },
+        "preferences": {
+          "section-title": "Préférences de notification",
+          "empty": "Aucune préférence configurable.",
+          "toggle-error": "Impossible de modifier la préférence. Veuillez réessayer.",
+          "descriptions": {
+            "ACCOUNT_VERIFICATION": "Recevoir un mail lors de la création de votre compte pour le vérifier.",
+            "PASSWORD_RESET": "Recevoir un mail avec un lien pour réinitialiser votre mot de passe en cas d'oubli.",
+            "ACCOUNT_CHANGEMENT": "Recevoir un mail de notification en cas de modification de votre compte (ex: changement d'adresse e-mail, mot de passe, etc.).",
+            "MONTHLY_REPORTS": "Recevoir un récapitulatif mensuel de votre activité."
+          }
+        }
+      },
+      "mail-preferences": {
+        "page-title": "Préférences de notification",
+        "support-help": "Si vous avez des questions sur vos préférences de notification, vous pouvez contacter notre support.",
+        "section-title": "Notifications par e-mail",
+        "empty": "Aucune préférence configurable."
+      },
+      "mail-detail": {
+        "page-title": "Détail du mail",
+        "sections": {
+          "info": {
+            "title": "Informations",
+            "created-at": "Créé le",
+            "sent-at": "Envoyé le"
+          },
+          "description": {
+            "title": "Description"
+          },
+          "content": {
+            "title": "Contenu"
+          },
+          "attachments": {
+            "title": "Pièces jointes",
+            "empty": "Aucune pièce jointe.",
+            "download": "Télécharger",
+            "download-error": "Impossible de télécharger la pièce jointe.",
+            "download-error-not-found": "Cette pièce jointe est introuvable."
+          }
+        }
+      },
+      "personal-information": {
+        "page-title": "Informations personnelles",
+        "toast": {
+          "profile-update-success": "Profil mis à jour.",
+          "email-update-success": "Adresse e-mail mise à jour.",
+          "password-update-success": "Mot de passe modifié.",
+          "deactivate-success": "Votre compte a été désactivé.",
+          "restore-success": "Votre compte a été restauré.",
+          "update-error": "Une erreur est survenue. Veuillez réessayer."
+        },
+        "sections": {
+          "profile": {
+            "title": "Profil",
+            "edit-button": "Modifier"
+          },
+          "email": {
+            "title": "Adresse e-mail",
+            "edit-button": "Modifier"
+          },
+          "password": {
+            "title": "Mot de passe",
+            "edit-button": "Modifier",
+            "placeholder": "••••••••"
+          },
+          "account-info": {
+            "title": "Compte",
+            "member-since": "Inscrit depuis",
+            "last-login": "Dernière connexion",
+            "verified": "Compte vérifié",
+            "verified-yes": "Vérifié",
+            "verified-no": "Non vérifié"
+          },
+          "danger-zone": {
+            "title": "Zone de danger",
+            "deactivate-title": "Désactiver mon compte",
+            "deactivate-description": "Votre compte sera définitivement supprimé {{days}} jours après la désactivation. Vous pouvez le restaurer à tout moment avant cette date.",
+            "deactivate-button": "Désactiver",
+            "deactivated-title": "Compte désactivé",
+            "deactivated-description": "Votre compte sera définitivement supprimé le {{date}}. Restaurez-le pour annuler sa suppression.",
+            "restore-button": "Restaurer mon compte"
+          }
+        }
       }
     },
     "settings": {
@@ -214,7 +377,8 @@
         "banner-share-description": "Invite à partager l'application avec d'autres conducteurs.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Désactivée",
-        "banner-next-display": "Réapparition le {{date}}"
+        "banner-next-display": "Réapparition le {{date}}",
+        "workday-display-format-section": "Format d'affichage des journées"
       },
       "rest-preferences": {
         "page-title": "Préférences de coupure",
@@ -366,6 +530,32 @@
       "no-break": "Sans coupure",
       "confirm": "Terminer ma journée"
     },
+    "edit-profile-dialog": {
+      "title": "Modifier le profil",
+      "description": "Mettez à jour votre prénom, nom, genre et numéro de téléphone."
+    },
+    "edit-email-dialog": {
+      "title": "Modifier l'adresse e-mail",
+      "description": "Saisissez votre nouvelle adresse e-mail.",
+      "unverification-warning": "Modifier votre adresse e-mail révoquera la vérification de votre compte. Un nouvel e-mail de vérification sera envoyé à la nouvelle adresse."
+    },
+    "edit-password-dialog": {
+      "title": "Modifier le mot de passe",
+      "description": "Choisissez un nouveau mot de passe fort."
+    },
+    "account-status-dialog": {
+      "cancel": "Annuler",
+      "deactivate": {
+        "title": "Désactiver votre compte ?",
+        "description": "Votre compte sera programmé pour suppression dans {{days}} jours. Vous pouvez le restaurer à tout moment avant cette date.",
+        "confirm": "Désactiver"
+      },
+      "restore": {
+        "title": "Restaurer votre compte ?",
+        "description": "Votre compte ne sera plus programmé pour suppression.",
+        "confirm": "Restaurer"
+      }
+    },
     "share-banner": {
       "title": "Partagez Plannify",
       "reason-free": "Gratuite et sécurisée",
@@ -437,7 +627,8 @@
       "errors": {
         "cannot-copy-password-to-clipboard": "Impossible de copier le mot de passe dans le presse-papiers.",
         "cannot-generate-password-while-loading": "Impossible de générer un mot de passe pendant la création du compte.",
-        "driver-already-exists": "Un compte existe déjà avec cette adresse e-mail."
+        "driver-already-exists": "Un compte existe déjà avec cette adresse e-mail.",
+        "email-domain-denylisted": "Les adresses e-mail du domaine {{domain}} ne sont pas acceptées. Veuillez utiliser une autre adresse e-mail."
       }
     },
     "add-workday": {
@@ -458,6 +649,32 @@
       "yes": "Oui",
       "okay": "D'accord",
       "generic-error-undo": "Annuler"
+    },
+    "edit-personal-information": {
+      "phone-number-label": "Numéro de téléphone",
+      "submit-button": "Enregistrer les modifications"
+    },
+    "edit-password": {
+      "new-password-label": "Nouveau mot de passe",
+      "confirm-password-label": "Confirmer le nouveau mot de passe",
+      "submit-button": "Modifier le mot de passe"
+    },
+    "reset-password": {
+      "email-label": "Adresse e-mail",
+      "email-placeholder": "prenom.nom@mail.fr",
+      "submit-button": "Envoyer le lien de réinitialisation",
+      "errors": {
+        "driver-not-found": "Aucun compte n'est associé à cette adresse e-mail.",
+        "token-already-exists": "Un lien de réinitialisation a déjà été envoyé. Veuillez vérifier votre boîte mail ou réessayer plus tard."
+      }
+    },
+    "confirm-reset-password": {
+      "password-label": "Nouveau mot de passe",
+      "confirm-password-label": "Confirmer le nouveau mot de passe",
+      "submit-button": "Réinitialiser le mot de passe",
+      "errors": {
+        "invalid-token": "Ce lien de réinitialisation est invalide ou a expiré. Veuillez en demander un nouveau."
+      }
     },
     "errors": {
       "unexpected-error": "Une erreur inattendue est survenue. Veuillez réessayer plus tard."
@@ -493,7 +710,8 @@
     "email": {
       "required": "L'adresse e-mail est obligatoire.",
       "invalid": "L'adresse e-mail n'est pas valide.",
-      "max-length": "L'adresse e-mail ne peut pas dépasser 255 caractères."
+      "max-length": "L'adresse e-mail ne peut pas dépasser 255 caractères.",
+      "already-exists": "Cette adresse e-mail est déjà associée à un compte."
     },
     "password": {
       "required": "Le mot de passe est obligatoire.",
@@ -511,6 +729,9 @@
       "required": "La confirmation du mot de passe est obligatoire.",
       "match": "Les mots de passe ne correspondent pas."
     },
+    "phone-number": {
+      "max-length": "Le numéro de téléphone ne peut pas dépasser 30 caractères."
+    },
     "date": {
       "invalid": "La date n'est pas valide."
     },
@@ -521,6 +742,12 @@
   "common": {
     "back": "Retour",
     "next": "Suivant",
-    "continue": "Continuer"
+    "continue": "Continuer",
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {{page}} / {{total}}",
+      "per-page": "{{count}} éléments par page"
+    }
   }
 }

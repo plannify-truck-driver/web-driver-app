@@ -9,7 +9,7 @@ import { useLoginMutation } from "@/shared/queries/auth/auth.queries"
 import { useEffect, useRef, useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import { useAuth } from "@/app/providers/AuthProvider"
+import { useAuth } from "@/app/providers/useAuth"
 
 export default function PageLoginFeature() {
   const { t } = useTranslation()
@@ -17,11 +17,33 @@ export default function PageLoginFeature() {
   const navigate = useNavigate()
   const { redirect } = useSearch({ from: "/authentication/login" })
   const hasAttemptedRefresh = useRef(false)
-
-  const { mutateAsync, data, error, isPending } = useLoginMutation()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useDocumentTitle(t("pages.authentication.login.page-title"))
+
+  const { mutateAsync, isPending } = useLoginMutation({
+    onSuccess: (data) => {
+      login(data.access_token)
+      navigate({ to: redirect || "/dashboard", replace: true })
+    },
+    onError: async (error) => {
+      const apiError = await handleErrorResponse(error)
+      if (apiError) {
+        switch (apiError.error_code) {
+          case "INVALID_CREDENTIALS":
+            setErrorMessage(t("forms.login.errors.invalid-credentials"))
+            break
+          case "DRIVER_SUSPENDED":
+            navigate({ to: "/authentication/suspended", state: apiError.content })
+            break
+          default:
+            setErrorMessage(t("forms.errors.unexpected-error"))
+        }
+        return
+      }
+      console.error("Login error:", error)
+    },
+  })
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -37,30 +59,6 @@ export default function PageLoginFeature() {
   }
 
   useEffect(() => {
-    if (data && !accessToken) {
-      login(data.access_token)
-      navigate({ to: redirect || "/dashboard", replace: true })
-    } else if (error) {
-      handleErrorResponse(error).then((apiError) => {
-        if (apiError) {
-          switch (apiError.error_code) {
-            case "INVALID_CREDENTIALS":
-              setErrorMessage(t("forms.login.errors.invalid-credentials"))
-              break
-            case "DRIVER_SUSPENDED":
-              navigate({ to: "/authentication/suspended", state: apiError.content })
-              break
-            default:
-              setErrorMessage(t("forms.errors.unexpected-error"))
-          }
-          return
-        }
-        console.error("Login error:", error)
-      })
-    }
-  }, [data, error, navigate, t, login, accessToken])
-
-  useEffect(() => {
     if (!accessToken && !hasAttemptedRefresh.current) {
       hasAttemptedRefresh.current = true
       refreshToken().then((response) => {
@@ -69,7 +67,7 @@ export default function PageLoginFeature() {
         }
       })
     }
-  }, [accessToken, refreshToken, navigate])
+  }, [accessToken, refreshToken, navigate, redirect])
 
   return (
     <PageLogin errorMessage={errorMessage} form={form} loading={isPending} onSubmit={onSubmit} />

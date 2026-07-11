@@ -1,28 +1,13 @@
-import type { Driver, JwtDriverPayload } from "@/shared/models/driver"
-import { createContext, useCallback, useContext, useEffect, useState } from "react"
+import type { JwtDriverPayload } from "@/shared/models/driver"
+import { useCallback, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useDeleteRefreshTokenMutation, useRefreshToken } from "@/shared/queries/auth/auth.queries"
+import { handleErrorResponse } from "@/shared/lib/error-response"
+import { setApiAccessToken } from "@/shared/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
-
-export interface AuthProviderState {
-  driver: Driver | null
-  accessToken: string | null
-  login: (token: string) => void
-  logout: () => void
-  isDeletingRefreshToken: boolean
-  refreshToken: () => Promise<boolean>
-}
-
-const initialState: AuthProviderState = {
-  driver: null,
-  accessToken: null,
-  login: () => null,
-  logout: () => null,
-  isDeletingRefreshToken: false,
-  refreshToken: async () => false,
-}
-
-const AuthProviderContext = createContext<AuthProviderState>(initialState)
+import { setRefreshTokenHandler } from "@/lib/queryClient"
+import { AuthProviderContext } from "./AuthProviderContext"
+import type { AuthProviderState } from "./AuthProviderContext"
 
 export function AuthProvider({ children, ...props }: { children: React.ReactNode }) {
   const { refetch } = useRefreshToken()
@@ -30,40 +15,74 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
   const queryClient = useQueryClient()
 
   const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [driver, setDriver] = useState<Driver | null>(null)
+  const [driver, setDriver] = useState<AuthProviderState["driver"]>(null)
 
   const login = useCallback((token: string) => {
     setAccessToken(token)
+    setApiAccessToken(token)
     const decoded: JwtDriverPayload = jwtDecode(token)
     setDriver(decoded.driver)
   }, [])
 
+  const clearSession = useCallback(() => {
+    setAccessToken(null)
+    setApiAccessToken(null)
+    setDriver(null)
+    queryClient.clear()
+  }, [queryClient])
+
   function logout() {
     mutateAsync().then(() => {
-      setAccessToken(null)
-      setDriver(null)
-      queryClient.clear()
+      clearSession()
     })
   }
 
   const refreshToken = useCallback(async () => {
-    return refetch().then((res) => {
+    return refetch().then(async (res) => {
       if (res.data) {
         login(res.data.access_token)
         return true
       }
+      if (res.error) {
+        const apiError = await handleErrorResponse(res.error)
+        if (apiError?.error_code === "INVALID_REFRESH_TOKEN") {
+          clearSession()
+        }
+      }
       return false
     })
-  }, [refetch, login])
+  }, [refetch, login, clearSession])
+
+  useEffect(() => {
+    setRefreshTokenHandler(refreshToken)
+  }, [refreshToken])
 
   useEffect(() => {
     if (!accessToken) return
     const decoded: JwtDriverPayload = jwtDecode(accessToken)
+
+    // Refresh the token 1 minute before it expires
     const delay = decoded.exp * 1000 - Date.now() - 60_000
 
-    if (delay <= 0) return
+    if (delay <= 0) {
+      refreshToken()
+      return
+    }
+
     const timerId = setTimeout(() => refreshToken(), delay)
     return () => clearTimeout(timerId)
+  }, [accessToken, refreshToken])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== "visible" || !accessToken) return
+      const decoded: JwtDriverPayload = jwtDecode(accessToken)
+      const delay = decoded.exp * 1000 - Date.now() - 60_000
+      if (delay <= 0) refreshToken()
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
   }, [accessToken, refreshToken])
 
   const value: AuthProviderState = {
@@ -80,10 +99,4 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
       {children}
     </AuthProviderContext.Provider>
   )
-}
-
-export function useAuth() {
-  const context = useContext(AuthProviderContext)
-
-  return context
 }

@@ -1,7 +1,11 @@
 import { useRef, useState } from "react"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useTranslation } from "react-i18next"
-import { useGetWorkdayGarbage, useRestoreWorkday, workdaysKeys } from "@/shared/queries/workday/workday.queries"
+import {
+  useGetWorkdayGarbage,
+  useRestoreWorkday,
+  workdaysKeys,
+} from "@/shared/queries/workday/workday.queries"
 import { queryClient } from "@/lib/queryClient"
 import { toast } from "sonner"
 import { handleErrorResponse } from "@/shared/lib/error-response"

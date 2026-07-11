@@ -105,6 +105,7 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
     },
   ]
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: workdays,
     columns: DEFAULT_COLUMNS,

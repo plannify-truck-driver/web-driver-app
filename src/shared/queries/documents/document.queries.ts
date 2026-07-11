@@ -1,5 +1,8 @@
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query"
-import type { GenerateWorkdayDocumentResponse, GetWorkdayDocumentsByYearsRequest } from "./document.types"
+import type {
+  GenerateWorkdayDocumentResponse,
+  GetWorkdayDocumentsByYearsRequest,
+} from "./document.types"
 import {
   generateWorkdayDocument,
   getWorkdayDocuments,

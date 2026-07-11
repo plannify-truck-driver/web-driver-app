@@ -1,4 +1,5 @@
 import { Controller, type UseFormReturn } from "react-hook-form"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import type z from "zod"
 import type { addRestPeriodFormSchema } from "../zod/add-rest-period"
@@ -20,6 +21,9 @@ export interface AddRestPeriodFormProps {
 export function AddRestPeriodForm({ form, nextStart, onSubmit }: AddRestPeriodFormProps) {
   const { t } = useTranslation()
   const isEndOfDay = form.watch("isEndOfDay")
+  const [restMinsDisplay, setRestMinsDisplay] = useState<string>(() =>
+    String(form.getValues("restMins") ?? 0)
+  )
 
   const handleSubmit = form.handleSubmit((values) => {
     if (!values.isEndOfDay) {
@@ -111,14 +115,22 @@ export function AddRestPeriodForm({ form, nextStart, onSubmit }: AddRestPeriodFo
               <div className="flex items-center gap-2">
                 <Input
                   id="form-rest-mins"
-                  type="number"
-                  min={0}
-                  max={720}
-                  value={field.value}
-                  onChange={(e) =>
-                    field.onChange(Math.max(0, Math.floor(parseFloat(e.target.value) || 0)))
-                  }
-                  className="w-24"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={restMinsDisplay}
+                  onChange={(e) => {
+                    const raw = e.target.value
+                    setRestMinsDisplay(raw)
+                    if (raw === "") {
+                      field.onChange(0)
+                    } else {
+                      field.onChange(Math.max(0, Math.floor(parseFloat(raw) || 0)))
+                    }
+                  }}
+                  onFocus={() => setRestMinsDisplay(field.value === 0 ? "" : String(field.value))}
+                  onBlur={() => setRestMinsDisplay(String(field.value))}
+                  className="w-16 text-center"
                 />
                 <span className="text-muted-foreground text-sm">
                   {t("pages.settings.rest-preferences.dialog.rest-unit")}

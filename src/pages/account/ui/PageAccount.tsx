@@ -1,4 +1,4 @@
-import { useTheme } from "@/app/providers/ThemeProvider"
+import { useTheme } from "@/app/providers/useTheme"
 import { NoDriverLoaded } from "@/shared/components/NoDriverLoaded"
 import { ShareBanner } from "@/shared/components/ShareBanner"
 import SettingsActionGroup from "@/shared/components/SettingsActionGroup"
@@ -19,6 +19,7 @@ import {
   ChevronDownIcon,
   CirclePauseIcon,
   ClockAlertIcon,
+  DownloadIcon,
   EarthIcon,
   InfoIcon,
   LaptopIcon,
@@ -31,7 +32,11 @@ import {
   SunIcon,
   UserPenIcon,
 } from "lucide-react"
+import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
+import { Button } from "@/shared/components/ui/Button"
 import { useTranslation } from "react-i18next"
+import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
+import { toast } from "sonner"
 
 interface PageAccountProps {
   driver: Driver | null
@@ -53,6 +58,8 @@ export default function PageAccount({
   const { t, i18n } = useTranslation()
   const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
+  const { needRefresh, updateServiceWorker } = usePwaUpdate()
+  const changeLanguage = useChangeLanguage()
 
   if (!driver) {
     return <NoDriverLoaded />
@@ -81,6 +88,22 @@ export default function PageAccount({
           <ShareBanner onDismiss={onDismissShareBanner} />
         </div>
       )}
+      {needRefresh && (
+        <div className="from-primary/5 to-background border-primary/15 flex items-center justify-between gap-3 rounded-lg border bg-gradient-to-br p-4">
+          <div className="flex items-center gap-3">
+            <DownloadIcon className="text-primary size-4 shrink-0" />
+            <div>
+              <p className="text-sm font-medium">{t("pages.account.pwa-update.available")}</p>
+              <p className="text-muted-foreground text-xs">
+                {t("pages.account.pwa-update.description")}
+              </p>
+            </div>
+          </div>
+          <Button onClick={() => updateServiceWorker()} size="sm" className="shrink-0">
+            {t("pages.account.pwa-update.action")}
+          </Button>
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <SettingsActionGroup
@@ -89,12 +112,12 @@ export default function PageAccount({
               {
                 icon: UserPenIcon,
                 label: t("pages.account.settings-actions.personal-information"),
-                onClick: () => {},
+                onClick: () => navigate({ to: "/account/personal-information" }),
               },
               {
                 icon: MailsIcon,
-                label: t("pages.account.settings-actions.email-preferences"),
-                onClick: () => {},
+                label: t("pages.account.settings-actions.email-management"),
+                onClick: () => navigate({ to: "/account/mails" }),
               },
               {
                 icon: CirclePauseIcon,
@@ -139,7 +162,7 @@ export default function PageAccount({
                   <DropdownMenu>
                     <DropdownMenuTrigger className="flex cursor-pointer items-center gap-2">
                       <span className="text-muted-foreground">
-                        {t(`languages.${i18n.language}`)}
+                        {t(`languages.${i18n.language.split("-")[0].toLowerCase()}`)}
                       </span>
                       <ChevronDownIcon className="h-4 w-4" />
                     </DropdownMenuTrigger>
@@ -153,7 +176,7 @@ export default function PageAccount({
                               )
                               .map((lng) => (
                                 <DropdownMenuItem
-                                  onClick={() => i18n.changeLanguage(lng)}
+                                  onClick={() => changeLanguage(lng)}
                                   className="text-responsive-base!"
                                   key={lng}
                                 >
@@ -179,12 +202,12 @@ export default function PageAccount({
               {
                 icon: InfoIcon,
                 label: t("pages.account.settings-actions.help-support"),
-                onClick: () => {},
+                onClick: () => navigate({ to: "/account/support" }),
               },
               {
                 icon: BookMarkedIcon,
                 label: t("pages.account.settings-actions.about-plannify"),
-                onClick: () => {},
+                onClick: () => toast.info(t("pages.account.settings-actions.about-plannify-toast")),
               },
               {
                 icon: LogOutIcon,
@@ -203,9 +226,7 @@ export default function PageAccount({
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <SparklesIcon className="text-primary size-4" />
-              <h3 className="text-sm font-semibold">
-                {t("pages.account.updates.section-title")}
-              </h3>
+              <h3 className="text-sm font-semibold">{t("pages.account.updates.section-title")}</h3>
             </div>
             <button
               onClick={() => window.location.reload()}
@@ -238,7 +259,9 @@ export default function PageAccount({
                     </span>
                   )}
                 </div>
-                <p className="text-muted-foreground text-sm leading-relaxed">{update.description}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {update.description}
+                </p>
               </div>
             ))}
           </div>

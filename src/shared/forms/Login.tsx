@@ -11,9 +11,16 @@ interface LoginFormProps {
   form: UseFormReturn<z.infer<typeof loginFormSchema>>
   loading: boolean
   onSubmit: (values: z.infer<typeof loginFormSchema>) => void
+  onForgotPassword?: () => void
 }
 
-export function LoginForm({ errorMessage, form, loading, onSubmit }: LoginFormProps) {
+export function LoginForm({
+  errorMessage,
+  form,
+  loading,
+  onSubmit,
+  onForgotPassword,
+}: LoginFormProps) {
   const { t } = useTranslation()
 
   return (
@@ -49,7 +56,18 @@ export function LoginForm({ errorMessage, form, loading, onSubmit }: LoginFormPr
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-password">{t("forms.login.password-label")}</FieldLabel>
+              <div className="flex items-center justify-between">
+                <FieldLabel htmlFor="form-password">{t("forms.login.password-label")}</FieldLabel>
+                {onForgotPassword && (
+                  <button
+                    type="button"
+                    onClick={onForgotPassword}
+                    className="text-primary cursor-pointer text-xs transition-colors hover:underline"
+                  >
+                    {t("pages.authentication.login.forgot-password-link")}
+                  </button>
+                )}
+              </div>
               <Input
                 {...field}
                 id="form-password"

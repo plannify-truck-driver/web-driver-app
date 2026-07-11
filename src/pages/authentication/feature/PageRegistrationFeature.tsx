@@ -1,17 +1,22 @@
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import PageRegistration from "../ui/PageRegistration"
+import PageRegistrationClosed from "../ui/PageRegistrationClosed"
 import { useTranslation } from "react-i18next"
 import { useForm } from "react-hook-form"
 import type z from "zod"
 import { registrationFormSchema } from "@/shared/zod/registration"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { isPasswordStrong } from "@/shared/functions/isPasswordStrong"
-import { useRegistrationMutation } from "@/shared/queries/auth/auth.queries"
-import { useEffect, useState } from "react"
+import {
+  useRegistrationLimitationQuery,
+  useRegistrationMutation,
+} from "@/shared/queries/auth/auth.queries"
+import { useState } from "react"
 import { handleErrorResponse } from "@/shared/lib/error-response"
-import { useAuth } from "@/app/providers/AuthProvider"
+import { useAuth } from "@/app/providers/useAuth"
 import { useNavigate } from "@tanstack/react-router"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { Loader } from "@/shared/components/Loader"
 
 const STEP_FIELDS: Record<number, (keyof z.infer<typeof registrationFormSchema>)[]> = {
   1: ["firstname", "lastname"],
@@ -21,15 +26,18 @@ const STEP_FIELDS: Record<number, (keyof z.infer<typeof registrationFormSchema>)
 
 export default function PageRegistrationFeature() {
   const { t, i18n } = useTranslation()
-  const { accessToken, login } = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
 
   const isMobile = useIsMobile()
-  const { mutateAsync, data, error, isPending } = useRegistrationMutation()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const { data: limitation, isPending: isLimitationPending } = useRegistrationLimitationQuery()
+
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1)
   const [workdayRowType, setWorkdayRowType] = useState<1 | 2 | 3>(1)
-  const accountCreated = !!data
+  const [registrationData, setRegistrationData] = useState<{ access_token: string } | null>(null)
+  const accountCreated = !!registrationData
 
   useDocumentTitle(t("pages.authentication.registration.page-title"))
 
@@ -42,6 +50,43 @@ export default function PageRegistrationFeature() {
       email: "",
       password: "",
       confirmPassword: "",
+    },
+  })
+
+  const { mutateAsync, isPending } = useRegistrationMutation({
+    onSuccess: (data) => {
+      setRegistrationData(data)
+      if (!isMobile) {
+        login(data.access_token)
+        navigate({ to: "/dashboard", replace: true })
+      }
+    },
+    onError: async (error) => {
+      const apiError = await handleErrorResponse(error)
+      if (apiError) {
+        switch (apiError.error_code) {
+          case "DRIVER_ALREADY_EXISTS":
+            form.setError("email", { type: "manual" })
+            setErrorMessage(t("forms.registration.errors.driver-already-exists"))
+            setStep(3)
+            break
+          case "EMAIL_DOMAIN_DENYLISTED":
+            form.setError("email", { type: "manual" })
+            setErrorMessage(
+              t("forms.registration.errors.email-domain-denylisted", {
+                domain: apiError.content?.domain,
+              })
+            )
+            setStep(3)
+            break
+          default:
+            setErrorMessage(t("forms.errors.unexpected-error"))
+            setStep(1)
+        }
+        return
+      }
+      setStep(1)
+      console.error("Registration error:", error)
     },
   })
 
@@ -89,38 +134,23 @@ export default function PageRegistrationFeature() {
     })
   }
 
-  useEffect(() => {
-    if (data && !accessToken) {
-      if (!isMobile) {
-        login(data.access_token)
-        navigate({ to: "/dashboard", replace: true })
-      }
-    } else if (error) {
-      handleErrorResponse(error).then((apiError) => {
-        if (apiError) {
-          switch (apiError.error_code) {
-            case "DRIVER_ALREADY_EXISTS":
-              form.setError("email", { type: "manual" })
-              setErrorMessage(t("forms.registration.errors.driver-already-exists"))
-              setStep(3)
-              break
-            default:
-              setErrorMessage(t("forms.errors.unexpected-error"))
-              setStep(1)
-          }
-          return
-        }
-        setStep(1)
-        console.error("Registration error:", error)
-      })
-    }
-  }, [data, error, t, form, accessToken, isMobile, login, navigate])
-
   function onComplete() {
-    if (!data) return
+    if (!registrationData) return
     localStorage.setItem("driver-preferences", String(workdayRowType))
-    login(data.access_token)
+    login(registrationData.access_token)
     navigate({ to: "/dashboard", replace: true })
+  }
+
+  if (isLimitationPending) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <Loader size={4} />
+      </div>
+    )
+  }
+
+  if (limitation) {
+    return <PageRegistrationClosed limitation={limitation} />
   }
 
   return (

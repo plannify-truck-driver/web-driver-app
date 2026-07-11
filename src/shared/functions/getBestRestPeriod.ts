@@ -12,8 +12,7 @@ export const getBestRestPeriod = (
 
   const match = restPeriods.find(
     (period) =>
-      durationSeconds >= calculSeconds(period.start) &&
-      durationSeconds <= calculSeconds(period.end)
+      durationSeconds >= calculSeconds(period.start) && durationSeconds <= calculSeconds(period.end)
   )
 
   return match?.rest ?? null

@@ -1,14 +1,22 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import PageVerifyAccount from "../ui/PageVerifyAccount"
 import { useTranslation } from "react-i18next"
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useVerifyAccountMutation } from "@/shared/queries/auth/auth.queries"
 import { handleErrorResponse } from "@/shared/lib/error-response"
-import { useAuth } from "@/app/providers/AuthProvider"
+import { useAuth } from "@/app/providers/useAuth"
+import {
+  useGetMailPreferences,
+  useGetMailTypes,
+  useUpdateMailPreference,
+} from "@/shared/queries/mails/mails.queries"
+import { useNavigate } from "@tanstack/react-router"
+import { toast } from "sonner"
 
 export default function PageVerifyAccountFeature() {
   const { t } = useTranslation()
-  const { accessToken, login } = useAuth()
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
   const params = new URLSearchParams(window.location.search)
   const token = params.get("token")
@@ -16,60 +24,118 @@ export default function PageVerifyAccountFeature() {
 
   useDocumentTitle(t("pages.authentication.token-verify-account.page-title"))
 
-  const { mutateAsync, data, error, isPending } = useVerifyAccountMutation()
-  const [message, setMessage] = useState<{ success: string; error: string } | null>(null)
+  const [success, setSuccess] = useState(false)
+  const [asyncError, setAsyncError] = useState("")
+  const [localPreferences, setLocalPreferences] = useState<Map<number, boolean>>(new Map())
+  const initializedRef = useRef(false)
+
+  const { data: mailTypes = [], isLoading: isLoadingMailTypes } = useGetMailTypes({
+    enabled: success,
+  })
+  const { data: preferences = [], isLoading: isLoadingPreferences } = useGetMailPreferences({
+    enabled: success,
+  })
+
+  useEffect(() => {
+    if (initializedRef.current || mailTypes.length === 0 || isLoadingPreferences) return
+
+    const prefMap = new Map(preferences.map((p) => [p.mail_type_id, p.is_enabled]))
+
+    setLocalPreferences(
+      new Map(
+        mailTypes
+          .filter((type) => type.is_editable)
+          .map((type) => [
+            type.pk_driver_mail_type_id,
+            prefMap.get(type.pk_driver_mail_type_id) ?? true,
+          ])
+      )
+    )
+    initializedRef.current = true
+  }, [mailTypes, preferences, isLoadingPreferences])
+
+  const {
+    mutate: updatePreference,
+    isPending: isUpdatingPreference,
+    variables: updatingVariables,
+  } = useUpdateMailPreference()
+
+  function handleTogglePreference(mailTypeId: number, isEnabled: boolean) {
+    setLocalPreferences((prev) => new Map(prev).set(mailTypeId, isEnabled))
+    updatePreference(
+      { mailTypeId, isEnabled },
+      {
+        onError: async (error) => {
+          setLocalPreferences((prev) => new Map(prev).set(mailTypeId, !isEnabled))
+          const apiError = await handleErrorResponse(error)
+          void apiError
+          toast.error(t("pages.account.mails.preferences.toggle-error"))
+        },
+      }
+    )
+  }
+
+  const { mutateAsync, isPending } = useVerifyAccountMutation({
+    onSuccess: (data) => {
+      login(data.access_token)
+      setSuccess(true)
+    },
+    onError: async (error) => {
+      const apiError = await handleErrorResponse(error)
+      if (apiError) {
+        switch (apiError.error_code) {
+          case "ACCOUNT_ALREADY_VERIFIED":
+            setAsyncError(t("pages.authentication.token-verify-account.already-verified"))
+            break
+          case "INVALID_VERIFICATION_KEY":
+            setAsyncError(t("pages.authentication.token-verify-account.invalid-verification-key"))
+            break
+          case "MISSING_ATTRIBUTE":
+            setAsyncError(t("pages.authentication.token-verify-account.invalid-url-parameters"))
+            break
+        }
+        console.error("API Error:", apiError)
+        return
+      }
+      console.error("Verify account error:", error)
+    },
+  })
 
   useEffect(() => {
     if (token && driverId) {
       mutateAsync({ token, driver_id: driverId })
-    } else {
-      setMessage({
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const message = useMemo<{ success: string; error: string } | null>(() => {
+    if (!token || !driverId) {
+      return {
         success: "",
         error: t("pages.authentication.token-verify-account.invalid-url-parameters"),
-      })
+      }
     }
-  }, [token, driverId, mutateAsync, t])
-
-  useEffect(() => {
-    if (data && !accessToken) {
-      login(data.access_token)
-      setMessage({
-        success: t("pages.authentication.token-verify-account.success-message"),
-        error: "",
-      })
+    if (success) {
+      return { success: t("pages.authentication.token-verify-account.success-message"), error: "" }
     }
-  }, [data, t, login, accessToken])
-
-  useEffect(() => {
-    if (error) {
-      handleErrorResponse(error).then((apiError) => {
-        if (apiError) {
-          switch (apiError.error_code) {
-            case "ACCOUNT_ALREADY_VERIFIED":
-              setMessage({
-                success: t("pages.authentication.token-verify-account.already-verified"),
-                error: "",
-              })
-              break
-            case "INVALID_VERIFICATION_KEY":
-              setMessage({
-                success: "",
-                error: t("pages.authentication.token-verify-account.invalid-verification-key"),
-              })
-              break
-            case "MISSING_ATTRIBUTE":
-              setMessage({
-                success: "",
-                error: t("pages.authentication.token-verify-account.invalid-url-parameters"),
-              })
-              break
-          }
-          console.error("API Error:", apiError)
-        }
-        console.error("Registration error:", error)
-      })
+    if (asyncError) {
+      return { success: "", error: asyncError }
     }
-  }, [error, t])
+    return null
+  }, [token, driverId, success, asyncError, t])
 
-  return <PageVerifyAccount message={message} loading={isPending} />
+  const editableMailTypes = mailTypes.filter((type) => type.is_editable)
+
+  return (
+    <PageVerifyAccount
+      message={message}
+      loading={isPending}
+      mailTypes={editableMailTypes}
+      isLoadingMailTypes={isLoadingMailTypes || isLoadingPreferences}
+      localPreferences={localPreferences}
+      updatingTypeId={isUpdatingPreference ? (updatingVariables?.mailTypeId ?? null) : null}
+      onTogglePreference={handleTogglePreference}
+      onContinue={() => navigate({ to: "/dashboard" })}
+    />
+  )
 }

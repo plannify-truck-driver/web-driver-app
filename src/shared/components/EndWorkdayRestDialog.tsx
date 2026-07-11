@@ -1,4 +1,5 @@
 import { Controller, type UseFormReturn } from "react-hook-form"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import type z from "zod"
 import type { endWorkdayRestSchema } from "@/shared/zod/end-workday-rest"
@@ -29,6 +30,9 @@ export function EndWorkdayRestDialog({
   onSubmit,
 }: EndWorkdayRestDialogProps) {
   const { t } = useTranslation()
+  const [restMinsDisplay, setRestMinsDisplay] = useState<string>(() =>
+    String(form.getValues("restMins") ?? 0)
+  )
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -56,14 +60,22 @@ export function EndWorkdayRestDialog({
                   </FieldLabel>
                   <div className="flex items-center gap-2">
                     <Input
-                      type="number"
-                      min={0}
-                      max={720}
-                      value={field.value}
-                      onChange={(e) =>
-                        field.onChange(Math.max(0, Math.floor(parseFloat(e.target.value) || 0)))
-                      }
-                      className="w-24"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={restMinsDisplay}
+                      onChange={(e) => {
+                        const raw = e.target.value
+                        setRestMinsDisplay(raw)
+                        if (raw === "") {
+                          field.onChange(0)
+                        } else {
+                          field.onChange(Math.max(0, Math.floor(parseFloat(raw) || 0)))
+                        }
+                      }}
+                      onFocus={() => setRestMinsDisplay(field.value === 0 ? "" : String(field.value))}
+                      onBlur={() => setRestMinsDisplay(String(field.value))}
+                      className="w-16 text-center"
                     />
                     <span className="text-muted-foreground text-sm">
                       {t("components.end-workday-rest-dialog.rest-unit")}
@@ -82,14 +94,13 @@ export function EndWorkdayRestDialog({
               variant="outline"
               onClick={() => {
                 form.setValue("restMins", 0)
+                setRestMinsDisplay("0")
                 form.handleSubmit(onSubmit)()
               }}
             >
               {t("components.end-workday-rest-dialog.no-break")}
             </Button>
-            <Button type="submit">
-              {t("components.end-workday-rest-dialog.confirm")}
-            </Button>
+            <Button type="submit">{t("components.end-workday-rest-dialog.confirm")}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

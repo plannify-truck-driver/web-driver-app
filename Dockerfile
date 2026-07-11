@@ -1,14 +1,14 @@
-FROM node:22-alpine AS base
+FROM node:26.3.1-alpine AS base
 
-# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
-RUN apk upgrade --no-cache zlib musl musl-utils
+# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH), CVE-2026-45186 (libexpat HIGH)
+RUN apk upgrade --no-cache zlib musl musl-utils libexpat
 
 # Create a non-root user for security
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S reactuser -u 1001
 
-# Install pnpm via corepack (built into Node, no extra layer)
-RUN corepack enable && corepack prepare pnpm@10.33.2 --activate
+# Install pnpm
+RUN npm install -g pnpm@11.8.0 --ignore-scripts
 
 WORKDIR /app
 
@@ -41,11 +41,11 @@ COPY --chown=reactuser:nodejs . .
 
 RUN pnpm run build
 
-FROM nginxinc/nginx-unprivileged:1.30.0-alpine AS production
+FROM nginxinc/nginx-unprivileged:1.31.2-alpine AS production
 
-# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)
+# Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH), CVE-2026-45186 (libexpat HIGH), CVE-2026-33630 (c-ares HIGH)
 USER root
-RUN apk upgrade --no-cache zlib musl musl-utils
+RUN apk upgrade --no-cache zlib musl musl-utils libexpat c-ares
 USER nginx
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH)

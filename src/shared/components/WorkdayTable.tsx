@@ -1,4 +1,4 @@
-import { useDriverPreferences } from "@/app/providers/DriverPreferencesProvider"
+import { useDriverPreferences } from "@/app/providers/useDriverPreferences"
 import type { Workday } from "../models/workday"
 import { WorkdayTableRow1 } from "./workdayTableRows/WorkdayTableRow1"
 import { WorkdayTableRow2 } from "./workdayTableRows/WorkdayTableRow2"

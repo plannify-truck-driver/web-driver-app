@@ -217,7 +217,7 @@ export function RegistrationForm({ errorMessage, form, loading, onSubmit }: Regi
                   )}
                 />
               </div>
-              <Button variant="link" className="p-0 text-sm" onClick={handleGenerateStrongPassword}>
+              <Button type="button" variant="link" className="p-0 text-sm" onClick={handleGenerateStrongPassword}>
                 {t("forms.registration.generate-strong-password-button")}
               </Button>
             </div>

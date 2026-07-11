@@ -2,7 +2,8 @@ import { createRootRouteWithContext, useLocation, useNavigate } from "@tanstack/
 import { useEffect } from "react"
 import AppLayout from "@/layouts/AppLayout"
 import AuthenticationLayout from "@/layouts/AuthenticationLayout"
-import { useAuth, type AuthProviderState } from "@/app/providers/AuthProvider"
+import { useAuth } from "@/app/providers/useAuth"
+import type { AuthProviderState } from "@/app/providers/AuthProviderContext"
 import { SidebarProvider } from "@/shared/components/ui/Sidebar"
 import { DriverPreferencesProvider } from "@/app/providers/DriverPreferencesProvider"
 
@@ -21,10 +22,7 @@ function RootComponent() {
       return
     }
 
-    if (
-      location.pathname.startsWith("/authentication/verify-account") &&
-      !accessToken
-    ) {
+    if (location.pathname.startsWith("/authentication/verify-account") && !accessToken) {
       navigate({ to: "/authentication/login" })
       return
     }

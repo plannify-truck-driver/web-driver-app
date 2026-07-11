@@ -1,18 +1,18 @@
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/Dialog"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "./ui/Drawer"
-import { ArrowLeftIcon, FileChartColumnIncreasingIcon, FileCodeIcon, UploadIcon, XIcon } from "lucide-react"
+import {
+  ArrowLeftIcon,
+  FileChartColumnIncreasingIcon,
+  FileCodeIcon,
+  UploadIcon,
+  XIcon,
+} from "lucide-react"
 import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { cn } from "@/lib/utils"
 import { Button } from "./ui/Button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/Select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/Select"
 
 export interface ImportWorkdaysFromFileDialogProps {
   isOpen: boolean
@@ -88,12 +88,14 @@ export function ImportWorkdaysFromFileDialog({
 
   const isMappingComplete = REQUIRED_HEADERS.every((attr) => attributeMapping[attr])
 
-  const title = view === "mapping"
-    ? t(`components.import-workdays-from-file-dialog.title-${fileType}`)
-    : t(`components.import-workdays-from-file-dialog.title-${fileType}`)
-  const description = view === "mapping"
-    ? t("components.import-workdays-from-file-dialog.mapping-description")
-    : t("components.import-workdays-from-file-dialog.description")
+  const title =
+    view === "mapping"
+      ? t(`components.import-workdays-from-file-dialog.title-${fileType}`)
+      : t(`components.import-workdays-from-file-dialog.title-${fileType}`)
+  const description =
+    view === "mapping"
+      ? t("components.import-workdays-from-file-dialog.mapping-description")
+      : t("components.import-workdays-from-file-dialog.description")
 
   const body = (
     <div className="flex flex-col gap-4 p-4">
@@ -102,7 +104,7 @@ export function ImportWorkdaysFromFileDialog({
           <div className="flex flex-col gap-3">
             {REQUIRED_HEADERS.map((attr) => (
               <div key={attr} className="flex items-center justify-between gap-4">
-                <span className="text-sm font-medium shrink-0">{attributeLabels[attr]}</span>
+                <span className="shrink-0 text-sm font-medium">{attributeLabels[attr]}</span>
                 <Select
                   value={attributeMapping[attr] ?? ""}
                   onValueChange={(value) =>
@@ -134,20 +136,12 @@ export function ImportWorkdaysFromFileDialog({
               </div>
             ))}
           </div>
-          <div className="flex gap-3 mt-2">
-            <Button
-              variant="outline"
-              className="flex-1 py-5"
-              onClick={() => setView("file-info")}
-            >
+          <div className="mt-2 flex gap-3">
+            <Button variant="outline" className="flex-1 py-5" onClick={() => setView("file-info")}>
               <ArrowLeftIcon />
               {t("components.import-workdays-from-file-dialog.mapping-back")}
             </Button>
-            <Button
-              className="flex-1 py-5"
-              disabled={!isMappingComplete}
-              onClick={() => {}}
-            >
+            <Button className="flex-1 py-5" disabled={!isMappingComplete} onClick={() => {}}>
               {t("components.import-workdays-from-file-dialog.mapping-confirm")}
             </Button>
           </div>
@@ -164,7 +158,7 @@ export function ImportWorkdaysFromFileDialog({
                 <FileChartColumnIncreasingIcon className="text-[#217346]" />
               </div>
             )}
-            <p className="text-sm truncate">{selectedFile.name}</p>
+            <p className="truncate text-sm">{selectedFile.name}</p>
           </div>
           {isFileFromPlannify ? (
             <div className="flex flex-col gap-4">
@@ -227,9 +221,16 @@ export function ImportWorkdaysFromFileDialog({
           />
           <div
             onClick={() => inputRef.current?.click()}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setIsDragging(true)
+            }}
             onDragLeave={() => setIsDragging(false)}
-            onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFile(e.dataTransfer.files[0]) }}
+            onDrop={(e) => {
+              e.preventDefault()
+              setIsDragging(false)
+              handleFile(e.dataTransfer.files[0])
+            }}
             className={cn(
               "border-border flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 py-10 transition-colors",
               isDragging ? "border-primary bg-primary/5" : "hover:bg-muted/50"

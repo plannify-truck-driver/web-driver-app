@@ -1,12 +1,43 @@
-import { ArrowLeftIcon, BellIcon, ClockIcon, LaptopIcon, MonitorIcon, RotateCcwIcon, SmartphoneIcon, TabletIcon, TimerIcon } from "lucide-react"
+import {
+  ArrowLeftIcon,
+  BellIcon,
+  ClockIcon,
+  LaptopIcon,
+  MonitorIcon,
+  RotateCcwIcon,
+  SmartphoneIcon,
+  TabletIcon,
+  TimerIcon,
+} from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useState, useEffect } from "react"
 import { Switch } from "@/shared/components/ui/Switch"
 import { Input } from "@/shared/components/ui/Input"
 import { Button } from "@/shared/components/ui/Button"
+import { WorkdayTableRow1 } from "@/shared/components/workdayTableRows/WorkdayTableRow1"
+import { WorkdayTableRow2 } from "@/shared/components/workdayTableRows/WorkdayTableRow2"
+import { WorkdayTableRow3 } from "@/shared/components/workdayTableRows/WorkdayTableRow3"
+import { cn } from "@/lib/utils"
+import { Check } from "lucide-react"
+import type { Workday } from "@/shared/models/workday"
 
 const DEFAULT_SHOW_SECONDS = false
 const DEFAULT_MAX_HOURS = 18
+const DEFAULT_WORKDAY_ROW_TYPE = 1 as const
+
+const MOCK_WORKDAY: Workday = {
+  date: "2025-05-21",
+  start_time: "08:30",
+  end_time: "17:00",
+  rest_time: "1:00",
+  overnight_rest: false,
+}
+
+const ROW_COMPONENTS = {
+  1: WorkdayTableRow1,
+  2: WorkdayTableRow2,
+  3: WorkdayTableRow3,
+} as const
 
 interface BannerInfo {
   key: string
@@ -22,6 +53,8 @@ interface PageApplicationPreferencesProps {
   onShowSecondsChange: (value: boolean) => void
   maxHours: number
   onMaxHoursChange: (value: number) => void
+  workdayRowType: 1 | 2 | 3
+  onWorkdayRowTypeChange: (type: 1 | 2 | 3) => void
   banners: BannerInfo[]
 }
 
@@ -30,6 +63,8 @@ export default function PageApplicationPreferences({
   onShowSecondsChange,
   maxHours,
   onMaxHoursChange,
+  workdayRowType,
+  onWorkdayRowTypeChange,
   banners,
 }: PageApplicationPreferencesProps) {
   const { t, i18n } = useTranslation()
@@ -73,9 +108,15 @@ export default function PageApplicationPreferences({
         <TabletIcon className="hidden size-4 shrink-0 md:block lg:hidden" />
         <LaptopIcon className="hidden size-4 shrink-0 lg:block xl:hidden" />
         <MonitorIcon className="hidden size-4 shrink-0 xl:block" />
-        <p className="md:hidden">{t("pages.settings.application-preferences.device-notice-phone")}</p>
-        <p className="hidden md:block lg:hidden">{t("pages.settings.application-preferences.device-notice-tablet")}</p>
-        <p className="hidden lg:block">{t("pages.settings.application-preferences.device-notice-computer")}</p>
+        <p className="md:hidden">
+          {t("pages.settings.application-preferences.device-notice-phone")}
+        </p>
+        <p className="hidden md:block lg:hidden">
+          {t("pages.settings.application-preferences.device-notice-tablet")}
+        </p>
+        <p className="hidden lg:block">
+          {t("pages.settings.application-preferences.device-notice-computer")}
+        </p>
       </div>
 
       {/* Display */}
@@ -110,6 +151,60 @@ export default function PageApplicationPreferences({
             )}
             <Switch checked={showSeconds} onCheckedChange={onShowSecondsChange} />
           </div>
+        </div>
+      </div>
+
+      {/* Workday display format */}
+      <div className="flex flex-col gap-1.5 sm:hidden">
+        <div className="flex items-center justify-between">
+          <h2 className="text-muted-foreground font-mono text-sm uppercase">
+            {t("pages.settings.application-preferences.workday-display-format-section")}
+          </h2>
+          {workdayRowType !== DEFAULT_WORKDAY_ROW_TYPE && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => onWorkdayRowTypeChange(DEFAULT_WORKDAY_ROW_TYPE)}
+              className="text-muted-foreground"
+              title={t("pages.settings.application-preferences.reset-default")}
+            >
+              <RotateCcwIcon />
+            </Button>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {([1, 2, 3] as const).map((type) => {
+            const Component = ROW_COMPONENTS[type]
+            const isSelected = workdayRowType === type
+
+            return (
+              <button
+                key={type}
+                type="button"
+                className={cn(
+                  "relative rounded-lg border-2 p-0.5 text-left transition-colors",
+                  isSelected ? "border-primary" : "border-border hover:border-primary/40"
+                )}
+                onClick={() => onWorkdayRowTypeChange(type)}
+              >
+                {isSelected && (
+                  <div className="bg-primary absolute top-2 right-2 z-10 flex size-5 items-center justify-center rounded-full">
+                    <Check className="size-3 text-white" />
+                  </div>
+                )}
+                <div className="pointer-events-none">
+                  <Component
+                    workday={MOCK_WORKDAY}
+                    date={new Date(MOCK_WORKDAY.date + "T00:00:00")}
+                    isFirst
+                    isLast
+                    onClick={() => {}}
+                  />
+                </div>
+              </button>
+            )
+          })}
         </div>
       </div>
 
@@ -206,7 +301,7 @@ export default function PageApplicationPreferences({
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-3 pt-0.5">
-                  <span className="text-muted-foreground tabular-nums text-sm">
+                  <span className="text-muted-foreground text-sm tabular-nums">
                     {banner.count}/{banner.maxDismissals}
                   </span>
                   {banner.count > 0 && (

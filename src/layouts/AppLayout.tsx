@@ -1,5 +1,5 @@
-import { useAuth } from "@/app/providers/AuthProvider"
-import { useTheme } from "@/app/providers/ThemeProvider"
+import { useAuth } from "@/app/providers/useAuth"
+import { useTheme } from "@/app/providers/useTheme"
 import { useShareBannerDismiss } from "@/hooks/use-share-banner-dismiss"
 import { Loader } from "@/shared/components/Loader"
 import { ShareBanner } from "@/shared/components/ShareBanner"
@@ -26,8 +26,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/shared/components/ui/Sidebar"
+import { useSidebar } from "@/shared/components/ui/useSidebar"
 import { Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router"
 import {
   CalendarSearch,
@@ -49,6 +49,8 @@ import {
 } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
+import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
 
 interface NavbarNavigationItem {
   title: string
@@ -66,6 +68,8 @@ export default function AppLayout() {
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
+  const { needRefresh } = usePwaUpdate()
+  const changeLanguage = useChangeLanguage()
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -110,12 +114,6 @@ export default function AppLayout() {
   const location = useLocation()
 
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false)
-
-  // const currentSection =
-  //   navigationItems.find((item) => location.pathname.startsWith(item.link))?.title ?? ""
-  // const currentSubSections = navigationItems
-  //   .find((item) => location.pathname.startsWith(item.link))
-  //   ?.subItems.filter((subItem) => typeof subItem.action === "string" && subItem.title.mobile)
 
   if (!driver) return null
 
@@ -166,7 +164,12 @@ export default function AppLayout() {
                           isActive={isActive}
                         >
                           <Link to={item.link}>
-                            <item.icon size={20} />
+                            <div className="relative">
+                              <item.icon size={20} />
+                              {needRefresh && item.link === "/account" && (
+                                <span className="bg-primary ring-sidebar absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2" />
+                              )}
+                            </div>
                             <span>
                               {toUpperCaseFirstLetter(
                                 t(item.navigationTitle.desktop, {
@@ -275,7 +278,7 @@ export default function AppLayout() {
                                 )
                                 .map((lng) => (
                                   <DropdownMenuItem
-                                    onClick={() => i18n.changeLanguage(lng)}
+                                    onClick={() => changeLanguage(lng)}
                                     className="text-responsive-base!"
                                     key={lng}
                                   >
@@ -327,40 +330,21 @@ export default function AppLayout() {
               {open ? <PanelLeftClose /> : <PanelLeftOpen />}
             </Button>
           </div>
-          <div className="px-4">
-            <Outlet />
+          <div className="h-full overflow-y-auto">
+            <div className="px-4 pb-4">
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>
       {/* For mobile screens */}
       <div className="bg-background flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
-        {/* {currentSubSections && (
-            <div className="flex w-full flex-row items-center justify-between gap-2 overflow-auto px-4">
-              {currentSubSections.map((subSection, index) => (
-                <Link
-                  key={index}
-                  to={typeof subSection.action === "string" ? subSection.action : "#"}
-                  className={
-                    "text-responsive-xl" +
-                    (location.pathname === subSection.action ? " underline" : "")
-                  }
-                >
-                  {toUpperCaseFirstLetter(
-                    t(subSection.title.mobile!, {
-                      currentYear,
-                      previousYear,
-                      previousMonth,
-                      yearFromPreviousMonth,
-                    })
-                  )}
-                </Link>
-              ))}
-            </div>
-          )} */}
-        <div className="h-full overflow-y-auto px-4 py-2">
-          <Outlet />
+        <div className="h-full overflow-y-auto">
+          <div className="px-4 py-2 pb-4">
+            <Outlet />
+          </div>
         </div>
-        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-3 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
+        <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-6 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
           {navigationItems.map((item) => {
             const isActive =
               location.pathname.startsWith(item.link) ||
@@ -373,7 +357,12 @@ export default function AppLayout() {
                   "flex flex-col items-center" + (isActive ? "" : " text-muted-foreground")
                 }
               >
-                {<item.icon strokeWidth={1.5} size={26} />}
+                <div className="relative">
+                  <item.icon strokeWidth={1.5} size={26} />
+                  {needRefresh && item.link === "/account" && (
+                    <span className="bg-primary ring-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2" />
+                  )}
+                </div>
                 <p className="text-responsive-md p-0 leading-none">
                   {t(item.navigationTitle.mobile)}
                 </p>

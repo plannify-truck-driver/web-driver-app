@@ -23,6 +23,7 @@ import { PasswordComplexityMeter } from "@/shared/components/PasswordComplexityM
 import { generateStrongPassword } from "@/shared/functions/generateStrongPassword"
 import { toast } from "sonner"
 import type { SyntheticEvent } from "react"
+import { StepIndicator } from "@/shared/components/StepIndicator"
 
 interface PageRegistrationProps {
   errorMessage: string | null
@@ -179,7 +180,10 @@ export default function PageRegistration({
                     onValueChange={field.onChange}
                     disabled={loading}
                   >
-                    <SelectTrigger className="bg-background w-full" aria-invalid={fieldState.invalid}>
+                    <SelectTrigger
+                      className="bg-background w-full"
+                      aria-invalid={fieldState.invalid}
+                    >
                       <SelectValue placeholder={t("forms.registration.gender-placeholder")} />
                     </SelectTrigger>
                     <SelectContent>
@@ -302,7 +306,11 @@ export default function PageRegistration({
               </Button>
             )}
             {step < 4 ? (
-              <Button type="button" className={cn(step === 1 ? "w-full" : "flex-1")} onClick={onNextStep}>
+              <Button
+                type="button"
+                className={cn(step === 1 ? "w-full" : "flex-1")}
+                onClick={onNextStep}
+              >
                 {t("common.next")}
               </Button>
             ) : (
@@ -362,22 +370,6 @@ export default function PageRegistration({
           </Button>
         </div>
       </div>
-    </div>
-  )
-}
-
-function StepIndicator({ current, total }: { current: number; total: number }) {
-  return (
-    <div className="flex w-full items-center gap-1.5">
-      {Array.from({ length: total }, (_, i) => (
-        <div
-          key={i}
-          className={cn(
-            "h-1.5 flex-1 rounded-full transition-colors duration-300",
-            i + 1 <= current ? "bg-primary" : "bg-muted-foreground/30"
-          )}
-        />
-      ))}
     </div>
   )
 }

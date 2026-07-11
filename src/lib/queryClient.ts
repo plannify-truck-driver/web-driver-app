@@ -1,6 +1,5 @@
-import { authKeys, useRefreshToken } from "@/shared/queries/auth/auth.queries"
+import { authKeys } from "@/shared/queries/auth/auth.queries"
 import { QueryClient, type Query } from "@tanstack/react-query"
-import { useEffect } from "react"
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,7 +22,10 @@ export const setRefreshTokenHandler = (refreshFn: () => Promise<unknown>) => {
   })
 
   // Global error handler
-  queryClient.getQueryCache().config.onError = async (error: Error, query: Query<unknown, unknown, unknown, readonly unknown[]>) => {
+  queryClient.getQueryCache().config.onError = async (
+    error: Error,
+    query: Query<unknown, unknown, unknown, readonly unknown[]>
+  ) => {
     if (query.queryKey.join(".") === authKeys.refreshToken().join(".")) return
     await handleUnauthorized(error, refreshFn)
   }
@@ -38,15 +40,6 @@ const handleUnauthorized = async (error: unknown, refreshFn: () => Promise<unkno
   const body = await (error as { response: Response }).response.clone().json()
   if (body?.error_code === "UNAUTHORIZED") {
     await refreshFn()
+    queryClient.invalidateQueries()
   }
-}
-
-export const QueryClientConfigurator = ({ children }: { children: React.ReactNode }) => {
-  const { refetch } = useRefreshToken()
-
-  useEffect(() => {
-    setRefreshTokenHandler(refetch)
-  }, [refetch])
-
-  return children
 }

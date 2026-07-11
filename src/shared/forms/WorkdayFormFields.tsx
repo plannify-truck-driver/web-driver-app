@@ -46,10 +46,20 @@ export function WorkdayFormFields({
   }, [startTimeValue, endTimeValue, restPeriods, isRestPeriodsAvailable])
 
   const userOverrideRef = useRef(false)
+  const isInitializedRef = useRef(false)
 
   useEffect(() => {
+    if (startTimeValue === "" && endTimeValue === "") return
+    if (!isInitializedRef.current) {
+      isInitializedRef.current = true
+      // If restTime is already set (loaded from server), preserve it
+      if (form.getValues("restTime")) {
+        userOverrideRef.current = true
+      }
+      return
+    }
     userOverrideRef.current = false
-  }, [startTimeValue, endTimeValue])
+  }, [startTimeValue, endTimeValue, form])
 
   useEffect(() => {
     if (bestRestTime !== null && !userOverrideRef.current) {
@@ -135,37 +145,45 @@ export function WorkdayFormFields({
                     <Skeleton key={i} className="h-8 w-16 rounded-md" />
                   ))
                 ) : restPeriods.length > 0 ? (
-                  restPeriods
-                    .filter(
-                      (period, index, self) =>
-                        self.findIndex((p) => p.rest === period.rest) === index
-                    )
-                    .map((period) => {
-                      const isSelected = field.value === period.rest
-                      const isBest = bestRestTime === period.rest
-                      return (
-                        <button
-                          key={period.rest}
-                          type="button"
-                          onClick={() => {
-                            userOverrideRef.current = true
-                            field.onChange(period.rest)
-                          }}
-                          className={cn(
-                            "border-border relative cursor-pointer rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50",
-                            isSelected && "border-primary bg-primary/10 text-primary"
-                          )}
-                          disabled={isLoadingRestPeriods || !isRestPeriodsAvailable || disabled}
-                        >
-                          {isBest && (
-                            <span className="bg-primary absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full">
-                              <StarIcon size={8} fill="currentColor" className="text-white" />
-                            </span>
-                          )}
-                          {displayDuration(period.rest, t)}
-                        </button>
+                  <>
+                    {restPeriods
+                      .filter(
+                        (period, index, self) =>
+                          self.findIndex((p) => p.rest === period.rest) === index
                       )
-                    })
+                      .map((period) => {
+                        const isSelected = field.value?.slice(0, 5) === period.rest.slice(0, 5)
+                        const isBest = bestRestTime?.slice(0, 5) === period.rest.slice(0, 5)
+                        return (
+                          <button
+                            key={period.rest}
+                            type="button"
+                            onClick={() => {
+                              userOverrideRef.current = true
+                              field.onChange(period.rest)
+                            }}
+                            className={cn(
+                              "border-border relative cursor-pointer rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50",
+                              isSelected && "border-primary bg-primary/10 text-primary"
+                            )}
+                            disabled={isLoadingRestPeriods || !isRestPeriodsAvailable || disabled}
+                          >
+                            {isBest && (
+                              <span className="bg-primary absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full">
+                                <StarIcon size={8} fill="currentColor" className="text-white" />
+                              </span>
+                            )}
+                            {displayDuration(period.rest, t)}
+                          </button>
+                        )
+                      })}
+                    {field.value &&
+                      !restPeriods.some((p) => p.rest.slice(0, 5) === field.value?.slice(0, 5)) && (
+                        <span className="border-primary bg-primary/10 text-primary rounded-md border px-3 py-1 text-sm">
+                          {displayDuration(field.value, t)}
+                        </span>
+                      )}
+                  </>
                 ) : (
                   <TimeInput
                     id="wf-rest-time"

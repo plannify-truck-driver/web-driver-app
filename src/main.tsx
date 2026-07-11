@@ -8,7 +8,8 @@ import { createRouter, RouterProvider } from "@tanstack/react-router"
 import { routeTree } from "@/routeTree.gen"
 import { Toaster } from "./shared/components/ui/Sonner"
 import { AuthProvider } from "./app/providers/AuthProvider"
-import { queryClient, QueryClientConfigurator } from "./lib/queryClient"
+import { PwaUpdateProvider } from "./app/providers/PwaUpdateProvider"
+import { queryClient } from "./lib/queryClient"
 
 // Set up a Router instance
 const router = createRouter({
@@ -29,8 +30,8 @@ declare module "@tanstack/react-router" {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <QueryClientProvider client={queryClient}>
-        <QueryClientConfigurator>
+      <PwaUpdateProvider>
+        <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <RouterProvider router={router} />
             <Toaster
@@ -39,8 +40,8 @@ createRoot(document.getElementById("root")!).render(
               closeButton={true}
             />
           </AuthProvider>
-        </QueryClientConfigurator>
-      </QueryClientProvider>
+        </QueryClientProvider>
+      </PwaUpdateProvider>
     </ThemeProvider>
   </StrictMode>
 )

@@ -20,9 +20,17 @@ import { Route as SettingsRestPreferencesRouteImport } from "./routes/settings/r
 import { Route as SettingsApplicationPreferencesRouteImport } from "./routes/settings/application-preferences"
 import { Route as AuthenticationVerifyAccountRouteImport } from "./routes/authentication/verify-account"
 import { Route as AuthenticationSuspendedRouteImport } from "./routes/authentication/suspended"
+import { Route as AuthenticationResetPasswordRouteImport } from "./routes/authentication/reset-password"
 import { Route as AuthenticationRegistrationRouteImport } from "./routes/authentication/registration"
 import { Route as AuthenticationLoginRouteImport } from "./routes/authentication/login"
+import { Route as AccountSupportRouteImport } from "./routes/account/support"
+import { Route as AccountPersonalInformationRouteImport } from "./routes/account/personal-information"
+import { Route as AccountMailsRouteImport } from "./routes/account/mails"
+import { Route as AccountMailsIndexRouteImport } from "./routes/account/mails/index"
 import { Route as AuthenticationTokenVerifyAccountRouteImport } from "./routes/authentication/token/verify-account"
+import { Route as AuthenticationTokenResetPasswordRouteImport } from "./routes/authentication/token/reset-password"
+import { Route as AccountMailsPreferencesRouteImport } from "./routes/account/mails/preferences"
+import { Route as AccountMailsMailIdRouteImport } from "./routes/account/mails/$mailId"
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
@@ -81,6 +89,12 @@ const AuthenticationSuspendedRoute = AuthenticationSuspendedRouteImport.update({
   path: "/authentication/suspended",
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticationResetPasswordRoute =
+  AuthenticationResetPasswordRouteImport.update({
+    id: "/authentication/reset-password",
+    path: "/authentication/reset-password",
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticationRegistrationRoute =
   AuthenticationRegistrationRouteImport.update({
     id: "/authentication/registration",
@@ -92,17 +106,58 @@ const AuthenticationLoginRoute = AuthenticationLoginRouteImport.update({
   path: "/authentication/login",
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountSupportRoute = AccountSupportRouteImport.update({
+  id: "/account/support",
+  path: "/account/support",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountPersonalInformationRoute =
+  AccountPersonalInformationRouteImport.update({
+    id: "/account/personal-information",
+    path: "/account/personal-information",
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AccountMailsRoute = AccountMailsRouteImport.update({
+  id: "/account/mails",
+  path: "/account/mails",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountMailsIndexRoute = AccountMailsIndexRouteImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => AccountMailsRoute,
+} as any)
 const AuthenticationTokenVerifyAccountRoute =
   AuthenticationTokenVerifyAccountRouteImport.update({
     id: "/authentication/token/verify-account",
     path: "/authentication/token/verify-account",
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticationTokenResetPasswordRoute =
+  AuthenticationTokenResetPasswordRouteImport.update({
+    id: "/authentication/token/reset-password",
+    path: "/authentication/token/reset-password",
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AccountMailsPreferencesRoute = AccountMailsPreferencesRouteImport.update({
+  id: "/preferences",
+  path: "/preferences",
+  getParentRoute: () => AccountMailsRoute,
+} as any)
+const AccountMailsMailIdRoute = AccountMailsMailIdRouteImport.update({
+  id: "/$mailId",
+  path: "/$mailId",
+  getParentRoute: () => AccountMailsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
+  "/account/mails": typeof AccountMailsRouteWithChildren
+  "/account/personal-information": typeof AccountPersonalInformationRoute
+  "/account/support": typeof AccountSupportRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
+  "/authentication/reset-password": typeof AuthenticationResetPasswordRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
@@ -113,12 +168,19 @@ export interface FileRoutesByFullPath {
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
   "/workdays/": typeof WorkdaysIndexRoute
+  "/account/mails/$mailId": typeof AccountMailsMailIdRoute
+  "/account/mails/preferences": typeof AccountMailsPreferencesRoute
+  "/authentication/token/reset-password": typeof AuthenticationTokenResetPasswordRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
+  "/account/mails/": typeof AccountMailsIndexRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
+  "/account/personal-information": typeof AccountPersonalInformationRoute
+  "/account/support": typeof AccountSupportRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
+  "/authentication/reset-password": typeof AuthenticationResetPasswordRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
@@ -129,13 +191,21 @@ export interface FileRoutesByTo {
   "/dashboard": typeof DashboardIndexRoute
   "/documents": typeof DocumentsIndexRoute
   "/workdays": typeof WorkdaysIndexRoute
+  "/account/mails/$mailId": typeof AccountMailsMailIdRoute
+  "/account/mails/preferences": typeof AccountMailsPreferencesRoute
+  "/authentication/token/reset-password": typeof AuthenticationTokenResetPasswordRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
+  "/account/mails": typeof AccountMailsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
+  "/account/mails": typeof AccountMailsRouteWithChildren
+  "/account/personal-information": typeof AccountPersonalInformationRoute
+  "/account/support": typeof AccountSupportRoute
   "/authentication/login": typeof AuthenticationLoginRoute
   "/authentication/registration": typeof AuthenticationRegistrationRoute
+  "/authentication/reset-password": typeof AuthenticationResetPasswordRoute
   "/authentication/suspended": typeof AuthenticationSuspendedRoute
   "/authentication/verify-account": typeof AuthenticationVerifyAccountRoute
   "/settings/application-preferences": typeof SettingsApplicationPreferencesRoute
@@ -146,14 +216,22 @@ export interface FileRoutesById {
   "/dashboard/": typeof DashboardIndexRoute
   "/documents/": typeof DocumentsIndexRoute
   "/workdays/": typeof WorkdaysIndexRoute
+  "/account/mails/$mailId": typeof AccountMailsMailIdRoute
+  "/account/mails/preferences": typeof AccountMailsPreferencesRoute
+  "/authentication/token/reset-password": typeof AuthenticationTokenResetPasswordRoute
   "/authentication/token/verify-account": typeof AuthenticationTokenVerifyAccountRoute
+  "/account/mails/": typeof AccountMailsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | "/"
+    | "/account/mails"
+    | "/account/personal-information"
+    | "/account/support"
     | "/authentication/login"
     | "/authentication/registration"
+    | "/authentication/reset-password"
     | "/authentication/suspended"
     | "/authentication/verify-account"
     | "/settings/application-preferences"
@@ -164,12 +242,19 @@ export interface FileRouteTypes {
     | "/dashboard/"
     | "/documents/"
     | "/workdays/"
+    | "/account/mails/$mailId"
+    | "/account/mails/preferences"
+    | "/authentication/token/reset-password"
     | "/authentication/token/verify-account"
+    | "/account/mails/"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
+    | "/account/personal-information"
+    | "/account/support"
     | "/authentication/login"
     | "/authentication/registration"
+    | "/authentication/reset-password"
     | "/authentication/suspended"
     | "/authentication/verify-account"
     | "/settings/application-preferences"
@@ -180,12 +265,20 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/documents"
     | "/workdays"
+    | "/account/mails/$mailId"
+    | "/account/mails/preferences"
+    | "/authentication/token/reset-password"
     | "/authentication/token/verify-account"
+    | "/account/mails"
   id:
     | "__root__"
     | "/"
+    | "/account/mails"
+    | "/account/personal-information"
+    | "/account/support"
     | "/authentication/login"
     | "/authentication/registration"
+    | "/authentication/reset-password"
     | "/authentication/suspended"
     | "/authentication/verify-account"
     | "/settings/application-preferences"
@@ -196,13 +289,21 @@ export interface FileRouteTypes {
     | "/dashboard/"
     | "/documents/"
     | "/workdays/"
+    | "/account/mails/$mailId"
+    | "/account/mails/preferences"
+    | "/authentication/token/reset-password"
     | "/authentication/token/verify-account"
+    | "/account/mails/"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountMailsRoute: typeof AccountMailsRouteWithChildren
+  AccountPersonalInformationRoute: typeof AccountPersonalInformationRoute
+  AccountSupportRoute: typeof AccountSupportRoute
   AuthenticationLoginRoute: typeof AuthenticationLoginRoute
   AuthenticationRegistrationRoute: typeof AuthenticationRegistrationRoute
+  AuthenticationResetPasswordRoute: typeof AuthenticationResetPasswordRoute
   AuthenticationSuspendedRoute: typeof AuthenticationSuspendedRoute
   AuthenticationVerifyAccountRoute: typeof AuthenticationVerifyAccountRoute
   SettingsApplicationPreferencesRoute: typeof SettingsApplicationPreferencesRoute
@@ -213,6 +314,7 @@ export interface RootRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
   DocumentsIndexRoute: typeof DocumentsIndexRoute
   WorkdaysIndexRoute: typeof WorkdaysIndexRoute
+  AuthenticationTokenResetPasswordRoute: typeof AuthenticationTokenResetPasswordRoute
   AuthenticationTokenVerifyAccountRoute: typeof AuthenticationTokenVerifyAccountRoute
 }
 
@@ -295,6 +397,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticationSuspendedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/authentication/reset-password": {
+      id: "/authentication/reset-password"
+      path: "/authentication/reset-password"
+      fullPath: "/authentication/reset-password"
+      preLoaderRoute: typeof AuthenticationResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     "/authentication/registration": {
       id: "/authentication/registration"
       path: "/authentication/registration"
@@ -309,6 +418,34 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticationLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/account/support": {
+      id: "/account/support"
+      path: "/account/support"
+      fullPath: "/account/support"
+      preLoaderRoute: typeof AccountSupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/account/personal-information": {
+      id: "/account/personal-information"
+      path: "/account/personal-information"
+      fullPath: "/account/personal-information"
+      preLoaderRoute: typeof AccountPersonalInformationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/account/mails": {
+      id: "/account/mails"
+      path: "/account/mails"
+      fullPath: "/account/mails"
+      preLoaderRoute: typeof AccountMailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/account/mails/": {
+      id: "/account/mails/"
+      path: "/"
+      fullPath: "/account/mails/"
+      preLoaderRoute: typeof AccountMailsIndexRouteImport
+      parentRoute: typeof AccountMailsRoute
+    }
     "/authentication/token/verify-account": {
       id: "/authentication/token/verify-account"
       path: "/authentication/token/verify-account"
@@ -316,13 +453,54 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticationTokenVerifyAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/authentication/token/reset-password": {
+      id: "/authentication/token/reset-password"
+      path: "/authentication/token/reset-password"
+      fullPath: "/authentication/token/reset-password"
+      preLoaderRoute: typeof AuthenticationTokenResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/account/mails/preferences": {
+      id: "/account/mails/preferences"
+      path: "/preferences"
+      fullPath: "/account/mails/preferences"
+      preLoaderRoute: typeof AccountMailsPreferencesRouteImport
+      parentRoute: typeof AccountMailsRoute
+    }
+    "/account/mails/$mailId": {
+      id: "/account/mails/$mailId"
+      path: "/$mailId"
+      fullPath: "/account/mails/$mailId"
+      preLoaderRoute: typeof AccountMailsMailIdRouteImport
+      parentRoute: typeof AccountMailsRoute
+    }
   }
 }
 
+interface AccountMailsRouteChildren {
+  AccountMailsMailIdRoute: typeof AccountMailsMailIdRoute
+  AccountMailsPreferencesRoute: typeof AccountMailsPreferencesRoute
+  AccountMailsIndexRoute: typeof AccountMailsIndexRoute
+}
+
+const AccountMailsRouteChildren: AccountMailsRouteChildren = {
+  AccountMailsMailIdRoute: AccountMailsMailIdRoute,
+  AccountMailsPreferencesRoute: AccountMailsPreferencesRoute,
+  AccountMailsIndexRoute: AccountMailsIndexRoute,
+}
+
+const AccountMailsRouteWithChildren = AccountMailsRoute._addFileChildren(
+  AccountMailsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountMailsRoute: AccountMailsRouteWithChildren,
+  AccountPersonalInformationRoute: AccountPersonalInformationRoute,
+  AccountSupportRoute: AccountSupportRoute,
   AuthenticationLoginRoute: AuthenticationLoginRoute,
   AuthenticationRegistrationRoute: AuthenticationRegistrationRoute,
+  AuthenticationResetPasswordRoute: AuthenticationResetPasswordRoute,
   AuthenticationSuspendedRoute: AuthenticationSuspendedRoute,
   AuthenticationVerifyAccountRoute: AuthenticationVerifyAccountRoute,
   SettingsApplicationPreferencesRoute: SettingsApplicationPreferencesRoute,
@@ -333,6 +511,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
   DocumentsIndexRoute: DocumentsIndexRoute,
   WorkdaysIndexRoute: WorkdaysIndexRoute,
+  AuthenticationTokenResetPasswordRoute: AuthenticationTokenResetPasswordRoute,
   AuthenticationTokenVerifyAccountRoute: AuthenticationTokenVerifyAccountRoute,
 }
 export const routeTree = rootRouteImport

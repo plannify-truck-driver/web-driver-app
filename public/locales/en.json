@@ -5,7 +5,18 @@
         "page-title": "Login",
         "description": "Connect to your account to continue",
         "no-account-text": "Don't have an account?",
-        "no-account-link": "Sign up"
+        "no-account-link": "Sign up",
+        "forgot-password-text": "Forgot your password?",
+        "forgot-password-link": "Reset it"
+      },
+      "reset-password": {
+        "page-title": "Reset password",
+        "description": "Enter your email address to receive a password reset link.",
+        "success-description": "An email has been sent to you with a link to reset your password.",
+        "mail-spam-warning": "The email may arrive in your spam folder.",
+        "back-to-login": "Back to login",
+        "mail-preference-disabled-description": "Password reset by email is disabled for this account.",
+        "contact-support": "For assistance, please contact support:"
       },
       "registration": {
         "page-title": "Registration",
@@ -54,6 +65,14 @@
         "email-body": "Hello,\n\nI'm having trouble verifying my account. Could you help me resolve this issue?\n\nThank you in advance for your assistance.",
         "logout-button": "Log out"
       },
+      "token-reset-password": {
+        "page-title": "Reset password",
+        "description": "Enter your new password.",
+        "success-message": "Your password has been successfully reset. You can now log in.",
+        "login-button": "Log in",
+        "invalid-url-parameters": "The reset link is invalid. Please check that you have used the correct link or request a new one.",
+        "invalid-reset-password-token": "This reset link is invalid or has expired. Please request a new one."
+      },
       "token-verify-account": {
         "page-title": "Account verification",
         "description": "Verify your account",
@@ -61,7 +80,18 @@
         "access-account-button": "Access my account",
         "already-verified": "Your account has already been verified. You can log in.",
         "invalid-verification-key": "Invalid or expired verification key. Please try again or contact support if the problem persists.",
-        "invalid-url-parameters": "The verification link is invalid. Please check that you have used the correct link or contact support for assistance."
+        "invalid-url-parameters": "The verification link is invalid. Please check that you have used the correct link or contact support for assistance.",
+        "mail-preferences-title": "Your notification preferences",
+        "mail-preferences-description": "Choose which notifications you want to receive by email. You can change them at any time in your settings."
+      },
+      "registration-closed": {
+        "title": "Registration closed",
+        "description": "Registrations are temporarily closed.",
+        "closed-since-label": "Closed since:",
+        "reopens-label": "Expected reopening:",
+        "reopens-undefined": "Date not defined",
+        "date": "{{date}} at {{time}}",
+        "back-to-login": "Back to login"
       }
     },
     "dashboard": {
@@ -175,20 +205,153 @@
         "account-section-title": "Settings",
         "support-section-title": "Support",
         "personal-information": "Personal information",
-        "email-preferences": "Email preferences",
+        "email-management": "Email management",
         "rest-preferences": "Rest preferences",
         "application-preferences": "Application preferences",
         "theme": "Theme",
         "language": "Language",
         "help-support": "Help & Support",
         "about-plannify": "About Plannify",
+        "about-plannify-toast": "This button is currently disabled.",
         "logout": "Logout"
+      },
+      "support": {
+        "page-title": "Help & Support",
+        "email-label": "Support email address",
+        "registration-email-label": "Your registration email address",
+        "response-time-label": "Response time",
+        "response-time-value": "About one week",
+        "description": "To contact support, send an email to the address above and using your registration email address. Requests are handled within approximately one week."
       },
       "updates": {
         "section-title": "What's new",
         "refresh": "Refresh",
         "mandatory-before": "Required before {{date}}",
         "empty": "No updates available"
+      },
+      "pwa-update": {
+        "available": "Update available",
+        "description": "A new version of the application is ready to install.",
+        "action": "Install"
+      },
+      "mails": {
+        "page-title": "Email management",
+        "preferences-management": "Preference management",
+        "mail-sent": "Sent emails",
+        "total_one": "{{count}} email",
+        "total_other": "{{count}} emails",
+        "empty": "No emails sent yet.",
+        "sent-at": "Sent on {{date}}",
+        "created-at": "Created on {{date}}",
+        "description-language-notice": "This description is provided in English by the system.",
+        "table": {
+          "type": "Type",
+          "description": "Description",
+          "email": "Email address",
+          "date": "Date",
+          "attachments": "Att.",
+          "status": "Status"
+        },
+        "attachments_one": "{{count}} attachment",
+        "attachments_other": "{{count}} attachments",
+        "types": {
+          "ACCOUNT_VERIFICATION": "Account verification",
+          "PASSWORD_RESET": "Password reset",
+          "ACCOUNT_CHANGEMENT": "Account update",
+          "MONTHLY_REPORTS": "Monthly statement"
+        },
+        "status": {
+          "PENDING": "Pending",
+          "SUCCESS": "Sent",
+          "FAILED": "Failed"
+        },
+        "type-status": {
+          "true": "Enabled",
+          "false": "Disabled"
+        },
+        "preferences": {
+          "section-title": "Notification preferences",
+          "empty": "No configurable preferences.",
+          "toggle-error": "Unable to update the preference. Please try again.",
+          "descriptions": {
+            "ACCOUNT_VERIFICATION": "Receive an email when creating your account to verify it.",
+            "PASSWORD_RESET": "Receive an email with a link to reset your password in case of forgetfulness.",
+            "ACCOUNT_CHANGEMENT": "Receive a notification email in case of modification to your account (e.g., email address, password, etc.).",
+            "MONTHLY_REPORTS": "Receive a monthly summary of your activity."
+          }
+        }
+      },
+      "mail-preferences": {
+        "page-title": "Notification preferences",
+        "support-help": "If you have any questions about your notification preferences, you can contact our support.",
+        "section-title": "Email notifications",
+        "empty": "No configurable preferences."
+      },
+      "mail-detail": {
+        "page-title": "Email detail",
+        "sections": {
+          "info": {
+            "title": "Information",
+            "created-at": "Created on",
+            "sent-at": "Sent on"
+          },
+          "description": {
+            "title": "Description"
+          },
+          "content": {
+            "title": "Content"
+          },
+          "attachments": {
+            "title": "Attachments",
+            "empty": "No attachments.",
+            "download": "Download",
+            "download-error": "Unable to download the attachment.",
+            "download-error-not-found": "This attachment could not be found."
+          }
+        }
+      },
+      "personal-information": {
+        "page-title": "Personal information",
+        "toast": {
+          "profile-update-success": "Profile updated.",
+          "email-update-success": "Email address updated.",
+          "password-update-success": "Password changed.",
+          "deactivate-success": "Your account has been deactivated.",
+          "restore-success": "Your account has been restored.",
+          "update-error": "An error occurred. Please try again."
+        },
+        "sections": {
+          "profile": {
+            "title": "Profile",
+            "edit-button": "Edit"
+          },
+          "email": {
+            "title": "Email address",
+            "edit-button": "Edit"
+          },
+          "password": {
+            "title": "Password",
+            "edit-button": "Change",
+            "placeholder": "••••••••"
+          },
+          "account-info": {
+            "title": "Account",
+            "member-since": "Member since",
+            "last-login": "Last login",
+            "verified": "Verified account",
+            "verified-yes": "Verified",
+            "verified-no": "Not verified"
+          },
+          "danger-zone": {
+            "title": "Danger zone",
+            "deactivate-title": "Deactivate my account",
+            "deactivate-description": "Your account will be permanently deleted {{days}} days after deactivation. You can restore it at any time before that date.",
+            "deactivate-button": "Deactivate",
+            "deactivated-title": "Account deactivated",
+            "deactivated-description": "Your account will be permanently deleted on {{date}}. Restore it to cancel its deletion.",
+            "restore-button": "Restore my account"
+          }
+        }
       }
     },
     "settings": {
@@ -214,7 +377,8 @@
         "banner-share-description": "Invites you to share the app with other drivers.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Disabled",
-        "banner-next-display": "Reappears on {{date}}"
+        "banner-next-display": "Reappears on {{date}}",
+        "workday-display-format-section": "Workday display format"
       },
       "rest-preferences": {
         "page-title": "Rest Preferences",
@@ -366,6 +530,32 @@
       "no-break": "No break",
       "confirm": "End workday"
     },
+    "edit-profile-dialog": {
+      "title": "Edit profile",
+      "description": "Update your first name, last name, gender and phone number."
+    },
+    "edit-email-dialog": {
+      "title": "Change email address",
+      "description": "Enter your new email address.",
+      "unverification-warning": "Changing your email address will revoke your account verification. A new verification email will be sent to the new address."
+    },
+    "edit-password-dialog": {
+      "title": "Change password",
+      "description": "Choose a strong new password."
+    },
+    "account-status-dialog": {
+      "cancel": "Cancel",
+      "deactivate": {
+        "title": "Deactivate your account?",
+        "description": "Your account will be scheduled for deletion in {{days}} days. You can restore it at any time before that date.",
+        "confirm": "Deactivate"
+      },
+      "restore": {
+        "title": "Restore your account?",
+        "description": "Your account will no longer be scheduled for deletion.",
+        "confirm": "Restore"
+      }
+    },
     "share-banner": {
       "title": "Share Plannify",
       "reason-free": "Free and secure",
@@ -437,7 +627,8 @@
       "errors": {
         "cannot-copy-password-to-clipboard": "Cannot copy the password to the clipboard.",
         "cannot-generate-password-while-loading": "Cannot generate a password while the account is being created.",
-        "driver-already-exists": "An account already exists with this email address."
+        "driver-already-exists": "An account already exists with this email address.",
+        "email-domain-denylisted": "Email addresses from {{domain}} are not accepted. Please use a different email address."
       }
     },
     "add-workday": {
@@ -458,6 +649,32 @@
       "yes": "Yes",
       "okay": "Okay",
       "generic-error-undo": "Annuler"
+    },
+    "edit-personal-information": {
+      "phone-number-label": "Phone number",
+      "submit-button": "Save changes"
+    },
+    "edit-password": {
+      "new-password-label": "New password",
+      "confirm-password-label": "Confirm new password",
+      "submit-button": "Change password"
+    },
+    "reset-password": {
+      "email-label": "Email address",
+      "email-placeholder": "firstname.lastname@mail.com",
+      "submit-button": "Send reset link",
+      "errors": {
+        "driver-not-found": "No account is associated with this email address.",
+        "token-already-exists": "A reset link has already been sent. Please check your inbox or try again later."
+      }
+    },
+    "confirm-reset-password": {
+      "password-label": "New password",
+      "confirm-password-label": "Confirm new password",
+      "submit-button": "Reset password",
+      "errors": {
+        "invalid-token": "This reset link is invalid or has expired. Please request a new one."
+      }
     },
     "errors": {
       "unexpected-error": "An unexpected error occurred. Please try again later."
@@ -493,7 +710,8 @@
     "email": {
       "required": "Email address is required.",
       "invalid": "Email address is not valid.",
-      "max-length": "Email address cannot exceed 255 characters."
+      "max-length": "Email address cannot exceed 255 characters.",
+      "already-exists": "This email address is already associated with an account."
     },
     "password": {
       "required": "Password is required.",
@@ -511,6 +729,9 @@
       "required": "Password confirmation is required.",
       "match": "Passwords do not match."
     },
+    "phone-number": {
+      "max-length": "Phone number cannot exceed 30 characters."
+    },
     "date": {
       "invalid": "The date is not valid."
     },
@@ -521,6 +742,12 @@
   "common": {
     "back": "Back",
     "next": "Next",
-    "continue": "Continue"
+    "continue": "Continue",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{page}} / {{total}}",
+      "per-page": "{{count}} items per page"
+    }
   }
 }
