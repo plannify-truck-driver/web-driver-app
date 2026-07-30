@@ -21,6 +21,7 @@ import {
   ClockAlertIcon,
   DownloadIcon,
   EarthIcon,
+  GlobeCheckIcon,
   InfoIcon,
   LaptopIcon,
   LogOutIcon,
@@ -208,6 +209,11 @@ export default function PageAccount({
                 icon: BookMarkedIcon,
                 label: t("pages.account.settings-actions.about-plannify"),
                 onClick: () => toast.info(t("pages.account.settings-actions.about-plannify-toast")),
+              },
+              {
+                icon: GlobeCheckIcon,
+                label: t("pages.account.settings-actions.status"),
+                onClick: () => window.open("https://status.plannify.be/drivers", "_blank"),
               },
               {
                 icon: LogOutIcon,
