@@ -213,7 +213,7 @@ export default function PageAccount({
               {
                 icon: GlobeCheckIcon,
                 label: t("pages.account.settings-actions.status"),
-                onClick: () => window.open("https://status.plannify.be/drivers", "_blank"),
+                onClick: () => window.open("https://status.plannify.be/status/drivers", "_blank"),
               },
               {
                 icon: LogOutIcon,
