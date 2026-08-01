@@ -14,3 +14,4 @@ jobs:
         [
           {"image": "plannify-truck-driver/web-driver-app"}
         ]
+      docker_build_args: "VITE_ENV=production,VITE_VERSION=${{ github.ref_name }},VITE_API_URL=https://api.plannify.be/driver/v1"
