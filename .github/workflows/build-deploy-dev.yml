@@ -18,8 +18,11 @@ jobs:
         [
           {"image": "plannify-truck-driver/web-driver-app"}
         ]
-      docker_build_args: "VITE_ENV=development,VITE_VERSION=${{ github.sha }},VITE_API_URL=https://api-dev.plannify.be/driver/v1"
+      docker_build_args: |
+        VITE_ENV=development
+        VITE_VERSION=${{ github.sha }}
+        VITE_API_URL=https://api-dev.plannify.be/driver/v1
       infra_targets: |
         [
-          {"repo": "plannify-truck-driver-app/infrastructure", "file": "yaml-applications/dev/driver-front/deployment.yaml", "image": "ghcr.io/plannify-truck-driver/web-driver-app"},
+          {"repo": "plannify-truck-driver-app/infrastructure", "file": "yaml-applications/dev/driver-front/deployment.yaml", "image": "ghcr.io/plannify-truck-driver/web-driver-app"}
         ]
