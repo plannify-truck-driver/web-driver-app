@@ -566,6 +566,11 @@
       "share-text": "Plannify est une application gratuite et développée par un étudiant ingénieur pour gérer vos heures de travail en tant que chauffeur.\n\nRendez-vous ici 👉 {{url}}",
       "dismiss": "Masquer",
       "copied": "Lien copié dans le presse-papiers !"
+    },
+    "dev-environment-banner": {
+      "head-message": "Vous utilisez un environnement de développement",
+      "description": "Toutes les données que vous saisissez ne seront pas sauvegardées et peuvent être supprimées à tout moment.",
+      "dismiss": "Fermer"
     }
   },
   "navigation": {

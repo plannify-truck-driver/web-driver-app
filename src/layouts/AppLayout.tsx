@@ -132,7 +132,7 @@ export default function AppLayout() {
   return (
     <>
       {/* For desktop screens */}
-      <div className="hidden h-screen w-screen flex-row sm:flex">
+      <div className="hidden h-full w-full flex-row sm:flex">
         <Sidebar side="left" variant="sidebar" collapsible="icon" className="hidden sm:block">
           <SidebarHeader>
             <SidebarMenu>
@@ -338,7 +338,7 @@ export default function AppLayout() {
         </div>
       </div>
       {/* For mobile screens */}
-      <div className="bg-background flex h-[100dvh] w-screen flex-col justify-between sm:hidden">
+      <div className="bg-background flex h-full w-full flex-col justify-between sm:hidden">
         <div className="h-full overflow-y-auto">
           <div className="px-4 py-2 pb-4">
             <Outlet />
