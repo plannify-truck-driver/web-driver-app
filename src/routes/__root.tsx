@@ -56,7 +56,7 @@ function RootComponent() {
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col">
+    <div className="flex h-dvh w-screen flex-col">
       {showDevBanner && <DevEnvironmentBanner onDismiss={() => setIsDevBannerVisible(false)} />}
       {content}
     </div>
