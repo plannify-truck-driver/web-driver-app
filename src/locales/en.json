@@ -353,7 +353,8 @@
             "restore-button": "Restore my account"
           }
         }
-      }
+      },
+      "version": "Version {{version}}"
     },
     "settings": {
       "application-preferences": {

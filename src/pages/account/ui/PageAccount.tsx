@@ -281,6 +281,12 @@ export default function PageAccount({
           </button>
         </div>
       )}
+
+      {import.meta.env.VITE_VERSION !== "" && (
+        <div className="text-muted-foreground flex items-center justify-center">
+          <p>{t("pages.account.version", { version: import.meta.env.VITE_VERSION })}</p>
+        </div>
+      )}
     </div>
   )
 }
