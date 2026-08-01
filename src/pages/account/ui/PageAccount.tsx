@@ -21,6 +21,7 @@ import {
   ClockAlertIcon,
   DownloadIcon,
   EarthIcon,
+  GlobeCheckIcon,
   InfoIcon,
   LaptopIcon,
   LogOutIcon,
@@ -210,6 +211,11 @@ export default function PageAccount({
                 onClick: () => toast.info(t("pages.account.settings-actions.about-plannify-toast")),
               },
               {
+                icon: GlobeCheckIcon,
+                label: t("pages.account.settings-actions.status"),
+                onClick: () => window.open("https://status.plannify.be/status/drivers", "_blank"),
+              },
+              {
                 icon: LogOutIcon,
                 label: t("pages.account.settings-actions.logout"),
                 labelColor: "var(--destructive)",
@@ -273,6 +279,12 @@ export default function PageAccount({
             <RefreshCwIcon className="size-4" />
             {t("pages.account.updates.refresh")}
           </button>
+        </div>
+      )}
+
+      {import.meta.env.VITE_VERSION !== "" && (
+        <div className="text-muted-foreground flex items-center justify-center">
+          <p>{t("pages.account.version", { version: import.meta.env.VITE_VERSION })}</p>
         </div>
       )}
     </div>

@@ -7,8 +7,8 @@ export default function AuthenticationLayout() {
   const [showSettings, setShowSettings] = useState(false)
 
   return (
-    <div className="bg-gradient-auth flex h-screen flex-col items-center justify-center">
-      <svg width="100%" height="100%" className="absolute top-0 left-0 z-0">
+    <div className="bg-gradient-auth flex h-full flex-col items-center justify-center">
+      <svg width="100%" height="100%" className="absolute top-0 left-0 z-0 hidden sm:block">
         <defs>
           <pattern id="smallSquares" width="20" height="20" patternUnits="userSpaceOnUse">
             <rect x="5" y="5" width="2" height="2" fill="white" fillOpacity="0.5"></rect>

@@ -1,0 +1,13 @@
+name: Check
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  check:
+    uses: plannify-truck-driver/github-actions/.github/workflows/check-react.yml@main

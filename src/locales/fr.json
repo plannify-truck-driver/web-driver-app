@@ -212,6 +212,7 @@
         "language": "Langue",
         "help-support": "Aide & Support",
         "about-plannify": "À propos de Plannify",
+        "status": "Statut des services",
         "about-plannify-toast": "Ce bouton est actuellement désactivé.",
         "logout": "Se déconnecter"
       },
@@ -352,7 +353,8 @@
             "restore-button": "Restaurer mon compte"
           }
         }
-      }
+      },
+      "version": "Version {{version}}"
     },
     "settings": {
       "application-preferences": {
@@ -565,6 +567,11 @@
       "share-text": "Plannify est une application gratuite et développée par un étudiant ingénieur pour gérer vos heures de travail en tant que chauffeur.\n\nRendez-vous ici 👉 {{url}}",
       "dismiss": "Masquer",
       "copied": "Lien copié dans le presse-papiers !"
+    },
+    "dev-environment-banner": {
+      "head-message": "Vous utilisez un environnement de développement",
+      "description": "Toutes les données que vous saisissez ne seront pas sauvegardées et peuvent être supprimées à tout moment.",
+      "dismiss": "Fermer"
     }
   },
   "navigation": {

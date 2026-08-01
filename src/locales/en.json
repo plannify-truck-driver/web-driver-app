@@ -212,6 +212,7 @@
         "language": "Language",
         "help-support": "Help & Support",
         "about-plannify": "About Plannify",
+        "status": "Services status",
         "about-plannify-toast": "This button is currently disabled.",
         "logout": "Logout"
       },
@@ -352,7 +353,8 @@
             "restore-button": "Restore my account"
           }
         }
-      }
+      },
+      "version": "Version {{version}}"
     },
     "settings": {
       "application-preferences": {
@@ -565,6 +567,11 @@
       "share-text": "Plannify is a free app developed by an engineering student to manage your working hours as a driver.\n\nCheck it out here 👉 {{url}}",
       "dismiss": "Dismiss",
       "copied": "Link copied to clipboard!"
+    },
+    "dev-environment-banner": {
+      "head-message": "You are using a development environment",
+      "description": "All data you enter will not be saved and may be deleted at any time.",
+      "dismiss": "Close"
     }
   },
   "navigation": {

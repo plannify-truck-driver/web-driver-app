@@ -33,7 +33,9 @@ export default function PageResetPassword({
   if (mailPreferenceDisabled) {
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-sm">{t("pages.authentication.reset-password.mail-preference-disabled-description")}</p>
+        <p className="text-sm">
+          {t("pages.authentication.reset-password.mail-preference-disabled-description")}
+        </p>
         <p className="text-sm">
           {t("pages.authentication.reset-password.contact-support")}{" "}
           <a href={`mailto:${supportEmail}`} className="text-primary underline">

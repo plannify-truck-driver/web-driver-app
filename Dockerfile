@@ -41,7 +41,7 @@ COPY --chown=reactuser:nodejs . .
 
 RUN pnpm run build
 
-FROM nginxinc/nginx-unprivileged:1.31.2-alpine AS production
+FROM nginxinc/nginx-unprivileged:1.31-alpine AS production
 
 # Patch CVE-2026-22184 (zlib HIGH), CVE-2026-40200 (musl HIGH), CVE-2026-45186 (libexpat HIGH), CVE-2026-33630 (c-ares HIGH)
 USER root
