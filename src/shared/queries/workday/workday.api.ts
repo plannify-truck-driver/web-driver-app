@@ -5,6 +5,7 @@ import type {
   DeleteWorkdayRequest,
   GetWorkdayByDateRequest,
   GetWorkdayByMonthRequest,
+  GetWorkdayCreationLimitResponse,
   GetWorkdaysByPeriodRequest,
   GetWorkdaysByPeriodResponse,
   RestoreWorkdayRequest,
@@ -57,4 +58,8 @@ export const getWorkdayGarbage = (): Promise<WorkdayGarbage[]> => {
 
 export const restoreWorkday = (body: RestoreWorkdayRequest): Promise<void> => {
   return api.delete(`workdays/garbage/${body.date}`).json()
+}
+
+export const getWorkdayCreationLimit = (): Promise<GetWorkdayCreationLimitResponse> => {
+  return api.get("workdays/creation-limit").json()
 }

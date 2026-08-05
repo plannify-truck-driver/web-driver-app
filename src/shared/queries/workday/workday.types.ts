@@ -39,3 +39,8 @@ export interface DeleteWorkdayRequest {
 export interface RestoreWorkdayRequest {
   date: string
 }
+
+export interface GetWorkdayCreationLimitResponse {
+  limit: number
+  remaining: number
+}

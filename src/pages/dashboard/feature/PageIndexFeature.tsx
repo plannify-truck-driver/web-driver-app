@@ -2,6 +2,7 @@ import {
   useCreateWorkday,
   useDeleteWorkday,
   useGetWorkdayByDate,
+  useGetWorkdayCreationLimit,
   useGetWorkdaysByMonth,
   useGetWorkdaysByPeriod,
   useRestoreWorkday,
@@ -115,6 +116,9 @@ export default function PageDashboardIndexFeature() {
   })()
   const isActiveWorkdayLoading = isTodayWorkdayLoading || isYesterdayWorkdayLoading
 
+  const { data: creationLimit } = useGetWorkdayCreationLimit()
+  const isCreationLimitReached = creationLimit?.remaining === 0
+
   const { mutateAsync: createWorkdayAsync, isPending: isCreatingWorkday } = useCreateWorkday({
     onSuccess: () => {
       setIsDocumentAlreadyGenerated(false)
@@ -138,6 +142,12 @@ export default function PageDashboardIndexFeature() {
           restoreWorkdayAsync({ date: todayLocalDate })
         } else if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
           setIsDocumentAlreadyGenerated(true)
+        } else if (apiError?.error_code === "WORKDAY_CREATION_LIMIT_REACHED") {
+          queryClient.invalidateQueries({
+            queryKey: workdaysKeys.getCreationLimit(),
+            exact: true,
+          })
+          toast.error(t("pages.dashboard.workday-creation-limit-reached"))
         } else {
           toast.error(t("pages.dashboard.workday-creation-error"))
         }
@@ -345,6 +355,7 @@ export default function PageDashboardIndexFeature() {
       onConfirmEndWorkday={onConfirmEndWorkday}
       showDocumentGeneratedError={isDocumentAlreadyGenerated}
       onDismissDocumentGeneratedError={() => setIsDocumentAlreadyGenerated(false)}
+      isCreationLimitReached={isCreationLimitReached}
     />
   )
 }

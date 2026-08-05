@@ -3,6 +3,7 @@ import {
   createWorkday,
   deleteWorkday,
   getWorkdayByDate,
+  getWorkdayCreationLimit,
   getWorkdayGarbage,
   getWorkdaysByMonth,
   getWorkdaysByPeriod,
@@ -31,6 +32,7 @@ export const workdaysKeys = {
     [...workdaysKeys.all, `workdays-month-${request.month}-${request.year}`] as const,
   getWorkdayByDate: (request: GetWorkdayByDateRequest) =>
     [...workdaysKeys.all, `workday-${request.date}`] as const,
+  getCreationLimit: () => [...workdaysKeys.all, "creation-limit"] as const,
 }
 
 export const useGetWorkdaysByPeriod = (request: GetWorkdaysByPeriodRequest) =>
@@ -81,6 +83,12 @@ export const useDeleteWorkday = (options?: {
     mutationFn: (body: DeleteWorkdayRequest) => deleteWorkday(body),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
+  })
+
+export const useGetWorkdayCreationLimit = () =>
+  useQuery({
+    queryKey: workdaysKeys.getCreationLimit(),
+    queryFn: () => getWorkdayCreationLimit(),
   })
 
 export const useGetWorkdayGarbage = () =>

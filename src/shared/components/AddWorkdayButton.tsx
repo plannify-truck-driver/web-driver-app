@@ -5,16 +5,26 @@ import { useTranslation } from "react-i18next"
 interface AddWorkdayButtonProps {
   isFirstWorkday: boolean
   className?: string
+  disabled?: boolean
   onClick: () => void
 }
 
-export function AddWorkdayButton({ isFirstWorkday, className, onClick }: AddWorkdayButtonProps) {
+export function AddWorkdayButton({
+  isFirstWorkday,
+  className,
+  disabled = false,
+  onClick,
+}: AddWorkdayButtonProps) {
   const { t } = useTranslation()
 
   return (
     <button
       onClick={onClick}
-      className={cn("cursor-pointer rounded-lg border border-dashed px-4 py-3", className)}
+      disabled={disabled}
+      className={cn(
+        "cursor-pointer rounded-lg border border-dashed px-4 py-3 disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
     >
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-2">
