@@ -270,7 +270,8 @@ export default function PageWorkdays({
                       />
                     </div>
                     <span className="text-muted-foreground shrink-0 text-xs font-medium tabular-nums">
-                      {formatThousands(creationLimit.remaining)}/{formatThousands(creationLimit.limit)}
+                      {formatThousands(creationLimit.remaining)}/
+                      {formatThousands(creationLimit.limit)}
                     </span>
                   </div>
                 </div>
