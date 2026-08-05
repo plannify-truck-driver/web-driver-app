@@ -109,6 +109,7 @@
       "minutes-time-format": "{{minutes}}min",
       "hour-time-format": "{{hours}}h",
       "workday-creation-error": "An error occurred while creating your workday. Please try again later.",
+      "workday-creation-limit-reached": "You've reached your workday creation quota. Please wait a while before trying again.",
       "workday-update-error": "An error occurred while updating your workday. Please try again later.",
       "workday-deletion-error": "An error occurred while deleting your workday. Please try again later.",
       "workday-restoration-error": "An error occurred while restoring your workday. Please try again later.",
@@ -160,6 +161,12 @@
       "errors": {
         "workday-update-error": "An error occurred while updating your workday. Please try again later.",
         "workday-document-already-generated": "Your monthly statement for {{month}} {{year}} has already been permanently generated. Workdays for this period can no longer be modified."
+      },
+      "creation-limit-banner": {
+        "low-title": "Your workday creation quota is running low",
+        "low-description": "Adding workdays is limited over a rolling 12-hour window to prevent abuse from malicious users. You have little quota left, so please wait a while before adding more workdays.",
+        "exhausted-title": "Your workday creation quota has been reached",
+        "exhausted-description": "Adding workdays is limited over a rolling 12-hour window to prevent abuse from malicious users. You've used all of your quota, so adding workdays is temporarily disabled. Please try again later."
       },
       "garbage": {
         "page-title": "Trash",

@@ -14,9 +14,11 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/DropdownMenu"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
+import { cn } from "@/lib/utils"
 import { upperCaseFirstLetter } from "@/shared/functions/upperCaseFirstLetter"
 import type { RestPeriod } from "@/shared/models/rest-period"
 import type { Workday } from "@/shared/models/workday"
+import type { GetWorkdayCreationLimitResponse } from "@/shared/queries/workday/workday.types"
 import type { addWorkdayFormSchema } from "@/shared/zod/add-workday"
 import {
   ChevronDownIcon,
@@ -24,14 +26,15 @@ import {
   FileCodeIcon,
   LockIcon,
   Trash2Icon,
+  TriangleAlertIcon,
 } from "lucide-react"
+import { useMemo, useState } from "react"
 import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import type z from "zod"
 import type { PageWorkdaysFeatureLoadings } from "../feature/PageWorkdaysFeature"
 import { ImportWorkdaysFromFileDialog } from "@/shared/components/ImportWorkdaysFromFileDialog"
 import { useConfig } from "@/shared/queries/config/config.queries"
-import { useState } from "react"
 import { Link, useNavigate } from "@tanstack/react-router"
 
 interface PageWorkdaysProps {
@@ -55,6 +58,7 @@ interface PageWorkdaysProps {
   onRestoreGarbageWorkday: () => void
   undoAddWorkdayFormErrorCode: () => void
   isMonthDocumentGenerated: boolean
+  creationLimit: GetWorkdayCreationLimitResponse | undefined
 }
 
 export default function PageWorkdays({
@@ -78,12 +82,20 @@ export default function PageWorkdays({
   onRestoreGarbageWorkday,
   undoAddWorkdayFormErrorCode,
   isMonthDocumentGenerated,
+  creationLimit,
 }: PageWorkdaysProps) {
   const { t, i18n } = useTranslation()
   const { data: config } = useConfig()
   const [importFileType, setImportFileType] = useState<"csv" | "xlsx">("xlsx")
 
   const navigate = useNavigate()
+
+  const creationLimitPercentage = useMemo(() => {
+    if (!creationLimit || creationLimit.limit <= 0) return null
+    return (creationLimit.remaining * 100) / creationLimit.limit
+  }, [creationLimit])
+  const isCreationLimitLow = creationLimitPercentage !== null && creationLimitPercentage <= 20
+  const isCreationLimitExhausted = creationLimit?.remaining === 0
 
   const openImportDialog = (type: "csv" | "xlsx") => {
     setImportFileType(type)
@@ -109,12 +121,16 @@ export default function PageWorkdays({
           {!isMonthDocumentGenerated && (
             <>
               <ButtonGroup className="hidden sm:flex">
-                <Button variant="default" onClick={() => setIsAddWorkdayOpen(true)}>
+                <Button
+                  variant="default"
+                  disabled={isCreationLimitExhausted}
+                  onClick={() => setIsAddWorkdayOpen(true)}
+                >
                   {t("pages.workdays.buttons.add-workday")}
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild className="h-auto">
-                    <Button variant="default">
+                    <Button variant="default" disabled={isCreationLimitExhausted}>
                       <ChevronDownIcon size={16} />
                     </Button>
                   </DropdownMenuTrigger>
@@ -204,6 +220,62 @@ export default function PageWorkdays({
         </div>
       ) : (
         <>
+          {isCreationLimitLow && creationLimit && (
+            <div
+              className={cn(
+                "relative overflow-hidden rounded-xl border bg-gradient-to-br p-5",
+                isCreationLimitExhausted
+                  ? "from-destructive/5 to-destructive/10"
+                  : "from-amber-500/5 to-amber-500/10"
+              )}
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+                <div
+                  className={cn(
+                    "flex size-11 shrink-0 items-center justify-center rounded-full",
+                    isCreationLimitExhausted ? "bg-destructive/10" : "bg-amber-500/10"
+                  )}
+                >
+                  <TriangleAlertIcon
+                    className={cn(
+                      "size-5",
+                      isCreationLimitExhausted ? "text-destructive" : "text-amber-500"
+                    )}
+                  />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold">
+                    {t(
+                      isCreationLimitExhausted
+                        ? "pages.workdays.creation-limit-banner.exhausted-title"
+                        : "pages.workdays.creation-limit-banner.low-title"
+                    )}
+                  </p>
+                  <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
+                    {t(
+                      isCreationLimitExhausted
+                        ? "pages.workdays.creation-limit-banner.exhausted-description"
+                        : "pages.workdays.creation-limit-banner.low-description"
+                    )}
+                  </p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+                      <div
+                        className={cn(
+                          "h-full rounded-full transition-all",
+                          (creationLimitPercentage ?? 0) <= 10 ? "bg-red-500" : "bg-amber-500"
+                        )}
+                        style={{ width: `${Math.max(creationLimitPercentage ?? 0, 2)}%` }}
+                      />
+                    </div>
+                    <span className="text-muted-foreground shrink-0 text-xs font-medium tabular-nums">
+                      {creationLimit.remaining}/{creationLimit.limit}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="flex w-full flex-col gap-3">
             <p className="text-muted-foreground block font-mono text-sm uppercase sm:hidden">
               {t("pages.dashboard.summary")}
@@ -231,6 +303,7 @@ export default function PageWorkdays({
           <AddWorkdayButton
             isFirstWorkday={workdays.length === 0}
             onClick={() => setIsAddWorkdayOpen(true)}
+            disabled={isCreationLimitExhausted}
             className="block sm:hidden"
           />
         </>

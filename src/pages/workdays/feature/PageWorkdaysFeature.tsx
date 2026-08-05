@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { useEffect, useMemo, useState } from "react"
 import {
   useCreateWorkday,
+  useGetWorkdayCreationLimit,
   useGetWorkdaysByMonth,
   useRestoreWorkday,
   useUpdateWorkday,
@@ -103,6 +104,8 @@ export default function PageWorkdaysFeature() {
     },
   })
   const { data: restPeriods, isLoading: isRestPeriodsLoading } = useGetRestPeriods()
+
+  const { data: creationLimit } = useGetWorkdayCreationLimit()
 
   const addWorkdayForm = useForm<z.infer<typeof addWorkdayFormSchema>>({
     resolver: zodResolver(addWorkdayFormSchema),
@@ -260,6 +263,7 @@ export default function PageWorkdaysFeature() {
       onRestoreGarbageWorkday={onRestoreGarbageWorkday}
       undoAddWorkdayFormErrorCode={() => setAddWorkdayFormErrorCode(null)}
       isMonthDocumentGenerated={isMonthDocumentGenerated}
+      creationLimit={creationLimit}
     />
   )
 }

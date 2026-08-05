@@ -43,6 +43,7 @@ interface PageDashboardIndexProps {
   onConfirmEndWorkday: (values: z.infer<typeof endWorkdayRestSchema>) => void
   showDocumentGeneratedError: boolean
   onDismissDocumentGeneratedError: () => void
+  isCreationLimitReached: boolean
 }
 
 export default function PageDashboardIndex({
@@ -71,6 +72,7 @@ export default function PageDashboardIndex({
   onConfirmEndWorkday,
   showDocumentGeneratedError,
   onDismissDocumentGeneratedError,
+  isCreationLimitReached,
 }: PageDashboardIndexProps) {
   const { t, i18n } = useTranslation()
 
@@ -146,7 +148,11 @@ export default function PageDashboardIndex({
           </div>
         )
       ) : (
-        <ActionButton isLoading={isCreatingWorkday} onClick={onStartWorkday} />
+        <ActionButton
+          isLoading={isCreatingWorkday}
+          isDisabled={isCreationLimitReached}
+          onClick={onStartWorkday}
+        />
       )}
       {showDocumentGeneratedError && (
         <div className="from-destructive/5 to-destructive/10 relative overflow-hidden rounded-xl border bg-gradient-to-br p-4">
