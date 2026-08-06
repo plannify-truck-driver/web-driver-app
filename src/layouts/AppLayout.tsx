@@ -245,7 +245,7 @@ export default function AppLayout() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuSub>
-                      <DropdownMenuSubTrigger className="text-responsive-base!">
+                      <DropdownMenuSubTrigger>
                         {theme === "light" ? (
                           <Sun className="size-4" />
                         ) : theme === "dark" ? (
@@ -261,7 +261,6 @@ export default function AppLayout() {
                             <DropdownMenuItem
                               key={themeOption}
                               onClick={() => setTheme(themeOption as "light" | "dark" | "system")}
-                              className="text-responsive-base!"
                             >
                               {t(`themes.${themeOption}`)}
                               {theme === themeOption && <Check className="ml-auto size-4" />}
@@ -271,7 +270,7 @@ export default function AppLayout() {
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
                     <DropdownMenuSub>
-                      <DropdownMenuSubTrigger className="text-responsive-base!">
+                      <DropdownMenuSubTrigger>
                         <Earth className="size-4" />
                         {t("languages.title")}
                       </DropdownMenuSubTrigger>
@@ -284,11 +283,7 @@ export default function AppLayout() {
                                     import.meta.env.VITE_ENV == "development" || lng !== "cimode"
                                 )
                                 .map((lng) => (
-                                  <DropdownMenuItem
-                                    onClick={() => changeLanguage(lng)}
-                                    className="text-responsive-base!"
-                                    key={lng}
-                                  >
+                                  <DropdownMenuItem onClick={() => changeLanguage(lng)} key={lng}>
                                     {t(`languages.${lng}`)}
                                     {i18n.language === lng && <Check className="ml-auto size-4" />}
                                   </DropdownMenuItem>
@@ -298,10 +293,7 @@ export default function AppLayout() {
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
                     <DropdownMenuItem asChild>
-                      <Link
-                        to="/settings/application-preferences"
-                        className="text-responsive-base!"
-                      >
+                      <Link to="/settings/application-preferences">
                         <Settings className="size-4" />
                         {t("settings")}
                       </Link>
@@ -314,11 +306,7 @@ export default function AppLayout() {
                         logout()
                         navigate({ to: "/authentication/login" })
                       }}
-                      className={
-                        isDeletingRefreshToken
-                          ? "text-responsive-base! cursor-not-allowed opacity-50"
-                          : "text-responsive-base!"
-                      }
+                      className={isDeletingRefreshToken ? "cursor-not-allowed opacity-50" : ""}
                     >
                       <LogOut className="size-4" />
                       {t("logout")}
