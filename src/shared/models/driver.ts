@@ -4,6 +4,7 @@ export interface Driver {
   last_name: string
   email: string
   verified: boolean
+  deactivation_planned_at: string | null
 }
 
 export interface JwtDriverPayload {

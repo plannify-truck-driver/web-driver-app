@@ -29,6 +29,7 @@ import {
   MoonIcon,
   RefreshCwIcon,
   SettingsIcon,
+  ShieldAlertIcon,
   SparklesIcon,
   SunIcon,
   UserPenIcon,
@@ -84,6 +85,27 @@ export default function PageAccount({
           </div>
         </div>
       </div>
+      {driver.deactivation_planned_at && (
+        <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 dark:border-red-900/50 dark:bg-red-950/20">
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-red-500/10">
+            <ShieldAlertIcon className="size-4 text-red-500" />
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm font-medium text-red-600 dark:text-red-400">
+              {t("pages.account.deactivation-banner.title")}
+            </p>
+            <p className="text-muted-foreground text-sm">
+              {t("pages.account.deactivation-banner.description", {
+                date: new Date(driver.deactivation_planned_at).toLocaleDateString(i18n.language, {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                }),
+              })}
+            </p>
+          </div>
+        </div>
+      )}
       {isShareBannerVisible && (
         <div className="sm:hidden">
           <ShareBanner onDismiss={onDismissShareBanner} />

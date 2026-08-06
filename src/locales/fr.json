@@ -208,6 +208,10 @@
     },
     "account": {
       "page-title": "Mon compte",
+      "deactivation-banner": {
+        "title": "Compte désactivé",
+        "description": "Toutes vos données seront définitivement supprimées le {{date}}. Restaurez votre compte depuis les informations personnelles pour annuler sa suppression."
+      },
       "settings-actions": {
         "account-section-title": "Paramètres",
         "support-section-title": "Support",
