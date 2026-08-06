@@ -323,6 +323,14 @@ export default function PageWorkdays({
           isUpdatingWorkday: loadings.isUpdatingWorkday || loadings.isRestoringWorkday,
           isGetRestPeriodsLoading: loadings.isGetRestPeriodsLoading,
         }}
+        creationLimit={
+          creationLimit && isCreationLimitLow
+            ? {
+                response: creationLimit,
+                percentage: creationLimitPercentage ?? 0,
+              }
+            : null
+        }
         onSubmit={onSubmitAddWorkdayForm}
         errorCode={addWorkdayFormErrorCode}
         onReplaceExistingWorkday={onReplaceExistingWorkday}
