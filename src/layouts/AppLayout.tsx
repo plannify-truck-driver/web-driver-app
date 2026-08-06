@@ -77,7 +77,8 @@ export default function AppLayout() {
   const now = useMemo(() => new Date(), [])
   const informations = getVisibleInformations(informationsData ?? [], now)
   const hasWarningInformation = informations.some((information) => information.type === "WARNING")
-  const hasAccountAlert = needRefresh || !!driver?.deactivation_planned_at || informations.length > 0
+  const hasAccountAlert =
+    needRefresh || !!driver?.deactivation_planned_at || informations.length > 0
 
   const accountAlertColor = driver?.deactivation_planned_at
     ? "bg-red-500"
