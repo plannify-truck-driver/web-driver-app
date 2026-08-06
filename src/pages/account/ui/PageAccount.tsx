@@ -167,7 +167,6 @@ export default function PageAccount({
                           <DropdownMenuItem
                             key={themeOption}
                             onClick={() => setTheme(themeOption as "light" | "dark" | "system")}
-                            className="text-responsive-base!"
                           >
                             {t(`themes.${themeOption}`)}
                             {theme === themeOption && <CheckIcon className="ml-auto size-4" />}
@@ -198,11 +197,7 @@ export default function PageAccount({
                                   import.meta.env.VITE_ENV == "development" || lng !== "cimode"
                               )
                               .map((lng) => (
-                                <DropdownMenuItem
-                                  onClick={() => changeLanguage(lng)}
-                                  className="text-responsive-base!"
-                                  key={lng}
-                                >
+                                <DropdownMenuItem onClick={() => changeLanguage(lng)} key={lng}>
                                   {t(`languages.${lng}`)}
                                   {i18n.language === lng && (
                                     <CheckIcon className="ml-auto size-4" />
