@@ -208,6 +208,10 @@
     },
     "account": {
       "page-title": "My account",
+      "deactivation-banner": {
+        "title": "Account deactivated",
+        "description": "All your data will be permanently deleted on {{date}}. Restore your account from personal information to cancel its deletion."
+      },
       "settings-actions": {
         "account-section-title": "Settings",
         "support-section-title": "Support",

@@ -28,6 +28,7 @@ import {
   SidebarMenuItem,
 } from "@/shared/components/ui/Sidebar"
 import { useSidebar } from "@/shared/components/ui/useSidebar"
+import { cn } from "@/lib/utils"
 import { Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router"
 import {
   CalendarSearch,
@@ -70,6 +71,7 @@ export default function AppLayout() {
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
   const { needRefresh } = usePwaUpdate()
   const changeLanguage = useChangeLanguage()
+  const hasAccountAlert = needRefresh || !!driver?.deactivation_planned_at
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -166,8 +168,13 @@ export default function AppLayout() {
                           <Link to={item.link}>
                             <div className="relative">
                               <item.icon size={20} />
-                              {needRefresh && item.link === "/account" && (
-                                <span className="bg-primary ring-sidebar absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2" />
+                              {item.link === "/account" && hasAccountAlert && (
+                                <span
+                                  className={cn(
+                                    "ring-sidebar absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2",
+                                    driver?.deactivation_planned_at ? "bg-red-500" : "bg-primary"
+                                  )}
+                                />
                               )}
                             </div>
                             <span>
@@ -359,8 +366,13 @@ export default function AppLayout() {
               >
                 <div className="relative">
                   <item.icon strokeWidth={1.5} size={26} />
-                  {needRefresh && item.link === "/account" && (
-                    <span className="bg-primary ring-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2" />
+                  {item.link === "/account" && hasAccountAlert && (
+                    <span
+                      className={cn(
+                        "ring-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2",
+                        driver?.deactivation_planned_at ? "bg-red-500" : "bg-primary"
+                      )}
+                    />
                   )}
                 </div>
                 <p className="text-responsive-md p-0 leading-none">
