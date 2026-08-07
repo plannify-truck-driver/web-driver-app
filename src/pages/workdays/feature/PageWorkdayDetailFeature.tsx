@@ -40,9 +40,9 @@ export default function PageWorkdayDetailFeature() {
   useEffect(() => {
     if (workday) {
       form.reset({
-        startTime: workday.start_time.slice(0, 5),
-        endTime: workday.end_time ? workday.end_time.slice(0, 5) : "",
-        restTime: workday.rest_time === "00:00:00" ? "" : workday.rest_time.slice(0, 5),
+        startTime: workday.start_time.slice(0, 8),
+        endTime: workday.end_time ? workday.end_time.slice(0, 8) : "",
+        restTime: workday.rest_time === "00:00:00" ? "" : workday.rest_time.slice(0, 8),
         overnight: workday.overnight_rest,
       })
     }

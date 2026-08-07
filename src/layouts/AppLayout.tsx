@@ -28,6 +28,7 @@ import {
   SidebarMenuItem,
 } from "@/shared/components/ui/Sidebar"
 import { useSidebar } from "@/shared/components/ui/useSidebar"
+import { cn } from "@/lib/utils"
 import { Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router"
 import {
   CalendarSearch,
@@ -47,10 +48,12 @@ import {
   User,
   type LucideIcon,
 } from "lucide-react"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
 import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
+import { useInformations } from "@/shared/queries/informations/informations.queries"
+import { getVisibleInformations } from "@/shared/functions/getVisibleInformations"
 
 interface NavbarNavigationItem {
   title: string
@@ -70,6 +73,19 @@ export default function AppLayout() {
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
   const { needRefresh } = usePwaUpdate()
   const changeLanguage = useChangeLanguage()
+  const { data: informationsData } = useInformations()
+  const now = useMemo(() => new Date(), [])
+  const informations = getVisibleInformations(informationsData ?? [], now)
+  const hasWarningInformation = informations.some((information) => information.type === "WARNING")
+  const hasAccountAlert = needRefresh || !!driver?.deactivation_planned_at || informations.length > 0
+
+  const accountAlertColor = driver?.deactivation_planned_at
+    ? "bg-red-500"
+    : needRefresh
+      ? "bg-primary"
+      : hasWarningInformation
+        ? "bg-amber-500"
+        : "bg-blue-500"
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -166,8 +182,13 @@ export default function AppLayout() {
                           <Link to={item.link}>
                             <div className="relative">
                               <item.icon size={20} />
-                              {needRefresh && item.link === "/account" && (
-                                <span className="bg-primary ring-sidebar absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2" />
+                              {item.link === "/account" && hasAccountAlert && (
+                                <span
+                                  className={cn(
+                                    "ring-sidebar absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2",
+                                    accountAlertColor
+                                  )}
+                                />
                               )}
                             </div>
                             <span>
@@ -238,7 +259,7 @@ export default function AppLayout() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuSub>
-                      <DropdownMenuSubTrigger className="text-responsive-base!">
+                      <DropdownMenuSubTrigger>
                         {theme === "light" ? (
                           <Sun className="size-4" />
                         ) : theme === "dark" ? (
@@ -254,7 +275,6 @@ export default function AppLayout() {
                             <DropdownMenuItem
                               key={themeOption}
                               onClick={() => setTheme(themeOption as "light" | "dark" | "system")}
-                              className="text-responsive-base!"
                             >
                               {t(`themes.${themeOption}`)}
                               {theme === themeOption && <Check className="ml-auto size-4" />}
@@ -264,7 +284,7 @@ export default function AppLayout() {
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
                     <DropdownMenuSub>
-                      <DropdownMenuSubTrigger className="text-responsive-base!">
+                      <DropdownMenuSubTrigger>
                         <Earth className="size-4" />
                         {t("languages.title")}
                       </DropdownMenuSubTrigger>
@@ -277,11 +297,7 @@ export default function AppLayout() {
                                     import.meta.env.VITE_ENV == "development" || lng !== "cimode"
                                 )
                                 .map((lng) => (
-                                  <DropdownMenuItem
-                                    onClick={() => changeLanguage(lng)}
-                                    className="text-responsive-base!"
-                                    key={lng}
-                                  >
+                                  <DropdownMenuItem onClick={() => changeLanguage(lng)} key={lng}>
                                     {t(`languages.${lng}`)}
                                     {i18n.language === lng && <Check className="ml-auto size-4" />}
                                   </DropdownMenuItem>
@@ -291,10 +307,7 @@ export default function AppLayout() {
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
                     <DropdownMenuItem asChild>
-                      <Link
-                        to="/settings/application-preferences"
-                        className="text-responsive-base!"
-                      >
+                      <Link to="/settings/application-preferences">
                         <Settings className="size-4" />
                         {t("settings")}
                       </Link>
@@ -307,11 +320,7 @@ export default function AppLayout() {
                         logout()
                         navigate({ to: "/authentication/login" })
                       }}
-                      className={
-                        isDeletingRefreshToken
-                          ? "text-responsive-base! cursor-not-allowed opacity-50"
-                          : "text-responsive-base!"
-                      }
+                      className={isDeletingRefreshToken ? "cursor-not-allowed opacity-50" : ""}
                     >
                       <LogOut className="size-4" />
                       {t("logout")}
@@ -359,8 +368,13 @@ export default function AppLayout() {
               >
                 <div className="relative">
                   <item.icon strokeWidth={1.5} size={26} />
-                  {needRefresh && item.link === "/account" && (
-                    <span className="bg-primary ring-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2" />
+                  {item.link === "/account" && hasAccountAlert && (
+                    <span
+                      className={cn(
+                        "ring-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2",
+                        accountAlertColor
+                      )}
+                    />
                   )}
                 </div>
                 <p className="text-responsive-md p-0 leading-none">

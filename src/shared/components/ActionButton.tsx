@@ -39,24 +39,30 @@ export function ActionButton({
       onClick={onClick}
       disabled={inactive}
     >
-      <div className="flex flex-row gap-4">
-        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10">
+      <div className="flex min-w-0 flex-1 flex-row items-center gap-4">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-white/10">
           {!todayWorkday ? <Play size={20} /> : <Clock2 size={20} />}
         </div>
-        <div className="flex flex-col items-start justify-between">
+        <div className="flex min-w-0 flex-col items-start justify-between">
           {!todayWorkday ? (
             <>
               <span>{t("pages.dashboard.start-workday")}</span>
-              <span className="hidden font-light text-white/60 sm:block">
-                {t("pages.dashboard.no-workday-today")} -{" "}
-                {today.toLocaleDateString(i18n.language, {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                })}
+              <span className="hidden w-full text-left font-light text-white/60 sm:block">
+                {isDisabled
+                  ? t("pages.dashboard.workday-creation-limit-reached")
+                  : `${t("pages.dashboard.no-workday-today")} - ${today.toLocaleDateString(
+                      i18n.language,
+                      {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                      }
+                    )}`}
               </span>
-              <span className="block font-light text-white/60 sm:hidden">
-                {t("pages.dashboard.no-workday-today")}
+              <span className="block w-full text-left font-light text-white/60 sm:hidden">
+                {isDisabled
+                  ? t("pages.dashboard.workday-creation-limit-reached")
+                  : t("pages.dashboard.no-workday-today")}
               </span>
             </>
           ) : (
@@ -75,7 +81,7 @@ export function ActionButton({
           )}
         </div>
       </div>
-      {isLoading ? <Loader size={6} /> : <ArrowRight size={20} />}
+      <div className="shrink-0">{isLoading ? <Loader size={6} /> : <ArrowRight size={20} />}</div>
     </button>
   )
 }

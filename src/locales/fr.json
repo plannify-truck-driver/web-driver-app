@@ -109,6 +109,7 @@
       "minutes-time-format": "{{minutes}}min",
       "hour-time-format": "{{hours}}h",
       "workday-creation-error": "Une erreur est survenue lors de la création de votre journée de travail. Veuillez réessayer ultérieurement.",
+      "workday-creation-limit-reached": "Vous avez atteint votre quota d'ajout de journées. Merci de patienter un moment avant de réessayer.",
       "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-deletion-error": "Une erreur est survenue lors de la suppression de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement.",
@@ -161,6 +162,12 @@
         "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
         "workday-document-already-generated": "Votre relevé mensuel pour {{month}} {{year}} a déjà été généré définitivement. Les journées de cette période ne peuvent plus être modifiées."
       },
+      "creation-limit-banner": {
+        "low-title": "Votre quota d'ajout de journées commence à être faible",
+        "low-description": "L'ajout de journées de travail est limité sur une fenêtre glissante de 12 heures afin de prévenir les abus de personnes malveillantes. Il vous reste peu de quota, merci de patienter un moment avant d'ajouter de nouvelles journées.",
+        "exhausted-title": "Votre quota d'ajout de journées est atteint",
+        "exhausted-description": "L'ajout de journées de travail est limité sur une fenêtre glissante de 12 heures afin de prévenir les abus de personnes malveillantes. Vous avez épuisé votre quota, l'ajout de journées est donc temporairement désactivé. Merci de réessayer plus tard."
+      },
       "garbage": {
         "page-title": "Corbeille",
         "description": "Les journées supprimées sont automatiquement effacées après {{retentionDays}} jours.",
@@ -201,6 +208,17 @@
     },
     "account": {
       "page-title": "Mon compte",
+      "deactivation-banner": {
+        "title": "Compte désactivé",
+        "description": "Toutes vos données seront définitivement supprimées le {{date}}. Restaurez votre compte depuis les informations personnelles pour annuler sa suppression."
+      },
+      "informations": {
+        "date-time": "{{date}} à {{time}}",
+        "period": "Du {{start}} au {{end}}",
+        "period-same-day": "Le {{date}} de {{start}} à {{end}}",
+        "info-label": "Information",
+        "warning-label": "Attention"
+      },
       "settings-actions": {
         "account-section-title": "Paramètres",
         "support-section-title": "Support",

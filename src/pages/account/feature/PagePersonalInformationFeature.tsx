@@ -162,6 +162,7 @@ export default function PagePersonalInformationFeature() {
   async function handleDeactivate() {
     try {
       await deactivateMe()
+      refreshToken()
       setAccountStatusDialog(null)
       toast.success(t("pages.account.personal-information.toast.deactivate-success"))
     } catch {
@@ -172,6 +173,7 @@ export default function PagePersonalInformationFeature() {
   async function handleRestore() {
     try {
       await reactivateMe()
+      refreshToken()
       setAccountStatusDialog(null)
       toast.success(t("pages.account.personal-information.toast.restore-success"))
     } catch {

@@ -56,7 +56,7 @@ export function AddRestPeriodForm({ form, nextStart, onSubmit }: AddRestPeriodFo
               — {t("pages.settings.rest-preferences.dialog.from-auto")}
             </span>
           </FieldLabel>
-          <TimeInput value={nextStart.substring(0, 5)} disabled />
+          <TimeInput value={nextStart} disabled forceSeconds />
         </Field>
 
         <Controller
@@ -70,7 +70,7 @@ export function AddRestPeriodForm({ form, nextStart, onSubmit }: AddRestPeriodFo
               </FieldLabel>
               <div className="flex items-center gap-2">
                 <TimeInput
-                  value={isEndOfDay ? "23:59" : (field.value ?? "")}
+                  value={isEndOfDay ? "23:59:59" : (field.value ?? "")}
                   onChange={(v) => {
                     field.onChange(v)
                     form.setValue("isEndOfDay", false)
@@ -79,6 +79,7 @@ export function AddRestPeriodForm({ form, nextStart, onSubmit }: AddRestPeriodFo
                   disabled={isEndOfDay}
                   aria-invalid={fieldState.invalid}
                   className="flex-1"
+                  forceSeconds
                 />
                 <button
                   type="button"
