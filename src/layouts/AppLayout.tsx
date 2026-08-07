@@ -52,6 +52,7 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
 import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
+import { useInformations } from "@/shared/queries/informations/informations.queries"
 
 interface NavbarNavigationItem {
   title: string
@@ -71,7 +72,18 @@ export default function AppLayout() {
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
   const { needRefresh } = usePwaUpdate()
   const changeLanguage = useChangeLanguage()
-  const hasAccountAlert = needRefresh || !!driver?.deactivation_planned_at
+  const { data: informationsData } = useInformations()
+  const informations = informationsData ?? []
+  const hasWarningInformation = informations.some((information) => information.type === "WARNING")
+  const hasAccountAlert = needRefresh || !!driver?.deactivation_planned_at || informations.length > 0
+
+  const accountAlertColor = driver?.deactivation_planned_at
+    ? "bg-red-500"
+    : needRefresh
+      ? "bg-primary"
+      : hasWarningInformation
+        ? "bg-amber-500"
+        : "bg-blue-500"
 
   const navigationItems: NavbarNavigationItem[] = [
     {
@@ -172,7 +184,7 @@ export default function AppLayout() {
                                 <span
                                   className={cn(
                                     "ring-sidebar absolute -top-1 -right-1 h-2 w-2 rounded-full ring-2",
-                                    driver?.deactivation_planned_at ? "bg-red-500" : "bg-primary"
+                                    accountAlertColor
                                   )}
                                 />
                               )}
@@ -358,7 +370,7 @@ export default function AppLayout() {
                     <span
                       className={cn(
                         "ring-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2",
-                        driver?.deactivation_planned_at ? "bg-red-500" : "bg-primary"
+                        accountAlertColor
                       )}
                     />
                   )}

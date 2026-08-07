@@ -1,6 +1,7 @@
 import { useTheme } from "@/app/providers/useTheme"
 import { NoDriverLoaded } from "@/shared/components/NoDriverLoaded"
 import { ShareBanner } from "@/shared/components/ShareBanner"
+import { InformationsBanner } from "@/shared/components/InformationsBanner"
 import SettingsActionGroup from "@/shared/components/SettingsActionGroup"
 import {
   DropdownMenu,
@@ -11,6 +12,7 @@ import {
 } from "@/shared/components/ui/DropdownMenu"
 import type { Driver } from "@/shared/models/driver"
 import type { Update } from "@/shared/queries/updates/updates.types"
+import type { Information } from "@/shared/queries/informations/informations.types"
 import { useNavigate } from "@tanstack/react-router"
 import {
   BadgeCheckIcon,
@@ -47,6 +49,7 @@ interface PageAccountProps {
   isShareBannerVisible: boolean
   onDismissShareBanner: () => void
   updates: Update[]
+  informations: Information[]
 }
 
 export default function PageAccount({
@@ -56,6 +59,7 @@ export default function PageAccount({
   isShareBannerVisible,
   onDismissShareBanner,
   updates,
+  informations,
 }: PageAccountProps) {
   const { t, i18n } = useTranslation()
   const { theme, setTheme } = useTheme()
@@ -85,6 +89,7 @@ export default function PageAccount({
           </div>
         </div>
       </div>
+      <InformationsBanner informations={informations} driver={driver} />
       {driver.deactivation_planned_at && (
         <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 dark:border-red-900/50 dark:bg-red-950/20">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-red-500/10">
