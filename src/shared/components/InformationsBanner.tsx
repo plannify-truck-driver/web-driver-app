@@ -1,9 +1,11 @@
 import { getInformationMessage } from "@/shared/functions/getInformationMessage"
 import { getInformationPeriod } from "@/shared/functions/getInformationPeriod"
+import { getVisibleInformations } from "@/shared/functions/getVisibleInformations"
 import { replaceInformationVariables } from "@/shared/functions/replaceInformationVariables"
 import type { Driver } from "@/shared/models/driver"
 import type { Information } from "@/shared/queries/informations/informations.types"
 import { InfoIcon, TriangleAlertIcon } from "lucide-react"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 interface InformationsBannerProps {
@@ -14,11 +16,14 @@ interface InformationsBannerProps {
 export function InformationsBanner({ informations, driver }: InformationsBannerProps) {
   const { t, i18n } = useTranslation()
 
-  if (informations.length === 0) return null
+  const now = useMemo(() => new Date(), [])
+  const visibleInformations = getVisibleInformations(informations, now)
+
+  if (visibleInformations.length === 0) return null
 
   return (
     <div className="flex flex-col gap-3">
-      {informations.map((information, index) => {
+      {visibleInformations.map((information, index) => {
         const rawMessage = getInformationMessage(information, i18n.language)
         if (!rawMessage) return null
 

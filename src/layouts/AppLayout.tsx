@@ -48,11 +48,12 @@ import {
   User,
   type LucideIcon,
 } from "lucide-react"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
 import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
 import { useInformations } from "@/shared/queries/informations/informations.queries"
+import { getVisibleInformations } from "@/shared/functions/getVisibleInformations"
 
 interface NavbarNavigationItem {
   title: string
@@ -73,7 +74,8 @@ export default function AppLayout() {
   const { needRefresh } = usePwaUpdate()
   const changeLanguage = useChangeLanguage()
   const { data: informationsData } = useInformations()
-  const informations = informationsData ?? []
+  const now = useMemo(() => new Date(), [])
+  const informations = getVisibleInformations(informationsData ?? [], now)
   const hasWarningInformation = informations.some((information) => information.type === "WARNING")
   const hasAccountAlert = needRefresh || !!driver?.deactivation_planned_at || informations.length > 0
 
