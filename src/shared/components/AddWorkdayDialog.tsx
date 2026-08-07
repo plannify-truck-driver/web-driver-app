@@ -10,6 +10,7 @@ import { TriangleAlertIcon, XIcon } from "lucide-react"
 import type { RestPeriod } from "../models/rest-period"
 import type { GetWorkdayCreationLimitResponse } from "../queries/workday/workday.types"
 import { cn } from "@/lib/utils"
+import { formatThousands } from "../functions/formatThousands"
 
 export interface AddWorkdayDialog {
   isOpen: boolean
@@ -72,7 +73,8 @@ export function AddWorkdayDialog({
                       />
                     </div>
                     <span className="text-muted-foreground shrink-0 text-xs font-medium tabular-nums">
-                      {creationLimit.response.remaining}/{creationLimit.response.limit}
+                      {formatThousands(creationLimit.response.remaining)}/
+                      {formatThousands(creationLimit.response.limit)}
                     </span>
                   </div>
                 </div>
@@ -93,6 +95,7 @@ export function AddWorkdayDialog({
       </Dialog>
     )
   }
+
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerContent>
@@ -125,7 +128,8 @@ export function AddWorkdayDialog({
                       />
                     </div>
                     <span className="text-muted-foreground shrink-0 text-xs font-medium tabular-nums">
-                      {creationLimit.response.remaining}/{creationLimit.response.limit}
+                      {formatThousands(creationLimit.response.remaining)}/
+                      {formatThousands(creationLimit.response.limit)}
                     </span>
                   </div>
                 </div>

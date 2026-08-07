@@ -15,6 +15,7 @@ import {
 } from "@/shared/components/ui/DropdownMenu"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
 import { cn } from "@/lib/utils"
+import { formatThousands } from "@/shared/functions/formatThousands"
 import { upperCaseFirstLetter } from "@/shared/functions/upperCaseFirstLetter"
 import type { RestPeriod } from "@/shared/models/rest-period"
 import type { Workday } from "@/shared/models/workday"
@@ -269,7 +270,7 @@ export default function PageWorkdays({
                       />
                     </div>
                     <span className="text-muted-foreground shrink-0 text-xs font-medium tabular-nums">
-                      {creationLimit.remaining}/{creationLimit.limit}
+                      {formatThousands(creationLimit.remaining)}/{formatThousands(creationLimit.limit)}
                     </span>
                   </div>
                 </div>
