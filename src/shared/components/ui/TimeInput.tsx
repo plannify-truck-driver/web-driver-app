@@ -14,6 +14,7 @@ interface TimeInputProps {
   onChange?: (value: string) => void
   disabled?: boolean
   clearable?: boolean
+  forceSeconds?: boolean
   "aria-invalid"?: boolean
   className?: string
 }
@@ -24,11 +25,13 @@ function TimeInput({
   onChange,
   disabled,
   clearable = false,
+  forceSeconds = false,
   "aria-invalid": ariaInvalid,
   className,
 }: TimeInputProps) {
   const [open, setOpen] = useState(false)
-  const { showSeconds } = useShowSeconds()
+  const { showSeconds: userShowSeconds } = useShowSeconds()
+  const showSeconds = forceSeconds || userShowSeconds
 
   const parts = value ? value.split(":") : []
   const selectedHour = parts[0] ?? null
