@@ -106,7 +106,7 @@ export function AddWorkdayDialog({
           </button>
         </DrawerHeader>
         <div
-          className="overflow-y-auto px-4"
+          className="flex flex-col gap-4 overflow-y-auto px-4"
           style={{ paddingBottom: "max(1rem, calc(1rem + env(safe-area-inset-bottom)))" }}
         >
           {creationLimit && (
