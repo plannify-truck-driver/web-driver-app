@@ -4,6 +4,7 @@ import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useTranslation } from "react-i18next"
 import PageAccount from "../ui/PageAccount"
 import { useUpdates } from "@/shared/queries/updates/updates.queries"
+import { useInformations } from "@/shared/queries/informations/informations.queries"
 
 export default function PageAccountFeature() {
   const { driver, logout, isDeletingRefreshToken } = useAuth()
@@ -14,6 +15,7 @@ export default function PageAccountFeature() {
     limit: 10,
     page: 1,
   })
+  const { data: informationsData } = useInformations()
 
   useDocumentTitle(t("pages.account.page-title"))
 
@@ -25,6 +27,7 @@ export default function PageAccountFeature() {
       isShareBannerVisible={isShareBannerVisible}
       onDismissShareBanner={dismissShareBanner}
       updates={updatesData?.data ?? []}
+      informations={informationsData ?? []}
     />
   )
 }

@@ -212,6 +212,13 @@
         "title": "Compte désactivé",
         "description": "Toutes vos données seront définitivement supprimées le {{date}}. Restaurez votre compte depuis les informations personnelles pour annuler sa suppression."
       },
+      "informations": {
+        "date-time": "{{date}} à {{time}}",
+        "period": "Du {{start}} au {{end}}",
+        "period-same-day": "Le {{date}} de {{start}} à {{end}}",
+        "info-label": "Information",
+        "warning-label": "Attention"
+      },
       "settings-actions": {
         "account-section-title": "Paramètres",
         "support-section-title": "Support",

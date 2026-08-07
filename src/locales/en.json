@@ -212,6 +212,13 @@
         "title": "Account deactivated",
         "description": "All your data will be permanently deleted on {{date}}. Restore your account from personal information to cancel its deletion."
       },
+      "informations": {
+        "date-time": "{{date}} at {{time}}",
+        "period": "From {{start}} to {{end}}",
+        "period-same-day": "On {{date}} from {{start}} to {{end}}",
+        "info-label": "Information",
+        "warning-label": "Warning"
+      },
       "settings-actions": {
         "account-section-title": "Settings",
         "support-section-title": "Support",
