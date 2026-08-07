@@ -6,8 +6,10 @@ import { AddWorkdayForm, type AddWorkdayFormLoadings } from "../forms/AddWorkday
 import type { UseFormReturn } from "react-hook-form"
 import type z from "zod"
 import type { addWorkdayFormSchema } from "../zod/add-workday"
-import { XIcon } from "lucide-react"
+import { TriangleAlertIcon, XIcon } from "lucide-react"
 import type { RestPeriod } from "../models/rest-period"
+import type { GetWorkdayCreationLimitResponse } from "../queries/workday/workday.types"
+import { cn } from "@/lib/utils"
 
 export interface AddWorkdayDialog {
   isOpen: boolean
@@ -15,6 +17,10 @@ export interface AddWorkdayDialog {
   restPeriods: RestPeriod[]
   loadings: AddWorkdayFormLoadings
   errorCode: string | null
+  creationLimit: {
+    response: GetWorkdayCreationLimitResponse
+    percentage: number
+  } | null
   setIsOpen: (state: boolean) => void
   onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
   onReplaceExistingWorkday: () => void
@@ -28,6 +34,7 @@ export function AddWorkdayDialog({
   restPeriods,
   loadings,
   errorCode,
+  creationLimit,
   setIsOpen,
   onSubmit,
   onReplaceExistingWorkday,
@@ -46,6 +53,32 @@ export function AddWorkdayDialog({
             <DialogTitle>{t("components.add-dorkday-dialog.title")}</DialogTitle>
             <DialogDescription>{t("components.add-dorkday-dialog.description")}</DialogDescription>
           </DialogHeader>
+          {creationLimit && (
+            <div className="relative overflow-hidden rounded-xl border bg-gradient-to-br from-amber-500/5 to-amber-500/10 p-5">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-amber-500/10">
+                  <TriangleAlertIcon className="size-5 text-amber-500" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm">{t("pages.workdays.creation-limit-banner.low-title")}</p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+                      <div
+                        className={cn(
+                          "h-full rounded-full transition-all",
+                          creationLimit.percentage <= 10 ? "bg-red-500" : "bg-amber-500"
+                        )}
+                        style={{ width: `${Math.max(creationLimit.percentage, 2)}%` }}
+                      />
+                    </div>
+                    <span className="text-muted-foreground shrink-0 text-xs font-medium tabular-nums">
+                      {creationLimit.response.remaining}/{creationLimit.response.limit}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <AddWorkdayForm
             form={form}
             restPeriods={restPeriods}
@@ -73,9 +106,32 @@ export function AddWorkdayDialog({
           </button>
         </DrawerHeader>
         <div
-          className="px-4"
+          className="overflow-y-auto px-4"
           style={{ paddingBottom: "max(1rem, calc(1rem + env(safe-area-inset-bottom)))" }}
         >
+          {creationLimit && (
+            <div className="relative overflow-hidden rounded-xl border bg-gradient-to-br from-amber-500/5 to-amber-500/10 p-5">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+                <div className="flex-1">
+                  <p className="text-sm">{t("pages.workdays.creation-limit-banner.low-title")}</p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+                      <div
+                        className={cn(
+                          "h-full rounded-full transition-all",
+                          creationLimit.percentage <= 10 ? "bg-red-500" : "bg-amber-500"
+                        )}
+                        style={{ width: `${Math.max(creationLimit.percentage, 2)}%` }}
+                      />
+                    </div>
+                    <span className="text-muted-foreground shrink-0 text-xs font-medium tabular-nums">
+                      {creationLimit.response.remaining}/{creationLimit.response.limit}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <AddWorkdayForm
             form={form}
             restPeriods={restPeriods}
