@@ -1,4 +1,5 @@
 import { Button } from "@/shared/components/ui/Button"
+import { Loader } from "@/shared/components/Loader"
 import { LoginForm } from "@/shared/forms/Login"
 import type { loginFormSchema } from "@/shared/zod/login"
 import { useNavigate } from "@tanstack/react-router"
@@ -7,15 +8,33 @@ import { useTranslation } from "react-i18next"
 import type z from "zod"
 
 interface PageLoginProps {
+  checkingSession: boolean
   errorMessage: string | null
   form: UseFormReturn<z.infer<typeof loginFormSchema>>
   loading: boolean
   onSubmit: (values: z.infer<typeof loginFormSchema>) => void
 }
 
-export default function PageLogin({ errorMessage, form, loading, onSubmit }: PageLoginProps) {
+export default function PageLogin({
+  checkingSession,
+  errorMessage,
+  form,
+  loading,
+  onSubmit,
+}: PageLoginProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  if (checkingSession) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4">
+        <Loader />
+        <p className="text-muted-foreground text-sm">
+          {t("pages.authentication.login.checking-session")}
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col items-center justify-center gap-8">

@@ -3,6 +3,7 @@
     "authentication": {
       "login": {
         "page-title": "Login",
+        "checking-session": "Checking your session...",
         "description": "Connect to your account to continue",
         "no-account-text": "Don't have an account?",
         "no-account-link": "Sign up",

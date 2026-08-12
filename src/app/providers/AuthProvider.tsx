@@ -9,6 +9,8 @@ import { setRefreshTokenHandler } from "@/lib/queryClient"
 import { AuthProviderContext } from "./AuthProviderContext"
 import type { AuthProviderState } from "./AuthProviderContext"
 
+const HAS_SESSION_STORAGE_KEY = "auth-had-session"
+
 export function AuthProvider({ children, ...props }: { children: React.ReactNode }) {
   const { refetch } = useRefreshToken()
   const { mutateAsync, isPending: isDeletingRefreshToken } = useDeleteRefreshTokenMutation()
@@ -16,18 +18,38 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
 
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [driver, setDriver] = useState<AuthProviderState["driver"]>(null)
+  const [hadSession, setHadSession] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem(HAS_SESSION_STORAGE_KEY) === "true"
+    } catch {
+      // ignore localStorage errors (private browsing, quota exceeded, etc.)
+      return false
+    }
+  })
 
   const login = useCallback((token: string) => {
     setAccessToken(token)
     setApiAccessToken(token)
     const decoded: JwtDriverPayload = jwtDecode(token)
     setDriver(decoded.driver)
+    setHadSession(true)
+    try {
+      localStorage.setItem(HAS_SESSION_STORAGE_KEY, "true")
+    } catch {
+      // ignore localStorage errors (private browsing, quota exceeded, etc.)
+    }
   }, [])
 
   const clearSession = useCallback(() => {
     setAccessToken(null)
     setApiAccessToken(null)
     setDriver(null)
+    setHadSession(false)
+    try {
+      localStorage.removeItem(HAS_SESSION_STORAGE_KEY)
+    } catch {
+      // ignore localStorage errors (private browsing, quota exceeded, etc.)
+    }
     queryClient.clear()
   }, [queryClient])
 
@@ -88,6 +110,7 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
   const value: AuthProviderState = {
     driver,
     accessToken,
+    hadSession,
     login,
     logout,
     isDeletingRefreshToken,
