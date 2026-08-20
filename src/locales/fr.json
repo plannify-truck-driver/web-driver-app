@@ -251,8 +251,7 @@
       },
       "pwa-update": {
         "available": "Mise à jour disponible",
-        "description": "Une nouvelle version de l'application est prête à être installée.",
-        "action": "Installer"
+        "description": "Une nouvelle version de l'application est prête à être installée."
       },
       "mails": {
         "page-title": "Gestion des mails",

@@ -251,8 +251,7 @@
       },
       "pwa-update": {
         "available": "Update available",
-        "description": "A new version of the application is ready to install.",
-        "action": "Install"
+        "description": "A new version of the application is ready to install."
       },
       "mails": {
         "page-title": "Email management",
