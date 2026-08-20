@@ -6,13 +6,6 @@ import { StatTotalWorkedHours } from "@/shared/components/statistics/StatTotalWo
 import { StatWorkedDays } from "@/shared/components/statistics/StatWorkedDays"
 import { Button } from "@/shared/components/ui/Button"
 import { ButtonGroup } from "@/shared/components/ui/ButtonGroup"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/shared/components/ui/DropdownMenu"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
 import { cn } from "@/lib/utils"
 import { formatThousands } from "@/shared/functions/formatThousands"
@@ -21,20 +14,13 @@ import type { RestPeriod } from "@/shared/models/rest-period"
 import type { Workday } from "@/shared/models/workday"
 import type { GetWorkdayCreationLimitResponse } from "@/shared/queries/workday/workday.types"
 import type { addWorkdayFormSchema } from "@/shared/zod/add-workday"
-import {
-  ChevronDownIcon,
-  FileChartColumnIncreasingIcon,
-  FileCodeIcon,
-  LockIcon,
-  Trash2Icon,
-  TriangleAlertIcon,
-} from "lucide-react"
-import { useMemo, useState } from "react"
+import { LockIcon, Trash2Icon, TriangleAlertIcon } from "lucide-react"
+import { useMemo } from "react"
 import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import type z from "zod"
 import type { PageWorkdaysFeatureLoadings } from "../feature/PageWorkdaysFeature"
-import { ImportWorkdaysFromFileDialog } from "@/shared/components/ImportWorkdaysFromFileDialog"
+// import { ImportWorkdaysFromFileDialog } from "@/shared/components/ImportWorkdaysFromFileDialog"
 import { useConfig } from "@/shared/queries/config/config.queries"
 import { Link, useNavigate } from "@tanstack/react-router"
 
@@ -66,7 +52,7 @@ export default function PageWorkdays({
   workdays,
   restPeriods,
   isAddWorkdayOpen,
-  isImportingWorkdaysFromFileOpen,
+  // isImportingWorkdaysFromFileOpen,
   selectedMonth,
   selectedMonthSubTitle,
   maxWorkedDays,
@@ -77,7 +63,7 @@ export default function PageWorkdays({
   onPreviousMonth,
   onNextMonth,
   setIsAddWorkdayOpen,
-  setIsImportingWorkdaysFromFileOpen,
+  // setIsImportingWorkdaysFromFileOpen,
   onSubmitAddWorkdayForm,
   onReplaceExistingWorkday,
   onRestoreGarbageWorkday,
@@ -87,7 +73,7 @@ export default function PageWorkdays({
 }: PageWorkdaysProps) {
   const { t, i18n } = useTranslation()
   const { data: config } = useConfig()
-  const [importFileType, setImportFileType] = useState<"csv" | "xlsx">("xlsx")
+  // const [importFileType, setImportFileType] = useState<"csv" | "xlsx">("xlsx")
 
   const navigate = useNavigate()
 
@@ -98,10 +84,10 @@ export default function PageWorkdays({
   const isCreationLimitLow = creationLimitPercentage !== null && creationLimitPercentage <= 20
   const isCreationLimitExhausted = creationLimit?.remaining === 0
 
-  const openImportDialog = (type: "csv" | "xlsx") => {
-    setImportFileType(type)
-    setIsImportingWorkdaysFromFileOpen(true)
-  }
+  // const openImportDialog = (type: "csv" | "xlsx") => {
+  //   setImportFileType(type)
+  //   setIsImportingWorkdaysFromFileOpen(true)
+  // }
 
   return (
     <div className="flex h-full flex-1 flex-col gap-5 sm:gap-6">
@@ -129,7 +115,7 @@ export default function PageWorkdays({
                 >
                   {t("pages.workdays.buttons.add-workday")}
                 </Button>
-                <DropdownMenu>
+                {/* <DropdownMenu>
                   <DropdownMenuTrigger asChild className="h-auto">
                     <Button variant="default" disabled={isCreationLimitExhausted}>
                       <ChevronDownIcon size={16} />
@@ -147,7 +133,7 @@ export default function PageWorkdays({
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
               </ButtonGroup>
               <Button
                 variant="outline"
@@ -270,7 +256,8 @@ export default function PageWorkdays({
                       />
                     </div>
                     <span className="text-muted-foreground shrink-0 text-xs font-medium tabular-nums">
-                      {formatThousands(creationLimit.remaining)}/{formatThousands(creationLimit.limit)}
+                      {formatThousands(creationLimit.remaining)}/
+                      {formatThousands(creationLimit.limit)}
                     </span>
                   </div>
                 </div>
@@ -309,11 +296,11 @@ export default function PageWorkdays({
           />
         </>
       )}
-      <ImportWorkdaysFromFileDialog
+      {/* <ImportWorkdaysFromFileDialog
         isOpen={isImportingWorkdaysFromFileOpen}
         setIsOpen={setIsImportingWorkdaysFromFileOpen}
         initialFileType={importFileType}
-      />
+      /> */}
       <AddWorkdayDialog
         isOpen={isAddWorkdayOpen}
         setIsOpen={setIsAddWorkdayOpen}

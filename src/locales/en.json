@@ -3,6 +3,7 @@
     "authentication": {
       "login": {
         "page-title": "Login",
+        "checking-session": "Checking your session...",
         "description": "Connect to your account to continue",
         "no-account-text": "Don't have an account?",
         "no-account-link": "Sign up",
@@ -250,8 +251,7 @@
       },
       "pwa-update": {
         "available": "Update available",
-        "description": "A new version of the application is ready to install.",
-        "action": "Install"
+        "description": "A new version of the application is ready to install."
       },
       "mails": {
         "page-title": "Email management",
@@ -395,6 +395,8 @@
         "banner-documents-description": "Explains why some statements are finalized and can no longer be edited after 3 months.",
         "banner-share-label": "Share Plannify",
         "banner-share-description": "Invites you to share the app with other drivers.",
+        "banner-end-workday-rest-dialog-label": "Overnight rest prompt (automated breaks)",
+        "banner-end-workday-rest-dialog-description": "Asks whether you got a full night's rest at the end of each workday, when your breaks are automated.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Disabled",
         "banner-next-display": "Reappears on {{date}}",
@@ -548,6 +550,13 @@
       "rest-label": "Break duration",
       "rest-unit": "minutes",
       "no-break": "No break",
+      "overnight-rest-title": "Overnight rest",
+      "overnight-rest-description": "Do you plan to get a good night's sleep tonight?",
+      "overnight-rest-label": "Overnight rest",
+      "dont-show-again-label": "Don't ask again",
+      "dont-show-again-info-title": "Prompt disabled",
+      "dont-show-again-info-description": "You can re-enable this prompt at any time from Account > Application preferences.",
+      "dont-show-again-info-confirm": "Got it",
       "confirm": "End workday"
     },
     "edit-profile-dialog": {

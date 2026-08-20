@@ -1,11 +1,19 @@
 import type { Workday } from "@/shared/models/workday"
 import type { PeriodOfTime } from "../feature/PageIndexFeature"
 import { PeriodSelector } from "@/shared/components/PeriodSelector"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import type { UseFormReturn } from "react-hook-form"
 import type z from "zod"
 import type { endWorkdayRestSchema } from "@/shared/zod/end-workday-rest"
 import { EndWorkdayRestDialog } from "../../../shared/components/EndWorkdayRestDialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/components/ui/Dialog"
 import { StatWorkedDays } from "@/shared/components/statistics/StatWorkedDays"
 import { StatTotalWorkedHours } from "@/shared/components/statistics/StatTotalWorkedHour"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
@@ -38,9 +46,13 @@ interface PageDashboardIndexProps {
   onEndWorkday: () => void
   onDeleteWorkday: () => void
   isEndWorkdayRestDialogOpen: boolean
+  hasAutomatedBreak: boolean
   endWorkdayRestForm: UseFormReturn<z.infer<typeof endWorkdayRestSchema>>
   onEndWorkdayRestDialogClose: () => void
   onConfirmEndWorkday: (values: z.infer<typeof endWorkdayRestSchema>) => void
+  onDontShowEndWorkdayRestDialogAgain: () => void
+  isEndWorkdayRestDialogDismissedInfoOpen: boolean
+  onCloseEndWorkdayRestDialogDismissedInfo: () => void
   showDocumentGeneratedError: boolean
   onDismissDocumentGeneratedError: () => void
   isCreationLimitReached: boolean
@@ -67,9 +79,13 @@ export default function PageDashboardIndex({
   onEndWorkday,
   onDeleteWorkday,
   isEndWorkdayRestDialogOpen,
+  hasAutomatedBreak,
   endWorkdayRestForm,
   onEndWorkdayRestDialogClose,
   onConfirmEndWorkday,
+  onDontShowEndWorkdayRestDialogAgain,
+  isEndWorkdayRestDialogDismissedInfoOpen,
+  onCloseEndWorkdayRestDialogDismissedInfo,
   showDocumentGeneratedError,
   onDismissDocumentGeneratedError,
   isCreationLimitReached,
@@ -226,10 +242,36 @@ export default function PageDashboardIndex({
       <WorkdayTable workdays={workdays} periodType="week" period={period} />
       <EndWorkdayRestDialog
         isOpen={isEndWorkdayRestDialogOpen}
+        hasAutomatedBreak={hasAutomatedBreak}
         form={endWorkdayRestForm}
         onClose={onEndWorkdayRestDialogClose}
         onSubmit={onConfirmEndWorkday}
+        onDontShowAgain={onDontShowEndWorkdayRestDialogAgain}
       />
+      <Dialog
+        open={isEndWorkdayRestDialogDismissedInfoOpen}
+        onOpenChange={(open) => !open && onCloseEndWorkdayRestDialogDismissedInfo()}
+      >
+        <DialogContent className="sm:max-w-[380px]">
+          <DialogHeader>
+            <DialogTitle>
+              {t("components.end-workday-rest-dialog.dont-show-again-info-title")}
+            </DialogTitle>
+            <DialogDescription>
+              <Trans
+                i18nKey="components.end-workday-rest-dialog.dont-show-again-info-description"
+                components={{ accountSettingsLink: <span className="text-primary underline" /> }}
+              />
+              {/* {t("components.end-workday-rest-dialog.dont-show-again-info-description")} */}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={onCloseEndWorkdayRestDialogDismissedInfo}>
+              {t("components.end-workday-rest-dialog.dont-show-again-info-confirm")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

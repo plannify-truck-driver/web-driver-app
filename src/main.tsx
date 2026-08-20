@@ -11,6 +11,15 @@ import { AuthProvider } from "./app/providers/AuthProvider"
 import { PwaUpdateProvider } from "./app/providers/PwaUpdateProvider"
 import { queryClient } from "./lib/queryClient"
 
+// A stale service worker cache can reference JS chunks that no longer exist after a new
+// deploy. Reload once to pick up the fresh build instead of leaving the user on a broken page.
+window.addEventListener("vite:preloadError", () => {
+  const RELOAD_FLAG = "vite-preload-reloaded"
+  if (sessionStorage.getItem(RELOAD_FLAG)) return
+  sessionStorage.setItem(RELOAD_FLAG, "true")
+  window.location.reload()
+})
+
 // Set up a Router instance
 const router = createRouter({
   routeTree,

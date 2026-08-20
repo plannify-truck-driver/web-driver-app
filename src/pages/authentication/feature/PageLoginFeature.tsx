@@ -13,11 +13,12 @@ import { useAuth } from "@/app/providers/useAuth"
 
 export default function PageLoginFeature() {
   const { t } = useTranslation()
-  const { accessToken, login, refreshToken } = useAuth()
+  const { accessToken, hadSession, login, refreshToken } = useAuth()
   const navigate = useNavigate()
   const { redirect } = useSearch({ from: "/authentication/login" })
   const hasAttemptedRefresh = useRef(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [checkingSession, setCheckingSession] = useState(!accessToken && hadSession)
 
   useDocumentTitle(t("pages.authentication.login.page-title"))
 
@@ -64,12 +65,20 @@ export default function PageLoginFeature() {
       refreshToken().then((response) => {
         if (response) {
           navigate({ to: redirect || "/dashboard", replace: true })
+          return
         }
+        setCheckingSession(false)
       })
     }
   }, [accessToken, refreshToken, navigate, redirect])
 
   return (
-    <PageLogin errorMessage={errorMessage} form={form} loading={isPending} onSubmit={onSubmit} />
+    <PageLogin
+      checkingSession={checkingSession}
+      errorMessage={errorMessage}
+      form={form}
+      loading={isPending}
+      onSubmit={onSubmit}
+    />
   )
 }

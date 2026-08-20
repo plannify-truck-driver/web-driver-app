@@ -50,7 +50,7 @@ import {
 } from "lucide-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { usePwaUpdate } from "@/app/providers/usePwaUpdate"
+import { useAppUpdate } from "@/hooks/use-app-update"
 import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
 import { useInformations } from "@/shared/queries/informations/informations.queries"
 import { getVisibleInformations } from "@/shared/functions/getVisibleInformations"
@@ -71,17 +71,18 @@ export default function AppLayout() {
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
-  const { needRefresh } = usePwaUpdate()
+  const { isUpdateAvailable } = useAppUpdate()
   const changeLanguage = useChangeLanguage()
   const { data: informationsData } = useInformations()
   const now = useMemo(() => new Date(), [])
   const informations = getVisibleInformations(informationsData ?? [], now)
   const hasWarningInformation = informations.some((information) => information.type === "WARNING")
-  const hasAccountAlert = needRefresh || !!driver?.deactivation_planned_at || informations.length > 0
+  const hasAccountAlert =
+    isUpdateAvailable || !!driver?.deactivation_planned_at || informations.length > 0
 
   const accountAlertColor = driver?.deactivation_planned_at
     ? "bg-red-500"
-    : needRefresh
+    : isUpdateAvailable
       ? "bg-primary"
       : hasWarningInformation
         ? "bg-amber-500"
