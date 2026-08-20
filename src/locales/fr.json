@@ -396,6 +396,8 @@
         "banner-documents-description": "Explique pourquoi certains relevés sont figés et ne peuvent plus être modifiés après 3 mois.",
         "banner-share-label": "Partager Plannify",
         "banner-share-description": "Invite à partager l'application avec d'autres conducteurs.",
+        "banner-end-workday-rest-dialog-label": "Question de repos nocturne (coupures automatisées)",
+        "banner-end-workday-rest-dialog-description": "Demande si vous avez bénéficié d'un repos nocturne complet à la fin de chaque journée, lorsque vos coupures sont automatisées.",
         "banner-visible": "Active",
         "banner-permanently-dismissed": "Désactivée",
         "banner-next-display": "Réapparition le {{date}}",
@@ -549,6 +551,13 @@
       "rest-label": "Durée de la coupure",
       "rest-unit": "minutes",
       "no-break": "Sans coupure",
+      "overnight-rest-title": "Repos nocturne",
+      "overnight-rest-description": "Comptez-vous réaliser un repos nocturne cette nuit ?",
+      "overnight-rest-label": "Repos nocturne",
+      "dont-show-again-label": "Ne plus afficher cette question",
+      "dont-show-again-info-title": "Question désactivée",
+      "dont-show-again-info-description": "Vous pourrez réactiver cette question à tout moment depuis <accountSettingsLink>Compte > Préférences de l'application</accountSettingsLink>.",
+      "dont-show-again-info-confirm": "J'ai compris",
       "confirm": "Terminer ma journée"
     },
     "edit-profile-dialog": {

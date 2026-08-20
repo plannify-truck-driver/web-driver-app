@@ -31,6 +31,7 @@ import { useMaxWorkdayDuration } from "@/hooks/use-max-workday-duration"
 import { getCanEndWorkday, isWithinWorkdayWindow } from "@/shared/functions/getCanEndWorkday"
 import { toLocalDateString } from "@/shared/functions/toLocalDateString"
 import { useShowSeconds } from "@/hooks/use-show-seconds"
+import { useEndWorkdayRestDialogDismissed } from "@/hooks/use-end-workday-rest-dialog-dismissed"
 
 export interface PeriodOfTime {
   from: Date
@@ -64,10 +65,17 @@ export default function PageDashboardIndexFeature() {
   const [period, setPeriod] = useState<PeriodOfTime>(getWeek(today))
   const [isDocumentAlreadyGenerated, setIsDocumentAlreadyGenerated] = useState(false)
   const [isEndWorkdayRestDialogOpen, setIsEndWorkdayRestDialogOpen] = useState(false)
+  const [isEndWorkdayRestDialogDismissedInfoOpen, setIsEndWorkdayRestDialogDismissedInfoOpen] =
+    useState(false)
   const pendingEndTimeRef = useRef<string | null>(null)
+  const pendingBestRestTimeRef = useRef<string | null>(null)
+  const {
+    isDismissed: isEndWorkdayRestDialogDismissed,
+    setIsDismissed: setIsEndWorkdayRestDialogDismissed,
+  } = useEndWorkdayRestDialogDismissed()
   const endWorkdayRestForm = useForm<z.infer<typeof endWorkdayRestSchema>>({
     resolver: zodResolver(endWorkdayRestSchema),
-    defaultValues: { restMins: 0 },
+    defaultValues: { restMins: 0, overnightRest: false },
   })
 
   const {
@@ -281,43 +289,79 @@ export default function PageDashboardIndexFeature() {
 
     const now = new Date()
     const endTime = buildTimeString(now)
+    const hasAutomatedBreak = !!restPeriods && restPeriods.length > 0
 
-    if (!restPeriods || restPeriods.length === 0) {
+    if (!hasAutomatedBreak) {
       pendingEndTimeRef.current = endTime
-      endWorkdayRestForm.reset({ restMins: 0 })
+      pendingBestRestTimeRef.current = null
+      endWorkdayRestForm.reset({
+        restMins: 0,
+        overnightRest: activeWorkday.overnight_rest,
+      })
       setIsEndWorkdayRestDialogOpen(true)
       return
     }
 
     const bestRestTime = getBestRestPeriod(activeWorkday.start_time, endTime, restPeriods)
-    updateWorkdayAsync({
-      date: activeWorkday.date,
-      start_time: activeWorkday.start_time,
-      end_time: endTime,
-      rest_time: bestRestTime ?? activeWorkday.rest_time,
-      overnight_rest: activeWorkday.overnight_rest,
+
+    if (isEndWorkdayRestDialogDismissed) {
+      updateWorkdayAsync({
+        date: activeWorkday.date,
+        start_time: activeWorkday.start_time,
+        end_time: endTime,
+        rest_time: bestRestTime ?? activeWorkday.rest_time,
+        overnight_rest: activeWorkday.overnight_rest,
+      })
+      return
+    }
+
+    pendingEndTimeRef.current = endTime
+    pendingBestRestTimeRef.current = bestRestTime
+    endWorkdayRestForm.reset({
+      restMins: 0,
+      overnightRest: activeWorkday.overnight_rest,
     })
+    setIsEndWorkdayRestDialogOpen(true)
   }
 
-  const onConfirmEndWorkday = (values: z.infer<typeof endWorkdayRestSchema>) => {
+  const submitEndWorkdayRestDialog = (values: z.infer<typeof endWorkdayRestSchema>) => {
     if (!activeWorkday || !pendingEndTimeRef.current) return
-    const totalSecs = values.restMins * 60
-    const hh = Math.floor(totalSecs / 3600)
-      .toString()
-      .padStart(2, "0")
-    const mm = Math.floor((totalSecs % 3600) / 60)
-      .toString()
-      .padStart(2, "0")
-    const ss = (totalSecs % 60).toString().padStart(2, "0")
+
+    const hasAutomatedBreak = !!restPeriods && restPeriods.length > 0
+    let rest_time = activeWorkday.rest_time
+    if (hasAutomatedBreak) {
+      rest_time = pendingBestRestTimeRef.current ?? activeWorkday.rest_time
+    } else {
+      const totalSecs = values.restMins * 60
+      const hh = Math.floor(totalSecs / 3600)
+        .toString()
+        .padStart(2, "0")
+      const mm = Math.floor((totalSecs % 3600) / 60)
+        .toString()
+        .padStart(2, "0")
+      const ss = (totalSecs % 60).toString().padStart(2, "0")
+      rest_time = `${hh}:${mm}:${ss}`
+    }
+
     updateWorkdayAsync({
       date: activeWorkday.date,
       start_time: activeWorkday.start_time,
       end_time: pendingEndTimeRef.current,
-      rest_time: `${hh}:${mm}:${ss}`,
-      overnight_rest: activeWorkday.overnight_rest,
+      rest_time,
+      overnight_rest: values.overnightRest,
     })
+
     setIsEndWorkdayRestDialogOpen(false)
     pendingEndTimeRef.current = null
+    pendingBestRestTimeRef.current = null
+  }
+
+  const onConfirmEndWorkday = submitEndWorkdayRestDialog
+
+  const onDontShowEndWorkdayRestDialogAgain = () => {
+    submitEndWorkdayRestDialog(endWorkdayRestForm.getValues())
+    setIsEndWorkdayRestDialogDismissed(true)
+    setIsEndWorkdayRestDialogDismissedInfoOpen(true)
   }
 
   const onDeleteWorkday = () => {
@@ -350,9 +394,15 @@ export default function PageDashboardIndexFeature() {
       onEndWorkday={onEndWorkday}
       onDeleteWorkday={onDeleteWorkday}
       isEndWorkdayRestDialogOpen={isEndWorkdayRestDialogOpen}
+      hasAutomatedBreak={!!restPeriods && restPeriods.length > 0}
       endWorkdayRestForm={endWorkdayRestForm}
       onEndWorkdayRestDialogClose={() => setIsEndWorkdayRestDialogOpen(false)}
       onConfirmEndWorkday={onConfirmEndWorkday}
+      onDontShowEndWorkdayRestDialogAgain={onDontShowEndWorkdayRestDialogAgain}
+      isEndWorkdayRestDialogDismissedInfoOpen={isEndWorkdayRestDialogDismissedInfoOpen}
+      onCloseEndWorkdayRestDialogDismissedInfo={() =>
+        setIsEndWorkdayRestDialogDismissedInfoOpen(false)
+      }
       showDocumentGeneratedError={isDocumentAlreadyGenerated}
       onDismissDocumentGeneratedError={() => setIsDocumentAlreadyGenerated(false)}
       isCreationLimitReached={isCreationLimitReached}
