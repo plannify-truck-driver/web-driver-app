@@ -104,25 +104,34 @@ export default function PageDashboardIndexFeature() {
     enabled: !isTodayWorkdayLoading,
   })
 
-  const activeWorkday = (() => {
+  const { activeWorkday, activeDate } = (() => {
     // Unfinished yesterday workday within the window takes priority (overnight shift)
     if (
       yesterdayWorkday &&
       !yesterdayWorkday.end_time &&
       isWithinWorkdayWindow(yesterdayWorkday, maxHours)
     ) {
-      return yesterdayWorkday
+      return { activeWorkday: yesterdayWorkday, activeDate: yesterday }
     }
-    if (todayWorkday) return todayWorkday
+    if (todayWorkday) return { activeWorkday: todayWorkday, activeDate: today }
 
     // Finished yesterday workday still within the window (show recap)
     if (yesterdayWorkday && isWithinWorkdayWindow(yesterdayWorkday, maxHours)) {
-      return yesterdayWorkday
+      return { activeWorkday: yesterdayWorkday, activeDate: yesterday }
     }
 
-    return null
+    return { activeWorkday: null, activeDate: today }
   })()
   const isActiveWorkdayLoading = isTodayWorkdayLoading || isYesterdayWorkdayLoading
+
+  const [hasResolvedInitialPeriod, setHasResolvedInitialPeriod] = useState<boolean>(false)
+  const [hasUserNavigatedPeriod, setHasUserNavigatedPeriod] = useState<boolean>(false)
+  if (!hasResolvedInitialPeriod && !isActiveWorkdayLoading) {
+    setHasResolvedInitialPeriod(true)
+    if (!hasUserNavigatedPeriod && activeDate.getTime() !== today.getTime()) {
+      setPeriod(getWeek(activeDate))
+    }
+  }
 
   const { data: creationLimit } = useGetWorkdayCreationLimit()
   const isCreationLimitReached = creationLimit?.remaining === 0
@@ -229,6 +238,7 @@ export default function PageDashboardIndexFeature() {
   })
 
   const onPreviousPeriod = () => {
+    setHasUserNavigatedPeriod(true)
     const newFrom = new Date(period.from)
     newFrom.setDate(newFrom.getDate() - 7)
     const newTo = new Date(period.to)
@@ -237,6 +247,7 @@ export default function PageDashboardIndexFeature() {
   }
 
   const onNextPeriod = () => {
+    setHasUserNavigatedPeriod(true)
     const newFrom = new Date(period.from)
     newFrom.setDate(newFrom.getDate() + 7)
     const newTo = new Date(period.to)
