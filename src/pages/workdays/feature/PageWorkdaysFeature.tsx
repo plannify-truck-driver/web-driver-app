@@ -8,6 +8,7 @@ import {
   useGetWorkdaysByMonth,
   useRestoreWorkday,
   useUpdateWorkday,
+  WorkdayActionForbiddenError,
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
@@ -76,6 +77,7 @@ export default function PageWorkdaysFeature() {
       toast.success(t("pages.workdays.success.workday-created"))
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
         setAddWorkdayFormErrorCode(apiError?.error_code ?? null)
       })
@@ -83,6 +85,7 @@ export default function PageWorkdaysFeature() {
   })
   const { mutateAsync: restoreWorkdayAsync, isPending: isRestoringWorkday } = useRestoreWorkday({
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       toast.error(t("pages.workdays.errors.workday-restore-error"))
       console.error("Failed to restore workday:", error)
     },
@@ -98,6 +101,7 @@ export default function PageWorkdaysFeature() {
       toast.success(t("pages.workdays.success.workday-updated"))
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then(() => {
         toast.error(t("pages.workdays.errors.workday-update-error"))
       })
@@ -153,14 +157,19 @@ export default function PageWorkdaysFeature() {
       (values.date.getMonth() + 1).toString().padStart(2, "0") +
       "-" +
       values.date.getDate().toString().padStart(2, "0")
-    await restoreWorkdayAsync({ date })
-    await updateWorkdayAsync({
-      date,
-      start_time: values.startTime,
-      end_time: (values.endTime?.trim() ?? "").length > 0 ? values.endTime!.trim() : null,
-      rest_time: (values.restTime?.trim() ?? "").length > 0 ? values.restTime!.trim() : "00:00:00",
-      overnight_rest: values.overnight,
-    })
+    try {
+      await restoreWorkdayAsync({ date })
+      await updateWorkdayAsync({
+        date,
+        start_time: values.startTime,
+        end_time: (values.endTime?.trim() ?? "").length > 0 ? values.endTime!.trim() : null,
+        rest_time:
+          (values.restTime?.trim() ?? "").length > 0 ? values.restTime!.trim() : "00:00:00",
+        overnight_rest: values.overnight,
+      })
+    } catch (error) {
+      if (!(error instanceof WorkdayActionForbiddenError)) throw error
+    }
   }
 
   function onReplaceExistingWorkday() {

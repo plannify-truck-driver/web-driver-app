@@ -1,3 +1,9 @@
+export interface DriverSuspension {
+  message: string
+  start_at: string
+  end_at: string | null
+}
+
 export interface Driver {
   id: string
   first_name: string
@@ -5,6 +11,7 @@ export interface Driver {
   email: string
   verified: boolean
   deactivation_planned_at: string | null
+  suspension: DriverSuspension | null
 }
 
 export interface JwtDriverPayload {

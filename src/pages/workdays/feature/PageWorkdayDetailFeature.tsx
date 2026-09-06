@@ -10,6 +10,7 @@ import {
   useDeleteWorkday,
   useGetWorkdayByDate,
   useUpdateWorkday,
+  WorkdayActionForbiddenError,
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
 import { useGetRestPeriods } from "@/shared/queries/rest-period/rest-period.queries"
@@ -59,6 +60,7 @@ export default function PageWorkdayDetailFeature() {
       toast.success(t("pages.workdays.detail.save-success"))
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
         if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
           setIsDocumentAlreadyGenerated(true)
@@ -85,6 +87,7 @@ export default function PageWorkdayDetailFeature() {
       navigate({ to: "/workdays" })
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
         if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
           setIsDocumentAlreadyGenerated(true)
@@ -96,14 +99,18 @@ export default function PageWorkdayDetailFeature() {
   })
 
   const onSave = async (values: z.infer<typeof editWorkdayFormSchema>) => {
-    await updateWorkdayAsync({
-      date: workdayDate,
-      start_time: values.startTime,
-      end_time: values.endTime?.trim() || null,
-      rest_time: values.restTime?.trim() || "00:00:00",
-      overnight_rest: values.overnight,
-    })
-    form.reset(values)
+    try {
+      await updateWorkdayAsync({
+        date: workdayDate,
+        start_time: values.startTime,
+        end_time: values.endTime?.trim() || null,
+        rest_time: values.restTime?.trim() || "00:00:00",
+        overnight_rest: values.overnight,
+      })
+      form.reset(values)
+    } catch (error) {
+      if (!(error instanceof WorkdayActionForbiddenError)) throw error
+    }
   }
 
   const onDelete = () => deleteWorkdayAsync({ date: workdayDate })

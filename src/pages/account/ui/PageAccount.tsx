@@ -113,6 +113,43 @@ export default function PageAccount({
           </div>
         </div>
       )}
+      {driver.suspension && (
+        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 dark:border-red-900/50 dark:bg-red-950/20">
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-red-500/10">
+            <CirclePauseIcon className="size-4 text-red-500" />
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm font-medium text-red-600 dark:text-red-400">
+              {t("pages.account.suspension-banner.title")}
+            </p>
+            <p className="text-muted-foreground text-sm">
+              {driver.suspension.end_at
+                ? t("pages.account.suspension-banner.description", {
+                    start: new Date(driver.suspension.start_at).toLocaleDateString(i18n.language, {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }),
+                    end: new Date(driver.suspension.end_at).toLocaleDateString(i18n.language, {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }),
+                  })
+                : t("pages.account.suspension-banner.description-no-end", {
+                    start: new Date(driver.suspension.start_at).toLocaleDateString(i18n.language, {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }),
+                  })}
+            </p>
+            <p className="text-muted-foreground text-sm">
+              {t("pages.account.suspension-banner.reason", { reason: driver.suspension.message })}
+            </p>
+          </div>
+        </div>
+      )}
       {isShareBannerVisible && (
         <div className="sm:hidden">
           <ShareBanner onDismiss={onDismissShareBanner} />

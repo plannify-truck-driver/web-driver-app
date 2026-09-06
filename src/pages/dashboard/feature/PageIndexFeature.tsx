@@ -7,6 +7,7 @@ import {
   useGetWorkdaysByPeriod,
   useRestoreWorkday,
   useUpdateWorkday,
+  WorkdayActionForbiddenError,
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
 import PageDashboardIndex from "../ui/PageIndex"
@@ -86,7 +87,7 @@ export default function PageDashboardIndexFeature() {
     from: period.from.toISOString().split("T")[0],
     to: period.to.toISOString().split("T")[0],
     page: 1,
-    limit: 100,
+    limit: 7,
   })
   const { data: monthWorkdays, isLoading: isMonthWorkdaysLoading } = useGetWorkdaysByMonth({
     month: (period.from.getMonth() + 1).toString().padStart(2, "0"),
@@ -151,6 +152,7 @@ export default function PageDashboardIndexFeature() {
       })
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
         if (
           apiError?.error_code === "WORKDAY_ALREADY_EXISTS" ||
@@ -181,6 +183,7 @@ export default function PageDashboardIndexFeature() {
       })
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
         if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
           setIsDocumentAlreadyGenerated(true)
@@ -205,6 +208,7 @@ export default function PageDashboardIndexFeature() {
       })
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
         if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
           setIsDocumentAlreadyGenerated(true)
@@ -232,6 +236,7 @@ export default function PageDashboardIndexFeature() {
       })
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       console.error("Failed to restore workday:", error)
       toast.error(t("pages.dashboard.workday-restoration-error"))
     },
