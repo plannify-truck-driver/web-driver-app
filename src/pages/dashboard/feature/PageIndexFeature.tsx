@@ -87,7 +87,7 @@ export default function PageDashboardIndexFeature() {
     from: period.from.toISOString().split("T")[0],
     to: period.to.toISOString().split("T")[0],
     page: 1,
-    limit: 100,
+    limit: 7,
   })
   const { data: monthWorkdays, isLoading: isMonthWorkdaysLoading } = useGetWorkdaysByMonth({
     month: (period.from.getMonth() + 1).toString().padStart(2, "0"),
