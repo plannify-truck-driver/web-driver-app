@@ -161,7 +161,8 @@
       },
       "errors": {
         "workday-update-error": "An error occurred while updating your workday. Please try again later.",
-        "workday-document-already-generated": "Your monthly statement for {{month}} {{year}} has already been permanently generated. Workdays for this period can no longer be modified."
+        "workday-document-already-generated": "Your monthly statement for {{month}} {{year}} has already been permanently generated. Workdays for this period can no longer be modified.",
+        "account-suspended": "Your account is suspended. You cannot create, edit, delete or restore a workday."
       },
       "creation-limit-banner": {
         "low-title": "Your workday creation quota is running low",
@@ -212,6 +213,12 @@
       "deactivation-banner": {
         "title": "Account deactivated",
         "description": "All your data will be permanently deleted on {{date}}. Restore your account from personal information to cancel its deletion."
+      },
+      "suspension-banner": {
+        "title": "Account suspended",
+        "description": "Your account has been suspended from {{start}} until {{end}}.",
+        "description-no-end": "Your account has been suspended since {{start}}, with no end date defined.",
+        "reason": "Reason: {{reason}}"
       },
       "informations": {
         "date-time": "{{date}} at {{time}}",

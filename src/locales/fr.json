@@ -161,7 +161,8 @@
       },
       "errors": {
         "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
-        "workday-document-already-generated": "Votre relevé mensuel pour {{month}} {{year}} a déjà été généré définitivement. Les journées de cette période ne peuvent plus être modifiées."
+        "workday-document-already-generated": "Votre relevé mensuel pour {{month}} {{year}} a déjà été généré définitivement. Les journées de cette période ne peuvent plus être modifiées.",
+        "account-suspended": "Votre compte est suspendu. Vous ne pouvez pas créer, modifier, supprimer ou restaurer une journée de travail."
       },
       "creation-limit-banner": {
         "low-title": "Votre quota d'ajout de journées commence à être faible",
@@ -212,6 +213,12 @@
       "deactivation-banner": {
         "title": "Compte désactivé",
         "description": "Toutes vos données seront définitivement supprimées le {{date}}. Restaurez votre compte depuis les informations personnelles pour annuler sa suppression."
+      },
+      "suspension-banner": {
+        "title": "Compte suspendu",
+        "description": "Votre compte est suspendu depuis le {{start}} jusqu'au {{end}}.",
+        "description-no-end": "Votre compte est suspendu depuis le {{start}}, sans date de fin définie.",
+        "reason": "Raison : {{reason}}"
       },
       "informations": {
         "date-time": "{{date}} à {{time}}",

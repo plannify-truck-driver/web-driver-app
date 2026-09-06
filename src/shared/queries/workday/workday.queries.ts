@@ -1,4 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { toast } from "sonner"
+import { useAuth } from "@/app/providers/useAuth"
+import i18n from "@/i18n"
 import {
   createWorkday,
   deleteWorkday,
@@ -20,6 +23,34 @@ import type {
   UpdateWorkdayRequest,
 } from "./workday.types"
 import type { Workday } from "@/shared/models/workday"
+
+/**
+ * Thrown by workday mutations when the driver's account is suspended. A
+ * suspended account may keep browsing the app but cannot create, update,
+ * delete or restore a workday. Feature `onError` handlers can early-return
+ * on this error since the guard already shows a toast.
+ */
+export class WorkdayActionForbiddenError extends Error {
+  constructor() {
+    super("Workday actions are forbidden while the account is suspended")
+    this.name = "WorkdayActionForbiddenError"
+  }
+}
+
+/**
+ * Returns a guard to call at the start of a workday mutation. When the
+ * account is suspended it notifies the user and throws
+ * `WorkdayActionForbiddenError`, preventing the API call.
+ */
+const useAssertWorkdayActionAllowed = () => {
+  const { driver } = useAuth()
+  return () => {
+    if (driver?.suspension) {
+      toast.error(i18n.t("pages.workdays.errors.account-suspended"))
+      throw new WorkdayActionForbiddenError()
+    }
+  }
+}
 
 export const workdaysKeys = {
   all: ["workdays"] as const,
@@ -58,32 +89,47 @@ export const useGetWorkdayByDate = (request: GetWorkdayByDateRequest & { enabled
 export const useCreateWorkday = (options?: {
   onSuccess?: (data: Workday) => void
   onError?: (error: Error) => void
-}) =>
-  useMutation({
-    mutationFn: (body: CreateWorkdayRequest) => createWorkday(body),
+}) => {
+  const assertWorkdayActionAllowed = useAssertWorkdayActionAllowed()
+  return useMutation({
+    mutationFn: (body: CreateWorkdayRequest) => {
+      assertWorkdayActionAllowed()
+      return createWorkday(body)
+    },
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   })
+}
 
 export const useUpdateWorkday = (options?: {
   onSuccess?: (data: Workday) => void
   onError?: (error: Error) => void
-}) =>
-  useMutation({
-    mutationFn: (body: UpdateWorkdayRequest) => updateWorkday(body),
+}) => {
+  const assertWorkdayActionAllowed = useAssertWorkdayActionAllowed()
+  return useMutation({
+    mutationFn: (body: UpdateWorkdayRequest) => {
+      assertWorkdayActionAllowed()
+      return updateWorkday(body)
+    },
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   })
+}
 
 export const useDeleteWorkday = (options?: {
   onSuccess?: () => void
   onError?: (error: Error) => void
-}) =>
-  useMutation({
-    mutationFn: (body: DeleteWorkdayRequest) => deleteWorkday(body),
+}) => {
+  const assertWorkdayActionAllowed = useAssertWorkdayActionAllowed()
+  return useMutation({
+    mutationFn: (body: DeleteWorkdayRequest) => {
+      assertWorkdayActionAllowed()
+      return deleteWorkday(body)
+    },
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   })
+}
 
 export const useGetWorkdayCreationLimit = () =>
   useQuery({
@@ -100,9 +146,14 @@ export const useGetWorkdayGarbage = () =>
 export const useRestoreWorkday = (options?: {
   onSuccess?: () => void
   onError?: (error: Error) => void
-}) =>
-  useMutation({
-    mutationFn: (body: RestoreWorkdayRequest) => restoreWorkday(body),
+}) => {
+  const assertWorkdayActionAllowed = useAssertWorkdayActionAllowed()
+  return useMutation({
+    mutationFn: (body: RestoreWorkdayRequest) => {
+      assertWorkdayActionAllowed()
+      return restoreWorkday(body)
+    },
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   })
+}

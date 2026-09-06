@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import {
   useGetWorkdayGarbage,
   useRestoreWorkday,
+  WorkdayActionForbiddenError,
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
 import { queryClient } from "@/lib/queryClient"
@@ -30,6 +31,7 @@ export default function PageWorkdayGarbageFeature() {
       toast.success(t("pages.workdays.garbage.restore-success"))
     },
     onError: (error: Error) => {
+      if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
         if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
           setDocumentGeneratedErrorDate(restoringDateRef.current)
