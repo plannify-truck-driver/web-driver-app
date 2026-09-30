@@ -41,7 +41,7 @@ RUN pnpm run build
 FROM nginxinc/nginx-unprivileged:1.31.5-alpine3.24 AS production
 
 USER root
-RUN apk upgrade --no-cache util-linux libuuid
+RUN apk upgrade --no-cache util-linux libuuid libexpat
 USER nginx
 
 COPY --from=builder /app/dist /usr/share/nginx/html

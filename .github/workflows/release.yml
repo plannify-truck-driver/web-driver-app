@@ -21,7 +21,7 @@ jobs:
       docker_build_args: |
         VITE_ENV=production
         VITE_VERSION=${{ github.ref_name }}
-        VITE_API_URL=https://api2.plannify.be/driver/v1
+        VITE_API_URL=https://api.plannify.be/driver/v1
       infra_targets: |
         [
           {"repo": "plannify-truck-driver-app/infrastructure", "file": "yaml-applications/prod/driver-front/deployment.yaml", "image": "ghcr.io/plannify-truck-driver/web-driver-app"}
