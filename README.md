@@ -1,4 +1,4 @@
-# Driver Web App 1
+# Driver Web App
 
 This repository contains the web application for drivers. It is built using React and TypeScript.
 
