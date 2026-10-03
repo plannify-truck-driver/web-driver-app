@@ -129,6 +129,8 @@
       "current-month": "Mois courrant",
       "previous-month": "Mois précédent",
       "other-month": "Autre mois",
+      "no-workdays-title": "Aucune journée de travail pour ce mois",
+      "no-workdays-description": "Ajoutez votre première journée de travail pour commencer à suivre vos heures.",
       "period-locked-title": "Relevé mensuel verrouillé",
       "period-locked-description": "Le relevé du mois de {{period}} a été généré définitivement. Les journées de cette période ne peuvent plus être modifiées.",
       "period-locked-action": "Voir le document",

@@ -129,6 +129,8 @@
       "current-month": "Current month",
       "previous-month": "Previous month",
       "other-month": "Other month",
+      "no-workdays-title": "No workdays for this month",
+      "no-workdays-description": "Add your first workday to start tracking your hours.",
       "period-locked-title": "Monthly statement locked",
       "period-locked-description": "The monthly statement for {{period}} has been permanently generated. Workdays for this period can no longer be modified.",
       "period-locked-action": "View document",

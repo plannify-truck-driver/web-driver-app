@@ -8,12 +8,14 @@ import { displayTime } from "@/shared/functions/displayTime"
 import { getWorkingTime } from "@/shared/functions/getWorkingTime"
 import { useShowSeconds } from "@/hooks/use-show-seconds"
 import { useNavigate } from "@tanstack/react-router"
+import { Skeleton } from "../ui/Skeleton"
 
 export interface WorkdayTableDesktopProps {
   workdays: Workday[]
+  isLoading?: boolean
 }
 
-export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
+export function WorkdayTableDesktop({ workdays, isLoading = false }: WorkdayTableDesktopProps) {
   const { t, i18n } = useTranslation()
   const { showSeconds } = useShowSeconds()
   const navigate = useNavigate()
@@ -131,34 +133,45 @@ export function WorkdayTableDesktop({ workdays }: WorkdayTableDesktopProps) {
           ))}
         </TableHeader>
         <TableBody>
-          {workdays.length === 0 && (
+          {isLoading &&
+            Array.from({ length: 5 }, (_, idx) => (
+              <TableRow key={idx} className="hover:bg-transparent">
+                {table.getVisibleLeafColumns().map((column) => (
+                  <TableCell key={column.id}>
+                    <Skeleton className="h-5 w-16" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          {!isLoading && workdays.length === 0 && (
             <TableRow>
               <TableCell colSpan={table.getVisibleLeafColumns().length} className="text-center">
                 {t("components.workday-table-desktop.no-workdays")}
               </TableCell>
             </TableRow>
           )}
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-              className="cursor-pointer"
-              onClick={() =>
-                navigate({
-                  to: "/workdays/$workdayDate",
-                  params: { workdayDate: row.original.date },
-                })
-              }
-            >
-              {row.getVisibleCells().map((cell) => {
-                return (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                )
-              })}
-            </TableRow>
-          ))}
+          {!isLoading &&
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+                className="cursor-pointer"
+                onClick={() =>
+                  navigate({
+                    to: "/workdays/$workdayDate",
+                    params: { workdayDate: row.original.date },
+                  })
+                }
+              >
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  )
+                })}
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

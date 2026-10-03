@@ -6,12 +6,14 @@ import { displayTime } from "@/shared/functions/displayTime"
 import { Check, Minus } from "lucide-react"
 import { useShowSeconds } from "@/hooks/use-show-seconds"
 import { cn } from "@/lib/utils"
+import { Skeleton } from "../ui/Skeleton"
 
 export interface WorkdayTableRow3Props {
   date?: Date
   workday?: Workday
   isFirst: boolean
   isLast: boolean
+  isLoading?: boolean
   onClick: () => void
 }
 
@@ -20,10 +22,50 @@ export function WorkdayTableRow3({
   workday,
   isFirst,
   isLast,
+  isLoading = false,
   onClick,
 }: WorkdayTableRow3Props) {
   const { t, i18n } = useTranslation()
   const { showSeconds } = useShowSeconds()
+
+  if (isLoading) {
+    return (
+      <div
+        className={cn(
+          "bg-sidebar border-border flex w-full flex-col items-start justify-center gap-2 border-x border-t px-4 py-3",
+          isFirst && "rounded-tl-lg rounded-tr-lg",
+          isLast && "rounded-br-lg rounded-bl-lg border-b"
+        )}
+      >
+        <div className="flex w-full flex-row items-center justify-between">
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="h-5 w-12" />
+        </div>
+        <div className="grid w-full grid-cols-4 gap-2">
+          <div className="flex flex-col items-start gap-1 text-xs">
+            <p className="text-muted-foreground/60">{t("components.workday-table-row-3.start")}</p>
+            <Skeleton className="h-5 w-12" />
+          </div>
+          <div className="flex flex-col items-start gap-1 text-xs">
+            <p className="text-muted-foreground/60">{t("components.workday-table-row-3.end")}</p>
+            <Skeleton className="h-5 w-12" />
+          </div>
+          <div className="flex flex-col items-start gap-1 text-xs">
+            <p className="text-muted-foreground/60">
+              {t("components.workday-table-row-3.rest-period")}
+            </p>
+            <Skeleton className="h-5 w-12" />
+          </div>
+          <div className="flex flex-col items-start gap-1 text-xs">
+            <p className="text-muted-foreground/60">
+              {t("components.workday-table-row-3.night-period")}
+            </p>
+            <Skeleton className="h-5 w-4" />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (!workday && !date) {
     return null
@@ -33,7 +75,7 @@ export function WorkdayTableRow3({
     return (
       <div
         className={cn(
-          "bg-sidebar border-border flex w-full cursor-pointer flex-col items-start justify-center gap-2 border-x border-t px-4 py-3",
+          "bg-sidebar border-border flex w-full flex-col items-start justify-center gap-2 border-x border-t px-4 py-3",
           isFirst && "rounded-tl-lg rounded-tr-lg",
           isLast && "rounded-br-lg rounded-bl-lg border-b"
         )}
@@ -52,19 +94,23 @@ export function WorkdayTableRow3({
         </div>
         <div className="grid w-full grid-cols-4 gap-2">
           <div className="flex flex-col items-start gap-1 text-xs">
-            <p className="text-muted-foreground/60">Début</p>
+            <p className="text-muted-foreground/60">{t("components.workday-table-row-3.start")}</p>
             <Minus size={16} className="text-muted-foreground/80" />
           </div>
           <div className="flex flex-col items-start gap-1 text-xs">
-            <p className="text-muted-foreground/60">Fin</p>
+            <p className="text-muted-foreground/60">{t("components.workday-table-row-3.end")}</p>
             <Minus size={16} className="text-muted-foreground/80" />
           </div>
           <div className="flex flex-col items-start gap-1 text-xs">
-            <p className="text-muted-foreground/60">Coupure</p>
+            <p className="text-muted-foreground/60">
+              {t("components.workday-table-row-3.rest-period")}
+            </p>
             <Minus size={16} className="text-muted-foreground/80" />
           </div>
           <div className="flex flex-col items-start gap-1 text-xs">
-            <p className="text-muted-foreground/60">Nuit</p>
+            <p className="text-muted-foreground/60">
+              {t("components.workday-table-row-3.night-period")}
+            </p>
             <Minus size={16} className="text-muted-foreground/80" />
           </div>
         </div>
