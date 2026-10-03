@@ -129,6 +129,8 @@
       "current-month": "Current month",
       "previous-month": "Previous month",
       "other-month": "Other month",
+      "no-workdays-title": "No workdays for this month",
+      "no-workdays-description": "Add your first workday to start tracking your hours.",
       "period-locked-title": "Monthly statement locked",
       "period-locked-description": "The monthly statement for {{period}} has been permanently generated. Workdays for this period can no longer be modified.",
       "period-locked-action": "View document",
@@ -315,6 +317,8 @@
       },
       "mail-detail": {
         "page-title": "Email detail",
+        "mail-not-found-title": "Mail not found",
+        "mail-not-found-description": "The mail you are trying to view does not exist or has been deleted.",
         "sections": {
           "info": {
             "title": "Information",
@@ -535,7 +539,9 @@
     "workday-document-group": {
       "number-of-documents_one": "{{count}} document",
       "number-of-documents_other": "{{count}} documents",
-      "no-documents": "No documents available"
+      "no-documents-title": "No documents available",
+      "no-documents-description": "These will appear automatically as soon as a workday is added.",
+      "add-workday": "Add a workday"
     },
     "pdf-preview": {
       "title": "Document preview",

@@ -5,6 +5,7 @@ import { displayDuration } from "@/shared/functions/displayDuration"
 import { ChevronRight, Coffee, LogIn, LogOut, Minus } from "lucide-react"
 import { displayTime } from "@/shared/functions/displayTime"
 import { cn } from "@/lib/utils"
+import { Skeleton } from "../ui/Skeleton"
 import { useShowSeconds } from "@/hooks/use-show-seconds"
 
 export interface WorkdayTableRow1Props {
@@ -12,6 +13,7 @@ export interface WorkdayTableRow1Props {
   workday?: Workday
   isFirst: boolean
   isLast: boolean
+  isLoading?: boolean
   onClick: () => void
 }
 
@@ -20,10 +22,33 @@ export function WorkdayTableRow1({
   workday,
   isFirst,
   isLast,
+  isLoading = false,
   onClick,
 }: WorkdayTableRow1Props) {
   const { t, i18n } = useTranslation()
   const { showSeconds } = useShowSeconds()
+
+  if (isLoading) {
+    return (
+      <div
+        className={cn(
+          "bg-sidebar border-border flex w-full flex-col items-start justify-center gap-2 border-x border-t px-4 py-3",
+          isFirst && "rounded-tl-lg rounded-tr-lg",
+          isLast && "rounded-br-lg rounded-bl-lg border-b"
+        )}
+      >
+        <div className="flex w-full flex-row items-center justify-between">
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="h-5 w-12" />
+        </div>
+        <div className="flex flex-row items-center gap-2">
+          <Skeleton className="h-6 w-16" />
+          <Skeleton className="h-6 w-16" />
+          <Skeleton className="h-6 w-16" />
+        </div>
+      </div>
+    )
+  }
 
   if (!workday && !date) {
     return null

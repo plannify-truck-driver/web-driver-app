@@ -1,6 +1,7 @@
 import { useAuth } from "@/app/providers/useAuth"
 import { useTheme } from "@/app/providers/useTheme"
 import { useShareBannerDismiss } from "@/hooks/use-share-banner-dismiss"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import { Loader } from "@/shared/components/Loader"
 import { ShareBanner } from "@/shared/components/ShareBanner"
 import { Button } from "@/shared/components/ui/Button"
@@ -70,6 +71,8 @@ export default function AppLayout() {
   const { theme, setTheme } = useTheme()
   const { t, i18n } = useTranslation()
   const { open, toggleSidebar } = useSidebar()
+  // Tailwind "sm" breakpoint: mount the page once, otherwise portaled dialogs render twice
+  const isDesktop = useMediaQuery("(min-width: 640px)")
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
   const { isUpdateAvailable } = useAppUpdate()
   const changeLanguage = useChangeLanguage()
@@ -342,7 +345,7 @@ export default function AppLayout() {
           </div>
           <div className="h-full overflow-y-auto">
             <div className="px-4 pb-4">
-              <Outlet />
+              {isDesktop && <Outlet />}
             </div>
           </div>
         </div>
@@ -351,7 +354,7 @@ export default function AppLayout() {
       <div className="bg-background flex h-full w-full flex-col justify-between sm:hidden">
         <div className="h-full overflow-y-auto">
           <div className="px-4 py-2 pb-4">
-            <Outlet />
+            {!isDesktop && <Outlet />}
           </div>
         </div>
         <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-6 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">

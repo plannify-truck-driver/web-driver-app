@@ -8,13 +8,16 @@ import { useTranslation } from "react-i18next"
 import { WorkdayTableDesktop } from "./workdayTableRows/WorkdayTableDesktop"
 import { useNavigate } from "@tanstack/react-router"
 
+const SKELETON_ROWS = 5
+
 export interface WorkdayTableProps {
   workdays: Workday[]
+  isLoading: boolean
   periodType: "week" | "month"
   period?: PeriodOfTime
 }
 
-export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps) {
+export function WorkdayTable({ workdays, isLoading, periodType, period }: WorkdayTableProps) {
   const { t } = useTranslation()
   const { preferences } = useDriverPreferences()
   const navigate = useNavigate()
@@ -35,7 +38,17 @@ export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps
         {t(`components.workday-table.detail-${periodType}-summary`)}
       </p>
       <div className="block sm:hidden">
-        {period != undefined ? (
+        {isLoading ? (
+          Array.from({ length: SKELETON_ROWS }, (_, idx) => (
+            <WorkdayTableRowComponent
+              key={idx}
+              isLoading
+              isFirst={idx === 0}
+              isLast={idx === SKELETON_ROWS - 1}
+              onClick={() => {}}
+            />
+          ))
+        ) : period != undefined ? (
           Array.from(
             {
               length:
@@ -93,7 +106,7 @@ export function WorkdayTable({ workdays, periodType, period }: WorkdayTableProps
           <p className="text-center">{t("components.workday-table.no-workdays")}</p>
         )}
       </div>
-      <WorkdayTableDesktop workdays={workdays} />
+      <WorkdayTableDesktop workdays={workdays} isLoading={isLoading} />
     </div>
   )
 }

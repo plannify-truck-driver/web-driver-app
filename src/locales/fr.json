@@ -129,6 +129,8 @@
       "current-month": "Mois courrant",
       "previous-month": "Mois précédent",
       "other-month": "Autre mois",
+      "no-workdays-title": "Aucune journée de travail pour ce mois",
+      "no-workdays-description": "Ajoutez votre première journée de travail pour commencer à suivre vos heures.",
       "period-locked-title": "Relevé mensuel verrouillé",
       "period-locked-description": "Le relevé du mois de {{period}} a été généré définitivement. Les journées de cette période ne peuvent plus être modifiées.",
       "period-locked-action": "Voir le document",
@@ -315,6 +317,8 @@
       },
       "mail-detail": {
         "page-title": "Détail du mail",
+        "mail-not-found-title": "Mail introuvable",
+        "mail-not-found-description": "Le mail que vous essayez de consulter n'existe pas ou a été supprimé.",
         "sections": {
           "info": {
             "title": "Informations",
@@ -535,7 +539,9 @@
     "workday-document-group": {
       "number-of-documents_one": "{{count}} document",
       "number-of-documents_other": "{{count}} documents",
-      "no-documents": "Aucun document disponible"
+      "no-documents-title": "Aucun document disponible",
+      "no-documents-description": " Ceux-ci sont apparassent automatiquement dès qu'une journée est ajoutée.",
+      "add-workday": "Ajouter une journée"
     },
     "pdf-preview": {
       "title": "Prévisualisation du document",

@@ -239,7 +239,12 @@ export default function PageDashboardIndex({
           </div>
         </div>
       )}
-      <WorkdayTable workdays={workdays} periodType="week" period={period} />
+      <WorkdayTable
+        workdays={workdays}
+        isLoading={isPeriodWorkdaysLoading}
+        periodType="week"
+        period={period}
+      />
       <EndWorkdayRestDialog
         isOpen={isEndWorkdayRestDialogOpen}
         hasAutomatedBreak={hasAutomatedBreak}

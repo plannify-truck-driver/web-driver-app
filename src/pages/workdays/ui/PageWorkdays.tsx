@@ -14,7 +14,7 @@ import type { RestPeriod } from "@/shared/models/rest-period"
 import type { Workday } from "@/shared/models/workday"
 import type { GetWorkdayCreationLimitResponse } from "@/shared/queries/workday/workday.types"
 import type { addWorkdayFormSchema } from "@/shared/zod/add-workday"
-import { LockIcon, Trash2Icon, TriangleAlertIcon } from "lucide-react"
+import { LockIcon, Trash2Icon, TriangleAlertIcon, TruckIcon } from "lucide-react"
 import { useMemo } from "react"
 import type { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -287,7 +287,25 @@ export default function PageWorkdays({
               />
             </div>
           </div>
-          <WorkdayTable workdays={workdays} periodType="month" />
+          {workdays.length === 0 && !loadings.isGetMonthWorkdaysLoading ? (
+            <div className="flex flex-col items-center justify-center gap-4 py-6">
+              <div className="bg-muted flex size-14 shrink-0 items-center justify-center rounded-full">
+                <TruckIcon className="text-muted-foreground size-6" />
+              </div>
+              <div className="flex flex-col items-center justify-center gap-1 text-center">
+                <p className="font-semibold">{t("pages.workdays.no-workdays-title")}</p>
+                <p className="text-muted-foreground text-sm">
+                  {t("pages.workdays.no-workdays-description")}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <WorkdayTable
+              workdays={workdays}
+              isLoading={loadings.isGetMonthWorkdaysLoading}
+              periodType="month"
+            />
+          )}
           <AddWorkdayButton
             isFirstWorkday={workdays.length === 0}
             onClick={() => setIsAddWorkdayOpen(true)}
