@@ -317,6 +317,8 @@
       },
       "mail-detail": {
         "page-title": "Détail du mail",
+        "mail-not-found-title": "Mail introuvable",
+        "mail-not-found-description": "Le mail que vous essayez de consulter n'existe pas ou a été supprimé.",
         "sections": {
           "info": {
             "title": "Informations",

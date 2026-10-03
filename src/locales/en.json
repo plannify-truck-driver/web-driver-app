@@ -317,6 +317,8 @@
       },
       "mail-detail": {
         "page-title": "Email detail",
+        "mail-not-found-title": "Mail not found",
+        "mail-not-found-description": "The mail you are trying to view does not exist or has been deleted.",
         "sections": {
           "info": {
             "title": "Information",
