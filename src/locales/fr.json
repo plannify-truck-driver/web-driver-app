@@ -535,7 +535,9 @@
     "workday-document-group": {
       "number-of-documents_one": "{{count}} document",
       "number-of-documents_other": "{{count}} documents",
-      "no-documents": "Aucun document disponible"
+      "no-documents-title": "Aucun document disponible",
+      "no-documents-description": " Ceux-ci sont apparassent automatiquement dès qu'une journée est ajoutée.",
+      "add-workday": "Ajouter une journée"
     },
     "pdf-preview": {
       "title": "Prévisualisation du document",

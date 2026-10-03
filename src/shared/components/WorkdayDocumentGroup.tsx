@@ -1,9 +1,10 @@
-import { ChevronDown, ChevronRight } from "lucide-react"
+import { ChevronDown, ChevronRight, FileTextIcon } from "lucide-react"
 import type { WorkdayDocument } from "../models/workday"
 import { Button } from "./ui/Button"
 import { WorkdayDocumentItem } from "./WorkdayDocumentItem"
 import { useTranslation } from "react-i18next"
 import { useState } from "react"
+import { useNavigate } from "@tanstack/react-router"
 
 export interface WorkdayDocumentGroupProps {
   year: number
@@ -25,6 +26,8 @@ export function WorkdayDocumentGroup({
   highlightMonth,
 }: WorkdayDocumentGroupProps) {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
   const today = new Date()
 
   const [isOpen, setIsOpen] = useState<boolean>(
@@ -81,9 +84,30 @@ export function WorkdayDocumentGroup({
               ))}
             </div>
             {workdayDocuments.length === 0 && (
-              <p className="text-muted-foreground text-center text-sm">
-                {t("components.workday-document-group.no-documents")}
-              </p>
+              <div className="flex flex-col items-center justify-center gap-4 py-6">
+                <div className="bg-muted flex size-14 shrink-0 items-center justify-center rounded-full">
+                  <FileTextIcon className="text-muted-foreground size-6" />
+                </div>
+                <div className="flex flex-col items-center justify-center gap-1 text-center">
+                  <p className="font-semibold">
+                    {t("components.workday-document-group.no-documents-title")}
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    {t("components.workday-document-group.no-documents-description")}
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() =>
+                      navigate({ to: "/workdays", search: { "create-workday": true } })
+                    }
+                  >
+                    {t("components.workday-document-group.add-workday")}
+                  </Button>
+                </div>
+              </div>
             )}
           </>
         ))}

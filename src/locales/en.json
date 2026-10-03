@@ -535,7 +535,9 @@
     "workday-document-group": {
       "number-of-documents_one": "{{count}} document",
       "number-of-documents_other": "{{count}} documents",
-      "no-documents": "No documents available"
+      "no-documents-title": "No documents available",
+      "no-documents-description": "These will appear automatically as soon as a workday is added.",
+      "add-workday": "Add a workday"
     },
     "pdf-preview": {
       "title": "Document preview",

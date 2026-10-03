@@ -36,11 +36,14 @@ export interface PageWorkdaysFeatureLoadings {
 
 export default function PageWorkdaysFeature() {
   const { t } = useTranslation()
+  const urlSearchParams = new URLSearchParams(window.location.search)
 
   useDocumentTitle(t("pages.workdays.page-title"))
 
   const [selectedMonth, setSelectedMonth] = useState<Date>(new Date())
-  const [isAddWorkdayOpen, setIsAddWorkdayOpen] = useState<boolean>(false)
+  const [isAddWorkdayOpen, setIsAddWorkdayOpen] = useState<boolean>(
+    urlSearchParams.get("create-workday") === "true"
+  )
   const [addWorkdayFormErrorCode, setAddWorkdayFormErrorCode] = useState<string | null>(null)
   const [isImportingWorkdaysFromFileOpen, setIsImportingWorkdaysFromFileOpen] =
     useState<boolean>(false)
