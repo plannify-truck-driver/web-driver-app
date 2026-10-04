@@ -6,14 +6,6 @@ export function useChangeLanguage() {
 
   return (lng: string) => {
     i18n.changeLanguage(lng)
-    updateMe({
-      language: lng,
-      email: null,
-      firstname: null,
-      gender: null,
-      lastname: null,
-      password: null,
-      phone_number: null,
-    }).catch(() => {})
+    updateMe({ language: lng }).catch(() => {})
   }
 }

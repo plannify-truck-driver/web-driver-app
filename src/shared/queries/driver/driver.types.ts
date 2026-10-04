@@ -14,13 +14,13 @@ export interface GetMeResponse {
 }
 
 export interface UpdateMeRequest {
-  email: string | null
-  firstname: string | null
-  gender: "M" | "F" | "O" | null
-  language: string | null
-  lastname: string | null
-  password: string | null
-  phone_number: string | null
+  email?: string | null
+  firstname?: string | null
+  gender?: "M" | "F" | "O" | null
+  language?: string | null
+  lastname?: string | null
+  password?: string | null
+  phone_number?: string | null
 }
 
 export interface UpdateMeResponse {
