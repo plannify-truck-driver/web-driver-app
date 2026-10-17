@@ -199,6 +199,10 @@
       "generated-banner-description": "Statements marked <badge></badge> are finalized and their workdays can no longer be edited. This happens automatically once a statement is over {{months}} months old.",
       "generated-banner-dismiss": "Dismiss",
       "generated-banner-why": "Discover why",
+      "upcoming-banner-title_one": "A statement will soon be permanently generated",
+      "upcoming-banner-title_other": "Some statements will soon be permanently generated",
+      "upcoming-banner-description_one": "Your statement for {{month}} will be permanently generated next month. Make sure you have entered all your workdays for that month.",
+      "upcoming-banner-description_other": "Several of your monthly statements will be permanently generated next month. Make sure you have entered all your workdays for the months concerned.",
       "generated-why-dialog": {
         "title": "Why this process?",
         "description": "Permanent generation was designed to improve your experience and ensure the reliability of your data.",

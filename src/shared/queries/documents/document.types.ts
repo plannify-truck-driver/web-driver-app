@@ -21,3 +21,8 @@ export interface GenerateWorkdayDocumentResponse {
   blob: Blob
   filename: string
 }
+
+export interface UpcomingWorkdayDocument {
+  month: number
+  year: number
+}

@@ -55,6 +55,7 @@ import { useAppUpdate } from "@/hooks/use-app-update"
 import { useChangeLanguage } from "@/shared/lib/useChangeLanguage"
 import { useInformations } from "@/shared/queries/informations/informations.queries"
 import { getVisibleInformations } from "@/shared/functions/getVisibleInformations"
+import { useGetUpcomingWorkdayDocuments } from "@/shared/queries/documents/document.queries"
 
 interface NavbarNavigationItem {
   title: string
@@ -82,6 +83,8 @@ export default function AppLayout() {
   const hasWarningInformation = informations.some((information) => information.type === "WARNING")
   const hasAccountAlert =
     isUpdateAvailable || !!driver?.deactivation_planned_at || informations.length > 0
+
+  const hasDocumentsAlert = useGetUpcomingWorkdayDocuments().length > 0
 
   const accountAlertColor = driver?.deactivation_planned_at
     ? "bg-red-500"
@@ -193,6 +196,9 @@ export default function AppLayout() {
                                     accountAlertColor
                                   )}
                                 />
+                              )}
+                              {item.link === "/documents" && hasDocumentsAlert && (
+                                <span className="ring-sidebar absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-500 ring-2" />
                               )}
                             </div>
                             <span>
@@ -344,18 +350,14 @@ export default function AppLayout() {
             </Button>
           </div>
           <div className="h-full overflow-y-auto">
-            <div className="px-4 pb-4">
-              {isDesktop && <Outlet />}
-            </div>
+            <div className="px-4 pb-4">{isDesktop && <Outlet />}</div>
           </div>
         </div>
       </div>
       {/* For mobile screens */}
       <div className="bg-background flex h-full w-full flex-col justify-between sm:hidden">
         <div className="h-full overflow-y-auto">
-          <div className="px-4 py-2 pb-4">
-            {!isDesktop && <Outlet />}
-          </div>
+          <div className="px-4 py-2 pb-4">{!isDesktop && <Outlet />}</div>
         </div>
         <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-6 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
           {navigationItems.map((item) => {
@@ -379,6 +381,9 @@ export default function AppLayout() {
                         accountAlertColor
                       )}
                     />
+                  )}
+                  {item.link === "/documents" && hasDocumentsAlert && (
+                    <span className="ring-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-amber-500 ring-2" />
                   )}
                 </div>
                 <p className="text-responsive-md p-0 leading-none">

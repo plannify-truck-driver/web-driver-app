@@ -199,6 +199,10 @@
       "generated-banner-description": "Les relevés marqués <badge></badge> sont figés et leurs journées ne peuvent plus être modifiées. Ce processus se déclenche automatiquement à partir de {{months}} mois.",
       "generated-banner-dismiss": "Masquer",
       "generated-banner-why": "Découvrez pourquoi",
+      "upcoming-banner-title_one": "Un relevé va bientôt être généré définitivement",
+      "upcoming-banner-title_other": "Des relevés vont bientôt être générés définitivement",
+      "upcoming-banner-description_one": "Votre relevé pour {{month}} sera généré définitivement dès le mois prochain. Veillez à avoir renseigné toutes vos journées de ce mois.",
+      "upcoming-banner-description_other": "Plusieurs de vos relevés mensuels seront générés définitivement dès le mois prochain. Veillez à avoir renseigné toutes vos journées des mois concernés.",
       "generated-why-dialog": {
         "title": "Pourquoi ce processus ?",
         "description": "La génération définitive a été conçue pour améliorer votre expérience et garantir la fiabilité de vos données.",
