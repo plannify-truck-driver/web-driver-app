@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/shared/components/ui/Dialog"
+import { useConfig } from "@/shared/queries/config/config.queries"
 
 interface PageDocumentsProps {
   workdayDocuments?: Record<number, WorkdayDocument[] | undefined>
@@ -35,6 +36,8 @@ export default function PageDocuments({
   highlightMonth,
 }: PageDocumentsProps) {
   const { t } = useTranslation()
+  const { data: config, isLoading: isLoadingConfig } = useConfig()
+
   const [isWhyDialogOpen, setIsWhyDialogOpen] = useState(false)
   const { isVisible: isBannerVisible, dismiss: dismissBanner } = useDocumentsBannerDismiss()
 
@@ -48,7 +51,7 @@ export default function PageDocuments({
         <h1 className="text-2xl font-semibold">{t("pages.documents.page-title")}</h1>
         <p className="text-muted-foreground text-sm">{t("pages.documents.page-description")}</p>
       </div>
-      {hasGeneratedDocuments && isBannerVisible && (
+      {hasGeneratedDocuments && isBannerVisible && !isLoadingConfig && (
         <>
           <div className="relative overflow-hidden rounded-xl border bg-gradient-to-br from-amber-500/5 to-amber-500/10 p-5">
             <LockIcon className="pointer-events-none absolute -right-3 -bottom-3 size-24 rotate-12 text-amber-500/8" />
@@ -68,6 +71,7 @@ export default function PageDocuments({
                 <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
                   <Trans
                     i18nKey="pages.documents.generated-banner-description"
+                    values={{ months: config?.document_generation_months_ago ?? 3 }}
                     components={{ badge: <GeneratedBadge /> }}
                   />
                 </p>

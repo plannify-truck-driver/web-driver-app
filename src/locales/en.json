@@ -196,7 +196,7 @@
       "page-description": "Statements of your monthly hours.",
       "generation-error": "Your document cannot be retrieved at the moment. Please try again later.",
       "generated-banner-title": "Some statements have been permanently generated",
-      "generated-banner-description": "Statements marked <badge></badge> are finalized and their workdays can no longer be edited. This happens automatically once a statement is over 3 months old.",
+      "generated-banner-description": "Statements marked <badge></badge> are finalized and their workdays can no longer be edited. This happens automatically once a statement is over {{months}} months old.",
       "generated-banner-dismiss": "Dismiss",
       "generated-banner-why": "Discover why",
       "generated-why-dialog": {
@@ -403,7 +403,7 @@
         "banner-rest-period-label": "Configure rest periods",
         "banner-rest-period-description": "Prompts you to set up automatic rest periods so Plannify can calculate the right break duration at the end of your workday.",
         "banner-documents-label": "Permanently generated documents",
-        "banner-documents-description": "Explains why some statements are finalized and can no longer be edited after 3 months.",
+        "banner-documents-description": "Explains why some statements are finalized and can no longer be edited after several months.",
         "banner-share-label": "Share Plannify",
         "banner-share-description": "Invites you to share the app with other drivers.",
         "banner-end-workday-rest-dialog-label": "Overnight rest prompt (automated breaks)",
