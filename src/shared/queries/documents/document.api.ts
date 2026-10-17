@@ -4,10 +4,15 @@ import type {
   GenerateWorkdayDocumentResponse,
   GetWorkdayDocumentsByYearRequest,
   GetWorkdayDocumentsByYearResponse,
+  UpcomingWorkdayDocument,
 } from "./document.types"
 
 export const getWorkdayDocuments = (): Promise<number[]> => {
   return api.get("workdays/documents/year").json()
+}
+
+export const getUpcomingWorkdayDocuments = (): Promise<UpcomingWorkdayDocument[]> => {
+  return api.get("workdays/documents/upcoming").json()
 }
 
 export const getWorkdayDocumentsByYear = (

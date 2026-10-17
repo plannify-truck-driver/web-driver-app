@@ -5,6 +5,7 @@ import { WorkdayDocumentItem } from "./WorkdayDocumentItem"
 import { useTranslation } from "react-i18next"
 import { useState } from "react"
 import { useNavigate } from "@tanstack/react-router"
+import type { UpcomingWorkdayDocument } from "../queries/documents/document.types"
 
 export interface WorkdayDocumentGroupProps {
   year: number
@@ -14,6 +15,7 @@ export interface WorkdayDocumentGroupProps {
   generatingDocument: { month: number; year: number } | undefined
   highlightYear?: number
   highlightMonth?: number
+  upcomingDocuments?: UpcomingWorkdayDocument[]
 }
 
 export function WorkdayDocumentGroup({
@@ -24,6 +26,7 @@ export function WorkdayDocumentGroup({
   generatingDocument,
   highlightYear,
   highlightMonth,
+  upcomingDocuments = [],
 }: WorkdayDocumentGroupProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -79,7 +82,13 @@ export function WorkdayDocumentGroup({
                     generatingDocument?.month === workdayDocument.month &&
                     generatingDocument?.year === workdayDocument.year
                   }
-                  isHighlighted={highlightYear === year && highlightMonth === workdayDocument.month}
+                  isHighlighted={
+                    (highlightYear === year && highlightMonth === workdayDocument.month) ||
+                    upcomingDocuments.some(
+                      (upcoming) =>
+                        upcoming.year === year && upcoming.month === workdayDocument.month
+                    )
+                  }
                 />
               ))}
             </div>

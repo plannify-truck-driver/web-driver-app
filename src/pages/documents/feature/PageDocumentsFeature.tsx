@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 import PageDocuments from "../ui/PageDocuments"
 import {
   useGenerateWorkdayDocument,
+  useGetUpcomingWorkdayDocuments,
   useGetWorkdayDocuments,
   useGetWorkdayDocumentsByYears,
 } from "@/shared/queries/documents/document.queries"
@@ -22,6 +23,7 @@ export default function PageDocumentsFeature() {
   const [previewBlob, setPreviewBlob] = useState<Blob | null>(null)
   const [previewFilename, setPreviewFilename] = useState("document.pdf")
 
+  const upcomingDocuments = useGetUpcomingWorkdayDocuments()
   const { data: yearsDocument, isLoading: isLoadingYears } = useGetWorkdayDocuments()
   const {
     mutate: generateWorkdayDocument,
@@ -78,6 +80,7 @@ export default function PageDocumentsFeature() {
         generatingDocument={isGenerating ? generatingDocument : undefined}
         highlightYear={highlightYear}
         highlightMonth={highlightMonth}
+        upcomingDocuments={upcomingDocuments}
       />
       <PdfPreviewSheet
         blob={previewBlob}
