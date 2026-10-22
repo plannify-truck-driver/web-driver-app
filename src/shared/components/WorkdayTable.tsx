@@ -50,13 +50,11 @@ export function WorkdayTable({ workdays, isLoading, periodType, period }: Workda
           ))
         ) : period != undefined ? (
           Array.from(
-            {
-              length:
-                Math.ceil((period.to.getTime() - period.from.getTime()) / (1000 * 60 * 60 * 24)) +
-                1,
-            },
+            { length: Math.round((period.to.getTime() - period.from.getTime()) / 86_400_000) + 1 },
             (_, idx) => {
-              const i = new Date(period.from.getTime() + idx * 24 * 60 * 60 * 1000)
+              const i = new Date(period.from)
+              i.setDate(i.getDate() + idx)
+
               const workday = workdays.find(
                 (wd) => new Date(wd.date).toDateString() === i.toDateString()
               )
