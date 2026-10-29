@@ -11,6 +11,7 @@ export interface WorkdayDocumentItemProps {
   onGenerateDocument: (month: number, year: number) => void
   isGenerating?: boolean
   isHighlighted?: boolean
+  isFocused?: boolean
 }
 
 export function WorkdayDocumentItem({
@@ -18,15 +19,16 @@ export function WorkdayDocumentItem({
   onGenerateDocument,
   isGenerating = false,
   isHighlighted = false,
+  isFocused = false,
 }: WorkdayDocumentItemProps) {
   const { t, i18n } = useTranslation()
   const itemRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (isHighlighted && itemRef.current) {
+    if (isFocused && itemRef.current) {
       itemRef.current.scrollIntoView({ behavior: "smooth", block: "center" })
     }
-  }, [isHighlighted])
+  }, [isFocused])
 
   const documentDate = new Date(workdayDocument?.year || 0, (workdayDocument?.month || 1) - 1)
   const documentLabel = upperCaseFirstLetter(
