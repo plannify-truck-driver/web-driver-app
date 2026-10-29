@@ -89,6 +89,9 @@ export function WorkdayDocumentGroup({
                         upcoming.year === year && upcoming.month === workdayDocument.month
                     )
                   }
+                  isFocused={
+                    highlightYear === year && highlightMonth === workdayDocument.month
+                  }
                 />
               ))}
             </div>
