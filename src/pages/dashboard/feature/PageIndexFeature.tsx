@@ -33,6 +33,10 @@ import { getCanEndWorkday, isWithinWorkdayWindow } from "@/shared/functions/getC
 import { toLocalDateString } from "@/shared/functions/toLocalDateString"
 import { useShowSeconds } from "@/hooks/use-show-seconds"
 import { useEndWorkdayRestDialogDismissed } from "@/hooks/use-end-workday-rest-dialog-dismissed"
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { usePwaInstall } from "@/hooks/use-pwa-install"
+import { useInstallDrawer } from "@/hooks/use-install-drawer"
+import { useInstallBannerDismiss } from "@/hooks/use-install-banner-dismiss"
 
 export interface PeriodOfTime {
   from: Date
@@ -96,6 +100,15 @@ export default function PageDashboardIndexFeature() {
   const { data: restPeriods, isLoading: isLoadingRestPeriods } = useGetRestPeriods()
   const { isVisible: isBannerVisible, dismiss: onDismissBanner } = useRestPeriodBannerDismiss()
   const { maxHours } = useMaxWorkdayDuration()
+
+  // Install suggestion (mobile only, the desktop sidebar has its own banner)
+  const isDesktop = useMediaQuery("(min-width: 640px)")
+  const { isInstallable } = usePwaInstall()
+  const installDrawer = useInstallDrawer()
+  const installBanner = useInstallBannerDismiss()
+  const [isInstallDrawerOpen, setIsInstallDrawerOpen] = useState(false)
+  const showInstallBanner =
+    !isDesktop && isInstallable && !installDrawer.isOnboarding && installBanner.isVisible
 
   const { data: todayWorkday, isLoading: isTodayWorkdayLoading } = useGetWorkdayByDate({
     date: todayLocalDate,
@@ -287,6 +300,12 @@ export default function PageDashboardIndexFeature() {
     })
   }
 
+  const endWorkday = (payload: Parameters<typeof updateWorkdayAsync>[0]) => {
+    updateWorkdayAsync(payload).then(() => {
+      if (!isDesktop && isInstallable && installDrawer.canShow) setIsInstallDrawerOpen(true)
+    })
+  }
+
   const onEndWorkday = () => {
     if (isLoadingRestPeriods) {
       toast.info(t("pages.dashboard.rest-periods-loading"))
@@ -321,7 +340,7 @@ export default function PageDashboardIndexFeature() {
     const bestRestTime = getBestRestPeriod(activeWorkday.start_time, endTime, restPeriods)
 
     if (isEndWorkdayRestDialogDismissed) {
-      updateWorkdayAsync({
+      endWorkday({
         date: activeWorkday.date,
         start_time: activeWorkday.start_time,
         end_time: endTime,
@@ -359,7 +378,7 @@ export default function PageDashboardIndexFeature() {
       rest_time = `${hh}:${mm}:${ss}`
     }
 
-    updateWorkdayAsync({
+    endWorkday({
       date: activeWorkday.date,
       start_time: activeWorkday.start_time,
       end_time: pendingEndTimeRef.current,
@@ -422,6 +441,14 @@ export default function PageDashboardIndexFeature() {
       showDocumentGeneratedError={isDocumentAlreadyGenerated}
       onDismissDocumentGeneratedError={() => setIsDocumentAlreadyGenerated(false)}
       isCreationLimitReached={isCreationLimitReached}
+      showInstallBanner={showInstallBanner}
+      onDismissInstallBanner={installBanner.dismiss}
+      // Never stack it over the "don't show again" info dialog
+      isInstallDrawerOpen={isInstallDrawerOpen && !isEndWorkdayRestDialogDismissedInfoOpen}
+      onCloseInstallDrawer={() => {
+        setIsInstallDrawerOpen(false)
+        installDrawer.dismiss()
+      }}
     />
   )
 }

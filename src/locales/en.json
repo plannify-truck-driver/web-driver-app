@@ -410,6 +410,8 @@
         "banner-documents-description": "Explains why some statements are finalized and can no longer be edited after several months.",
         "banner-share-label": "Share Plannify",
         "banner-share-description": "Invites you to share the app with other drivers.",
+        "banner-install-label": "Install the app",
+        "banner-install-description": "Invites you to install Plannify on your device for one-tap access.",
         "banner-end-workday-rest-dialog-label": "Overnight rest prompt (automated breaks)",
         "banner-end-workday-rest-dialog-description": "Asks whether you got a full night's rest at the end of each workday, when your breaks are automated.",
         "banner-visible": "Active",
@@ -611,6 +613,22 @@
       "share-text": "Plannify is a free app developed by an engineering student to manage your working hours as a driver.\n\nCheck it out here 👉 {{url}}",
       "dismiss": "Dismiss",
       "copied": "Link copied to clipboard!"
+    },
+    "install-banner": {
+      "title": "Install Plannify",
+      "reason-fast": "One-tap access, faster",
+      "reason-home-screen": "Right on your home screen",
+      "reason-offline": "Works even with a poor connection",
+      "install-button": "Install the app",
+      "ios-step-share": "Tap the Share button",
+      "ios-step-add": "Then “Add to Home Screen”",
+      "dismiss": "Hide",
+      "compact-title": "Install Plannify on your phone",
+      "install-short": "Install",
+      "how": "How?",
+      "drawer-title": "Well done, workday saved!",
+      "drawer-description": "To log your next workday even faster, install Plannify on your phone.",
+      "later": "Later"
     },
     "dev-environment-banner": {
       "head-message": "You are using a development environment",

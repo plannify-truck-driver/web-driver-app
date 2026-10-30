@@ -1,9 +1,12 @@
 import { useAuth } from "@/app/providers/useAuth"
 import { useTheme } from "@/app/providers/useTheme"
 import { useShareBannerDismiss } from "@/hooks/use-share-banner-dismiss"
+import { useInstallBannerDismiss } from "@/hooks/use-install-banner-dismiss"
+import { usePwaInstall } from "@/hooks/use-pwa-install"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { Loader } from "@/shared/components/Loader"
 import { ShareBanner } from "@/shared/components/ShareBanner"
+import { InstallBanner } from "@/shared/components/InstallBanner"
 import { Button } from "@/shared/components/ui/Button"
 import {
   DropdownMenu,
@@ -75,6 +78,10 @@ export default function AppLayout() {
   // Tailwind "sm" breakpoint: mount the page once, otherwise portaled dialogs render twice
   const isDesktop = useMediaQuery("(min-width: 640px)")
   const { isVisible: isShareBannerVisible, dismiss: dismissShareBanner } = useShareBannerDismiss()
+  const { isVisible: isInstallBannerDismissVisible, dismiss: dismissInstallBanner } =
+    useInstallBannerDismiss()
+  const { isInstallable } = usePwaInstall()
+  const isInstallBannerVisible = isInstallable && isInstallBannerDismissVisible
   const { isUpdateAvailable } = useAppUpdate()
   const changeLanguage = useChangeLanguage()
   const { data: informationsData } = useInformations()
@@ -219,10 +226,15 @@ export default function AppLayout() {
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
-            {open && isShareBannerVisible && (
+            {/* One banner at a time: installing the app comes before sharing it */}
+            {open && (isInstallBannerVisible || isShareBannerVisible) && (
               <SidebarGroup className="mt-auto">
                 <SidebarGroupContent>
-                  <ShareBanner variant="sidebar" onDismiss={dismissShareBanner} />
+                  {isInstallBannerVisible ? (
+                    <InstallBanner variant="sidebar" onDismiss={dismissInstallBanner} />
+                  ) : (
+                    <ShareBanner variant="sidebar" onDismiss={dismissShareBanner} />
+                  )}
                 </SidebarGroupContent>
               </SidebarGroup>
             )}

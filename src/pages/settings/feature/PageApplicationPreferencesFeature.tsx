@@ -3,6 +3,7 @@ import { useMaxWorkdayDuration } from "@/hooks/use-max-workday-duration"
 import { useRestPeriodBannerDismiss } from "@/hooks/use-rest-period-banner-dismiss"
 import { useDocumentsBannerDismiss } from "@/hooks/use-documents-banner-dismiss"
 import { useShareBannerDismiss } from "@/hooks/use-share-banner-dismiss"
+import { useInstallBannerDismiss } from "@/hooks/use-install-banner-dismiss"
 import { useEndWorkdayRestDialogDismissed } from "@/hooks/use-end-workday-rest-dialog-dismissed"
 import { useDriverPreferences } from "@/app/providers/useDriverPreferences"
 import PageApplicationPreferences from "../ui/PageApplicationPreferences"
@@ -19,6 +20,7 @@ export default function PageApplicationPreferencesFeature() {
   const restPeriodBanner = useRestPeriodBannerDismiss()
   const documentsBanner = useDocumentsBannerDismiss()
   const shareBanner = useShareBannerDismiss()
+  const installBanner = useInstallBannerDismiss()
   const {
     isDismissed: isEndWorkdayRestDialogDismissed,
     setIsDismissed: setIsEndWorkdayRestDialogDismissed,
@@ -58,6 +60,14 @@ export default function PageApplicationPreferencesFeature() {
           nextDisplayAt: shareBanner.nextDisplayAt,
           isVisible: shareBanner.isVisible,
           onReset: shareBanner.reset,
+        },
+        {
+          key: "install",
+          count: installBanner.count,
+          maxDismissals: installBanner.maxDismissals,
+          nextDisplayAt: installBanner.nextDisplayAt,
+          isVisible: installBanner.isVisible,
+          onReset: installBanner.reset,
         },
         {
           key: "end-workday-rest-dialog",

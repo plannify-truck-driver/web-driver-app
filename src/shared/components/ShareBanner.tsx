@@ -28,7 +28,7 @@ async function handleShare(shareText: string, copiedLabel: string) {
 export function ShareBanner({ onDismiss, variant = "card" }: ShareBannerProps) {
   const { t } = useTranslation()
 
-  const shareText = t("components.share-banner.share-text", { url: window.location.origin })
+  const shareText = t("components.share-banner.share-text", { url: "https://plannify.be" })
   const copiedLabel = t("components.share-banner.copied")
 
   if (variant === "sidebar") {
