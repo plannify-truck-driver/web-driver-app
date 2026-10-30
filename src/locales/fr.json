@@ -410,6 +410,8 @@
         "banner-documents-description": "Explique pourquoi certains relevés sont figés et ne peuvent plus être modifiés après plusieurs mois.",
         "banner-share-label": "Partager Plannify",
         "banner-share-description": "Invite à partager l'application avec d'autres conducteurs.",
+        "banner-install-label": "Installer l'application",
+        "banner-install-description": "Invite à installer Plannify sur votre appareil pour y accéder en un geste.",
         "banner-end-workday-rest-dialog-label": "Question de repos nocturne (coupures automatisées)",
         "banner-end-workday-rest-dialog-description": "Demande si vous avez bénéficié d'un repos nocturne complet à la fin de chaque journée, lorsque vos coupures sont automatisées.",
         "banner-visible": "Active",
@@ -611,6 +613,22 @@
       "share-text": "Plannify est une application gratuite et développée par un étudiant ingénieur pour gérer vos heures de travail en tant que chauffeur.\n\nRendez-vous ici 👉 {{url}}",
       "dismiss": "Masquer",
       "copied": "Lien copié dans le presse-papiers !"
+    },
+    "install-banner": {
+      "title": "Installez Plannify",
+      "reason-fast": "Accès en un geste, plus rapide",
+      "reason-home-screen": "Directement sur votre écran d'accueil",
+      "reason-offline": "Fonctionne même avec un mauvais réseau",
+      "install-button": "Installer l'application",
+      "ios-step-share": "Touchez le bouton Partager",
+      "ios-step-add": "Puis « Sur l'écran d'accueil »",
+      "dismiss": "Masquer",
+      "compact-title": "Installez Plannify sur votre téléphone",
+      "install-short": "Installer",
+      "how": "Comment ?",
+      "drawer-title": "Bravo, journée enregistrée !",
+      "drawer-description": "Pour noter votre prochaine journée encore plus vite, installez Plannify sur votre téléphone.",
+      "later": "Plus tard"
     },
     "dev-environment-banner": {
       "head-message": "Vous utilisez un environnement de développement",

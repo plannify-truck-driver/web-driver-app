@@ -24,6 +24,7 @@ import { Button } from "@/shared/components/ui/Button"
 import { Link } from "@tanstack/react-router"
 import { CoffeeIcon, LockIcon, X } from "lucide-react"
 import { StatOvernightRest } from "@/shared/components/statistics/StatOvernightRest"
+import { InstallBanner, InstallDrawer } from "@/shared/components/InstallBanner"
 
 interface PageDashboardIndexProps {
   workdays: Workday[]
@@ -56,6 +57,10 @@ interface PageDashboardIndexProps {
   showDocumentGeneratedError: boolean
   onDismissDocumentGeneratedError: () => void
   isCreationLimitReached: boolean
+  showInstallBanner: boolean
+  onDismissInstallBanner: () => void
+  isInstallDrawerOpen: boolean
+  onCloseInstallDrawer: () => void
 }
 
 export default function PageDashboardIndex({
@@ -89,6 +94,10 @@ export default function PageDashboardIndex({
   showDocumentGeneratedError,
   onDismissDocumentGeneratedError,
   isCreationLimitReached,
+  showInstallBanner,
+  onDismissInstallBanner,
+  isInstallDrawerOpen,
+  onCloseInstallDrawer,
 }: PageDashboardIndexProps) {
   const { t, i18n } = useTranslation()
 
@@ -98,6 +107,7 @@ export default function PageDashboardIndex({
 
   return (
     <div className="flex flex-col gap-6 sm:gap-5">
+      {showInstallBanner && <InstallBanner variant="compact" onDismiss={onDismissInstallBanner} />}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-0">
         <div className="flex flex-col">
           <h1 className="text-2xl font-semibold">{t("pages.dashboard.page-title")}</h1>
@@ -245,6 +255,7 @@ export default function PageDashboardIndex({
         periodType="week"
         period={period}
       />
+      <InstallDrawer open={isInstallDrawerOpen} onClose={onCloseInstallDrawer} />
       <EndWorkdayRestDialog
         isOpen={isEndWorkdayRestDialogOpen}
         hasAutomatedBreak={hasAutomatedBreak}
