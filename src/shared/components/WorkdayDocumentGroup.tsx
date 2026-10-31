@@ -1,10 +1,9 @@
-import { ChevronDown, ChevronRight, FileTextIcon } from "lucide-react"
+import { ChevronDown, ChevronRight } from "lucide-react"
 import type { WorkdayDocument } from "../models/workday"
 import { Button } from "./ui/Button"
 import { WorkdayDocumentItem } from "./WorkdayDocumentItem"
 import { useTranslation } from "react-i18next"
-import { useState } from "react"
-import { useNavigate } from "@tanstack/react-router"
+import { useEffect, useState } from "react"
 import type { UpcomingWorkdayDocument } from "../queries/documents/document.types"
 
 export interface WorkdayDocumentGroupProps {
@@ -29,13 +28,18 @@ export function WorkdayDocumentGroup({
   upcomingDocuments = [],
 }: WorkdayDocumentGroupProps) {
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
   const today = new Date()
 
   const [isOpen, setIsOpen] = useState<boolean>(
     highlightYear ? highlightYear === year : today.getFullYear() === year
   )
+
+  // A group opened by default (current or highlighted year) must load its documents itself.
+  useEffect(() => {
+    if (isOpen) fetchDocumentsByYear(year)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const toggleOpen = () => {
     if (!isOpen) {
@@ -89,38 +93,10 @@ export function WorkdayDocumentGroup({
                         upcoming.year === year && upcoming.month === workdayDocument.month
                     )
                   }
-                  isFocused={
-                    highlightYear === year && highlightMonth === workdayDocument.month
-                  }
+                  isFocused={highlightYear === year && highlightMonth === workdayDocument.month}
                 />
               ))}
             </div>
-            {workdayDocuments.length === 0 && (
-              <div className="flex flex-col items-center justify-center gap-4 py-6">
-                <div className="bg-muted flex size-14 shrink-0 items-center justify-center rounded-full">
-                  <FileTextIcon className="text-muted-foreground size-6" />
-                </div>
-                <div className="flex flex-col items-center justify-center gap-1 text-center">
-                  <p className="font-semibold">
-                    {t("components.workday-document-group.no-documents-title")}
-                  </p>
-                  <p className="text-muted-foreground text-sm">
-                    {t("components.workday-document-group.no-documents-description")}
-                  </p>
-                </div>
-                <div>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={() =>
-                      navigate({ to: "/workdays", search: { "create-workday": true } })
-                    }
-                  >
-                    {t("components.workday-document-group.add-workday")}
-                  </Button>
-                </div>
-              </div>
-            )}
           </>
         ))}
     </div>
