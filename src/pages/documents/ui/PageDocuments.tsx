@@ -9,6 +9,7 @@ import {
   DatabaseIcon,
   ShieldCheckIcon,
   XIcon,
+  FileTextIcon,
 } from "lucide-react"
 import { GeneratedBadge } from "@/shared/components/GeneratedBadge"
 import { useState } from "react"
@@ -23,6 +24,8 @@ import {
 } from "@/shared/components/ui/Dialog"
 import { useConfig } from "@/shared/queries/config/config.queries"
 import type { UpcomingWorkdayDocument } from "@/shared/queries/documents/document.types"
+import { useNavigate } from "@tanstack/react-router"
+import { cn } from "@/lib/utils"
 
 interface PageDocumentsProps {
   workdayDocuments?: Record<number, WorkdayDocument[] | undefined>
@@ -46,6 +49,7 @@ export default function PageDocuments({
   upcomingDocuments = [],
 }: PageDocumentsProps) {
   const { t, i18n } = useTranslation()
+  const navigate = useNavigate()
   const { data: config, isLoading: isLoadingConfig } = useConfig()
 
   const [isWhyDialogOpen, setIsWhyDialogOpen] = useState(false)
@@ -65,7 +69,7 @@ export default function PageDocuments({
   )
 
   return (
-    <div className="flex flex-col gap-5 sm:gap-6">
+    <div className="flex flex-1 flex-col gap-5 sm:gap-6">
       <div className="flex flex-col">
         <h1 className="text-2xl font-semibold">{t("pages.documents.page-title")}</h1>
         <p className="text-muted-foreground text-sm">{t("pages.documents.page-description")}</p>
@@ -185,7 +189,14 @@ export default function PageDocuments({
           </div>
         </DialogContent>
       </Dialog>
-      <div className="flex flex-col gap-3">
+      <div
+        className={cn(
+          "flex flex-col gap-3",
+          !isLoadingYears &&
+            Object.keys(workdayDocuments).length === 0 &&
+            "flex-1 items-center justify-center"
+        )}
+      >
         {isLoadingYears ? (
           <>
             {[0, 1, 2].map((i) => (
@@ -195,6 +206,27 @@ export default function PageDocuments({
               </div>
             ))}
           </>
+        ) : Object.keys(workdayDocuments).length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <div className="bg-muted flex size-14 shrink-0 items-center justify-center rounded-full">
+              <FileTextIcon className="text-muted-foreground size-6" />
+            </div>
+            <div className="flex flex-col items-center justify-center gap-1 text-center">
+              <p className="font-semibold">{t("pages.documents.no-documents-title")}</p>
+              <p className="text-muted-foreground text-sm">
+                {t("pages.documents.no-documents-description")}
+              </p>
+            </div>
+            <div>
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => navigate({ to: "/workdays", search: { "create-workday": true } })}
+              >
+                {t("pages.documents.add-workday")}
+              </Button>
+            </div>
+          </div>
         ) : (
           Object.entries(workdayDocuments)
             .sort(([a], [b]) => parseInt(b) - parseInt(a))

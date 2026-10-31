@@ -1,0 +1,4 @@
+# Keep in sync with the node image and the pnpm version in Dockerfile
+[tools]
+node = "26.13.0"
+pnpm = "11.8.0"

@@ -1,4 +1,5 @@
-FROM node:26.8.1-alpine3.24 AS base
+# Keep in sync with mise.toml
+FROM node:26.13.0-alpine3.24 AS base
 
 # Create a non-root user for security
 RUN addgroup -g 1001 -S nodejs

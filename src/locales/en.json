@@ -64,7 +64,13 @@
         "contact-support-button": "Contact support",
         "email-subject": "Account verification issue",
         "email-body": "Hello,\n\nI'm having trouble verifying my account. Could you help me resolve this issue?\n\nThank you in advance for your assistance.",
-        "logout-button": "Log out"
+        "logout-button": "Log out",
+        "resend-button": "Resend email",
+        "resend-success": "A new verification email has been sent to you.",
+        "resend-already-verified": "Your account is already verified.",
+        "resend-token-already-exists": "A valid verification link has already been sent to you. Check your inbox (and spam folder) or try again later.",
+        "resend-mail-preference-disabled": "Verification emails are disabled for your account. Please contact support.",
+        "resend-session-expired": "Your session has expired. Please log in again."
       },
       "token-reset-password": {
         "page-title": "Reset password",
@@ -195,6 +201,9 @@
       "page-title": "Documents",
       "page-description": "Statements of your monthly hours.",
       "generation-error": "Your document cannot be retrieved at the moment. Please try again later.",
+      "no-documents-title": "No documents available",
+      "no-documents-description": "These will appear automatically as soon as a workday is added.",
+      "add-workday": "Add a workday",
       "generated-banner-title": "Some statements have been permanently generated",
       "generated-banner-description": "Statements marked <badge></badge> are finalized and their workdays can no longer be edited. This happens automatically once a statement is over {{months}} months old.",
       "generated-banner-dismiss": "Dismiss",
@@ -544,10 +553,7 @@
     },
     "workday-document-group": {
       "number-of-documents_one": "{{count}} document",
-      "number-of-documents_other": "{{count}} documents",
-      "no-documents-title": "No documents available",
-      "no-documents-description": "These will appear automatically as soon as a workday is added.",
-      "add-workday": "Add a workday"
+      "number-of-documents_other": "{{count}} documents"
     },
     "pdf-preview": {
       "title": "Document preview",

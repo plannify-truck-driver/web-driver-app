@@ -48,6 +48,7 @@ createRoot(document.getElementById("root")!).render(
               theme="system"
               position={window.innerWidth < 768 ? "top-center" : "bottom-right"}
               closeButton={true}
+              duration={10_000}
             />
           </AuthProvider>
         </QueryClientProvider>

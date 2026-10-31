@@ -41,8 +41,8 @@ export default function PageDocumentsFeature() {
   })
 
   const [fetchedYears, setFetchedYears] = useState<number[]>(() => {
-    if (highlightYear && highlightYear !== currentYear) return [currentYear, highlightYear]
-    return [currentYear]
+    if (highlightYear && highlightYear !== currentYear) return [highlightYear]
+    return []
   })
   const documents = useGetWorkdayDocumentsByYears({ years: fetchedYears })
 
@@ -50,7 +50,7 @@ export default function PageDocumentsFeature() {
     if (!yearsDocument) return {}
 
     const map: Record<number, WorkdayDocument[] | undefined> = Object.fromEntries(
-      [...new Set([...yearsDocument, currentYear])].map((year) => [year, undefined])
+      yearsDocument.map((year) => [year, undefined])
     )
     fetchedYears.forEach((year, index) => {
       const data = documents[index]?.data
@@ -60,7 +60,7 @@ export default function PageDocumentsFeature() {
     })
 
     return map
-  }, [yearsDocument, documents, fetchedYears, currentYear])
+  }, [yearsDocument, documents, fetchedYears])
 
   const fetchDocumentsByYear = (year: number) => {
     setFetchedYears((prev) => (prev.includes(year) ? prev : [...prev, year]))

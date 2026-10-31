@@ -362,14 +362,14 @@ export default function AppLayout() {
             </Button>
           </div>
           <div className="h-full overflow-y-auto">
-            <div className="px-4 pb-4">{isDesktop && <Outlet />}</div>
+            <div className="flex min-h-full flex-col px-4 pb-4">{isDesktop && <Outlet />}</div>
           </div>
         </div>
       </div>
       {/* For mobile screens */}
       <div className="bg-background flex h-full w-full flex-col justify-between sm:hidden">
         <div className="h-full overflow-y-auto">
-          <div className="px-4 py-2 pb-4">{!isDesktop && <Outlet />}</div>
+          <div className="flex min-h-full flex-col px-4 py-2 pb-4">{!isDesktop && <Outlet />}</div>
         </div>
         <div className="bg-sidebar border-muted flex flex-row justify-between gap-2 border-t px-6 pt-2 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))]">
           {navigationItems.map((item) => {

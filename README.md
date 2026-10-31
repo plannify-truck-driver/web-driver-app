@@ -4,8 +4,9 @@ This repository contains the web application for drivers. It is built using Reac
 
 ## Prerequisites
 
-- Node.js (version 14 or higher)
-- pnpm or npm
+- [mise](https://mise.jdx.dev/getting-started.html)
+
+Node.js and pnpm versions are pinned in `mise.toml` to match the Docker image (`Dockerfile`). When upgrading one of them, update both files.
 
 ## Installation
 
@@ -16,13 +17,20 @@ git clone git@github.com:plannify-truck-driver/web-driver-app.git
 cd web-driver-app
 ```
 
-2. Install dependencies:
+2. Install the pinned Node.js and pnpm versions:
+
+```bash
+mise trust
+mise install
+```
+
+3. Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-3. Start the development server:
+4. Start the development server:
 
 ```bash
 pnpm run dev

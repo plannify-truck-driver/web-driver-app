@@ -85,7 +85,7 @@ export default function PageWorkdayGarbage({
           ))}
         </div>
       ) : garbageWorkdays.length === 0 ? (
-        <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+        <div className="flex h-full flex-1 flex-col items-center justify-center gap-4 text-center">
           <div className="bg-muted flex size-14 shrink-0 items-center justify-center rounded-full">
             <Trash2Icon className="text-muted-foreground size-6" />
           </div>

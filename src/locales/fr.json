@@ -64,7 +64,13 @@
         "contact-support-button": "Contacter le support",
         "email-subject": "Problème de vérification de compte",
         "email-body": "Bonjour,\n\nJe rencontre un problème pour vérifier mon compte. Pourriez-vous m'aider à résoudre ce problème ?\n\nMerci d'avance pour votre aide.",
-        "logout-button": "Se déconnecter"
+        "logout-button": "Se déconnecter",
+        "resend-button": "Renvoyer le mail",
+        "resend-success": "Un nouveau mail de vérification vous a été envoyé.",
+        "resend-already-verified": "Votre compte est déjà vérifié.",
+        "resend-token-already-exists": "Un lien de vérification valide vous a déjà été envoyé. Vérifiez vos mails (et vos spams) ou réessayez plus tard.",
+        "resend-mail-preference-disabled": "L'envoi des mails de vérification est désactivé pour votre compte. Veuillez contacter le support.",
+        "resend-session-expired": "Votre session a expiré. Veuillez vous reconnecter."
       },
       "token-reset-password": {
         "page-title": "Réinitialisation du mot de passe",
@@ -195,6 +201,9 @@
       "page-title": "Documents",
       "page-description": "Relevés de vos heures mensuelles.",
       "generation-error": "Votre document ne peut pas être récupéré pour le moment. Veuillez réessayer plus tard.",
+      "no-documents-title": "Aucun document disponible",
+      "no-documents-description": " Ceux-ci apparassent automatiquement dès qu'une journée est ajoutée.",
+      "add-workday": "Ajouter une journée",
       "generated-banner-title": "Certains relevés ont été générés définitivement",
       "generated-banner-description": "Les relevés marqués <badge></badge> sont figés et leurs journées ne peuvent plus être modifiées. Ce processus se déclenche automatiquement à partir de {{months}} mois.",
       "generated-banner-dismiss": "Masquer",
@@ -544,10 +553,7 @@
     },
     "workday-document-group": {
       "number-of-documents_one": "{{count}} document",
-      "number-of-documents_other": "{{count}} documents",
-      "no-documents-title": "Aucun document disponible",
-      "no-documents-description": " Ceux-ci apparassent automatiquement dès qu'une journée est ajoutée.",
-      "add-workday": "Ajouter une journée"
+      "number-of-documents_other": "{{count}} documents"
     },
     "pdf-preview": {
       "title": "Prévisualisation du document",
