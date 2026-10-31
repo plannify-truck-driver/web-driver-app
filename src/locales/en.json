@@ -64,7 +64,13 @@
         "contact-support-button": "Contact support",
         "email-subject": "Account verification issue",
         "email-body": "Hello,\n\nI'm having trouble verifying my account. Could you help me resolve this issue?\n\nThank you in advance for your assistance.",
-        "logout-button": "Log out"
+        "logout-button": "Log out",
+        "resend-button": "Resend email",
+        "resend-success": "A new verification email has been sent to you.",
+        "resend-already-verified": "Your account is already verified.",
+        "resend-token-already-exists": "A valid verification link has already been sent to you. Check your inbox (and spam folder) or try again later.",
+        "resend-mail-preference-disabled": "Verification emails are disabled for your account. Please contact support.",
+        "resend-session-expired": "Your session has expired. Please log in again."
       },
       "token-reset-password": {
         "page-title": "Reset password",

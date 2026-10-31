@@ -64,7 +64,13 @@
         "contact-support-button": "Contacter le support",
         "email-subject": "Problème de vérification de compte",
         "email-body": "Bonjour,\n\nJe rencontre un problème pour vérifier mon compte. Pourriez-vous m'aider à résoudre ce problème ?\n\nMerci d'avance pour votre aide.",
-        "logout-button": "Se déconnecter"
+        "logout-button": "Se déconnecter",
+        "resend-button": "Renvoyer le mail",
+        "resend-success": "Un nouveau mail de vérification vous a été envoyé.",
+        "resend-already-verified": "Votre compte est déjà vérifié.",
+        "resend-token-already-exists": "Un lien de vérification valide vous a déjà été envoyé. Vérifiez vos mails (et vos spams) ou réessayez plus tard.",
+        "resend-mail-preference-disabled": "L'envoi des mails de vérification est désactivé pour votre compte. Veuillez contacter le support.",
+        "resend-session-expired": "Votre session a expiré. Veuillez vous reconnecter."
       },
       "token-reset-password": {
         "page-title": "Réinitialisation du mot de passe",

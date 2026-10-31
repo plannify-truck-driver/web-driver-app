@@ -43,9 +43,7 @@ export default function PageResetPassword({
   if (success) {
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-sm">
-          {t("pages.authentication.token-reset-password.success-message")}
-        </p>
+        <p className="text-sm">{t("pages.authentication.token-reset-password.success-message")}</p>
         <Button
           className="mx-auto w-full max-w-sm"
           onClick={() => navigate({ to: "/authentication/login" })}

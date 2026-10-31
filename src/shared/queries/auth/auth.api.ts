@@ -24,6 +24,10 @@ export const verifyAccount = (body: VerifyAccountRequest): Promise<VerifyAccount
   return api.post("authentication/token/verify-account", { json: body }).json()
 }
 
+export const resendVerifyAccount = (): Promise<void> => {
+  return api.post("authentication/token/verify-account/resend").then(() => undefined)
+}
+
 export const refreshToken = (): Promise<RefreshTokenResponse> => {
   return api.get("authentication/refresh").json()
 }

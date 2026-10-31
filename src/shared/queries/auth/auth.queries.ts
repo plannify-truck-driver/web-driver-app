@@ -6,6 +6,7 @@ import {
   login,
   refreshToken,
   registration,
+  resendVerifyAccount,
   resetPassword,
   verifyAccount,
 } from "./auth.api"
@@ -38,6 +39,9 @@ export const useVerifyAccountMutation = (
     Parameters<typeof verifyAccount>[0]
   >
 ) => useMutation({ mutationFn: verifyAccount, ...options })
+
+export const useResendVerifyAccountMutation = (options?: UseMutationOptions<void, Error, void>) =>
+  useMutation({ mutationFn: resendVerifyAccount, ...options })
 
 export const useRefreshToken = () =>
   useQuery({
