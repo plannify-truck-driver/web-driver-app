@@ -1,4 +1,5 @@
 import { useAuth } from "@/app/providers/useAuth"
+import { cn } from "@/lib/utils"
 import { Button } from "@/shared/components/ui/Button"
 import { useConfig } from "@/shared/queries/config/config.queries"
 import { useTranslation } from "react-i18next"
