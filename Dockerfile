@@ -49,13 +49,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-USER root
-RUN chmod +x /docker-entrypoint.sh
-USER nginx
-
 EXPOSE 80
 
-ENV NGINX_PORT=80
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
