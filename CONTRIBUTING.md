@@ -6,8 +6,7 @@ Thank you for your interest in contributing to the Driver Web App! This document
 
 Before contributing, make sure you have the following installed:
 
-- Node.js (version 14 or higher)
-- pnpm or npm
+- [mise](https://mise.jdx.dev/getting-started.html) (installs the Node.js and pnpm versions pinned in `mise.toml`)
 - Git
 
 ## Steps to Contribute
