@@ -20,6 +20,8 @@ USER reactuser
 COPY --chown=reactuser:nodejs package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --ignore-scripts
 
+RUN pnpm sbom --sbom-format cyclonedx --prod --out /app/web-app.cdx.json
+
 FROM base AS builder
 
 ARG VITE_ENV=development
@@ -41,13 +43,15 @@ RUN pnpm run build
 
 FROM nginx/nginx-unprivileged:1.31.8-alpine3.24 AS production
 
-# USER root
-# RUN apk upgrade --no-cache util-linux libuuid libexpat pcre2
+USER root
+RUN apk upgrade --no-cache
 USER nginx
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=deps /app/web-app.cdx.json /opt/sbom/web-app.cdx.json
 
 EXPOSE 80
 

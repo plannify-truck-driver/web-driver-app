@@ -36,7 +36,7 @@ function RootComponent() {
     ) {
       navigate({ to: "/authentication/verify-account" })
     }
-  }, [accessToken, driver, location.pathname, navigate])
+  }, [accessToken, driver, location.pathname, location.href, navigate])
 
   const showDevBanner = import.meta.env.VITE_ENV === "development" && isDevBannerVisible
 
