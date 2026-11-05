@@ -16,6 +16,9 @@ export default function PageLoginFeature() {
   const { accessToken, hadSession, login, refreshToken } = useAuth()
   const navigate = useNavigate()
   const { redirect } = useSearch({ from: "/authentication/login" })
+  // Same-origin paths only (avoids open redirect via "//evil.com").
+  const redirectHref =
+    redirect?.startsWith("/") && !redirect.startsWith("//") ? redirect : "/dashboard"
   const hasAttemptedRefresh = useRef(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [checkingSession, setCheckingSession] = useState(!accessToken && hadSession)
@@ -25,7 +28,7 @@ export default function PageLoginFeature() {
   const { mutateAsync, isPending } = useLoginMutation({
     onSuccess: (data) => {
       login(data.access_token)
-      navigate({ to: redirect || "/dashboard", replace: true })
+      navigate({ href: redirectHref, replace: true })
     },
     onError: async (error) => {
       const apiError = await handleErrorResponse(error)
@@ -64,13 +67,13 @@ export default function PageLoginFeature() {
       hasAttemptedRefresh.current = true
       refreshToken().then((response) => {
         if (response) {
-          navigate({ to: redirect || "/dashboard", replace: true })
+          navigate({ href: redirectHref, replace: true })
           return
         }
         setCheckingSession(false)
       })
     }
-  }, [accessToken, refreshToken, navigate, redirect])
+  }, [accessToken, refreshToken, navigate, redirectHref])
 
   return (
     <PageLogin

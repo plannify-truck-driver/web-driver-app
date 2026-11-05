@@ -13,6 +13,16 @@
   }
 }
 
+@keyframes highlight-pulse {
+  0%,
+  100% {
+    background-color: color-mix(in oklab, var(--color-amber-500) 10%, transparent);
+  }
+  50% {
+    background-color: color-mix(in oklab, var(--color-amber-500) 25%, transparent);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
@@ -28,6 +38,7 @@
 }
 
 @theme inline {
+  --animate-highlight-pulse: highlight-pulse 1.2s ease-in-out 3;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

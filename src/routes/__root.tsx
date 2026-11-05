@@ -20,7 +20,7 @@ function RootComponent() {
 
   useEffect(() => {
     if (!location.pathname.startsWith("/authentication") && (!accessToken || !driver)) {
-      navigate({ to: "/authentication/login", search: { redirect: location.pathname } })
+      navigate({ to: "/authentication/login", search: { redirect: location.href } })
       return
     }
 
@@ -36,7 +36,7 @@ function RootComponent() {
     ) {
       navigate({ to: "/authentication/verify-account" })
     }
-  }, [accessToken, driver, location.pathname, navigate])
+  }, [accessToken, driver, location.pathname, location.href, navigate])
 
   const showDevBanner = import.meta.env.VITE_ENV === "development" && isDevBannerVisible
 

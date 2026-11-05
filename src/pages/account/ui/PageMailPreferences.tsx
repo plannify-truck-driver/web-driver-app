@@ -1,4 +1,5 @@
 import { ArrowLeftIcon, CircleQuestionMarkIcon, SettingsIcon } from "lucide-react"
+import { useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
 import { Switch } from "@/shared/components/ui/Switch"
@@ -8,6 +9,7 @@ import { MailTypeStatusBadge } from "@/shared/components/MailTypeStatusBadge"
 interface PageMailPreferencesProps {
   preferences: MailPreference[]
   isLoading: boolean
+  highlightLabel?: string
   togglingTypeId: number | null
   onTogglePreference: (typeId: number, isEnabled: boolean) => void
   onBack: () => void
@@ -16,11 +18,19 @@ interface PageMailPreferencesProps {
 export default function PageMailPreferences({
   preferences,
   isLoading,
+  highlightLabel,
   togglingTypeId,
   onTogglePreference,
   onBack,
 }: PageMailPreferencesProps) {
   const { t } = useTranslation()
+  const highlightedRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    highlightedRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+    highlightedRef.current?.focus({ preventScroll: true })
+  }, [highlightLabel, isLoading])
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
@@ -65,8 +75,14 @@ export default function PageMailPreferences({
             </div>
           ) : (
             preferences.map((preference) => {
+              const isHighlighted = preference.label === highlightLabel
               return (
-                <div key={preference.mail_type_id} className="flex items-center gap-3 px-4 py-3.5">
+                <div
+                  key={preference.mail_type_id}
+                  ref={isHighlighted ? highlightedRef : undefined}
+                  tabIndex={isHighlighted ? -1 : undefined}
+                  className={`flex items-center gap-3 px-4 py-3.5 transition-colors ${isHighlighted ? "motion-safe:animate-highlight-pulse bg-amber-500/10 ring-2 ring-amber-500/30 outline-none ring-inset first:rounded-t-lg last:rounded-b-lg focus:ring-amber-500/60" : ""}`}
+                >
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium">
                       {t(`pages.account.mails.types.${preference.label}`, {
