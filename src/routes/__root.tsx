@@ -20,7 +20,7 @@ function RootComponent() {
 
   useEffect(() => {
     if (!location.pathname.startsWith("/authentication") && (!accessToken || !driver)) {
-      navigate({ to: "/authentication/login", search: { redirect: location.pathname } })
+      navigate({ to: "/authentication/login", search: { redirect: location.href } })
       return
     }
 

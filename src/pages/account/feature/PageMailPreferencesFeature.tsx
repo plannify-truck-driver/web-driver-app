@@ -1,6 +1,6 @@
 import { useDocumentTitle } from "@/hooks/use-document-title"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "@tanstack/react-router"
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import {
   useGetMailPreferences,
   useUpdateMailPreference,
@@ -12,6 +12,7 @@ import { handleErrorResponse } from "@/shared/lib/error-response"
 export default function PageMailPreferencesFeature() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { label: highlightLabel } = useSearch({ from: "/account/mails/preferences" })
 
   useDocumentTitle(t("pages.account.mail-preferences.page-title"))
 
@@ -39,6 +40,7 @@ export default function PageMailPreferencesFeature() {
     <PageMailPreferences
       preferences={preferences}
       isLoading={isLoadingPreferences}
+      highlightLabel={highlightLabel}
       togglingTypeId={isToggling ? (togglingVariables?.mailTypeId ?? null) : null}
       onTogglePreference={handleTogglePreference}
       onBack={() => navigate({ to: "/account/mails" })}
