@@ -25,7 +25,7 @@ export const useGetWorkdayDocuments = () =>
 
 // Upcoming generations are only announced during the last 7 days of the current month
 export const useGetUpcomingWorkdayDocuments = () => {
-  const now = new Date("2026-10-30T12:00:00Z")
+  const now = new Date()
   const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
   const isEndOfMonth = lastDayOfMonth - now.getDate() < 7
 
