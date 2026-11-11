@@ -18,6 +18,7 @@ import type {
   DeleteWorkdayRequest,
   GetWorkdayByDateRequest,
   GetWorkdayByMonthRequest,
+  GetWorkdayGarbageRequest,
   GetWorkdaysByPeriodRequest,
   RestoreWorkdayRequest,
   UpdateWorkdayRequest,
@@ -137,10 +138,10 @@ export const useGetWorkdayCreationLimit = () =>
     queryFn: () => getWorkdayCreationLimit(),
   })
 
-export const useGetWorkdayGarbage = () =>
+export const useGetWorkdayGarbage = (request: GetWorkdayGarbageRequest) =>
   useQuery({
-    queryKey: [...workdaysKeys.all, "garbage"] as const,
-    queryFn: () => getWorkdayGarbage(),
+    queryKey: [...workdaysKeys.all, "garbage", request.page, request.limit] as const,
+    queryFn: () => getWorkdayGarbage(request),
   })
 
 export const useRestoreWorkday = (options?: {

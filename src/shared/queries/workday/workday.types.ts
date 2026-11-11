@@ -1,4 +1,4 @@
-import type { Workday } from "@/shared/models/workday"
+import type { Workday, WorkdayGarbage } from "@/shared/models/workday"
 
 export interface GetWorkdaysByPeriodRequest {
   from: string
@@ -43,4 +43,15 @@ export interface RestoreWorkdayRequest {
 export interface GetWorkdayCreationLimitResponse {
   limit: number
   remaining: number
+}
+
+export interface GetWorkdayGarbageRequest {
+  page: number
+  limit: number
+}
+
+export interface GetWorkdayGarbageResponse {
+  data: WorkdayGarbage[]
+  page: number
+  total: number
 }

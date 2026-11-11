@@ -12,6 +12,8 @@ import { toast } from "sonner"
 import { handleErrorResponse } from "@/shared/lib/error-response"
 import PageWorkdayGarbage from "../ui/PageWorkdayGarbage"
 
+const LIMIT = 10
+
 export default function PageWorkdayGarbageFeature() {
   const { t } = useTranslation()
 
@@ -19,7 +21,12 @@ export default function PageWorkdayGarbageFeature() {
 
   const [documentGeneratedErrorDate, setDocumentGeneratedErrorDate] = useState<string | null>(null)
 
-  const { data: garbageWorkdays, isLoading } = useGetWorkdayGarbage()
+  const [page, setPage] = useState(1)
+  const { data, isLoading } = useGetWorkdayGarbage({ page, limit: LIMIT })
+  const totalPages = data ? Math.max(1, Math.ceil(data.total / LIMIT)) : 1
+
+  // Restoring the last item of the last page empties it: fall back to the new last page.
+  if (data && page > totalPages) setPage(totalPages)
 
   const { mutate: restoreWorkday, isPending: isRestoring } = useRestoreWorkday({
     onSuccess: () => {
@@ -52,8 +59,11 @@ export default function PageWorkdayGarbageFeature() {
 
   return (
     <PageWorkdayGarbage
-      garbageWorkdays={garbageWorkdays ?? []}
+      garbageWorkdays={data?.data ?? []}
       isLoading={isLoading}
+      page={page}
+      totalPages={totalPages}
+      onPageChange={setPage}
       isRestoring={isRestoring}
       onRestore={onRestore}
       documentGeneratedErrorDate={documentGeneratedErrorDate}
