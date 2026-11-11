@@ -306,7 +306,10 @@ export default function PageRegistration({
               </Button>
             )}
             {step < 4 ? (
+              // Distinct keys: otherwise React reuses the DOM node and flips type to "submit"
+              // mid-click (3 → 4), submitting the form and flagging empty password fields.
               <Button
+                key="next"
                 type="button"
                 className={cn(step === 1 ? "w-full" : "flex-1")}
                 onClick={onNextStep}
@@ -315,6 +318,7 @@ export default function PageRegistration({
               </Button>
             ) : (
               <Button
+                key="submit"
                 type="submit"
                 form="form-registration-mobile"
                 isLoading={loading}

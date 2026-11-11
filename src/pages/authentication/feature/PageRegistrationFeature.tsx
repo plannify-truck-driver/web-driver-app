@@ -98,6 +98,7 @@ export default function PageRegistrationFeature() {
     }
     setStep((s) => (s + 1) as 1 | 2 | 3 | 4 | 5)
     form.clearErrors()
+    setErrorMessage(null)
   }
 
   function onPrevStep() {
