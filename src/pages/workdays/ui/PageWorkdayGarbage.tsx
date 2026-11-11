@@ -1,5 +1,13 @@
 import { useTranslation } from "react-i18next"
-import { Trash2Icon, RotateCcwIcon, LockIcon, X, ArrowLeftIcon } from "lucide-react"
+import {
+  Trash2Icon,
+  RotateCcwIcon,
+  LockIcon,
+  X,
+  ArrowLeftIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "lucide-react"
 import { useConfig } from "@/shared/queries/config/config.queries"
 import { Button } from "@/shared/components/ui/Button"
 import { Skeleton } from "@/shared/components/ui/Skeleton"
@@ -9,6 +17,9 @@ import { cn } from "@/lib/utils"
 interface PageWorkdayGarbageProps {
   garbageWorkdays: WorkdayGarbage[]
   isLoading: boolean
+  page: number
+  totalPages: number
+  onPageChange: (page: number) => void
   isRestoring: boolean
   onRestore: (date: string) => void
   documentGeneratedErrorDate: string | null
@@ -25,6 +36,9 @@ function getDaysRemaining(scheduledDeletionDate: string): number {
 export default function PageWorkdayGarbage({
   garbageWorkdays,
   isLoading,
+  page,
+  totalPages,
+  onPageChange,
   isRestoring,
   onRestore,
   documentGeneratedErrorDate,
@@ -228,6 +242,32 @@ export default function PageWorkdayGarbage({
               </tbody>
             </table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onPageChange(page - 1)}
+                disabled={page <= 1 || isLoading}
+              >
+                <ChevronLeftIcon className="size-4" />
+                {t("common.pagination.previous")}
+              </Button>
+              <span className="text-muted-foreground text-sm">
+                {t("common.pagination.page", { page, total: totalPages })}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onPageChange(page + 1)}
+                disabled={page >= totalPages || isLoading}
+              >
+                {t("common.pagination.next")}
+                <ChevronRightIcon className="size-4" />
+              </Button>
+            </div>
+          )}
         </>
       )}
     </div>
