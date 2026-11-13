@@ -195,7 +195,7 @@ export default function AppLayout() {
                         >
                           <Link to={item.link}>
                             <div className="relative">
-                              <item.icon size={20} />
+                              <item.icon size={18} />
                               {item.link === "/account" && hasAccountAlert && (
                                 <span
                                   className={cn(
