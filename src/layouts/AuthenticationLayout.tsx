@@ -7,7 +7,9 @@ export default function AuthenticationLayout() {
   const [showSettings, setShowSettings] = useState(false)
 
   return (
-    <div className="bg-gradient-auth flex h-full flex-col items-center justify-center">
+    // relative + flex-1 (not h-full): fill only the space left under the dev banner and anchor
+    // the absolute background pattern / settings to this layout instead of the viewport
+    <div className="bg-gradient-auth relative flex min-h-0 flex-1 flex-col items-center justify-center">
       <svg width="100%" height="100%" className="absolute top-0 left-0 z-0 hidden sm:block">
         <defs>
           <pattern id="smallSquares" width="20" height="20" patternUnits="userSpaceOnUse">
