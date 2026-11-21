@@ -16,7 +16,6 @@ import { WorkdayFormFields, type WorkdayFieldValues } from "./WorkdayFormFields"
 
 export interface AddWorkdayFormLoadings {
   isSubmitting: boolean
-  isUpdatingWorkday: boolean
   isGetRestPeriodsLoading: boolean
 }
 
@@ -26,8 +25,7 @@ interface AddWorkdayFormProps {
   loadings: AddWorkdayFormLoadings
   errorCode: string | null
   onSubmit: (values: z.infer<typeof addWorkdayFormSchema>) => void
-  onReplaceExistingWorkday: () => void
-  onRestoreGarbageWorkday: () => void
+  onForceCreateWorkday: () => void
   undoErrorCode: () => void
 }
 
@@ -37,8 +35,7 @@ export function AddWorkdayForm({
   loadings,
   errorCode,
   onSubmit,
-  onReplaceExistingWorkday,
-  onRestoreGarbageWorkday,
+  onForceCreateWorkday,
   undoErrorCode,
 }: AddWorkdayFormProps) {
   const { t, i18n } = useTranslation()
@@ -81,7 +78,6 @@ export function AddWorkdayForm({
                         )}
                         disabled={
                           loadings.isSubmitting ||
-                          loadings.isUpdatingWorkday ||
                           [
                             "WORKDAY_ALREADY_EXISTS",
                             "WORKDAY_GARBAGE_ALREADY_EXISTS",
@@ -113,7 +109,6 @@ export function AddWorkdayForm({
                     className="flex h-14 w-12 shrink-0 cursor-pointer items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={
                       loadings.isSubmitting ||
-                      loadings.isUpdatingWorkday ||
                       [
                         "WORKDAY_ALREADY_EXISTS",
                         "WORKDAY_GARBAGE_ALREADY_EXISTS",
@@ -175,30 +170,21 @@ export function AddWorkdayForm({
         )}
       </FieldGroup>
       {errorCode ? (
-        errorCode === "WORKDAY_ALREADY_EXISTS" ? (
+        errorCode === "WORKDAY_ALREADY_EXISTS" || errorCode === "WORKDAY_GARBAGE_ALREADY_EXISTS" ? (
           <div className="flex flex-row items-center justify-center gap-4">
-            <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
-              {t("forms.add-workday.no")}
-            </Button>
             <Button
-              variant="default"
+              variant="outline"
               className="flex-1 py-5"
-              onClick={onReplaceExistingWorkday}
-              isLoading={loadings.isUpdatingWorkday}
+              onClick={undoErrorCode}
+              disabled={loadings.isSubmitting}
             >
-              {t("forms.add-workday.yes")}
-            </Button>
-          </div>
-        ) : errorCode === "WORKDAY_GARBAGE_ALREADY_EXISTS" ? (
-          <div className="flex flex-row items-center justify-center gap-4">
-            <Button variant="outline" className="flex-1 py-5" onClick={undoErrorCode}>
               {t("forms.add-workday.no")}
             </Button>
             <Button
               variant="default"
               className="flex-1 py-5"
-              onClick={onRestoreGarbageWorkday}
-              isLoading={loadings.isUpdatingWorkday}
+              onClick={onForceCreateWorkday}
+              isLoading={loadings.isSubmitting}
             >
               {t("forms.add-workday.yes")}
             </Button>

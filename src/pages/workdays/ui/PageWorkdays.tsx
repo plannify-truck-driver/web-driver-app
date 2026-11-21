@@ -41,8 +41,7 @@ interface PageWorkdaysProps {
   setIsAddWorkdayOpen: (open: boolean) => void
   setIsImportingWorkdaysFromFileOpen: (open: boolean) => void
   onSubmitAddWorkdayForm: (values: z.infer<typeof addWorkdayFormSchema>) => void
-  onReplaceExistingWorkday: () => void
-  onRestoreGarbageWorkday: () => void
+  onForceCreateWorkday: () => void
   undoAddWorkdayFormErrorCode: () => void
   isMonthDocumentGenerated: boolean
   creationLimit: GetWorkdayCreationLimitResponse | undefined
@@ -65,8 +64,7 @@ export default function PageWorkdays({
   setIsAddWorkdayOpen,
   // setIsImportingWorkdaysFromFileOpen,
   onSubmitAddWorkdayForm,
-  onReplaceExistingWorkday,
-  onRestoreGarbageWorkday,
+  onForceCreateWorkday,
   undoAddWorkdayFormErrorCode,
   isMonthDocumentGenerated,
   creationLimit,
@@ -326,7 +324,6 @@ export default function PageWorkdays({
         restPeriods={restPeriods}
         loadings={{
           isSubmitting: loadings.isCreatingWorkday,
-          isUpdatingWorkday: loadings.isUpdatingWorkday || loadings.isRestoringWorkday,
           isGetRestPeriodsLoading: loadings.isGetRestPeriodsLoading,
         }}
         creationLimit={
@@ -339,8 +336,7 @@ export default function PageWorkdays({
         }
         onSubmit={onSubmitAddWorkdayForm}
         errorCode={addWorkdayFormErrorCode}
-        onReplaceExistingWorkday={onReplaceExistingWorkday}
-        onRestoreGarbageWorkday={onRestoreGarbageWorkday}
+        onForceCreateWorkday={onForceCreateWorkday}
         undoErrorCode={undoAddWorkdayFormErrorCode}
       />
     </div>

@@ -115,11 +115,12 @@
       "full-time-format": "{{hours}}h {{minutes}}min",
       "minutes-time-format": "{{minutes}}min",
       "hour-time-format": "{{hours}}h",
+      "load-error-title": "Unable to load your workdays",
+      "load-error-description": "Check your internet connection and try again.",
       "workday-creation-error": "An error occurred while creating your workday. Please try again later.",
       "workday-creation-limit-reached": "You've reached your workday creation quota. Please wait a while before trying again.",
       "workday-update-error": "An error occurred while updating your workday. Please try again later.",
       "workday-deletion-error": "An error occurred while deleting your workday. Please try again later.",
-      "workday-restoration-error": "An error occurred while restoring your workday. Please try again later.",
       "workday-document-already-generated": "Your monthly statement for this period has already been permanently generated. Workdays for this period can no longer be modified.",
       "workday-not-found-error": "No workday found for today.",
       "rest-periods-loading": "Rest periods are still loading, please wait a moment.",
@@ -150,8 +151,7 @@
         "import-from-file": "Import workdays from file"
       },
       "success": {
-        "workday-created": "Your workday has been created successfully!",
-        "workday-updated": "Your workday has been updated successfully!"
+        "workday-created": "Your workday has been created successfully!"
       },
       "detail": {
         "page-title": "Workday details",
@@ -815,6 +815,8 @@
     }
   },
   "common": {
+    "load-error": "Some data could not be loaded. Check your internet connection and try again.",
+    "retry": "Try again",
     "back": "Back",
     "next": "Next",
     "continue": "Continue",

@@ -5,7 +5,6 @@ import {
   useGetWorkdayCreationLimit,
   useGetWorkdaysByMonth,
   useGetWorkdaysByPeriod,
-  useRestoreWorkday,
   useUpdateWorkday,
   WorkdayActionForbiddenError,
   workdaysKeys,
@@ -87,6 +86,8 @@ export default function PageDashboardIndexFeature() {
     data: periodWorkdays,
     isLoading: isPeriodWorkdaysLoading,
     error,
+    refetch: refetchPeriodWorkdays,
+    isFetching: isRetryingPeriodWorkdays,
   } = useGetWorkdaysByPeriod({
     from: period.from.toISOString().split("T")[0],
     to: period.to.toISOString().split("T")[0],
@@ -164,14 +165,15 @@ export default function PageDashboardIndexFeature() {
         refetchType: "all",
       })
     },
-    onError: (error: Error) => {
+    onError: (error: Error, variables) => {
       if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
-        if (
-          apiError?.error_code === "WORKDAY_ALREADY_EXISTS" ||
-          apiError?.error_code === "WORKDAY_GARBAGE_ALREADY_EXISTS"
-        ) {
-          restoreWorkdayAsync({ date: todayLocalDate })
+        if (apiError?.error_code === "WORKDAY_GARBAGE_ALREADY_EXISTS" && !variables.force) {
+          // Today's workday was deleted: start a fresh one over it
+          createWorkdayAsync({ ...variables, force: true })
+        } else if (apiError?.error_code === "WORKDAY_ALREADY_EXISTS") {
+          // Stale cache (e.g. started from another device): show the existing workday, never overwrite it
+          queryClient.invalidateQueries({ queryKey: workdaysKeys.all, exact: false })
         } else if (apiError?.error_code === "WORKDAY_DOCUMENT_ALREADY_GENERATED") {
           setIsDocumentAlreadyGenerated(true)
         } else if (apiError?.error_code === "WORKDAY_CREATION_LIMIT_REACHED") {
@@ -231,30 +233,6 @@ export default function PageDashboardIndexFeature() {
       })
     },
   })
-  const { mutateAsync: restoreWorkdayAsync, isPending: isRestoringWorkday } = useRestoreWorkday({
-    onSuccess: () => {
-      console.warn("Workday already exists for today, restoring it from garbage...")
-      const now = new Date()
-      updateWorkdayAsync({
-        date: todayLocalDate,
-        start_time: buildTimeString(now),
-        end_time: null,
-        rest_time: "00:00:00",
-        overnight_rest: false,
-      })
-      queryClient.invalidateQueries({
-        queryKey: workdayDocumentsKeys.all,
-        exact: false,
-        refetchType: "all",
-      })
-    },
-    onError: (error: Error) => {
-      if (error instanceof WorkdayActionForbiddenError) return
-      console.error("Failed to restore workday:", error)
-      toast.error(t("pages.dashboard.workday-restoration-error"))
-    },
-  })
-
   const onPreviousPeriod = () => {
     setHasUserNavigatedPeriod(true)
     const newFrom = new Date(period.from)
@@ -417,10 +395,12 @@ export default function PageDashboardIndexFeature() {
         !isLoadingRestPeriods && !(restPeriods && restPeriods.length > 0) && isBannerVisible
       }
       onDismissRestPeriodSuggestion={onDismissBanner}
-      isCreatingWorkday={isCreatingWorkday || isUpdatingWorkday || isRestoringWorkday}
+      isCreatingWorkday={isCreatingWorkday || isUpdatingWorkday}
       isUpdatingWorkday={isUpdatingWorkday}
       isDeletingWorkday={isDeletingWorkday}
       error={error}
+      onRetry={() => refetchPeriodWorkdays()}
+      isRetrying={isRetryingPeriodWorkdays}
       totalWorkingTime={totalWorkingTime}
       onNextPeriod={onNextPeriod}
       onPreviousPeriod={onPreviousPeriod}

@@ -3,9 +3,8 @@ import { useCallback, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useDeleteRefreshTokenMutation, useRefreshToken } from "@/shared/queries/auth/auth.queries"
 import { handleErrorResponse } from "@/shared/lib/error-response"
-import { setApiAccessToken } from "@/shared/lib/api"
+import { setApiAccessToken, setApiRefreshHandler } from "@/shared/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
-import { setRefreshTokenHandler } from "@/lib/queryClient"
 import { AuthProviderContext } from "./AuthProviderContext"
 import type { AuthProviderState } from "./AuthProviderContext"
 
@@ -60,7 +59,8 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
   }
 
   const refreshToken = useCallback(async () => {
-    return refetch().then(async (res) => {
+    // cancelRefetch: false -> concurrent callers share the in-flight refresh instead of firing several
+    return refetch({ cancelRefetch: false }).then(async (res) => {
       if (res.data) {
         login(res.data.access_token)
         return true
@@ -76,7 +76,7 @@ export function AuthProvider({ children, ...props }: { children: React.ReactNode
   }, [refetch, login, clearSession])
 
   useEffect(() => {
-    setRefreshTokenHandler(refreshToken)
+    setApiRefreshHandler(refreshToken)
   }, [refreshToken])
 
   useEffect(() => {

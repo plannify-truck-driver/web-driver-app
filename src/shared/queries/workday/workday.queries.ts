@@ -71,7 +71,7 @@ export const useGetWorkdaysByPeriod = (request: GetWorkdaysByPeriodRequest) =>
   useQuery({
     queryKey: workdaysKeys.getWorkdaysByPeriod(request),
     queryFn: () => getWorkdaysByPeriod(request),
-    enabled: true,
+    meta: { inlineError: true }, // the dashboard renders its own error state with a retry button
   })
 
 export const useGetWorkdaysByMonth = (request: GetWorkdayByMonthRequest) =>
@@ -87,15 +87,17 @@ export const useGetWorkdayByDate = (request: GetWorkdayByDateRequest & { enabled
     enabled: request.enabled ?? true,
   })
 
+export type CreateWorkdayVariables = CreateWorkdayRequest & { force?: boolean }
+
 export const useCreateWorkday = (options?: {
   onSuccess?: (data: Workday) => void
-  onError?: (error: Error) => void
+  onError?: (error: Error, variables: CreateWorkdayVariables) => void
 }) => {
   const assertWorkdayActionAllowed = useAssertWorkdayActionAllowed()
   return useMutation({
-    mutationFn: (body: CreateWorkdayRequest) => {
+    mutationFn: ({ force, ...body }: CreateWorkdayVariables) => {
       assertWorkdayActionAllowed()
-      return createWorkday(body)
+      return createWorkday(body, force)
     },
     onSuccess: options?.onSuccess,
     onError: options?.onError,
