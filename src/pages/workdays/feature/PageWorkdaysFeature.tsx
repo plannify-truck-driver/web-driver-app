@@ -6,8 +6,6 @@ import {
   useCreateWorkday,
   useGetWorkdayCreationLimit,
   useGetWorkdaysByMonth,
-  useRestoreWorkday,
-  useUpdateWorkday,
   WorkdayActionForbiddenError,
   workdaysKeys,
 } from "@/shared/queries/workday/workday.queries"
@@ -29,8 +27,6 @@ import {
 export interface PageWorkdaysFeatureLoadings {
   isGetMonthWorkdaysLoading: boolean
   isCreatingWorkday: boolean
-  isUpdatingWorkday: boolean
-  isRestoringWorkday: boolean
   isGetRestPeriodsLoading: boolean
 }
 
@@ -64,7 +60,11 @@ export default function PageWorkdaysFeature() {
     )
   }, [yearDocumentsResult.data, selectedMonth])
 
-  const { mutateAsync: createWorkdayAsync, isPending: isCreatingWorkday } = useCreateWorkday({
+  const {
+    mutateAsync: createWorkdayAsync,
+    isPending: isCreatingWorkday,
+    variables: createWorkdayVariables,
+  } = useCreateWorkday({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: workdaysKeys.all,
@@ -83,30 +83,6 @@ export default function PageWorkdaysFeature() {
       if (error instanceof WorkdayActionForbiddenError) return
       handleErrorResponse(error).then((apiError) => {
         setAddWorkdayFormErrorCode(apiError?.error_code ?? null)
-      })
-    },
-  })
-  const { mutateAsync: restoreWorkdayAsync, isPending: isRestoringWorkday } = useRestoreWorkday({
-    onError: (error: Error) => {
-      if (error instanceof WorkdayActionForbiddenError) return
-      toast.error(t("pages.workdays.errors.workday-restore-error"))
-      console.error("Failed to restore workday:", error)
-    },
-  })
-  const { mutateAsync: updateWorkdayAsync, isPending: isUpdatingWorkday } = useUpdateWorkday({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: workdaysKeys.all,
-        exact: false,
-        refetchType: "all",
-      })
-      closeAddWorkdayDialog()
-      toast.success(t("pages.workdays.success.workday-updated"))
-    },
-    onError: (error: Error) => {
-      if (error instanceof WorkdayActionForbiddenError) return
-      handleErrorResponse(error).then(() => {
-        toast.error(t("pages.workdays.errors.workday-update-error"))
       })
     },
   })
@@ -152,43 +128,10 @@ export default function PageWorkdaysFeature() {
     }
   }, [isAddWorkdayOpen, addWorkdayForm])
 
-  async function onRestoreGarbageWorkday() {
-    const values = addWorkdayForm.getValues()
-    const date =
-      values.date.getFullYear() +
-      "-" +
-      (values.date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      values.date.getDate().toString().padStart(2, "0")
-    try {
-      await restoreWorkdayAsync({ date })
-      await updateWorkdayAsync({
-        date,
-        start_time: values.startTime,
-        end_time: (values.endTime?.trim() ?? "").length > 0 ? values.endTime!.trim() : null,
-        rest_time:
-          (values.restTime?.trim() ?? "").length > 0 ? values.restTime!.trim() : "00:00:00",
-        overnight_rest: values.overnight,
-      })
-    } catch (error) {
-      if (!(error instanceof WorkdayActionForbiddenError)) throw error
-    }
-  }
-
-  function onReplaceExistingWorkday() {
-    const values = addWorkdayForm.getValues()
-    updateWorkdayAsync({
-      date:
-        values.date.getFullYear() +
-        "-" +
-        (values.date.getMonth() + 1).toString().padStart(2, "0") +
-        "-" +
-        values.date.getDate().toString().padStart(2, "0"),
-      start_time: values.startTime,
-      end_time: (values.endTime?.trim() ?? "").length > 0 ? values.endTime!.trim() : null,
-      rest_time: (values.restTime?.trim() ?? "").length > 0 ? values.restTime!.trim() : "00:00:00",
-      overnight_rest: values.overnight,
-    })
+  // User confirmed the 409: resend the same creation, overwriting the existing (or deleted) workday.
+  // The form is locked while the confirmation is shown, so the last variables are still the form values.
+  function onForceCreateWorkday() {
+    if (createWorkdayVariables) createWorkdayAsync({ ...createWorkdayVariables, force: true })
   }
 
   const endTime = useWatch({ control: addWorkdayForm.control, name: "endTime" })
@@ -254,8 +197,6 @@ export default function PageWorkdaysFeature() {
       loadings={{
         isGetMonthWorkdaysLoading: isMonthWorkdaysLoading,
         isCreatingWorkday: isCreatingWorkday,
-        isUpdatingWorkday: isUpdatingWorkday,
-        isRestoringWorkday: isRestoringWorkday,
         isGetRestPeriodsLoading: isRestPeriodsLoading,
       }}
       isAddWorkdayOpen={isAddWorkdayOpen}
@@ -271,8 +212,7 @@ export default function PageWorkdaysFeature() {
       setIsImportingWorkdaysFromFileOpen={setIsImportingWorkdaysFromFileOpen}
       onSubmitAddWorkdayForm={onSubmitAddWorkdayForm}
       addWorkdayFormErrorCode={addWorkdayFormErrorCode}
-      onReplaceExistingWorkday={onReplaceExistingWorkday}
-      onRestoreGarbageWorkday={onRestoreGarbageWorkday}
+      onForceCreateWorkday={onForceCreateWorkday}
       undoAddWorkdayFormErrorCode={() => setAddWorkdayFormErrorCode(null)}
       isMonthDocumentGenerated={isMonthDocumentGenerated}
       creationLimit={creationLimit}

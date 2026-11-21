@@ -42,8 +42,9 @@ export const getWorkdayByDate = async (body: GetWorkdayByDateRequest): Promise<W
   }
 }
 
-export const createWorkday = (body: CreateWorkdayRequest): Promise<Workday> => {
-  return api.post("workdays", { json: body }).json()
+// force: overwrite an existing workday of the same date, restoring it from the garbage if needed
+export const createWorkday = (body: CreateWorkdayRequest, force = false): Promise<Workday> => {
+  return api.post("workdays", { json: body, ...(force && { searchParams: { force } }) }).json()
 }
 
 export const updateWorkday = (body: UpdateWorkdayRequest): Promise<Workday> => {

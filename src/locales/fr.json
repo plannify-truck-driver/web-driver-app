@@ -121,7 +121,6 @@
       "workday-creation-limit-reached": "Vous avez atteint votre quota d'ajout de journées. Merci de patienter un moment avant de réessayer.",
       "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-deletion-error": "Une erreur est survenue lors de la suppression de votre journée de travail. Veuillez réessayer ultérieurement.",
-      "workday-restoration-error": "Une erreur est survenue lors de la restauration de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-document-already-generated": "Votre relevé mensuel pour cette période a déjà été généré définitivement. Les journées de cette période ne peuvent plus être modifiées.",
       "workday-not-found-error": "Aucune journée de travail n'a été trouvée pour aujourd'hui.",
       "rest-periods-loading": "Les coupures sont encore en cours de chargement, veuillez patienter.",
@@ -152,8 +151,7 @@
         "import-from-file": "Importer des journées à partir d'un fichier"
       },
       "success": {
-        "workday-created": "La journée a bien été créée !",
-        "workday-updated": "La journée a bien été mise à jour !"
+        "workday-created": "La journée a bien été créée !"
       },
       "detail": {
         "page-title": "Détail d'une journée",
