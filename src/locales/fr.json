@@ -115,6 +115,8 @@
       "full-time-format": "{{hours}}h {{minutes}}min",
       "minutes-time-format": "{{minutes}}min",
       "hour-time-format": "{{hours}}h",
+      "load-error-title": "Impossible de charger vos journées de travail",
+      "load-error-description": "Vérifiez votre connexion internet puis réessayez.",
       "workday-creation-error": "Une erreur est survenue lors de la création de votre journée de travail. Veuillez réessayer ultérieurement.",
       "workday-creation-limit-reached": "Vous avez atteint votre quota d'ajout de journées. Merci de patienter un moment avant de réessayer.",
       "workday-update-error": "Une erreur est survenue lors de la mise à jour de votre journée de travail. Veuillez réessayer ultérieurement.",
@@ -815,6 +817,8 @@
     }
   },
   "common": {
+    "load-error": "Impossible de charger certaines données. Vérifiez votre connexion internet puis réessayez.",
+    "retry": "Réessayer",
     "back": "Retour",
     "next": "Suivant",
     "continue": "Continuer",

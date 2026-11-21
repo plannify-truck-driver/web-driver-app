@@ -87,6 +87,8 @@ export default function PageDashboardIndexFeature() {
     data: periodWorkdays,
     isLoading: isPeriodWorkdaysLoading,
     error,
+    refetch: refetchPeriodWorkdays,
+    isFetching: isRetryingPeriodWorkdays,
   } = useGetWorkdaysByPeriod({
     from: period.from.toISOString().split("T")[0],
     to: period.to.toISOString().split("T")[0],
@@ -421,6 +423,8 @@ export default function PageDashboardIndexFeature() {
       isUpdatingWorkday={isUpdatingWorkday}
       isDeletingWorkday={isDeletingWorkday}
       error={error}
+      onRetry={() => refetchPeriodWorkdays()}
+      isRetrying={isRetryingPeriodWorkdays}
       totalWorkingTime={totalWorkingTime}
       onNextPeriod={onNextPeriod}
       onPreviousPeriod={onPreviousPeriod}

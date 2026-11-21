@@ -71,7 +71,7 @@ export const useGetWorkdaysByPeriod = (request: GetWorkdaysByPeriodRequest) =>
   useQuery({
     queryKey: workdaysKeys.getWorkdaysByPeriod(request),
     queryFn: () => getWorkdaysByPeriod(request),
-    enabled: true,
+    meta: { inlineError: true }, // the dashboard renders its own error state with a retry button
   })
 
 export const useGetWorkdaysByMonth = (request: GetWorkdayByMonthRequest) =>

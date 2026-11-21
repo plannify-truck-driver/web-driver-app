@@ -22,7 +22,7 @@ import { WorkdayRecap } from "@/shared/components/WorkdayRecap"
 import { WorkdayTable } from "@/shared/components/WorkdayTable"
 import { Button } from "@/shared/components/ui/Button"
 import { Link } from "@tanstack/react-router"
-import { CoffeeIcon, LockIcon, X } from "lucide-react"
+import { CircleAlertIcon, CoffeeIcon, LockIcon, RefreshCwIcon, X } from "lucide-react"
 import { StatOvernightRest } from "@/shared/components/statistics/StatOvernightRest"
 import { InstallBanner, InstallDrawer } from "@/shared/components/InstallBanner"
 
@@ -39,6 +39,8 @@ interface PageDashboardIndexProps {
   isUpdatingWorkday: boolean
   isDeletingWorkday: boolean
   error: Error | null
+  onRetry: () => void
+  isRetrying: boolean
   totalWorkingTime: string
   onPreviousPeriod: () => void
   onNextPeriod: () => void
@@ -76,6 +78,8 @@ export default function PageDashboardIndex({
   isUpdatingWorkday,
   isDeletingWorkday,
   error,
+  onRetry,
+  isRetrying,
   totalWorkingTime,
   onPreviousPeriod,
   onNextPeriod,
@@ -102,7 +106,24 @@ export default function PageDashboardIndex({
   const { t, i18n } = useTranslation()
 
   if (error) {
-    return <div>Error: {error.message}</div>
+    return (
+      <div
+        role="alert"
+        className="flex flex-1 flex-col items-center justify-center gap-4 py-16 text-center"
+      >
+        <CircleAlertIcon className="text-destructive size-10" />
+        <div className="flex flex-col gap-1">
+          <h1 className="text-lg font-semibold">{t("pages.dashboard.load-error-title")}</h1>
+          <p className="text-muted-foreground text-sm">
+            {t("pages.dashboard.load-error-description")}
+          </p>
+        </div>
+        <Button onClick={onRetry} disabled={isRetrying}>
+          <RefreshCwIcon className={isRetrying ? "size-4 animate-spin" : "size-4"} />
+          {t("common.retry")}
+        </Button>
+      </div>
+    )
   }
 
   return (
