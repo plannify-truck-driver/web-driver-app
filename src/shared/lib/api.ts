@@ -32,7 +32,7 @@ export const api = ky.create({
         if (response.status !== 401 || state.retryCount > 0 || !refreshAccessToken) return
         if (new URL(request.url).pathname.includes("/authentication/")) return
 
-        const body = await response.json().catch(() => null)
+        const body = await response.json<{ error_code?: string }>().catch(() => null)
         if (body?.error_code !== "UNAUTHORIZED") return
 
         if (await refreshAccessToken()) return ky.retry({ code: "TOKEN_REFRESHED" })
