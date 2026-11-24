@@ -11,6 +11,7 @@ import { Toaster } from "./shared/components/ui/Sonner"
 import { AuthProvider } from "./app/providers/AuthProvider"
 import { PwaUpdateProvider } from "./app/providers/PwaUpdateProvider"
 import { queryClient } from "./lib/queryClient"
+import { AppErrorFallback } from "./shared/components/AppErrorFallback"
 
 // A stale service worker cache can reference JS chunks that no longer exist after a new
 // deploy. Reload once to pick up the fresh build instead of leaving the user on a broken page.
@@ -28,6 +29,7 @@ const router = createRouter({
   defaultStaleTime: 5000,
   scrollRestoration: true,
   context: { auth: undefined! },
+  defaultErrorComponent: AppErrorFallback,
 })
 
 // Register things for typesafety

@@ -825,6 +825,12 @@
       "next": "Suivant",
       "page": "Page {{page}} / {{total}}",
       "per-page": "{{count}} éléments par page"
+    },
+    "app-error": {
+      "title": "Une erreur est survenue",
+      "description": "L'application n'a pas pu s'afficher. Rechargez-la : cela vide le cache et récupère la dernière version.",
+      "reload": "Recharger l'application",
+      "details": "Détails de l'erreur"
     }
   }
 }

@@ -825,6 +825,12 @@
       "next": "Next",
       "page": "Page {{page}} / {{total}}",
       "per-page": "{{count}} items per page"
+    },
+    "app-error": {
+      "title": "Something went wrong",
+      "description": "The app could not be displayed. Reload it: this clears the cache and fetches the latest version.",
+      "reload": "Reload the app",
+      "details": "Error details"
     }
   }
 }
