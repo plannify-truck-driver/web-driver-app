@@ -831,6 +831,11 @@
       "description": "The app could not be displayed. Reload it: this clears the cache and fetches the latest version.",
       "reload": "Reload the app",
       "details": "Error details"
+    },
+    "not-found": {
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist or has been moved.",
+      "back-home": "Back to dashboard"
     }
   }
 }
